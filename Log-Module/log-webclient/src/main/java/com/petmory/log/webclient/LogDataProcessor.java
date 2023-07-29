@@ -11,8 +11,8 @@ public class LogDataProcessor {
         this.logDataSender = logDataSender;
     }
 
-    public void processLogData(String threadId, Integer executionTime, String methodName, String exceptionMessage, boolean success) {
-        SaveLogRequest saveLogRequest = new SaveLogRequest(threadId,executionTime,methodName,exceptionMessage,success);
+    public void processLogData(String threadId, Integer executionTime, String methodName, String exceptionMessage) {
+        SaveLogRequest saveLogRequest = new SaveLogRequest(threadId,executionTime,methodName,exceptionMessage);
         logDataSender.sendLogData(saveLogRequest);
     }
 }

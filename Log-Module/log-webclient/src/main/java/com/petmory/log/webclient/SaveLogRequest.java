@@ -7,5 +7,4 @@ public class SaveLogRequest {
     private Integer executionTime;
     private String methodName;
     private String exceptionMessage;
-    private boolean isSuccess;
 }

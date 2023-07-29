@@ -35,18 +35,18 @@ public class LogAspect {
             traceStatus = logTrace.start(joinPoint.getSignature().getName());
             Object result = joinPoint.proceed();
             Integer executionTime = logTrace.end(traceStatus);
-            logDataProcessor.processLogData(traceStatus.getThreadId(), executionTime, traceStatus.getMethodName(), null,true);
+            logDataProcessor.processLogData(traceStatus.getThreadId(), executionTime, traceStatus.getMethodName(), null);
             return result;
         } catch (BusinessException e) {
             if (traceStatus != null) {
                 logTrace.apiException(e, traceStatus);
-                logDataProcessor.processLogData(traceStatus.getThreadId(),0,traceStatus.getMethodName(), e.getErrorCode().getMessage(),false);
+                logDataProcessor.processLogData(traceStatus.getThreadId(),0,traceStatus.getMethodName(), e.getErrorCode().getMessage());
             }
             throw e;
         }catch (Exception e) {
             if (traceStatus != null) {
                 logTrace.exception(e, traceStatus);
-                logDataProcessor.processLogData(traceStatus.getThreadId(),0, traceStatus.getMethodName(), "internal error",false);
+                logDataProcessor.processLogData(traceStatus.getThreadId(),0, traceStatus.getMethodName(), "internal error");
             }
             throw e;
         }
