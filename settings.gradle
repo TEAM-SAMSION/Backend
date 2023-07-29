@@ -5,4 +5,6 @@ include 'Log-Module:log-aop'
 findProject(':Log-Module:log-aop')?.name = 'log-aop'
 include 'Log-Module:log-aop'
 findProject(':Log-Module:log-aop')?.name = 'log-aop'
+include 'Log-Module:log-webclient'
+findProject(':Log-Module:log-webclient')?.name = 'log-webclient'
 
