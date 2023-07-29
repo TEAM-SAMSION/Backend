@@ -1,2 +1,8 @@
 rootProject.name = 'petmory'
 include 'Api-Module'
+include 'Log-Module'
+include 'Log-Module:log-aop'
+findProject(':Log-Module:log-aop')?.name = 'log-aop'
+include 'Log-Module:log-aop'
+findProject(':Log-Module:log-aop')?.name = 'log-aop'
+
