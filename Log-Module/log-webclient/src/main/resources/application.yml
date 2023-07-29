@@ -1,0 +1,3 @@
+log:
+  server:
+    base-url: http://log.simproject.kr:8080
