@@ -30,7 +30,7 @@ jobs:
 
       - name: make application.yml
         run: |
-          cd .Api-Module/src/main/resources
+          cd ./Api-Module/src/main/resources
           touch ./application.yml
           echo "${{ secrets.APPLICATION }}" > ./application.yml
         shell: bash
