@@ -1,5 +1,6 @@
 package com.petmory.log.aop;
 
+import com.petmory.commonmodule.exception.BusinessException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -33,7 +34,7 @@ public class LogTrace {
     }
 
     public void apiException(BusinessException e, TraceStatus traceStatus) {
-        logger.error("[" + traceStatus.getThreadId() + "] " + traceStatus.getMethodName() + " ==== API EXCEPTION! [" + e.getErrorCode().getCode() + "] " + e.getErrorCode().getMessage());
+        logger.error("[" + traceStatus.getThreadId() + "] " + traceStatus.getMethodName() + " ==== API EXCEPTION! [" + e.getError().getErrorCode() + "] " + e.getError().getMessage());
         removeThreadLocal();
     }
 
