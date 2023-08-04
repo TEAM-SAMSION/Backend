@@ -1,11 +1,14 @@
 package com.petmory.log.aop;
 
+import com.petmory.commonmodule.exception.BusinessException;
 import com.petmory.log.webclient.LogDataProcessor;
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Aspect
 @Component
 public class LogAspect {
@@ -26,6 +29,7 @@ public class LogAspect {
 
     @Around("com.petmory.log.aop.Pointcuts.allController()")
     public Object controllerLog(ProceedingJoinPoint joinPoint) throws Throwable {
+        log.info("controllerLog: {}", joinPoint.getSignature().getName());
         return getObject(joinPoint);
     }
 
@@ -40,7 +44,7 @@ public class LogAspect {
         } catch (BusinessException e) {
             if (traceStatus != null) {
                 logTrace.apiException(e, traceStatus);
-                logDataProcessor.processLogData(traceStatus.getThreadId(),0,traceStatus.getMethodName(), e.getErrorCode().getMessage());
+                logDataProcessor.processLogData(traceStatus.getThreadId(),0,traceStatus.getMethodName(), e.getError().getMessage());
             }
             throw e;
         }catch (Exception e) {

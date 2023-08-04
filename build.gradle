@@ -5,7 +5,19 @@ plugins {
     id 'org.asciidoctor.jvm.convert' version '3.3.2'
 }
 
+allprojects {
+    group = 'com.petmory'
+    version = '0.0.1'
+    sourceCompatibility = '11'
 
+    repositories {
+        mavenCentral()
+    }
+}
+
+springBoot {
+    mainClass = 'com.petmory.apimodule'
+}
 
 subprojects {
     apply plugin: 'java'
@@ -13,16 +25,13 @@ subprojects {
     apply plugin: 'org.springframework.boot'
     apply plugin: 'org.asciidoctor.jvm.convert'
 
-    group = 'com.petmory'
-    version = '0.0.1-SNAPSHOT'
-    sourceCompatibility = '11'
+    bootJar.enabled =false
+    jar.enabled = true
 
-    bootJar.enabled =false;
-    jar.enabled = true;
-
-    repositories {
-        mavenCentral()
+    if(name == 'Api-Module'){
+        bootJar.enabled=true
     }
+
 
     dependencies {
         implementation 'org.springframework.boot:spring-boot-starter-actuator'
@@ -33,7 +42,7 @@ subprojects {
 
 
         // redis
-        implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+//        implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
 
         // web
