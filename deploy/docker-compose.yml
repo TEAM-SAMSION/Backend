@@ -1,0 +1,11 @@
+version: "3.8"
+
+services:
+  petmory:
+    image: ${DOCKER_USERNAME}/${DOCKER_REPOSITORY}
+    container_name: ${DOCKER_REPOSITORY}
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      - TZ=Asia/Seoul
