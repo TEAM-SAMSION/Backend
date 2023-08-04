@@ -47,6 +47,9 @@ jobs:
             echo "DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }}" >> ./.env
             echo "DOCKER_REPOSITORY=${{ secrets.DOCKER_REPOSITORY }}" >> ./.env
 
+      - name: Grant Execute Permission For Gradlew
+        run: chmod +x gradlew
+
       - name: Build With Gradle
         run: ./gradlew build
 
