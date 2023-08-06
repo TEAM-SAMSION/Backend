@@ -12,4 +12,6 @@ include 'Auth-Module'
 include 'Common-Module'
 include 'Auth-Module:auth-adaptor'
 findProject(':Auth-Module:auth-adaptor')?.name = 'auth-adaptor'
+include 'Auth-Module:auth-application'
+findProject(':Auth-Module:auth-application')?.name = 'auth-application'
 
