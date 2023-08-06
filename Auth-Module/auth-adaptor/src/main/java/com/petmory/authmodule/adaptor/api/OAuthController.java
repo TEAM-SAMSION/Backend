@@ -1,7 +1,7 @@
 package com.petmory.authmodule.adaptor.api;
 
-import com.petmory.authmodule.adaptor.api.request.Provider;
-import com.petmory.authmodule.adaptor.api.response.OAuthResponse;
+import com.petmory.authmodule.application.dto.OAuthResponse;
+import com.petmory.authmodule.application.dto.Provider;
 import com.petmory.authmodule.application.port.in.OAuthUseCase;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,8 +1,7 @@
 package com.petmory.authmodule.application.port.out.observer.observer;
 
-
-import com.petmory.authmodule.adaptor.api.request.Provider;
 import com.petmory.authmodule.application.dto.OAuthUserInfo;
+import com.petmory.authmodule.application.dto.Provider;
 import com.petmory.authmodule.application.port.out.observer.subject.OAuth;
 import com.petmory.commonmodule.observer.Observer;
 

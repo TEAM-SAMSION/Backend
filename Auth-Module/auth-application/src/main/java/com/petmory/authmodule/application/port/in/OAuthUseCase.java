@@ -1,7 +1,7 @@
 package com.petmory.authmodule.application.port.in;
 
-import com.petmory.authmodule.adaptor.api.request.Provider;
-import com.petmory.authmodule.adaptor.api.response.OAuthResponse;
+import com.petmory.authmodule.application.dto.OAuthResponse;
+import com.petmory.authmodule.application.dto.Provider;
 
 public interface OAuthUseCase {
 

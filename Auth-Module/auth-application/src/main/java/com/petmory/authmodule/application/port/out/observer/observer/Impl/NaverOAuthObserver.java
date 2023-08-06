@@ -1,8 +1,8 @@
 package com.petmory.authmodule.application.port.out.observer.observer.Impl;
 
 
-import com.petmory.authmodule.adaptor.api.request.Provider;
 import com.petmory.authmodule.application.dto.OAuthUserInfo;
+import com.petmory.authmodule.application.dto.Provider;
 import com.petmory.authmodule.application.port.out.observer.observer.AbstractOAuthObserver;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

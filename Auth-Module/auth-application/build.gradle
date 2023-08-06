@@ -1,7 +1,5 @@
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-
-    implementation project(":Auth-Module:auth-adaptor")
     implementation project(path: ':Common-Module')
 }

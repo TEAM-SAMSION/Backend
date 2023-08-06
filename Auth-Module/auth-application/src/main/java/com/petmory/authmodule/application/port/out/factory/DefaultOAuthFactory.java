@@ -1,9 +1,8 @@
-package com.petmory.authmodule.adaptor;
+package com.petmory.authmodule.application.port.out.factory;
 
-import com.petmory.authmodule.adaptor.api.request.Provider;
-import com.petmory.authmodule.adaptor.api.response.OAuthResponse;
 import com.petmory.authmodule.application.dto.OAuthRequest;
-import com.petmory.authmodule.application.port.out.factory.OAuthFactory;
+import com.petmory.authmodule.application.dto.OAuthResponse;
+import com.petmory.authmodule.application.dto.Provider;
 import com.petmory.authmodule.application.port.out.observer.subject.AbstractOAuthSubject;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
