@@ -7,7 +7,6 @@ import com.petmory.authmodule.application.port.out.observer.observer.AbstractOAu
 import com.petmory.commonmodule.observer.Observer;
 import com.petmory.commonmodule.subject.Status;
 import com.petmory.commonmodule.subject.Subject;
-import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
@@ -16,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
-@NoArgsConstructor(access = AccessLevel.PUBLIC)
+@NoArgsConstructor
 public final class AbstractOAuthSubject implements Subject<OAuthRequest, OAuthResponse> {
     private final List<AbstractOAuthObserver> observerList = new ArrayList<>();
 
