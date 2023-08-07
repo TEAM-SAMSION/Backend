@@ -1,7 +1,7 @@
 package com.petmory.authmodule.application.port.out.observer.subject;
 
 import com.petmory.authmodule.application.dto.Provider;
-import com.petmory.commonmodule.subject.Status;
+import com.petmory.commonmodule.observer.subject.Status;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
