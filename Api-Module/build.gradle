@@ -1,4 +1,8 @@
 dependencies {
+    // actuators
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
+
     implementation project(":Log-Module:log-aop")
     implementation project(":Auth-Module:auth-adaptor")
 
