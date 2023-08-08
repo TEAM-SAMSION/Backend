@@ -34,27 +34,18 @@ subprojects {
 
 
     dependencies {
-        implementation 'org.springframework.boot:spring-boot-starter-actuator'
-        runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
+        implementation 'org.springframework.boot:spring-boot-starter-web'
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
         // jpa
         implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
         runtimeOnly 'com.mysql:mysql-connector-j'
 
-
         // redis
 //        implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-
-
-        // web
-        implementation 'org.springframework.boot:spring-boot-starter-web'
-
 
         // lombok
         compileOnly 'org.projectlombok:lombok'
         annotationProcessor 'org.projectlombok:lombok'
-
-
-        testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
         // restdocs
         testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'

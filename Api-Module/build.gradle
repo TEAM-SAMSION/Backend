@@ -1,8 +1,7 @@
-
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-
     implementation project(":Log-Module:log-aop")
+    implementation project(":Auth-Module:auth-adaptor")
+
+    // 임시 설정
     implementation project(":Auth-Module:JWT")
 }
