@@ -3,6 +3,7 @@ package com.petmory.log.aop;
 import com.petmory.commonmodule.exception.BusinessException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;
@@ -10,12 +11,12 @@ import java.util.UUID;
 @Component
 public class LogTrace {
 
-    private ThreadLocal<String> threadId = new ThreadLocal<>();
+    private static final String TRACE_ID = "TraceId";
     private static final Logger logger = LoggerFactory.getLogger(LogTrace.class);
 
     public TraceStatus start(String method) {
-        syncTrace();
-        String id = threadId.get();
+        String id = createTraceId();
+        MDC.put(TRACE_ID, id);
         long startTime = System.currentTimeMillis();
         logger.info("[" + id + "] " + method + " ==== start");
         return new TraceStatus(id, startTime, method);
@@ -29,33 +30,27 @@ public class LogTrace {
         } else {
             logger.info("[" + traceStatus.getThreadId() + "] " + traceStatus.getMethodName() + " ==== execute time = " + executionTime + "ms");
         }
-        removeThreadLocal();
+        removeMdcContext();
         return (int)executionTime;
     }
 
     public void apiException(BusinessException e, TraceStatus traceStatus) {
         logger.error("[" + traceStatus.getThreadId() + "] " + traceStatus.getMethodName() + " ==== API EXCEPTION! [" + e.getError().getErrorCode() + "] " + e.getError().getMessage());
-        removeThreadLocal();
+        removeMdcContext();
     }
 
     public void exception(Exception e, TraceStatus traceStatus) {
         logger.error("[" + traceStatus.getThreadId() + "] " + traceStatus.getMethodName() + " ==== INTERNAL ERROR! ");
         e.printStackTrace();
-        removeThreadLocal();
+        removeMdcContext();
     }
 
-    private void syncTrace() {
-        String id = threadId.get();
-        if (id == null) {
-            threadId.set(createThreadId());
-        }
-    }
 
-    private String createThreadId() {
+    private String createTraceId() {
         return UUID.randomUUID().toString().substring(0, 8);
     }
 
-    private void removeThreadLocal() {
-        threadId.remove();
+    private void removeMdcContext() {
+        MDC.remove(TRACE_ID);
     }
 }
