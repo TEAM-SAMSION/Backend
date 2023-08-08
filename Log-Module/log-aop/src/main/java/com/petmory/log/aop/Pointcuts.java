@@ -7,10 +7,10 @@ import org.aspectj.lang.annotation.Pointcut;
 public class Pointcuts {
 
 
-    @Pointcut("execution(* com.petmory..presentation.controller..*.*(..))")
+    @Pointcut("execution(* com.petmory..adaptor.api..*.*(..)) || execution(* com.petmory..presentation.controller..*.*(..))")
     public void allController() {}
 
-    @Pointcut("execution(* com.petmory..application.service..*.*(..))")
+    @Pointcut("execution(* com.petmory..application.service..*.*(..)) || execution(* com.petmory..domain.service..*.*(..))")
     public void allService() {
     }
 
