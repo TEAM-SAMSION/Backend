@@ -6,8 +6,5 @@ dependencies {
 
     // configuration properties
     implementation 'org.springframework.boot:spring-boot-configuration-processor'
-
-
-    implementation project(":Common-Module")
 }
 
