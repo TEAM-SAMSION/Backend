@@ -13,7 +13,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * jjwt 깃허브 : https://github.com/jwtk/jjwt
@@ -54,7 +57,7 @@ public class JWTProvider {
      */
     public String reIssueAccessToken(final String refreshToken) {
         validateToken(refreshToken);
-        final String email = extractEmailFromToken(refreshToken);
+        final String email = extractEmailFromRefreshToken(refreshToken);
         return generateAccessToken(email);
     }
 
@@ -68,8 +71,21 @@ public class JWTProvider {
         try {
             validateToken(refreshToken);
         } catch (ExpiredTokenException ignore) {}
-        final String email = extractEmailFromToken(refreshToken);
+        final String email = extractEmailFromRefreshToken(refreshToken);
         return generateRefreshToken(email);
+    }
+
+    /**
+     * accessToken에서 email 추출
+     * @throws InvalidTokenException : 잘못된 토큰 요청시 발생
+     * @throws ExpiredTokenException : 만료된 토큰 요청시 발생
+     */
+    public String extractEmailFromAccessToken(final String accessToken){
+        return initializeJwtParser()
+            .parseClaimsJws(accessToken)
+            .getBody()
+            .get(JWTConsts.EMAIL)
+            .toString();
     }
 
 
@@ -78,7 +94,7 @@ public class JWTProvider {
      *
      * @throws NotExistTokenException : 존재하지 않는 토큰 요청시 발생
      */
-    private String extractEmailFromToken(String refreshToken) {
+    private String extractEmailFromRefreshToken(String refreshToken) {
         Optional<String> emailKey = objectRegistry.getKeyFromValue(refreshToken);
         if (emailKey.isEmpty())
             throw new NotExistTokenException(Error.NOT_EXIST_TOKEN);
@@ -128,7 +144,7 @@ public class JWTProvider {
      * @throws InvalidTokenException 잘못된 토큰이 요청되었을 때 반환(서명 오류, 잘못된 토큰 형식, 잘못된 토큰 발급자, null이거나 공백인 경우)
      * @throws ExpiredTokenException 만료된 토큰이 요청되었을 때 반환
      */
-    private void validateToken(final String token) {
+    public void validateToken(final String token) {
         final JwtParser jwtParser = initializeJwtParser();
         try {
             jwtParser.parse(token);
