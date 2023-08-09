@@ -1,4 +1,4 @@
-package com.petmory.authmodule.application.config;
+package com.petmory.authmodule.application.common.config;
 
 import com.petmory.authmodule.application.port.out.observer.subject.AbstractOAuthSubject;
 import com.petmory.commonmodule.utill.ApplicationContextUtils;
