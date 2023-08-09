@@ -1,5 +1,6 @@
 package com.petmory.authmodule.config.security;
 
+import com.petmory.authmodule.config.security.filter.JWTAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -13,6 +14,7 @@ public class SecurityConfig {
     public SecurityFilterChain chain(HttpSecurity http) throws Exception {
         http.cors().disable();
         http.addFilterBefore(SecurityHandler.getJWTAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(SecurityHandler.getJWTEntryPoint(), JWTAuthenticationFilter.class);
 
         http.csrf().disable();
 
