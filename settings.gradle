@@ -1,4 +1,4 @@
-rootProject.name = 'petmory'
+rootProject.name = 'pawith'
 include 'Api-Module'
 include 'Log-Module'
 include 'Log-Module:log-aop'

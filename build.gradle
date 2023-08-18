@@ -6,7 +6,7 @@ plugins {
 }
 
 allprojects {
-    group = 'com.petmory'
+    group = 'com.pawith'
     version = '0.0.1'
     sourceCompatibility = '11'
 
@@ -16,7 +16,7 @@ allprojects {
 }
 
 springBoot {
-    mainClass = 'com.petmory.apimodule'
+    mainClass = 'com.pawith.apimodule'
 }
 
 subprojects {
