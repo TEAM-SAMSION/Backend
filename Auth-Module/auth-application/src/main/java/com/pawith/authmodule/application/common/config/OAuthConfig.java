@@ -16,7 +16,7 @@ public class OAuthConfig {
     public AbstractOAuthSubject abstractOAuthSubject(){
         final AbstractOAuthSubject abstractOAuthSubject = new AbstractOAuthSubject();
         final ApplicationContext applicationContext = ApplicationContextUtils.getApplicationContext();
-        abstractOAuthSubject.initObserver(applicationContext);
+        abstractOAuthSubject.initStrategy(applicationContext);
         return abstractOAuthSubject;
     }
 

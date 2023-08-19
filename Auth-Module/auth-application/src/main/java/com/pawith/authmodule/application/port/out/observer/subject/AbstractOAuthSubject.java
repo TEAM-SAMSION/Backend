@@ -63,7 +63,7 @@ public final class AbstractOAuthSubject implements Subject<OAuthRequest, OAuthRe
         return AuthConsts.AUTHENTICATION_TYPE + generateTokenMethod.apply(includeClaimData);
     }
 
-    public void initObserver(ApplicationContext applicationContext){
+    public void initStrategy(ApplicationContext applicationContext){
         initOAuthObserver(applicationContext);
         initJWTProvider(applicationContext);
     }
