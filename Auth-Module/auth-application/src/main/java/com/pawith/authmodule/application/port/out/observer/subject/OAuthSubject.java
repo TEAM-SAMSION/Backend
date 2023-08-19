@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.function.Function;
 
 @Slf4j
-public final class AbstractOAuthSubject implements Subject<OAuthRequest, OAuthResponse> {
+public final class OAuthSubject implements Subject<OAuthRequest, OAuthResponse> {
 
     private static final String JWT_PROVIDER_BEAN_NAME = "JWTProvider";
 

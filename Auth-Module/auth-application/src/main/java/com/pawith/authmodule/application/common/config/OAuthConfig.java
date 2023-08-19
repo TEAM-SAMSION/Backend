@@ -1,6 +1,6 @@
 package com.pawith.authmodule.application.common.config;
 
-import com.pawith.authmodule.application.port.out.observer.subject.AbstractOAuthSubject;
+import com.pawith.authmodule.application.port.out.observer.subject.OAuthSubject;
 import com.pawith.commonmodule.utill.ApplicationContextUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -13,11 +13,11 @@ import org.springframework.web.client.RestTemplate;
 public class OAuthConfig {
 
     @Bean
-    public AbstractOAuthSubject abstractOAuthSubject(){
-        final AbstractOAuthSubject abstractOAuthSubject = new AbstractOAuthSubject();
+    public OAuthSubject abstractOAuthSubject(){
+        final OAuthSubject OAuthSubject = new OAuthSubject();
         final ApplicationContext applicationContext = ApplicationContextUtils.getApplicationContext();
-        abstractOAuthSubject.initStrategy(applicationContext);
-        return abstractOAuthSubject;
+        OAuthSubject.initStrategy(applicationContext);
+        return OAuthSubject;
     }
 
     @Bean
