@@ -9,8 +9,10 @@ import com.pawith.commonmodule.observer.observer.Observer;
 import com.pawith.commonmodule.observer.subject.Status;
 import com.pawith.commonmodule.observer.subject.Subject;
 import com.pawith.jwt.JWTProvider;
+import com.pawith.usermodule.application.handler.event.UserSignUpEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationEventPublisher;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +27,8 @@ public final class OAuthSubject implements Subject<OAuthRequest, OAuthResponse> 
 
     private JWTProvider jwtProvider;
 
+    private ApplicationEventPublisher publisher;
+
     @Override
     public void registerObserver(Observer<? extends Status,?> o) {
         observerList.add((AbstractOAuthObserver) o);
@@ -38,6 +42,7 @@ public final class OAuthSubject implements Subject<OAuthRequest, OAuthResponse> 
     @Override
     public OAuthResponse notifyObservers(OAuthRequest object) {
         final OAuthUserInfo oAuthUserInfo = attemptLogin(new OAuth(object.getProvider(), object.getAccessToken()));
+        publisher.publishEvent(new UserSignUpEvent(oAuthUserInfo.getUsername(), oAuthUserInfo.getEmail(), object.getProvider().toString()));
         return generateServerAuthenticationTokens(oAuthUserInfo);
     }
 
