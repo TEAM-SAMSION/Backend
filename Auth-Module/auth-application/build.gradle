@@ -1,5 +1,6 @@
 dependencies {
     implementation project(":Auth-Module:JWT")
+    implementation project(":User-Module:user-application")
     // Feign
     implementation 'io.github.openfeign:feign-httpclient:12.1'
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:3.1.4'

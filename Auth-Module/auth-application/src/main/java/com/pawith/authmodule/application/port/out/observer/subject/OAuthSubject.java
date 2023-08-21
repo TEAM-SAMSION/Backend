@@ -12,7 +12,6 @@ import com.pawith.commonmodule.observer.subject.Status;
 import com.pawith.commonmodule.observer.subject.Subject;
 import com.pawith.jwt.JWTProvider;
 import com.pawith.usermodule.application.handler.event.UserSignUpEvent;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
@@ -23,7 +22,6 @@ import java.util.List;
 import java.util.function.Function;
 
 @Slf4j
-@RequiredArgsConstructor
 public final class OAuthSubject implements Subject<OAuthRequest, OAuthResponse> {
 
     private static final String JWT_PROVIDER_BEAN_NAME = "JWTProvider";
@@ -32,7 +30,7 @@ public final class OAuthSubject implements Subject<OAuthRequest, OAuthResponse> 
 
     private JWTProvider jwtProvider;
 
-    private final ApplicationEventPublisher publisher;
+    private ApplicationEventPublisher publisher;
 
     @Override
     public void registerObserver(Observer<? extends Status,?> o) {
