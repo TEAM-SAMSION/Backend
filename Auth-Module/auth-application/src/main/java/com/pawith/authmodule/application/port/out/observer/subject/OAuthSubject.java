@@ -1,17 +1,14 @@
 package com.pawith.authmodule.application.port.out.observer.subject;
 
 import com.pawith.authmodule.application.common.consts.AuthConsts;
-import com.pawith.authmodule.application.common.exception.AccountAlreadyExistException;
 import com.pawith.authmodule.application.dto.OAuthRequest;
 import com.pawith.authmodule.application.dto.OAuthResponse;
 import com.pawith.authmodule.application.dto.OAuthUserInfo;
 import com.pawith.authmodule.application.port.out.observer.observer.AbstractOAuthObserver;
-import com.pawith.commonmodule.exception.Error;
 import com.pawith.commonmodule.observer.observer.Observer;
 import com.pawith.commonmodule.observer.subject.Status;
 import com.pawith.commonmodule.observer.subject.Subject;
 import com.pawith.jwt.JWTProvider;
-import com.pawith.usermodule.application.exception.UserAlreadyExistException;
 import com.pawith.usermodule.application.handler.event.UserSignUpEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
@@ -45,11 +42,7 @@ public final class OAuthSubject implements Subject<OAuthRequest, OAuthResponse> 
     @Override
     public OAuthResponse notifyObservers(OAuthRequest object) {
         final OAuthUserInfo oAuthUserInfo = attemptLogin(new OAuth(object.getProvider(), object.getAccessToken()));
-        try {
-            publisher.publishEvent(new UserSignUpEvent(oAuthUserInfo.getUsername(), oAuthUserInfo.getEmail(), object.getProvider().toString()));
-        } catch (UserAlreadyExistException ex) {
-            throw new AccountAlreadyExistException(Error.ACCOUNT_ALREADY_EXIST);
-        }
+        publisher.publishEvent(new UserSignUpEvent(oAuthUserInfo.getUsername(), oAuthUserInfo.getEmail(), object.getProvider().toString()));
         return generateServerAuthenticationTokens(oAuthUserInfo);
     }
 

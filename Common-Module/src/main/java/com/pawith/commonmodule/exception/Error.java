@@ -14,7 +14,6 @@ public enum Error {
 
     // User
     USER_NOT_FOUND("사용자를 찾을 수 없습니다.", 2000),
-    USER_ALREADY_EXIST("사용자가 이미 존재합니다.", 2001),
     ;
 
     private final String message;

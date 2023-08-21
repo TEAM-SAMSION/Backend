@@ -1,11 +1,10 @@
 package com.pawith.usermodule.application.handler;
 
-import com.pawith.commonmodule.exception.Error;
-import com.pawith.usermodule.application.exception.UserAlreadyExistException;
 import com.pawith.usermodule.application.handler.event.UserSignUpEvent;
 import com.pawith.usermodule.application.mapper.UserMapper;
 import com.pawith.usermodule.domain.entity.User;
 import com.pawith.usermodule.domain.repository.UserRepository;
+import com.pawith.usermodule.domain.service.UserQueryService;
 import com.pawith.usermodule.domain.service.UserSaveService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +17,7 @@ public class UserSignUpHandler {
 
     private final UserSaveService userSaveService;
     private final UserRepository userRepository;
+    private final UserQueryService userQueryService;
 
     @Transactional
     @EventListener
@@ -26,8 +26,9 @@ public class UserSignUpHandler {
             final User user = UserMapper.toEntity(userSignUpEvent);
             userSaveService.saveUser(user);
         }
-        else
-            throw new UserAlreadyExistException(Error.USER_ALREADY_EXIST);
+        else {
+            userQueryService.checkAccountAlreadyExist(userSignUpEvent.getEmail(), userSignUpEvent.getProvider());
+        }
     }
 
 }
