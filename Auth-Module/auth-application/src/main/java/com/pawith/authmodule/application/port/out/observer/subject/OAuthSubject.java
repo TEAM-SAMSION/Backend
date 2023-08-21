@@ -1,22 +1,29 @@
 package com.pawith.authmodule.application.port.out.observer.subject;
 
 import com.pawith.authmodule.application.common.consts.AuthConsts;
+import com.pawith.authmodule.application.common.exception.AccountAlreadyExistException;
 import com.pawith.authmodule.application.dto.OAuthRequest;
 import com.pawith.authmodule.application.dto.OAuthResponse;
 import com.pawith.authmodule.application.dto.OAuthUserInfo;
 import com.pawith.authmodule.application.port.out.observer.observer.AbstractOAuthObserver;
+import com.pawith.commonmodule.exception.Error;
 import com.pawith.commonmodule.observer.observer.Observer;
 import com.pawith.commonmodule.observer.subject.Status;
 import com.pawith.commonmodule.observer.subject.Subject;
 import com.pawith.jwt.JWTProvider;
+import com.pawith.usermodule.application.handler.event.UserSignUpEvent;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationEventPublisher;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
 @Slf4j
+@RequiredArgsConstructor
 public final class OAuthSubject implements Subject<OAuthRequest, OAuthResponse> {
 
     private static final String JWT_PROVIDER_BEAN_NAME = "JWTProvider";
@@ -24,6 +31,8 @@ public final class OAuthSubject implements Subject<OAuthRequest, OAuthResponse> 
     private final List<AbstractOAuthObserver> observerList = new ArrayList<>();
 
     private JWTProvider jwtProvider;
+
+    private final ApplicationEventPublisher publisher;
 
     @Override
     public void registerObserver(Observer<? extends Status,?> o) {
@@ -38,6 +47,11 @@ public final class OAuthSubject implements Subject<OAuthRequest, OAuthResponse> 
     @Override
     public OAuthResponse notifyObservers(OAuthRequest object) {
         final OAuthUserInfo oAuthUserInfo = attemptLogin(new OAuth(object.getProvider(), object.getAccessToken()));
+        try {
+            publisher.publishEvent(new UserSignUpEvent(oAuthUserInfo.getUsername(), oAuthUserInfo.getEmail(), oAuthUserInfo.getProvider()));
+        }catch (AccountAlreadyExistException ex) {
+            throw new AccountAlreadyExistException(Error.ACCOUNT_ALREADY_EXIST);
+        }
         return generateServerAuthenticationTokens(oAuthUserInfo);
     }
 
