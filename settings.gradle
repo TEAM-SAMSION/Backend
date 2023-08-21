@@ -16,4 +16,7 @@ include 'Auth-Module:auth-application'
 findProject(':Auth-Module:auth-application')?.name = 'auth-application'
 
 include 'Auth-Module:JWT'
+include 'User-Module'
+include 'User-Module:user-domain'
+findProject(':User-Module:user-domain')?.name = 'user-domain'
 
