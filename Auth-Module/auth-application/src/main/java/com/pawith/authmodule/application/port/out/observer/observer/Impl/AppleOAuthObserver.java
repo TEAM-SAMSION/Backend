@@ -42,7 +42,7 @@ public class AppleOAuthObserver extends AbstractOAuthObserver {
         Jws<Claims> oidcTokenJws = sigVerificationAndGetJws(accessToken);
         // 토큰 바디 파싱해서 사용자 정보 획득
         String email = (String) oidcTokenJws.getBody().get("email");
-        return new OAuthUserInfo("포잇", email, PROVIDER.toString());
+        return new OAuthUserInfo("포잇", email);
     }
 
     @Override

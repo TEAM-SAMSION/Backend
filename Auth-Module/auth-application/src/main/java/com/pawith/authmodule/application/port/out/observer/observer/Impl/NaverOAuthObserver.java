@@ -17,7 +17,7 @@ public class NaverOAuthObserver extends AbstractOAuthObserver {
     private final RestTemplate restTemplate;
     protected OAuthUserInfo attemptLogin(String accessToken) {
         log.info("NaverOAuthObserver attemptLogin");
-        return new OAuthUserInfo("Naver username","Naver email", PROVIDER.toString());
+        return new OAuthUserInfo("Naver username","Naver email");
     }
 
     @Override

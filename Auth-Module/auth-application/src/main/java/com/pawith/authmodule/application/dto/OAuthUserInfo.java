@@ -8,5 +8,4 @@ import lombok.RequiredArgsConstructor;
 public class OAuthUserInfo {
     private final String username;
     private final String email;
-    private final String provider;
 }

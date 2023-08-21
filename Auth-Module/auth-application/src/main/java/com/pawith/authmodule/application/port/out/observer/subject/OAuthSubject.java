@@ -45,7 +45,7 @@ public final class OAuthSubject implements Subject<OAuthRequest, OAuthResponse> 
     public OAuthResponse notifyObservers(OAuthRequest object) {
         final OAuthUserInfo oAuthUserInfo = attemptLogin(new OAuth(object.getProvider(), object.getAccessToken()));
         try {
-            publisher.publishEvent(new UserSignUpEvent(oAuthUserInfo.getUsername(), oAuthUserInfo.getEmail(), oAuthUserInfo.getProvider()));
+            publisher.publishEvent(new UserSignUpEvent(oAuthUserInfo.getUsername(), oAuthUserInfo.getEmail(), object.getProvider().toString()));
         }catch (AccountAlreadyExistException ex) {
             throw new AccountAlreadyExistException(Error.ACCOUNT_ALREADY_EXIST);
         }
