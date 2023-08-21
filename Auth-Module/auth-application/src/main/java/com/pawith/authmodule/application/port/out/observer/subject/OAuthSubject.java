@@ -12,7 +12,6 @@ import com.pawith.commonmodule.observer.subject.Status;
 import com.pawith.commonmodule.observer.subject.Subject;
 import com.pawith.jwt.JWTProvider;
 import com.pawith.usermodule.application.handler.event.UserSignUpEvent;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationEventPublisher;

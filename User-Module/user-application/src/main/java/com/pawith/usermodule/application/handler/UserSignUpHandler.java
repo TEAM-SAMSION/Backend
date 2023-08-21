@@ -1,6 +1,5 @@
 package com.pawith.usermodule.application.handler;
 
-import com.pawith.commonmodule.exception.Error;
 import com.pawith.usermodule.application.handler.event.UserSignUpEvent;
 import com.pawith.usermodule.application.mapper.UserMapper;
 import com.pawith.usermodule.domain.entity.User;
@@ -10,8 +9,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
