@@ -1,4 +1,4 @@
-package com.pawith.usermodule.domain.domain;
+package com.pawith.usermodule.domain.entity;
 
 import com.pawith.commonmodule.domain.BaseEntity;
 import lombok.AllArgsConstructor;

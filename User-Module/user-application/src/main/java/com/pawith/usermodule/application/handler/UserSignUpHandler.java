@@ -1,7 +1,7 @@
 package com.pawith.usermodule.application.handler;
 
 import com.pawith.usermodule.application.handler.event.UserSignUpEvent;
-import com.pawith.usermodule.domain.domain.User;
+import com.pawith.usermodule.domain.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;

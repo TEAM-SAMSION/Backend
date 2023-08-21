@@ -2,7 +2,7 @@ package com.pawith.usermodule.domain.service;
 
 import com.pawith.commonmodule.annotation.DomainService;
 import com.pawith.commonmodule.exception.Error;
-import com.pawith.usermodule.domain.domain.User;
+import com.pawith.usermodule.domain.entity.User;
 import com.pawith.usermodule.domain.exception.UserNotFoundException;
 import com.pawith.usermodule.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

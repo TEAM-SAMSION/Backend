@@ -5,7 +5,7 @@ import com.pawith.authmodule.application.dto.OAuthUserInfo;
 import com.pawith.authmodule.application.dto.Provider;
 import com.pawith.commonmodule.exception.Error;
 import com.pawith.usermodule.application.handler.event.UserSignUpEvent;
-import com.pawith.usermodule.domain.domain.User;
+import com.pawith.usermodule.domain.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
