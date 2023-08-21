@@ -1,5 +1,7 @@
 package com.pawith.usermodule.application.handler;
 
+import com.pawith.commonmodule.exception.Error;
+import com.pawith.usermodule.application.exception.UserAlreadyExistException;
 import com.pawith.usermodule.application.handler.event.UserSignUpEvent;
 import com.pawith.usermodule.application.mapper.UserMapper;
 import com.pawith.usermodule.domain.entity.User;
@@ -25,7 +27,7 @@ public class UserSignUpHandler {
             userSaveService.saveUser(user);
         }
         else
-            throw new IllegalArgumentException("사용자 존재");
+            throw new UserAlreadyExistException(Error.USER_ALREADY_EXIST);
     }
 
 }

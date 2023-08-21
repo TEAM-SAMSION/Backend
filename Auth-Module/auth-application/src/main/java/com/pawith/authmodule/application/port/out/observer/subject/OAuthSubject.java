@@ -11,6 +11,7 @@ import com.pawith.commonmodule.observer.observer.Observer;
 import com.pawith.commonmodule.observer.subject.Status;
 import com.pawith.commonmodule.observer.subject.Subject;
 import com.pawith.jwt.JWTProvider;
+import com.pawith.usermodule.application.exception.UserAlreadyExistException;
 import com.pawith.usermodule.application.handler.event.UserSignUpEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
@@ -46,7 +47,7 @@ public final class OAuthSubject implements Subject<OAuthRequest, OAuthResponse> 
         final OAuthUserInfo oAuthUserInfo = attemptLogin(new OAuth(object.getProvider(), object.getAccessToken()));
         try {
             publisher.publishEvent(new UserSignUpEvent(oAuthUserInfo.getUsername(), oAuthUserInfo.getEmail(), object.getProvider().toString()));
-        }catch (AccountAlreadyExistException ex) {
+        } catch (UserAlreadyExistException ex) {
             throw new AccountAlreadyExistException(Error.ACCOUNT_ALREADY_EXIST);
         }
         return generateServerAuthenticationTokens(oAuthUserInfo);
