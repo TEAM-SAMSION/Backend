@@ -10,6 +10,7 @@ public enum Error {
     NOT_EXIST_TOKEN("토큰이 존재하지 않습니다.", 1003),
     INVALID_AUTHORIZATION_TYPE("유효하지 않은 Authorization Type 입니다.", 1004),
     EMPTY_AUTHORIZATION_HEADER("Authorization Header가 비어있습니다.", 1005),
+    ACCOUNT_ALREADY_EXIST("이미 가입한 계정이 있습니다", 1006),
     ;
 
     private final String message;

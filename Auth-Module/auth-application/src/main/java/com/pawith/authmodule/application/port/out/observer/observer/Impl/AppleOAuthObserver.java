@@ -6,6 +6,7 @@ import com.pawith.authmodule.application.port.out.observer.observer.AbstractOAut
 import com.pawith.authmodule.application.port.out.observer.observer.feign.AppleFeignClient;
 import com.pawith.authmodule.application.port.out.observer.observer.feign.response.Keys;
 import com.pawith.authmodule.application.port.out.observer.observer.feign.response.Keys.PubKey;
+import com.pawith.authmodule.application.service.InternalOAuthService;
 import com.pawith.commonmodule.exception.Error;
 import com.pawith.jwt.exception.InvalidTokenException;
 import io.jsonwebtoken.*;
@@ -32,6 +33,7 @@ public class AppleOAuthObserver extends AbstractOAuthObserver {
     private static final Provider PROVIDER = Provider.APPLE;
     private final RestTemplate restTemplate;
     private final AppleFeignClient appleFeignClient;
+    private final InternalOAuthService internalOAuthService;
     @Value("${app-id.apple}")
     private String apple_aud;
 
@@ -42,7 +44,9 @@ public class AppleOAuthObserver extends AbstractOAuthObserver {
         Jws<Claims> oidcTokenJws = sigVerificationAndGetJws(accessToken);
         // 토큰 바디 파싱해서 사용자 정보 획득
         String email = (String) oidcTokenJws.getBody().get("email");
-        return new OAuthUserInfo("포잇",email);
+        OAuthUserInfo oAuthUserInfo = new OAuthUserInfo("포잇", email);
+        internalOAuthService.auth(oAuthUserInfo, PROVIDER);
+        return oAuthUserInfo;
     }
 
     @Override
