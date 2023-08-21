@@ -18,7 +18,7 @@ public class GoogleOAuthObserver  extends AbstractOAuthObserver {
     @Override
     protected OAuthUserInfo attemptLogin(String accessToken) {
         log.info("GoogleOAuthObserver attemptLogin");
-        return new OAuthUserInfo("Google username","Google email");
+        return new OAuthUserInfo("Google username","Google email", PROVIDER.toString());
     }
 
     @Override

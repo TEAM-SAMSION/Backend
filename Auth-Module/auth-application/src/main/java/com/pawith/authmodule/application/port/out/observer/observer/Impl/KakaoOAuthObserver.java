@@ -18,7 +18,7 @@ public class KakaoOAuthObserver extends AbstractOAuthObserver {
     @Override
     protected OAuthUserInfo attemptLogin(String accessToken) {
         log.info("KakaoOAuthObserver attemptLogin");
-        return new OAuthUserInfo("Kakao username","Kakao email");
+        return new OAuthUserInfo("Kakao username","Kakao email", PROVIDER.toString());
     }
 
     @Override
