@@ -71,6 +71,7 @@ public final class OAuthSubject implements Subject<OAuthRequest, OAuthResponse> 
     public void initStrategy(ApplicationContext applicationContext){
         initOAuthObserver(applicationContext);
         initJWTProvider(applicationContext);
+        initEventPublisher(applicationContext);
     }
 
     private void initOAuthObserver(ApplicationContext applicationContext) {
@@ -80,5 +81,9 @@ public final class OAuthSubject implements Subject<OAuthRequest, OAuthResponse> 
     }
     private void initJWTProvider(ApplicationContext applicationContext){
         jwtProvider = applicationContext.getBean(JWT_PROVIDER_BEAN_NAME, JWTProvider.class);
+    }
+
+    private void initEventPublisher(ApplicationContext applicationContext) {
+        publisher = applicationContext;
     }
 }
