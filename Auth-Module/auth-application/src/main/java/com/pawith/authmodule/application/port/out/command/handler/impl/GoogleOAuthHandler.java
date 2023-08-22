@@ -7,12 +7,10 @@ import com.pawith.authmodule.application.port.out.command.handler.AuthHandler;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
 @Component
-@RequiredArgsConstructor
 public class GoogleOAuthHandler implements AuthHandler {
     private static final Provider OAUTH_TYPE = Provider.GOOGLE;
     private static final String GOOGLE_OAUTH_USER_INFO_URL = "https://www.googleapis.com/oauth2/v3/userinfo";
