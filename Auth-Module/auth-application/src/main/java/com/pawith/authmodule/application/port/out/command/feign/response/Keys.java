@@ -1,4 +1,4 @@
-package com.pawith.authmodule.application.port.out.observer.observer.feign.response;
+package com.pawith.authmodule.application.port.out.command.feign.response;
 
 import lombok.Data;
 

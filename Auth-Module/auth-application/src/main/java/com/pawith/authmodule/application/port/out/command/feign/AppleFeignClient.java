@@ -1,6 +1,6 @@
-package com.pawith.authmodule.application.port.out.observer.observer.feign;
+package com.pawith.authmodule.application.port.out.command.feign;
 
-import com.pawith.authmodule.application.port.out.observer.observer.feign.response.Keys;
+import com.pawith.authmodule.application.port.out.command.feign.response.Keys;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 

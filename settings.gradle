@@ -1,24 +1,26 @@
 rootProject.name = 'pawith'
+
 include 'Api-Module'
+
 include 'Log-Module'
-include 'Log-Module:log-aop'
-findProject(':Log-Module:log-aop')?.name = 'log-aop'
 include 'Log-Module:log-aop'
 findProject(':Log-Module:log-aop')?.name = 'log-aop'
 include 'Log-Module:log-webclient'
 findProject(':Log-Module:log-webclient')?.name = 'log-webclient'
 
 include 'Auth-Module'
-include 'Common-Module'
 include 'Auth-Module:auth-adaptor'
 findProject(':Auth-Module:auth-adaptor')?.name = 'auth-adaptor'
 include 'Auth-Module:auth-application'
 findProject(':Auth-Module:auth-application')?.name = 'auth-application'
-
 include 'Auth-Module:JWT'
-include 'User-Module'
-include 'User-Module:user-domain'
-findProject(':User-Module:user-domain')?.name = 'user-domain'
-include 'User-Module:user-application'
-findProject(':User-Module:user-application')?.name = 'user-application'
 
+include 'Domain-Module'
+
+include 'Domain-Module:User-Module'
+include 'Domain-Module:User-Module:user-domain'
+findProject('Domain-Module:User-Module:user-domain')?.name = 'user-domain'
+include 'Domain-Module:User-Module:user-application'
+findProject('Domain-Module:User-Module:user-application')?.name = 'user-application'
+
+include 'Common-Module'

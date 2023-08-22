@@ -1,55 +1,35 @@
-package com.pawith.authmodule.application.port.out.observer.subject;
+package com.pawith.authmodule.application.port.out.command;
 
 import com.pawith.authmodule.application.common.consts.AuthConsts;
 import com.pawith.authmodule.application.dto.OAuthRequest;
 import com.pawith.authmodule.application.dto.OAuthResponse;
 import com.pawith.authmodule.application.dto.OAuthUserInfo;
-import com.pawith.authmodule.application.port.out.observer.observer.AbstractOAuthObserver;
-import com.pawith.commonmodule.observer.observer.Observer;
-import com.pawith.commonmodule.observer.subject.Status;
-import com.pawith.commonmodule.observer.subject.Subject;
+import com.pawith.authmodule.application.port.out.command.handler.AuthHandler;
 import com.pawith.jwt.JWTProvider;
 import com.pawith.usermodule.application.handler.event.UserSignUpEvent;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationEventPublisher;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 
-@Slf4j
-public final class OAuthSubject implements Subject<OAuthRequest, OAuthResponse> {
-
-    private static final String JWT_PROVIDER_BEAN_NAME = "JWTProvider";
-
-    private final List<AbstractOAuthObserver> observerList = new ArrayList<>();
-
+public class OAuthInvoker {
+    private List<AuthHandler> authHandlerList;
     private JWTProvider jwtProvider;
-
     private ApplicationEventPublisher publisher;
 
-    @Override
-    public void registerObserver(Observer<? extends Status,?> o) {
-        observerList.add((AbstractOAuthObserver) o);
-    }
-
-    @Override
-    public void removeObserver(Observer<? extends Status, ?> o) {
-        observerList.remove((AbstractOAuthObserver) o);
-    }
-
-    @Override
-    public OAuthResponse notifyObservers(OAuthRequest object) {
-        final OAuthUserInfo oAuthUserInfo = attemptLogin(new OAuth(object.getProvider(), object.getAccessToken()));
-        publisher.publishEvent(new UserSignUpEvent(oAuthUserInfo.getUsername(), oAuthUserInfo.getEmail(), object.getProvider().toString()));
+    public OAuthResponse execute(OAuthRequest request){
+        OAuthUserInfo oAuthUserInfo = attemptLogin(request);
+        publisher.publishEvent(new UserSignUpEvent(oAuthUserInfo.getUsername(), oAuthUserInfo.getEmail(), request.getProvider().toString()));
         return generateServerAuthenticationTokens(oAuthUserInfo);
     }
 
-    private OAuthUserInfo attemptLogin(OAuth oAuth) {
-        for (AbstractOAuthObserver abstractOAuthObserver : observerList) {
-            if (abstractOAuthObserver.isLogin(oAuth.getProvider())) {
-                return abstractOAuthObserver.accept(oAuth);
+    private OAuthUserInfo attemptLogin(OAuthRequest request) {
+        for (AuthHandler authHandler : authHandlerList) {
+            if (authHandler.isAccessible(request)) {
+                return authHandler.handle(request);
             }
         }
         throw new IllegalArgumentException("로그인 실패");
@@ -69,21 +49,21 @@ public final class OAuthSubject implements Subject<OAuthRequest, OAuthResponse> 
     }
 
     public void initStrategy(ApplicationContext applicationContext){
-        initOAuthObserver(applicationContext);
+        initAuthHandler(applicationContext);
         initJWTProvider(applicationContext);
         initEventPublisher(applicationContext);
     }
 
-    private void initOAuthObserver(ApplicationContext applicationContext) {
-        applicationContext.getBeansOfType(AbstractOAuthObserver.class)
-                .values()
-                .forEach(this::registerObserver);
+    private void initAuthHandler(ApplicationContext applicationContext) {
+        Map<String, AuthHandler> matchingBeans = applicationContext.getBeansOfType(AuthHandler.class);
+        authHandlerList = new ArrayList<>(matchingBeans.values());
     }
     private void initJWTProvider(ApplicationContext applicationContext){
-        jwtProvider = applicationContext.getBean(JWT_PROVIDER_BEAN_NAME, JWTProvider.class);
+        jwtProvider = applicationContext.getBean(JWTProvider.class);
     }
 
     private void initEventPublisher(ApplicationContext applicationContext) {
         publisher = applicationContext;
+
     }
 }
