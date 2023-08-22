@@ -71,7 +71,7 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ubuntu
           key: ${{ secrets.KEY }}
-          source: "./deploy/docker-compose.yml"
+          source: "./.deploy/docker-compose.yml"
           target: "/home/ubuntu"
           strip_components: 2
 
