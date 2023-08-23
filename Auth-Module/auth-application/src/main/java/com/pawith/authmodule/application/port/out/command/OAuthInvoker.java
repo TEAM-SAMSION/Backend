@@ -7,18 +7,19 @@ import com.pawith.authmodule.application.dto.OAuthUserInfo;
 import com.pawith.authmodule.application.port.out.command.handler.AuthHandler;
 import com.pawith.jwt.JWTProvider;
 import com.pawith.usermodule.application.handler.event.UserSignUpEvent;
-import org.springframework.context.ApplicationContext;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Function;
 
+@Component
+@RequiredArgsConstructor
 public class OAuthInvoker {
-    private List<AuthHandler> authHandlerList;
-    private JWTProvider jwtProvider;
-    private ApplicationEventPublisher publisher;
+    private final List<AuthHandler> authHandlerList;
+    private final JWTProvider jwtProvider;
+    private final ApplicationEventPublisher publisher;
 
     public OAuthResponse execute(OAuthRequest request){
         OAuthUserInfo oAuthUserInfo = attemptLogin(request);
@@ -46,24 +47,5 @@ public class OAuthInvoker {
 
     private <T> String attachAuthenticationType(Function<T, String> generateTokenMethod, T includeClaimData) {
         return AuthConsts.AUTHENTICATION_TYPE + generateTokenMethod.apply(includeClaimData);
-    }
-
-    public void initStrategy(ApplicationContext applicationContext){
-        initAuthHandler(applicationContext);
-        initJWTProvider(applicationContext);
-        initEventPublisher(applicationContext);
-    }
-
-    private void initAuthHandler(ApplicationContext applicationContext) {
-        Map<String, AuthHandler> matchingBeans = applicationContext.getBeansOfType(AuthHandler.class);
-        authHandlerList = new ArrayList<>(matchingBeans.values());
-    }
-    private void initJWTProvider(ApplicationContext applicationContext){
-        jwtProvider = applicationContext.getBean(JWTProvider.class);
-    }
-
-    private void initEventPublisher(ApplicationContext applicationContext) {
-        publisher = applicationContext;
-
     }
 }
