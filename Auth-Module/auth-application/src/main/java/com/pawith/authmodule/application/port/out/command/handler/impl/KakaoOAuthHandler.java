@@ -35,7 +35,7 @@ public class KakaoOAuthHandler implements AuthHandler {
         if (!tokenInfo.getAppId().equals(appId)) throw new InvalidTokenException(Error.INVALID_TOKEN);
 
         final KakaoUserInfo kakaoUserInfo = getKaKaoUserInfo(authenticationInfo.getAccessToken());
-        return new OAuthUserInfo(kakaoUserInfo.getNickname(), kakaoUserInfo.getEmail());
+        return new OAuthUserInfo(kakaoUserInfo.kakaoAccount.getNickname(), kakaoUserInfo.kakaoAccount.getEmail());
     }
 
     @Override
@@ -65,11 +65,17 @@ public class KakaoOAuthHandler implements AuthHandler {
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     private static class KakaoUserInfo{
+        private KakaoAccount kakaoAccount;
+    }
+
+    @Getter
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    private static class KakaoAccount{
         private static final String EMAIL = "email";
-        private static final String NICKNAME = "nickname";
+        private static final String NAME = "name";
         private Map<String, String> response;
         public String getNickname(){
-            return response.get(NICKNAME);
+            return response.get(NAME);
         }
 
         public String getEmail(){
