@@ -30,8 +30,8 @@ public class GoogleOAuthHandler implements AuthHandler {
     }
 
     private GoogleUserInfo getGoogleUserInfo(final String accessToken){
-        return WebClient.create().get()
-            .uri(GOOGLE_OAUTH_USER_INFO_URL)
+        return WebClient.create(GOOGLE_OAUTH_USER_INFO_URL)
+            .get()
             .header(GOOGLE_AUTHORIZATION, GOOGLE_AUTHORIZATION_BEARER+accessToken)
             .retrieve()
             .bodyToMono(GoogleUserInfo.class)
