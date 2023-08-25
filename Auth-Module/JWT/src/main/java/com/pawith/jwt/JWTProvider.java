@@ -63,7 +63,7 @@ public class JWTProvider {
 
     /**
      * refresh token을 이용하여 refresh token 재발급
-     *
+     * @TODO : RefreshToken 인증 범위 결정
      * @throws InvalidTokenException : 잘못된 토큰 요청시 발생
      */
     public String reIssueRefreshToken(final String refreshToken) {
