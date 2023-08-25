@@ -32,7 +32,6 @@ subprojects {
         bootJar.enabled=true
     }
 
-
     dependencies {
         implementation 'org.springframework.boot:spring-boot-starter-web'
         testImplementation 'org.springframework.boot:spring-boot-starter-test'
@@ -46,9 +45,15 @@ subprojects {
         // lombok
         compileOnly 'org.projectlombok:lombok'
         annotationProcessor 'org.projectlombok:lombok'
+        // lombok test
+        testCompileOnly 'org.projectlombok:lombok'
+        testAnnotationProcessor 'org.projectlombok:lombok'
 
         // restdocs
         testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+
+        // Fixture testing tool
+        testImplementation("com.navercorp.fixturemonkey:fixture-monkey-starter:0.6.3")
     }
 
 
