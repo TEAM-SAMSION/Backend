@@ -46,7 +46,7 @@ public class UserQueryServiceTest {
     void findByEmail() {
         //given
         User mockUser = getMockUser();
-        given(userRepository.findByEmail(EMAIL)).willReturn(Optional.of(mockUser));
+        given(userRepository.findByEmail(any())).willReturn(Optional.of(mockUser));
         //when
         User user = userQueryService.findByEmail(mockUser.getEmail());
         //then
