@@ -3,7 +3,6 @@ package com.pawith.user.application.handler;
 import com.navercorp.fixturemonkey.FixtureMonkey;
 import com.navercorp.fixturemonkey.api.introspector.ConstructorPropertiesArbitraryIntrospector;
 import com.pawith.commonmodule.exception.Error;
-import com.pawith.user.application.UserApplicationTestConst;
 import com.pawith.usermodule.application.handler.UserSignUpHandler;
 import com.pawith.usermodule.application.handler.event.UserSignUpEvent;
 import com.pawith.usermodule.domain.entity.User;
@@ -42,6 +41,9 @@ public class UserSignUpHandlerTest {
             .defaultNotNull(true)
             .build();
 
+    public static final String PROVIDER = "provider";
+    public static final String DIFFERENT_PROVIDER = "different_provider";
+
     @BeforeEach
     void init() { userSignUpHandler = new UserSignUpHandler(userSaveService, userQueryService); }
 
@@ -75,13 +77,13 @@ public class UserSignUpHandlerTest {
 
     UserSignUpEvent getMockUserSignUpEvent() {
         return fixtureMonkey.giveMeBuilder(UserSignUpEvent.class)
-                .set("provider", UserApplicationTestConst.PROVIDER)
+                .set("provider", PROVIDER)
                 .sample();
     }
 
     User getMockUser() {
         return fixtureMonkey.giveMeBuilder(User.class)
-                .set("provider", UserApplicationTestConst.DIFFERENT_PROVIDER)
+                .set("provider", DIFFERENT_PROVIDER)
                 .sample();
     }
 
