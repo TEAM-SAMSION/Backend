@@ -12,6 +12,7 @@ public class IgnoredPathConsts {
 
     @Getter
     private static Map<String, HttpMethod> ignoredPath = Map.of(
+        "/docs/**", HttpMethod.GET,
         "/oauth/**", HttpMethod.GET,
         "/jwt", HttpMethod.GET,
         "/actuator/**", HttpMethod.GET
