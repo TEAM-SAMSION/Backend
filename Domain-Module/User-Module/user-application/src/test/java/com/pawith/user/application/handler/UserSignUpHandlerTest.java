@@ -64,7 +64,6 @@ public class UserSignUpHandlerTest {
     void userSignUpWithDifferentProvider() {
         //given
         final UserSignUpEvent mockUserSignUpEvent = getMockUserSignUpEvent();
-        final User mockUser = getMockUser();
         given(userQueryService.checkEmailAlreadyExist(mockUserSignUpEvent.getEmail())).willReturn(true);
         doThrow(new AccountAlreadyExistException(Error.ACCOUNT_ALREADY_EXIST))
                 .when(userQueryService)
@@ -78,12 +77,6 @@ public class UserSignUpHandlerTest {
     UserSignUpEvent getMockUserSignUpEvent() {
         return fixtureMonkey.giveMeBuilder(UserSignUpEvent.class)
                 .set("provider", PROVIDER)
-                .sample();
-    }
-
-    User getMockUser() {
-        return fixtureMonkey.giveMeBuilder(User.class)
-                .set("provider", DIFFERENT_PROVIDER)
                 .sample();
     }
 
