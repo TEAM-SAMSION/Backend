@@ -24,3 +24,6 @@ include 'Domain-Module:User-Module:user-application'
 findProject('Domain-Module:User-Module:user-application')?.name = 'user-application'
 
 include 'Common-Module'
+include 'Domain-Module:User-Module:user-application:test'
+findProject(':Domain-Module:User-Module:user-application:test')?.name = 'test'
+
