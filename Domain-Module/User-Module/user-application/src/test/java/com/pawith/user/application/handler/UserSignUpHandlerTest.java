@@ -5,7 +5,6 @@ import com.navercorp.fixturemonkey.api.introspector.ConstructorPropertiesArbitra
 import com.pawith.commonmodule.exception.Error;
 import com.pawith.usermodule.application.handler.UserSignUpHandler;
 import com.pawith.usermodule.application.handler.event.UserSignUpEvent;
-import com.pawith.usermodule.domain.entity.User;
 import com.pawith.usermodule.domain.exception.AccountAlreadyExistException;
 import com.pawith.usermodule.domain.service.UserQueryService;
 import com.pawith.usermodule.domain.service.UserSaveService;
@@ -42,7 +41,6 @@ public class UserSignUpHandlerTest {
             .build();
 
     public static final String PROVIDER = "provider";
-    public static final String DIFFERENT_PROVIDER = "different_provider";
 
     @BeforeEach
     void init() { userSignUpHandler = new UserSignUpHandler(userSaveService, userQueryService); }
