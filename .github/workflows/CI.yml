@@ -32,7 +32,6 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build With Gradle
-        run: ./gradlew build
-
-      - name: Generate RestDocs
-        run: ./gradlew generateRestDocs
+        run: | 
+          ./gradlew build
+          ./gradlew generateRestDocs
