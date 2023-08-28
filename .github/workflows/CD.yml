@@ -53,6 +53,9 @@ jobs:
       - name: Build With Gradle
         run: ./gradlew build
 
+      - name: Generate RestDocs
+        run: ./gradlew generateRestDocs
+
       - name: Docker build
         run: docker build -f ./.deploy/Dockerfile -t ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }} .
 

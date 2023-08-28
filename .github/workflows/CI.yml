@@ -33,3 +33,6 @@ jobs:
 
       - name: Build With Gradle
         run: ./gradlew build
+
+      - name: Generate RestDocs
+        run: ./gradlew generateRestDocs
