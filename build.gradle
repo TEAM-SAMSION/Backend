@@ -100,12 +100,4 @@ subprojects {
             into file("src/main/resources/static/docs")
         }
     }
-
-//    asciidoctor {
-//        if (project.name == 'Api-Module') {
-//            configurations 'asciidoctorExtensions'
-//            inputs.dir snippetsDir
-//            baseDirFollowsSourceFile()
-//        }
-//    }
 }
