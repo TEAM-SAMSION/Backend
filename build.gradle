@@ -26,11 +26,11 @@ subprojects {
     apply plugin: 'org.springframework.boot'
     apply plugin: 'org.asciidoctor.jvm.convert'
 
-    bootJar.enabled =false
+    bootJar.enabled = false
     jar.enabled = true
 
-    if(name == 'Api-Module'){
-        bootJar.enabled=true
+    if (name == 'Api-Module') {
+        bootJar.enabled = true
     }
 
     configurations {
@@ -75,21 +75,29 @@ subprojects {
         outputs.dir snippetsDir
     }
 
-    asciidoctor {
-        dependsOn test
-        configurations 'asciidoctorExtensions'
-        inputs.dir snippetsDir
-
-        baseDirFollowsSourceFile()
+    tasks.register("copySnippets", Copy) {
+        if (name != 'Api-Module') {
+            dependsOn test
+            from snippetsDir
+            into rootProject.file("Api-Module/build/generated-snippets")
+        }
     }
 
-    tasks.register("asciidoctorToApiModule", Copy){
-        dependsOn asciidoctor
-        from file("build/docs/asciidoc/")
-        into rootProject.file("Api-Module/src/main/resources/static/docs")
+    build {
+        dependsOn copySnippets
     }
 
-    build{
-        dependsOn asciidoctorToApiModule
+    if (project.name == 'Api-Module') {
+        asciidoctor {
+            configurations 'asciidoctorExtensions'
+            inputs.dir snippetsDir
+            baseDirFollowsSourceFile()
+        }
+
+        tasks.register("generateRestDocs", Copy) {
+            dependsOn asciidoctor
+            from file('build/docs/asciidoc')
+            into file("src/main/resources/static/docs")
+        }
     }
 }

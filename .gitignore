@@ -38,3 +38,6 @@ out/
 
 ### application ###
 /Api-Module/src/main/resources/application.yml
+
+### resources static docs ###
+**/src/main/resources/static/docs/
