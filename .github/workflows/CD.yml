@@ -54,6 +54,7 @@ jobs:
         run: |
           ./gradlew build
           ./gradlew generateRestDocs
+          ./gradlew bootJar
 
       - name: Docker build
         run: docker build -f ./.deploy/Dockerfile -t ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }} .
