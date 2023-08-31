@@ -46,6 +46,6 @@ public class OAuthInvoker {
     }
 
     private <T> String attachAuthenticationType(Function<T, String> generateTokenMethod, T includeClaimData) {
-        return AuthConsts.AUTHENTICATION_TYPE + generateTokenMethod.apply(includeClaimData);
+        return AuthConsts.AUTHENTICATION_TYPE  + " " + generateTokenMethod.apply(includeClaimData);
     }
 }
