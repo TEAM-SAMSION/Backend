@@ -3,19 +3,19 @@ rootProject.name = 'pawith'
 include 'Api-Module'
 
 include 'Log-Module'
-include 'Log-Module:log-aop'
-include 'Log-Module:log-webclient'
+include 'Log-Module:Log-Aop'
+include 'Log-Module:Log-Webclient'
 
 include 'Auth-Module'
-include 'Auth-Module:auth-adaptor'
-include 'Auth-Module:auth-application'
+include 'Auth-Module:Auth-Adaptor'
+include 'Auth-Module:Auth-Application'
 include 'Auth-Module:JWT'
 
 include 'Domain-Module'
 
 include 'Domain-Module:User-Module'
-include 'Domain-Module:User-Module:user-domain'
-include 'Domain-Module:User-Module:user-application'
+include 'Domain-Module:User-Module:User-Domain'
+include 'Domain-Module:User-Module:User-Application'
 
 include 'Common-Module'
 include 'Common-Module:Test-Module'
