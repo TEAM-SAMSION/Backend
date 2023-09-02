@@ -1,0 +1,6 @@
+subprojects {
+    dependencies {
+        // Fixture testing tool
+        testImplementation("com.navercorp.fixturemonkey:fixture-monkey-starter:0.6.3")
+    }
+}
