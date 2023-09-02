@@ -3,8 +3,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
 
-    implementation project(":Log-Module:log-aop")
-    implementation project(":Auth-Module:auth-adaptor")
+    implementation project(":Log-Module:Log-Aop")
+    implementation project(":Auth-Module:Auth-Adaptor")
 
     // 임시 설정
     implementation project(":Auth-Module:JWT")

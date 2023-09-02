@@ -1,0 +1,43 @@
+subprojects {
+    dependencies {
+        // restdocs
+        asciidoctorExtensions 'org.springframework.restdocs:spring-restdocs-asciidoctor'
+        implementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+    }
+
+    // RestDocs 설정
+    ext {
+        snippetsDir = file('build/generated-snippets')
+    }
+
+    test {
+        useJUnitPlatform()
+        outputs.dir snippetsDir
+    }
+
+    tasks.register("copySnippets", Copy) {
+        if (name != 'Api-Module') {
+            dependsOn test
+            from snippetsDir
+            into rootProject.file("Api-Module/build/generated-snippets")
+        }
+    }
+
+    build {
+        dependsOn copySnippets
+    }
+
+    if (project.name == 'Api-Module') {
+        asciidoctor {
+            configurations 'asciidoctorExtensions'
+            inputs.dir snippetsDir
+            baseDirFollowsSourceFile()
+        }
+
+        tasks.register("generateRestDocs", Copy) {
+            dependsOn asciidoctor
+            from file('build/docs/asciidoc')
+            into file("src/main/resources/static/docs")
+        }
+    }
+}
