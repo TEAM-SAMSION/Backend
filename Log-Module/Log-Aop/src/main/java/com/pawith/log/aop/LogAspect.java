@@ -50,7 +50,7 @@ public class LogAspect {
         }catch (Exception e) {
             if (traceStatus != null) {
                 logTrace.exception(e, traceStatus);
-                logDataProcessor.processLogData(traceStatus.getThreadId(),0, traceStatus.getMethodName(), "internal error");
+                logDataProcessor.processLogData(traceStatus.getThreadId(),0, traceStatus.getMethodName(), e.getMessage());
             }
             throw e;
         }

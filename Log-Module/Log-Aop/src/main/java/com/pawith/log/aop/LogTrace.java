@@ -40,7 +40,7 @@ public class LogTrace {
     }
 
     public void exception(Exception e, TraceStatus traceStatus) {
-        logger.error("[" + traceStatus.getThreadId() + "] " + traceStatus.getMethodName() + " ==== INTERNAL ERROR! ");
+        logger.error("[" + traceStatus.getThreadId() + "] " + traceStatus.getMethodName() + " ==== INTERNAL ERROR! " + e.getMessage());
         e.printStackTrace();
         removeMdcContext();
     }
