@@ -6,6 +6,7 @@ import com.pawith.commonmodule.exception.Error;
 import com.pawith.usermodule.application.handler.UserSignUpHandler;
 import com.pawith.usermodule.application.handler.event.UserSignUpEvent;
 import com.pawith.usermodule.domain.exception.AccountAlreadyExistException;
+import com.pawith.usermodule.domain.service.UserAuthoritySaveService;
 import com.pawith.usermodule.domain.service.UserQueryService;
 import com.pawith.usermodule.domain.service.UserSaveService;
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +34,9 @@ public class UserSignUpHandlerTest {
     UserSaveService userSaveService;
     @Mock
     UserQueryService userQueryService;
+    @Mock
+    UserAuthoritySaveService userAuthoritySaveService;
+
     UserSignUpHandler userSignUpHandler;
 
     private static final FixtureMonkey fixtureMonkey = FixtureMonkey.builder()
@@ -43,7 +47,7 @@ public class UserSignUpHandlerTest {
     public static final String PROVIDER = "provider";
 
     @BeforeEach
-    void init() { userSignUpHandler = new UserSignUpHandler(userSaveService, userQueryService); }
+    void init() { userSignUpHandler = new UserSignUpHandler(userSaveService, userQueryService, userAuthoritySaveService); }
 
     @Test
     @DisplayName("첫 로그인 시, 사용자 가입 요청을 처리한다.")
@@ -55,6 +59,7 @@ public class UserSignUpHandlerTest {
         userSignUpHandler.signUp(mockUserSignUpEvent);
         //then
         then(userSaveService).should(times(1)).saveUser(any());
+        then(userAuthoritySaveService).should(times(1)).saveUserAuthority(any());
     }
 
     @Test
