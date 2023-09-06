@@ -1,5 +1,6 @@
 package com.pawith.commonmodule;
 
+import com.pawith.TestSpringBootApplicationConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 @AutoConfigureRestDocs
-@Import({RestDocsConfig.class})
+@Import({RestDocsConfig.class, TestSpringBootApplicationConfig.class})
 @ExtendWith(RestDocumentationExtension.class)
 public class BaseRestDocsTest {
 
