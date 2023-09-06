@@ -6,6 +6,8 @@ dependencies {
     implementation project(":Log-Module:Log-Aop")
     implementation project(":Auth-Module:Auth-Adaptor")
 
+    implementation project(":Domain-Module:User-Module:User-Presentation")
+
     // 임시 설정
     implementation project(":Auth-Module:JWT")
 }
