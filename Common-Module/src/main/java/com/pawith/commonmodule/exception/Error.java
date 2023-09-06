@@ -14,6 +14,7 @@ public enum Error {
 
     // User
     USER_NOT_FOUND("사용자를 찾을 수 없습니다.", 2000),
+    USER_AUTHORITY_NOT_FOUND("사용자 권한을 찾을 수 없습니다.", 2001),
     ;
 
     private final String message;
