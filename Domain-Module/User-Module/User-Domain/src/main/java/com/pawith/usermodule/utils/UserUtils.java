@@ -1,12 +1,13 @@
-package com.pawith.usermodule.domain.utils;
+package com.pawith.usermodule.utils;
 
+import com.pawith.commonmodule.util.SecurityUtils;
 import com.pawith.usermodule.domain.entity.User;
 import com.pawith.usermodule.domain.service.UserQueryService;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 
+@Component
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class UserUtils {
 
@@ -17,16 +18,11 @@ public class UserUtils {
     }
 
     public static User getAccessUser(){
-        final String email = getCurrentUserEmail();
+        final String email = SecurityUtils.getAuthenticationPrincipal();
         return userQueryService.findByEmail(email);
     }
 
-    private static String getCurrentUserEmail() {
-        final String email = (String)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return email;
-    }
-
     public static String getEmailFromAccessUser(){
-        return getCurrentUserEmail();
+        return SecurityUtils.getAuthenticationPrincipal();
     }
 }

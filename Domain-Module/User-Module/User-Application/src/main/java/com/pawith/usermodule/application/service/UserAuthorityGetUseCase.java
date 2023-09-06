@@ -4,7 +4,7 @@ import com.pawith.commonmodule.annotation.ApplicationService;
 import com.pawith.usermodule.application.service.dto.UserAuthorityInfoResponse;
 import com.pawith.usermodule.domain.entity.UserAuthority;
 import com.pawith.usermodule.domain.service.UserAuthorityQueryService;
-import com.pawith.usermodule.domain.utils.UserUtils;
+import com.pawith.usermodule.utils.UserUtils;
 import lombok.RequiredArgsConstructor;
 
 @ApplicationService

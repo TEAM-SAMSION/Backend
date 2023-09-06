@@ -3,6 +3,7 @@ subprojects {
         // restdocs
         asciidoctorExtensions 'org.springframework.restdocs:spring-restdocs-asciidoctor'
         implementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+        testFixturesImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
     }
 
     // RestDocs 설정

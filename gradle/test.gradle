@@ -2,5 +2,9 @@ subprojects {
     dependencies {
         // Fixture testing tool
         testImplementation("com.navercorp.fixturemonkey:fixture-monkey-starter:0.6.3")
+
+        // mvc
+        implementation 'org.springframework.boot:spring-boot-starter-test'
+        testFixturesImplementation 'org.springframework.boot:spring-boot-starter-test'
     }
 }
