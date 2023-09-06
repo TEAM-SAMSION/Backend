@@ -70,8 +70,9 @@ public class AppleOAuthHandler implements AuthHandler {
                 .setSigningKey(getRSAPublicKey(modulus, exponent))
                 .build()
                 .parseClaimsJws(token);
-        } catch (Exception e) {
-            log.error(e.toString());
+        } catch (InvalidKeySpecException e) {
+            throw new InvalidTokenException(Error.INVALID_TOKEN);
+        } catch (NoSuchAlgorithmException e) {
             throw new InvalidTokenException(Error.INVALID_TOKEN);
         }
     }
@@ -99,8 +100,7 @@ public class AppleOAuthHandler implements AuthHandler {
                 .requireIssuer(iss)
                 .build()
                 .parseClaimsJwt(getUnsignedToken(token));
-        } catch (Exception e) {
-            log.error(e.toString());
+        } catch (InvalidTokenException e) {
             throw new InvalidTokenException(Error.INVALID_TOKEN);
         }
     }
