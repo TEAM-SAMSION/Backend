@@ -1,0 +1,5 @@
+dependencies {
+    // security
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    //restdocs
+}
