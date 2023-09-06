@@ -1,0 +1,7 @@
+[[User-API]]
+== User-API
+
+[[UserAuthorityController]]
+=== 사용자 권한 확인
+
+operation::user-authority-controller-test/get-user-authority[snippents='http-request.adoc,http-response.adoc']
