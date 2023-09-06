@@ -24,4 +24,3 @@ include 'Domain-Module:Todo-Module:Todo-Application'
 include 'Domain-Module:Todo-Module:Todo-Presentation'
 
 include 'Common-Module'
-include 'Common-Module:Test-Module'

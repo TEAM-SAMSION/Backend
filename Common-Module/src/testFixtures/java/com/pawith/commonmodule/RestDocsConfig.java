@@ -1,4 +1,4 @@
-package com.pawith.testmodule;
+package com.pawith.commonmodule;
 
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
