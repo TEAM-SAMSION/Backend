@@ -5,12 +5,13 @@ import com.navercorp.fixturemonkey.api.introspector.ConstructorPropertiesArbitra
 import com.pawith.authmodule.application.dto.OAuthResponse;
 import com.pawith.authmodule.application.dto.Provider;
 import com.pawith.authmodule.application.port.in.OAuthUseCase;
+import com.pawith.authmodule.config.FilterConfig;
 import com.pawith.commonmodule.BaseRestDocsTest;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
@@ -22,8 +23,8 @@ import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@Slf4j
 @WebMvcTest(OAuthController.class)
+@Import(FilterConfig.class)
 @DisplayName("OAuthController 테스트")
 class OAuthControllerTest extends BaseRestDocsTest {
 
