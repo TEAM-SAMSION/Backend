@@ -5,7 +5,9 @@ import com.pawith.usermodule.domain.entity.User;
 import com.pawith.usermodule.domain.service.UserQueryService;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Component;
 
+@Component
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class UserUtils {
 
