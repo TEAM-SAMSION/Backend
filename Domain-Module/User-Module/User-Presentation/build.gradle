@@ -1,5 +1,5 @@
 dependencies {
     implementation project(':Domain-Module:User-Module:User-Application')
 
-    implementation project(':Common-Module:Test-Module')
+    testImplementation(testFixtures(project(':Common-Module')))
 }
