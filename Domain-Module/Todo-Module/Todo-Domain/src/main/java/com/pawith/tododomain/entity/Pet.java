@@ -7,23 +7,24 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class TodoTeam extends BaseEntity {
-
+public class Pet extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "team_id")
+    @Column(name = "pet_id")
     private Long id;
 
-    private String teamCode;
-    private String teamName;
+    private String name;
+    private String age;
+    private String description;
+    private String petImageUrl;
 
-    @OneToMany(mappedBy = "todoTeam", cascade = CascadeType.ALL)
-    private List<Pet> pets = new ArrayList<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "team_id")
+    private TodoTeam todoTeam;
+
 }
