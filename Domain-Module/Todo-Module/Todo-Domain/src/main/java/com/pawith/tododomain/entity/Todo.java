@@ -7,28 +7,23 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Category extends BaseEntity {
+public class Todo extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "category_id")
+    @Column(name = "todo_id")
     private Long id;
 
-    private String name;
+    private String description;
 
     @Enumerated(EnumType.STRING)
-    private CategoryStatus categoryStatus;
+    private TodoStatus todoStatus;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "team_id")
-    private TodoTeam todoTeam;
-
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
-    private List<Todo> todos = new ArrayList<>();
+    @JoinColumn(name = "category_id")
+    private Category category;
 }
