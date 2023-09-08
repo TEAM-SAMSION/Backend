@@ -7,8 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
@@ -26,7 +24,4 @@ public class Register extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "todoteam_id")
     private TodoTeam todoTeam;
-
-    @OneToMany(mappedBy = "register", cascade = CascadeType.ALL)
-    private List<Assign> assigns = new ArrayList<>();
 }

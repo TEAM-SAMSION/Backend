@@ -7,8 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
@@ -24,12 +22,4 @@ public class TodoTeam extends BaseEntity {
     private String teamCode;
     private String teamName;
 
-    @OneToMany(mappedBy = "todoTeam", cascade = CascadeType.ALL)
-    private List<Pet> pets = new ArrayList<>();
-
-    @OneToMany(mappedBy = "todoTeam", cascade = CascadeType.ALL)
-    private List<Category> categories = new ArrayList<>();
-
-    @OneToMany(mappedBy = "todoTeam", cascade = CascadeType.ALL)
-    private List<Register> registers = new ArrayList<>();
 }

@@ -7,8 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
@@ -29,6 +27,4 @@ public class Category extends BaseEntity {
     @JoinColumn(name = "team_id")
     private TodoTeam todoTeam;
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
-    private List<Todo> todos = new ArrayList<>();
 }
