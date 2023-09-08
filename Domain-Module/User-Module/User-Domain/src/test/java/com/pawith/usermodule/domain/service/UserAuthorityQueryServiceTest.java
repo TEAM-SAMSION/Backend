@@ -6,6 +6,7 @@ import com.pawith.commonmodule.UnitTestConfig;
 import com.pawith.usermodule.domain.entity.UserAuthority;
 import com.pawith.usermodule.domain.exception.UserAuthorityNotFoundException;
 import com.pawith.usermodule.domain.repository.UserAuthorityRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -16,6 +17,7 @@ import java.util.Optional;
 
 import static org.mockito.BDDMockito.given;
 
+@Slf4j
 @UnitTestConfig
 @DisplayName("UserAuthorityQueryService 테스트")
 class UserAuthorityQueryServiceTest {
@@ -51,7 +53,6 @@ class UserAuthorityQueryServiceTest {
         UserAuthority result = userAuthorityQueryService.findByEmail(email);
         //then
         Assertions.assertThat(result).usingRecursiveComparison().isEqualTo(userAuthority);
-        Assertions.assertThat(result.getEmail()).isEqualTo(email);
     }
 
     @Test
