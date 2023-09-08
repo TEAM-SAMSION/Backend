@@ -1,5 +1,3 @@
 dependencies {
     implementation project(':Domain-Module:User-Module:User-Application')
-
-    testImplementation(testFixtures(project(':Common-Module')))
 }

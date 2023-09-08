@@ -1,6 +1,7 @@
 subprojects {
     dependencies {
         implementation project(":Common-Module")
+        testImplementation(testFixtures(project(':Common-Module')))
 
         // spring security
         implementation "org.springframework.boot:spring-boot-starter-security"
