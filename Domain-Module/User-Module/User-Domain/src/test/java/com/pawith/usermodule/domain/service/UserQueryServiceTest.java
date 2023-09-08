@@ -1,28 +1,22 @@
-package com.pawith.user.domain;
+package com.pawith.usermodule.domain.service;
 
 import com.navercorp.fixturemonkey.FixtureMonkey;
 import com.navercorp.fixturemonkey.api.introspector.ConstructorPropertiesArbitraryIntrospector;
+import com.pawith.commonmodule.UnitTestConfig;
 import com.pawith.usermodule.domain.entity.User;
-import com.pawith.usermodule.domain.exception.AccountAlreadyExistException;
 import com.pawith.usermodule.domain.repository.UserRepository;
-import com.pawith.usermodule.domain.service.UserQueryService;
-import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.then;
 
-@Slf4j
-@ExtendWith(MockitoExtension.class)
+@UnitTestConfig
 @DisplayName("UserQueryService 테스트")
 public class UserQueryServiceTest {
 

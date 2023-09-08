@@ -1,9 +1,9 @@
-package com.pawith.user.application.handler;
+package com.pawith.usermodule.application.handler;
 
 import com.navercorp.fixturemonkey.FixtureMonkey;
 import com.navercorp.fixturemonkey.api.introspector.ConstructorPropertiesArbitraryIntrospector;
+import com.pawith.commonmodule.UnitTestConfig;
 import com.pawith.commonmodule.exception.Error;
-import com.pawith.usermodule.application.handler.UserSignUpHandler;
 import com.pawith.usermodule.application.handler.event.UserSignUpEvent;
 import com.pawith.usermodule.domain.exception.AccountAlreadyExistException;
 import com.pawith.usermodule.domain.service.UserAuthoritySaveService;
@@ -14,10 +14,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -25,8 +22,7 @@ import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 
-@Slf4j
-@ExtendWith(MockitoExtension.class)
+@UnitTestConfig
 @DisplayName("UserSignUpHandler 테스트")
 public class UserSignUpHandlerTest {
 
