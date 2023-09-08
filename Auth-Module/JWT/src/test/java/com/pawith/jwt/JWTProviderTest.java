@@ -1,6 +1,7 @@
 package com.pawith.jwt;
 
 import com.navercorp.fixturemonkey.FixtureMonkey;
+import com.pawith.commonmodule.UnitTestConfig;
 import com.pawith.commonmodule.cache.ObjectRegistry;
 import com.pawith.jwt.exception.ExpiredTokenException;
 import com.pawith.jwt.exception.InvalidTokenException;
@@ -11,21 +12,17 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
 import static org.mockito.BDDMockito.given;
 
-@Slf4j
-@ExtendWith(MockitoExtension.class)
+@UnitTestConfig
 @DisplayName("JWTProvider 테스트")
 public class JWTProviderTest {
     private final JWTProperties jwtProperties = new JWTProperties(JWTTestConsts.SECRET, JWTTestConsts.ACCESS_TOKEN_EXPIRED_TIME, JWTTestConsts.REFRESH_TOKEN_EXPIRED_TIME);
@@ -48,7 +45,6 @@ public class JWTProviderTest {
         //when
         final Claims body = extractClaimsFromToken(accessToken);
         //then
-        log.info("email: {}",randomEmail);
         Assertions.assertThat(body.get(JWTConsts.EMAIL)).isEqualTo(randomEmail);
         Assertions.assertThat(body.get(JWTConsts.TOKEN_TYPE)).isEqualTo(TokenType.ACCESS_TOKEN.toString());
     }

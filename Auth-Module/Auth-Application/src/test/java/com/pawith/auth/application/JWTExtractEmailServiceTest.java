@@ -2,21 +2,18 @@ package com.pawith.auth.application;
 
 import com.navercorp.fixturemonkey.FixtureMonkey;
 import com.pawith.authmodule.application.service.JWTExtractEmailService;
+import com.pawith.commonmodule.UnitTestConfig;
 import com.pawith.jwt.JWTProvider;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
-@Slf4j
-@ExtendWith(MockitoExtension.class)
+@UnitTestConfig
 @DisplayName("JWTExtractEmailService 테스트")
 public class JWTExtractEmailServiceTest {
 

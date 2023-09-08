@@ -2,18 +2,15 @@ package com.pawith.auth.application;
 
 import com.pawith.authmodule.application.common.exception.InvalidAuthorizationTypeException;
 import com.pawith.authmodule.application.service.JWTExtractTokenService;
-import lombok.extern.slf4j.Slf4j;
+import com.pawith.commonmodule.UnitTestConfig;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@Slf4j
-@ExtendWith(MockitoExtension.class)
+@UnitTestConfig
 @DisplayName("JWTExtractTokenService 테스트")
 public class JWTExtractTokenServiceTest {
 
