@@ -1,16 +1,13 @@
 package com.pawith.usermodule.domain.entity;
 
 import com.pawith.commonmodule.domain.BaseEntity;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import org.junit.jupiter.api.DisplayName;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserAuthority extends BaseEntity {
     @Id@GeneratedValue(strategy = GenerationType.IDENTITY)
