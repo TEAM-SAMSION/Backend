@@ -14,22 +14,19 @@ import java.util.List;
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class TodoTeam extends BaseEntity {
-
+public class Register extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "team_id")
+    @Column(name = "register_id")
     private Long id;
 
-    private String teamCode;
-    private String teamName;
+    @Enumerated(EnumType.STRING)
+    private Authority authority;
 
-    @OneToMany(mappedBy = "todoTeam", cascade = CascadeType.ALL)
-    private List<Pet> pets = new ArrayList<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "todoteam_id")
+    private TodoTeam todoTeam;
 
-    @OneToMany(mappedBy = "todoTeam", cascade = CascadeType.ALL)
-    private List<Category> categories = new ArrayList<>();
-
-    @OneToMany(mappedBy = "todoTeam", cascade = CascadeType.ALL)
-    private List<Register> registers = new ArrayList<>();
+    @OneToMany(mappedBy = "register", cascade = CascadeType.ALL)
+    private List<Assign> assigns = new ArrayList<>();
 }
