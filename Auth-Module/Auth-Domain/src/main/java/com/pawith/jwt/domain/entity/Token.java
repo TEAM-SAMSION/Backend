@@ -1,5 +1,6 @@
 package com.pawith.jwt.domain.entity;
 
+import com.pawith.commonmodule.domain.BaseEntity;
 import com.pawith.jwt.jwt.TokenType;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -12,7 +13,7 @@ import javax.persistence.*;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class Token {
+public class Token extends BaseEntity {
     @Id@GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "token_id")
     private Long id;
