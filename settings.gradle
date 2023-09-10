@@ -7,9 +7,9 @@ include 'Log-Module:Log-Aop'
 include 'Log-Module:Log-Webclient'
 
 include 'Auth-Module'
-include 'Auth-Module:Auth-Adaptor'
+include 'Auth-Module:Auth-Presentation'
 include 'Auth-Module:Auth-Application'
-include 'Auth-Module:JWT'
+include 'Auth-Module:Auth-Domain'
 
 include 'Domain-Module'
 

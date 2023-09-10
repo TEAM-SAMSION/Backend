@@ -1,9 +1,9 @@
 package com.pawith.auth.application;
 
 import com.navercorp.fixturemonkey.FixtureMonkey;
-import com.pawith.authmodule.application.dto.Provider;
-import com.pawith.authmodule.application.port.out.command.OAuthInvoker;
-import com.pawith.authmodule.application.service.OAuthService;
+import com.pawith.authmodule.application.service.dto.Provider;
+import com.pawith.authmodule.application.service.command.OAuthInvoker;
+import com.pawith.authmodule.application.service.impl.OAuthService;
 import com.pawith.commonmodule.UnitTestConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

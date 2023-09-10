@@ -11,6 +11,7 @@ public enum Error {
     INVALID_AUTHORIZATION_TYPE("유효하지 않은 Authorization Type 입니다.", 1004),
     EMPTY_AUTHORIZATION_HEADER("Authorization Header가 비어있습니다.", 1005),
     ACCOUNT_ALREADY_EXIST("이미 가입한 계정이 있습니다", 1006),
+    OAUTH_FAIL("OAuth 인증에 실패하였습니다.", 1007),
 
     // User
     USER_NOT_FOUND("사용자를 찾을 수 없습니다.", 2000),
