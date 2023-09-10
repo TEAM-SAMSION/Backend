@@ -1,5 +1,5 @@
 dependencies {
-    implementation project(":Auth-Module:JWT")
+    implementation project(':Auth-Module:Auth-Domain')
     implementation project(":Domain-Module:User-Module:User-Application")
     // Feign
     implementation 'io.github.openfeign:feign-httpclient:12.1'

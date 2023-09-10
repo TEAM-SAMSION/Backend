@@ -1,7 +1,7 @@
 package com.pawith.auth.application;
 
-import com.pawith.authmodule.application.common.exception.InvalidAuthorizationTypeException;
-import com.pawith.authmodule.application.service.JWTExtractTokenService;
+import com.pawith.authmodule.application.exception.InvalidAuthorizationTypeException;
+import com.pawith.authmodule.application.service.impl.JWTExtractTokenService;
 import com.pawith.commonmodule.UnitTestConfig;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

@@ -1,9 +1,9 @@
 package com.pawith.auth.application;
 
 import com.navercorp.fixturemonkey.FixtureMonkey;
-import com.pawith.authmodule.application.service.JWTVerifyService;
+import com.pawith.authmodule.application.service.impl.JWTVerifyService;
 import com.pawith.commonmodule.UnitTestConfig;
-import com.pawith.jwt.JWTProvider;
+import com.pawith.jwt.jwt.JWTProvider;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
