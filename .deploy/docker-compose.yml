@@ -5,8 +5,21 @@ services:
     image: ${DOCKER_USERNAME}/${DOCKER_REPOSITORY}
     container_name: ${DOCKER_REPOSITORY}
     restart: always
+    volumes:
+      - /home/ubuntu/logs:/logs/logback
     ports:
       - "8080:8080"
       - "8079:8079"
     environment:
       - TZ=Asia/Seoul
+
+  promtail:
+    image: grafana/promtail:2.9.0
+    container_name: docker-promtail
+    restart: always
+    volumes:
+      - /home/ubuntu/promtail.yaml:/etc/promtail/promtail-config.yaml
+      - /home/ubuntu/logs:/logs/logback
+    command:
+      - "-config.file=/etc/promtail/promtail-config.yaml"
+      - "-config.expand-env=true"
