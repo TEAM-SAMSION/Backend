@@ -1,0 +1,28 @@
+<configuration debug="true" scan="true" scanPeriod="5 seconds">
+    <property name="LOG_PATTERN" value="%green(%d{yyyy-MM-dd HH:mm:ss}) %highlight([%5level]) %logger{0} - %msg%n" />
+    <property name="SAVE_LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss} [%5level] %logger{0} - %msg%n" />
+    <appender name="ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- rollover daily -->
+            <fileNamePattern> .\logs\logback\logback-%d{yyyy-MM-dd}_%i.log</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <!-- or whenever the file size reaches 100MB -->
+                <maxFileSize>100MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${SAVE_LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>${LOG_PATTERN}</Pattern>
+        </layout>
+    </appender>
+
+
+    <root level="INFO">
+        <appender-ref ref="ROLLING"/>
+        <appender-ref ref="STDOUT" />
+    </root>
+</configuration>
