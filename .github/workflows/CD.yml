@@ -35,7 +35,7 @@ jobs:
           echo "${{ secrets.APPLICATION }}" > ./application.yml
         shell: bash
 
-      - name: make promtail.yml
+      - name: make promtail.yaml
         uses: appleboy/scp-action@master
         with:
             host: ${{ secrets.HOST }}

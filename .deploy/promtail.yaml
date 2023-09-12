@@ -19,4 +19,4 @@ scrape_configs:
           - localhost
         labels:
           job: spring
-          __path__: /var/log/*.log
+          __path__: /logs/logback/*.log
