@@ -1,4 +1,4 @@
-<configuration debug="true" scan="true" scanPeriod="5 seconds">
+<configuration scan="true" scanPeriod="5 seconds">
     <property name="LOG_PATTERN" value="%green(%d{yyyy-MM-dd HH:mm:ss}) %highlight([%5level]) %logger{0} - %msg%n" />
     <property name="SAVE_LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss} [%5level] %logger{0} - %msg%n" />
     <appender name="ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">
