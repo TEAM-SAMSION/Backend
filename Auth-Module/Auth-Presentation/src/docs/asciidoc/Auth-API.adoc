@@ -4,4 +4,4 @@
 [[Auth-소셜로그인]]
 === Auth 소셜 로그인
 
-operation::o-auth-controller-test/o-auth-login[snippents='http-request.adoc,http-response.adoc']
+operation::o-auth-controller-test/o-auth-login[snippets='http-request,path-parameters,request-parameters,http-response,response-fields']

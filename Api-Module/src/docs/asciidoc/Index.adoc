@@ -6,6 +6,6 @@
 :toclevels: 2
 :sectlinks:
 
-include::../../../../Auth-Module/Auth-Adaptor/src/docs/asciidoc/Auth-API.adoc[]
+include::../../../../Auth-Module/Auth-Presentation/src/docs/asciidoc/Auth-API.adoc[]
 
 include::../../../../Domain-Module/User-Module/User-Presentation/src/docs/asciidoc/User-API.adoc[]

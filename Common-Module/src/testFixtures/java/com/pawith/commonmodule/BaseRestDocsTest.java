@@ -1,5 +1,6 @@
 package com.pawith.commonmodule;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pawith.TestSpringBootApplicationConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,6 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.filter.CharacterEncodingFilter;
 
 @AutoConfigureRestDocs
 @Import({RestDocsConfig.class, TestSpringBootApplicationConfig.class})
@@ -22,6 +24,9 @@ public class BaseRestDocsTest {
 
     @Autowired
     protected RestDocumentationResultHandler resultHandler;
+
+    @Autowired
+    protected ObjectMapper objectMapper;
 
     protected MockMvc mvc;
 
@@ -32,7 +37,7 @@ public class BaseRestDocsTest {
             .apply(MockMvcRestDocumentation.documentationConfiguration(provider).uris().withPort(8080))
             .alwaysDo(MockMvcResultHandlers.print())
             .alwaysDo(resultHandler)
-//            .addFilters(new CharacterEncodingFilter("UTF-8", true))
+            .addFilters(new CharacterEncodingFilter("UTF-8", true))
             .build();
     }
 
