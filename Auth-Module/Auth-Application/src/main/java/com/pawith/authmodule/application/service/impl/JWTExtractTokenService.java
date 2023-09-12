@@ -1,17 +1,24 @@
 package com.pawith.authmodule.application.service.impl;
 
-import com.pawith.authmodule.common.consts.AuthConsts;
-import com.pawith.authmodule.application.service.JWTExtractTokenUseCase;
-import com.pawith.commonmodule.exception.Error;
 import com.pawith.authmodule.application.exception.InvalidAuthorizationTypeException;
+import com.pawith.authmodule.application.service.JWTExtractTokenUseCase;
+import com.pawith.authmodule.common.consts.AuthConsts;
+import com.pawith.commonmodule.exception.Error;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.Objects;
 
+@Slf4j
 @Service
 public class JWTExtractTokenService implements JWTExtractTokenUseCase {
     @Override
     public String extractToken(final String tokenHeader) {
+        if(!StringUtils.hasText(tokenHeader)){
+            throw new InvalidAuthorizationTypeException(Error.EMPTY_AUTHORIZATION_HEADER);
+        }
+
         final String[] splitToken = tokenHeader.split(" ");
         final String authorizationType = splitToken[0];
         final String accessToken = splitToken[1];
