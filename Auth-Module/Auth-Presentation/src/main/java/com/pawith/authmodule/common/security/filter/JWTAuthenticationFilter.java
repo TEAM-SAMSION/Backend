@@ -1,13 +1,11 @@
 package com.pawith.authmodule.common.security.filter;
 
-import com.pawith.authmodule.common.consts.AuthConsts;
-import com.pawith.authmodule.common.consts.IgnoredPathConsts;
-import com.pawith.authmodule.application.exception.InvalidAuthorizationTypeException;
 import com.pawith.authmodule.application.service.JWTExtractEmailUseCase;
 import com.pawith.authmodule.application.service.JWTExtractTokenUseCase;
 import com.pawith.authmodule.application.service.JWTVerifyUseCase;
+import com.pawith.authmodule.common.consts.AuthConsts;
+import com.pawith.authmodule.common.consts.IgnoredPathConsts;
 import com.pawith.authmodule.common.security.JWTAuthenticationToken;
-import com.pawith.commonmodule.exception.Error;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -46,8 +44,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
     private String getTokenFromHeader(HttpServletRequest request){
         String header = request.getHeader(AuthConsts.AUTHORIZATION);
-        if(StringUtils.hasText(header)) return header;
-        throw new InvalidAuthorizationTypeException(Error.EMPTY_AUTHORIZATION_HEADER);
+        return StringUtils.hasText(header)? header : AuthConsts.EMPTY_HEADER;
     }
 
     private Boolean isIgnoredPath(HttpServletRequest request){
