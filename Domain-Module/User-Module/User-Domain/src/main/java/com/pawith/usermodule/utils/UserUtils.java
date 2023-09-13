@@ -3,12 +3,11 @@ package com.pawith.usermodule.utils;
 import com.pawith.commonmodule.util.SecurityUtils;
 import com.pawith.usermodule.domain.entity.User;
 import com.pawith.usermodule.domain.service.UserQueryService;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class UserUtils {
 
     private static UserQueryService userQueryService;
@@ -19,6 +18,7 @@ public class UserUtils {
 
     public static User getAccessUser(){
         final String email = SecurityUtils.getAuthenticationPrincipal();
+        log.info("email: {}", email);
         return userQueryService.findByEmail(email);
     }
 

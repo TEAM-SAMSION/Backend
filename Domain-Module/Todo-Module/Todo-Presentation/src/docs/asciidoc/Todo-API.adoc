@@ -1,0 +1,14 @@
+[[Todo-API]]
+== Todo API
+
+[[Todo-API-가입된-Todo-Team-목록]]
+=== 가입된 Todo Team 목록
+
+operation::todo-team-controller-test/get-todo-teams[snippets='http-request,request-parameters,request-headers,http-response,response-fields']
+
+
+[[Todo-API-Todo-Team-탈퇴]]
+=== Todo Team 탈퇴
+
+operation::register-controller-test/unregister-todo-team[snippets='http-request,path-parameters,request-headers,http-response']
+
