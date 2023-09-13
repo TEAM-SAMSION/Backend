@@ -10,5 +10,6 @@ import lombok.RequiredArgsConstructor;
 public class TraceStatus {
     private String threadId;
     private Long startTime;
+    private String className;
     private String methodName;
 }
