@@ -16,6 +16,11 @@ public enum Error {
     // User
     USER_NOT_FOUND("사용자를 찾을 수 없습니다.", 2000),
     USER_AUTHORITY_NOT_FOUND("사용자 권한을 찾을 수 없습니다.", 2001),
+
+
+    // Todo
+    TODO_TEAM_NOT_FOUND("Todo 팀을 찾을 수 없습니다.", 3000),
+    NOT_REGISTER_USER("Todo 팀에 등록되지 않은 사용자입니다.", 3001),
     ;
 
     private final String message;
