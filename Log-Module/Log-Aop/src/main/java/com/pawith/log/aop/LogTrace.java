@@ -30,7 +30,6 @@ public class LogTrace {
         } else {
             logger.info("[" + traceStatus.getThreadId() + "] " + traceStatus.getMethodName() + " ==== execute time = " + executionTime + "ms");
         }
-        removeMdcContext();
         return (int)executionTime;
     }
 
@@ -50,7 +49,7 @@ public class LogTrace {
         return UUID.randomUUID().toString().substring(0, 8);
     }
 
-    private void removeMdcContext() {
+    public void removeMdcContext() {
         MDC.remove(TRACE_ID);
     }
 }
