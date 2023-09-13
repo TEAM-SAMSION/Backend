@@ -25,7 +25,6 @@ public class LogAspect {
 
     @Around("com.pawith.log.aop.Pointcuts.allController()")
     public Object controllerLog(ProceedingJoinPoint joinPoint) throws Throwable {
-        logTrace.removeMdcContext();
         return getObject(joinPoint);
     }
 
