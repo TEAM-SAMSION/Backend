@@ -7,6 +7,7 @@ dependencies {
     implementation project(':Auth-Module:Auth-Presentation')
 
     implementation project(":Domain-Module:User-Module:User-Presentation")
+    implementation project(":Domain-Module:Todo-Module:Todo-Presentation")
     implementation project(':Auth-Module:Auth-Domain')
 
     // 임시 설정
