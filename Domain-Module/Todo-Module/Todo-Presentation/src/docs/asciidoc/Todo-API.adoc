@@ -1,5 +1,5 @@
 [[Todo-API]]
-=== Todo API
+== Todo API
 
 [[Todo-API-가입된-Todo-Team-목록]]
 === 가입된 Todo Team 목록
