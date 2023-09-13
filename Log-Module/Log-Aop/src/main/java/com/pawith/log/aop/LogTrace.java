@@ -28,19 +28,19 @@ public class LogTrace {
         long endTime = System.currentTimeMillis();
         long executionTime = endTime - traceStatus.getStartTime();
         if (executionTime > 1000) {
-            logger.warn("[" + traceStatus.getThreadId() + "] " + traceStatus.getClassName() + " " + traceStatus.getMethodName() + " ==== execute time = " + executionTime + "ms");
+            logger.warn("[" + traceStatus.getThreadId() + "] " + " ClassName: " + traceStatus.getClassName() + " ServiceName: " + traceStatus.getMethodName() + " ==== execute time = " + executionTime + "ms");
         } else {
-            logger.info("[" + traceStatus.getThreadId() + "] " + traceStatus.getClassName() + " " + traceStatus.getMethodName() + " ==== execute time = " + executionTime + "ms");
+            logger.info("[" + traceStatus.getThreadId() + "] " + " ClassName: " + traceStatus.getClassName() + " ServiceName: " + traceStatus.getMethodName() + " ==== execute time = " + executionTime + "ms");
         }
         return (int)executionTime;
     }
 
     public void apiException(BusinessException e, TraceStatus traceStatus) {
-        logger.error("[" + traceStatus.getThreadId() + "] " + traceStatus.getClassName() + " " +  traceStatus.getMethodName() + " [" + e.getError().getErrorCode() + "] " + e.getError().getMessage());
+        logger.error("[" + traceStatus.getThreadId() + "] " + " ClassName: " + traceStatus.getClassName() + " ServiceName: " +  traceStatus.getMethodName() + " [" + e.getError().getErrorCode() + "] " + e.getError().getMessage());
     }
 
     public void exception(Exception e, TraceStatus traceStatus) {
-        logger.error("[" + traceStatus.getThreadId() + "] " + traceStatus.getClassName()  + " " +  traceStatus.getMethodName() + " " + e.getMessage());
+        logger.error("[" + traceStatus.getThreadId() + "] " + " ClassName: " + traceStatus.getClassName()  + " ServiceName: " +  traceStatus.getMethodName() + " " + e.getMessage());
         e.printStackTrace();
     }
 
