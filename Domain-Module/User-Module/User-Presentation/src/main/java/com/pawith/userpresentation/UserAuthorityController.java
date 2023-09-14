@@ -1,7 +1,7 @@
 package com.pawith.userpresentation;
 
-import com.pawith.usermodule.application.service.UserAuthorityGetUseCase;
-import com.pawith.usermodule.application.service.dto.UserAuthorityInfoResponse;
+import com.pawith.usermodule.service.UserAuthorityGetUseCase;
+import com.pawith.usermodule.service.dto.UserAuthorityInfoResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

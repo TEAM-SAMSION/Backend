@@ -1,8 +1,8 @@
 package com.pawith.usermodule.utils;
 
 import com.pawith.commonmodule.util.SecurityUtils;
-import com.pawith.usermodule.domain.entity.User;
-import com.pawith.usermodule.domain.service.UserQueryService;
+import com.pawith.usermodule.entity.User;
+import com.pawith.usermodule.service.UserQueryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 

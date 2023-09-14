@@ -22,4 +22,8 @@ public class TodoTeam extends BaseEntity {
     private String teamCode;
     private String teamName;
 
+    public static TodoTeam createTodoTeam(String teamCode, String teamName) {
+        return new TodoTeam(null, teamCode, teamName);
+    }
+
 }

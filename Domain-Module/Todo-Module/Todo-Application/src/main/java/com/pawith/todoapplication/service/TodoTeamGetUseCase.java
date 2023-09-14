@@ -7,7 +7,7 @@ import com.pawith.tododomain.entity.Register;
 import com.pawith.tododomain.entity.TodoTeam;
 import com.pawith.tododomain.service.RegisterQueryService;
 import com.pawith.tododomain.service.TodoTeamQueryService;
-import com.pawith.usermodule.domain.entity.User;
+import com.pawith.usermodule.entity.User;
 import com.pawith.usermodule.utils.UserUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;

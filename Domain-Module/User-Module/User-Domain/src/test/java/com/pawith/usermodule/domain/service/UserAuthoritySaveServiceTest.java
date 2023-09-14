@@ -2,7 +2,8 @@ package com.pawith.usermodule.domain.service;
 
 import com.navercorp.fixturemonkey.FixtureMonkey;
 import com.pawith.commonmodule.UnitTestConfig;
-import com.pawith.usermodule.domain.repository.UserAuthorityRepository;
+import com.pawith.usermodule.repository.UserAuthorityRepository;
+import com.pawith.usermodule.service.UserAuthoritySaveService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -2,8 +2,8 @@ package com.pawith.userpresentation;
 
 import com.pawith.commonmodule.BaseRestDocsTest;
 import com.pawith.commonmodule.security.WithMockAuthUser;
-import com.pawith.usermodule.application.service.UserNicknameChangeUseCase;
-import com.pawith.usermodule.application.service.dto.UserNicknameChangeRequest;
+import com.pawith.usermodule.service.UserNicknameChangeUseCase;
+import com.pawith.usermodule.service.dto.UserNicknameChangeRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;

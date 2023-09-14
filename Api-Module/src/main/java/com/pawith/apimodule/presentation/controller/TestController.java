@@ -1,7 +1,7 @@
 package com.pawith.apimodule.presentation.controller;
 
-import com.pawith.jwt.jwt.JWTProvider;
-import com.pawith.jwt.jwt.TokenType;
+import com.pawith.authdomain.jwt.JWTProvider;
+import com.pawith.authdomain.jwt.TokenType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;

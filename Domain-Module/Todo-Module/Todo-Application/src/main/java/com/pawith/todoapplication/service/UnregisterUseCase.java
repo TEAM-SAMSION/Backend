@@ -4,7 +4,7 @@ import com.pawith.commonmodule.annotation.ApplicationService;
 import com.pawith.tododomain.entity.Register;
 import com.pawith.tododomain.service.RegisterDeleteService;
 import com.pawith.tododomain.service.RegisterQueryService;
-import com.pawith.usermodule.domain.entity.User;
+import com.pawith.usermodule.entity.User;
 import com.pawith.usermodule.utils.UserUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
