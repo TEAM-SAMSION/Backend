@@ -21,6 +21,12 @@ public enum Error {
     // Todo
     TODO_TEAM_NOT_FOUND("Todo 팀을 찾을 수 없습니다.", 3000),
     NOT_REGISTER_USER("Todo 팀에 등록되지 않은 사용자입니다.", 3001),
+
+
+    // Image
+    FILE_EXTENTION_ERROR("잘못된 형식의 파일입니다.", 4001),
+    FILE_UPLOAD_ERROR("파일 업로드에 실패했습니다.", 4002),
+    FILE_DELETE_ERROR("파일 삭제에 실패했습니다.", 4003),
     ;
 
     private final String message;

@@ -3,6 +3,8 @@ package com.pawith.imageapplication.service;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.pawith.commonmodule.annotation.ApplicationService;
+import com.pawith.commonmodule.exception.Error;
+import com.pawith.imageapplication.exception.FileDeleteException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
