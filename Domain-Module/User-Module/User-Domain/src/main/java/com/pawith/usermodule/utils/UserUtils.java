@@ -18,7 +18,6 @@ public class UserUtils {
 
     public static User getAccessUser(){
         final String email = SecurityUtils.getAuthenticationPrincipal();
-        log.info("email: {}", email);
         return userQueryService.findByEmail(email);
     }
 
