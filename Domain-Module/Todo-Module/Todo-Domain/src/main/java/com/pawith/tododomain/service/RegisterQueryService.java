@@ -8,8 +8,10 @@ import com.pawith.tododomain.repository.RegisterRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.transaction.annotation.Transactional;
 
 @DomainService
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class RegisterQueryService {
     private final RegisterRepository registerRepository;

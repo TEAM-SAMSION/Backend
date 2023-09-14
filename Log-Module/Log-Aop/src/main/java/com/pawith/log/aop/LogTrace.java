@@ -3,7 +3,6 @@ package com.pawith.log.aop;
 import com.pawith.commonmodule.exception.BusinessException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;
@@ -18,7 +17,7 @@ public class LogTrace {
         syncTrace();
         String id = threadId.get();
         long startTime = System.currentTimeMillis();
-        logger.info("[" + id + "] " + method + " ==== start");
+//        logger.info("[" + id + "] " + method + " ==== start");
         int lastDotIndex = fullClassName.lastIndexOf(".");
         String className = fullClassName.substring(lastDotIndex + 1);
         return new TraceStatus(id, startTime, className, method);

@@ -1,7 +1,7 @@
 package com.pawith.userpresentation;
 
-import com.pawith.usermodule.application.service.UserNicknameChangeUseCase;
-import com.pawith.usermodule.application.service.dto.UserNicknameChangeRequest;
+import com.pawith.usermodule.service.UserNicknameChangeUseCase;
+import com.pawith.usermodule.service.dto.UserNicknameChangeRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;

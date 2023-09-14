@@ -1,4 +1,0 @@
-dependencies {
-    implementation project(":Auth-Module:Auth-Application")
-    testImplementation(testFixtures(project(':Common-Module')))
-}

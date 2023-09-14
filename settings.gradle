@@ -4,12 +4,6 @@ include 'Api-Module'
 
 include 'Log-Module'
 include 'Log-Module:Log-Aop'
-include 'Log-Module:Log-Webclient'
-
-include 'Auth-Module'
-include 'Auth-Module:Auth-Presentation'
-include 'Auth-Module:Auth-Application'
-include 'Auth-Module:Auth-Domain'
 
 include 'Domain-Module'
 
@@ -22,5 +16,11 @@ include 'Domain-Module:Todo-Module'
 include 'Domain-Module:Todo-Module:Todo-Domain'
 include 'Domain-Module:Todo-Module:Todo-Application'
 include 'Domain-Module:Todo-Module:Todo-Presentation'
+
+include 'Domain-Module:Auth-Module'
+include 'Domain-Module:Auth-Module:Auth-Presentation'
+include 'Domain-Module:Auth-Module:Auth-Application'
+include 'Domain-Module:Auth-Module:Auth-Domain'
+
 
 include 'Common-Module'
