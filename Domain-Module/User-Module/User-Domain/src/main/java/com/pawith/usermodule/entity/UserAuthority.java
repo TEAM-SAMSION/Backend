@@ -24,6 +24,8 @@ public class UserAuthority extends BaseEntity {
     }
 
     public void changeUserAuthority(){
-        this.authority = Authority.USER;
+        if(this.authority.equals(Authority.GUEST)){
+            this.authority = Authority.USER;
+        }
     }
 }
