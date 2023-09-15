@@ -1,19 +1,15 @@
 package com.pawith.todoapplication.dto.response;
 
 import com.pawith.tododomain.entity.Authority;
-import lombok.Getter;
+import lombok.*;
 
 @Getter
+@ToString
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor(access = AccessLevel.PUBLIC)
 public class TodoTeamSimpleResponse {
-    private final Long teamId;
-    private final String teamName;
-    private final Authority authority;
-    private final Integer registerPeriod;
-
-    public TodoTeamSimpleResponse(Long teamId, String teamName, Authority authority, Integer registerPeriod) {
-        this.teamId = teamId;
-        this.teamName = teamName;
-        this.authority = authority;
-        this.registerPeriod = registerPeriod;
-    }
+    private Long teamId;
+    private String teamName;
+    private Authority authority;
+    private Integer registerPeriod;
 }
