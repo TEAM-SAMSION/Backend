@@ -24,4 +24,9 @@ public class RegisterQueryService {
         return registerRepository.findByTodoTeamIdAndUserId(todoTeamId, userId)
             .orElseThrow(() -> new NotRegisterUserException(Error.NOT_REGISTER_USER));
     }
+
+    public Register findRecentRegisterByUserId(Long userId) {
+        return registerRepository.findTopByUserIdOrderByCreatedAtDesc(userId)
+                .orElseThrow(() -> new RegisterNotFoundException(Error.REGISTER_NOT_FOUND));
+    }
 }
