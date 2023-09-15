@@ -4,6 +4,7 @@ import com.pawith.commonmodule.annotation.DomainService;
 import com.pawith.commonmodule.exception.Error;
 import com.pawith.tododomain.entity.Register;
 import com.pawith.tododomain.exception.NotRegisterUserException;
+import com.pawith.tododomain.exception.RegisterNotFoundException;
 import com.pawith.tododomain.repository.RegisterRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
