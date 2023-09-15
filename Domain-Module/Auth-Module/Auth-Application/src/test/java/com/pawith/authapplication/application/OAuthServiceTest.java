@@ -1,7 +1,7 @@
 package com.pawith.authapplication.application;
 
 import com.navercorp.fixturemonkey.FixtureMonkey;
-import com.pawith.authapplication.service.dto.Provider;
+import com.pawith.authapplication.dto.Provider;
 import com.pawith.authapplication.service.command.OAuthInvoker;
 import com.pawith.authapplication.service.impl.OAuthService;
 import com.pawith.commonmodule.UnitTestConfig;

@@ -1,9 +1,9 @@
 package com.pawith.authapplication.service.command.handler.impl;
 
 import com.pawith.authapplication.service.command.handler.AuthHandler;
-import com.pawith.authapplication.service.dto.OAuthRequest;
-import com.pawith.authapplication.service.dto.OAuthUserInfo;
-import com.pawith.authapplication.service.dto.Provider;
+import com.pawith.authapplication.dto.OAuthRequest;
+import com.pawith.authapplication.dto.OAuthUserInfo;
+import com.pawith.authapplication.dto.Provider;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

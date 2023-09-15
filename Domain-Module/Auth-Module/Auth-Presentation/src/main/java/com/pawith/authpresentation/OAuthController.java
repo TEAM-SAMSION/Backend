@@ -1,7 +1,7 @@
 package com.pawith.authpresentation;
 
-import com.pawith.authapplication.service.dto.OAuthResponse;
-import com.pawith.authapplication.service.dto.Provider;
+import com.pawith.authapplication.dto.OAuthResponse;
+import com.pawith.authapplication.dto.Provider;
 import com.pawith.authapplication.service.OAuthUseCase;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

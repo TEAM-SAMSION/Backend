@@ -2,9 +2,9 @@ package com.pawith.authapplication.service.command;
 
 import com.pawith.authapplication.exception.AuthException;
 import com.pawith.authapplication.common.consts.AuthConsts;
-import com.pawith.authapplication.service.dto.OAuthRequest;
-import com.pawith.authapplication.service.dto.OAuthResponse;
-import com.pawith.authapplication.service.dto.OAuthUserInfo;
+import com.pawith.authapplication.dto.OAuthRequest;
+import com.pawith.authapplication.dto.OAuthResponse;
+import com.pawith.authapplication.dto.OAuthUserInfo;
 import com.pawith.authapplication.service.command.handler.AuthHandler;
 import com.pawith.commonmodule.exception.Error;
 import com.pawith.authdomain.jwt.JWTProvider;
