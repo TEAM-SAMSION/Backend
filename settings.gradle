@@ -24,3 +24,6 @@ include 'Domain-Module:Auth-Module:Auth-Domain'
 
 
 include 'Common-Module'
+include 'Domain-Module:Image-Module'
+include 'Domain-Module:Image-Module:Image-Application'
+

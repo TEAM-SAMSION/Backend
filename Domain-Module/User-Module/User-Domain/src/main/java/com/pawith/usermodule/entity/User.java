@@ -20,7 +20,7 @@ public class User extends BaseEntity {
 
     private String nickname;
     private String email;
-    private String profileImageUrl;
+    private String imageUrl;
     private String provider;
 
 

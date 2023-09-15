@@ -21,7 +21,7 @@ public class Pet extends BaseEntity {
     private String name;
     private String age;
     private String description;
-    private String petImageUrl;
+    private String imageUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "team_id")
