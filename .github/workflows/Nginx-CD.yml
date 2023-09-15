@@ -1,0 +1,44 @@
+name: Nginx-CD
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: nginx.conf push
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ubuntu
+          key: ${{ secrets.KEY }}
+          source: "./.deploy/nginx/nginx.conf"
+          target: "/home/ubuntu/nginx/conf"
+          strip_components: 3
+
+      - name: docker-compose-nginx push
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ubuntu
+          key: ${{ secrets.KEY }}
+          source: "./.deploy/nginx/docker-compose.yml"
+          target: "/home/ubuntu/nginx"
+          strip_components: 3
+
+      - name: Deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ubuntu
+          key: ${{ secrets.KEY }}
+          script: |
+            cd nginx
+            docker-compose up -d
+            docker image prune -f

@@ -12,6 +12,8 @@ services:
       - "8079:8079"
     environment:
       - TZ=Asia/Seoul
+    networks:
+      - backend_network
 
   promtail:
     image: grafana/promtail:2.9.0
@@ -23,3 +25,10 @@ services:
     command:
       - "-config.file=/etc/promtail/promtail-config.yaml"
       - "-config.expand-env=true"
+    networks:
+      - backend_network
+
+networks:
+  backend_network:
+    driver: bridge
+    external: true

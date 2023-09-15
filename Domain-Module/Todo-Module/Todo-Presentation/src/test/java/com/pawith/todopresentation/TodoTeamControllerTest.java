@@ -7,6 +7,7 @@ import com.pawith.commonmodule.slice.SliceResponse;
 import com.pawith.todoapplication.dto.response.TodoTeamSimpleResponse;
 import com.pawith.todoapplication.service.TodoTeamGetUseCase;
 import lombok.extern.slf4j.Slf4j;
+import net.jqwik.api.Arbitraries;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -18,6 +19,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
@@ -41,10 +43,16 @@ class TodoTeamControllerTest extends BaseRestDocsTest {
     @DisplayName("TodoTeam 목록을 가져오는 테스트")
     void getTodoTeams() throws Exception{
         //given
-        final PageRequest pageRequest = PageRequest.of(1, 10);
-        final List<TodoTeamSimpleResponse> todoTeamSimpleResponses = getFixtureMonkey().giveMe(TodoTeamSimpleResponse.class, pageRequest.getPageSize());
+        final PageRequest pageRequest = PageRequest.of(0, 10);
+        final List<TodoTeamSimpleResponse> todoTeamSimpleResponses = getFixtureMonkey()
+            .giveMeBuilder(TodoTeamSimpleResponse.class)
+            .set("teamId", Arbitraries.longs().greaterOrEqual(1L))
+            .set("registerPeriod", Arbitraries.integers().greaterOrEqual(1))
+            .set("teamName", Arbitraries.strings().withCharRange('a', 'z').ofMinLength(5).ofMaxLength(10))
+            .sampleList(pageRequest.getPageSize());
+        todoTeamSimpleResponses.sort(((o1, o2) -> (int) (o2.getTeamId() - o1.getTeamId())));
         final SliceImpl<TodoTeamSimpleResponse> slice = new SliceImpl(todoTeamSimpleResponses, pageRequest, true);
-        given(todoTeamGetUseCase.getTodoTeams(pageRequest)).willReturn(SliceResponse.from(slice));
+        given(todoTeamGetUseCase.getTodoTeams(any())).willReturn(SliceResponse.from(slice));
         MockHttpServletRequestBuilder request = get(TODO_TEAM_REQUEST_URL + "/list")
             .queryParam("page", String.valueOf(pageRequest.getPageNumber()))
             .queryParam("size", String.valueOf(pageRequest.getPageSize()))
