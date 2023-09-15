@@ -6,6 +6,12 @@
 
 operation::user-authority-controller-test/get-user-authority[snippets='http-request,request-headers,http-response,response-fields']
 
+[[UserController-사용자정보조회]]
+=== 사용자 정보 조회
+
+operation::user-controller-test/get-user-info[snippets='http-request,request-headers,http-response,response-fields']
+
+
 [[UserController-닉네임변경]]
 === 사용자 닉네임 변경
 

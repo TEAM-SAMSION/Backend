@@ -1,9 +1,9 @@
 package com.pawith.authapplication.service.impl;
 
 import com.pawith.authapplication.service.OAuthUseCase;
-import com.pawith.authapplication.service.dto.OAuthRequest;
-import com.pawith.authapplication.service.dto.OAuthResponse;
-import com.pawith.authapplication.service.dto.Provider;
+import com.pawith.authapplication.dto.OAuthRequest;
+import com.pawith.authapplication.dto.OAuthResponse;
+import com.pawith.authapplication.dto.Provider;
 import com.pawith.authapplication.service.command.OAuthInvoker;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

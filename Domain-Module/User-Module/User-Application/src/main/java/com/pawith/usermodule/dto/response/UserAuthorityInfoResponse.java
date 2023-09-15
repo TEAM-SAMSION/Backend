@@ -1,4 +1,4 @@
-package com.pawith.usermodule.service.dto;
+package com.pawith.usermodule.dto.response;
 
 import com.pawith.usermodule.entity.Authority;
 import lombok.Getter;

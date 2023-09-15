@@ -1,4 +1,4 @@
-package com.pawith.authapplication.service.dto;
+package com.pawith.authapplication.dto;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

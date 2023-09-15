@@ -4,7 +4,7 @@ import com.navercorp.fixturemonkey.FixtureMonkey;
 import com.navercorp.fixturemonkey.api.introspector.ConstructorPropertiesArbitraryIntrospector;
 import com.pawith.commonmodule.BaseRestDocsTest;
 import com.pawith.usermodule.service.UserAuthorityGetUseCase;
-import com.pawith.usermodule.service.dto.UserAuthorityInfoResponse;
+import com.pawith.usermodule.dto.response.UserAuthorityInfoResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
