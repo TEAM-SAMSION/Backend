@@ -5,7 +5,7 @@ import com.navercorp.fixturemonkey.api.introspector.ConstructorPropertiesArbitra
 import com.pawith.commonmodule.UnitTestConfig;
 import com.pawith.commonmodule.security.WithMockAuthUser;
 import com.pawith.usermodule.service.UserAuthorityGetUseCase;
-import com.pawith.usermodule.service.dto.UserAuthorityInfoResponse;
+import com.pawith.usermodule.dto.response.UserAuthorityInfoResponse;
 import com.pawith.usermodule.entity.UserAuthority;
 import com.pawith.usermodule.service.UserAuthorityQueryService;
 import org.assertj.core.api.Assertions;
