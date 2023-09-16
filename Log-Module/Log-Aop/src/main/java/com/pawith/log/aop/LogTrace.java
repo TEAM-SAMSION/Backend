@@ -19,6 +19,8 @@ public class LogTrace {
 
     private final ObjectMapper objectMapper;
 
+    private static final String THREAD_ID_REMOVE_END_POINT = "Controller";
+
 
     public TraceStatus start(String fullClassName, String method) {
         syncTrace();
@@ -26,7 +28,7 @@ public class LogTrace {
         long startTime = System.currentTimeMillis();
         int lastDotIndex = fullClassName.lastIndexOf(".");
         String className = fullClassName.substring(lastDotIndex + 1);
-        return new TraceStatus(id, startTime, className, method);
+        return new TraceStatus(id, startTime, className, method, className.contains(THREAD_ID_REMOVE_END_POINT));
     }
 
     @SneakyThrows
@@ -38,6 +40,7 @@ public class LogTrace {
         } else {
             logger.info(log);
         }
+        clearTheadId(traceStatus);
     }
 
     @SneakyThrows
@@ -45,12 +48,19 @@ public class LogTrace {
         final LogFormat errorLogFormat = LogFormat.createErrorLogFormat(traceStatus, exception);
         final String errorLog = objectMapper.writeValueAsString(errorLogFormat);
         logger.error(errorLog);
+        clearTheadId(traceStatus);
     }
 
     private void syncTrace() {
         String id = threadId.get();
         if (id == null) {
             threadId.set(createThreadId());
+        }
+    }
+
+    private void clearTheadId(TraceStatus traceStatus) {
+        if(traceStatus.getIsEndPoint()){
+            threadId.remove();
         }
     }
 
