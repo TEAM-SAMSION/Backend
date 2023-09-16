@@ -29,4 +29,10 @@ public class User extends BaseEntity {
             return;
         this.nickname = Objects.requireNonNull(nickname, "nickname must be not null");
     }
+
+    public void updateProfileImage(final String imageUrl) {
+        if(this.imageUrl.equals(imageUrl))
+            return;
+        this.imageUrl = Objects.requireNonNull(imageUrl, "imageUrl must be not null");
+    }
 }
