@@ -12,3 +12,9 @@ operation::todo-team-controller-test/get-todo-teams[snippets='http-request,reque
 
 operation::register-controller-test/unregister-todo-team[snippets='http-request,path-parameters,request-headers,http-response']
 
+
+[[Todo-API-Todo-달성률]]
+=== Todo 달성률 (홈 화면)
+
+operation::todo-home-controller-test/get-todo-progress[snippets='http-request,path-parameters,request-headers,http-response']
+

@@ -4,6 +4,7 @@ import com.pawith.commonmodule.annotation.DomainService;
 import com.pawith.commonmodule.exception.Error;
 import com.pawith.tododomain.entity.Register;
 import com.pawith.tododomain.exception.NotRegisterUserException;
+import com.pawith.tododomain.exception.RegisterNotFoundException;
 import com.pawith.tododomain.repository.RegisterRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -23,5 +24,10 @@ public class RegisterQueryService {
     public Register findRegisterByTodoTeamIdAndUserId(Long todoTeamId, Long userId) {
         return registerRepository.findByTodoTeamIdAndUserId(todoTeamId, userId)
             .orElseThrow(() -> new NotRegisterUserException(Error.NOT_REGISTER_USER));
+    }
+
+    public Register findRecentRegisterByUserId(Long userId) {
+        return registerRepository.findTopByUserIdOrderByCreatedAtDesc(userId)
+                .orElseThrow(() -> new RegisterNotFoundException(Error.REGISTER_NOT_FOUND));
     }
 }
