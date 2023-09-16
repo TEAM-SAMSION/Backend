@@ -72,6 +72,7 @@ class TodoTeamControllerTest extends BaseRestDocsTest {
                 responseFields(
                     fieldWithPath("content[].teamId").description("TodoTeam의 Id"),
                     fieldWithPath("content[].teamName").description("TodoTeam의 이름"),
+                    fieldWithPath("content[].teamProfileImageUrl").description("TodoTeam의 이미지"),
                     fieldWithPath("content[].authority").description("TodoTeam의 권한"),
                     fieldWithPath("content[].registerPeriod").description("TodoTeam 가입 후 기간"),
                     fieldWithPath("page").description("요청 페이지"),
