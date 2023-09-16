@@ -16,3 +16,8 @@ operation::user-controller-test/get-user-info[snippets='http-request,request-hea
 === 사용자 닉네임 변경
 
 operation::user-controller-test/put-nickname-on-user[snippets='http-request,request-fields,request-headers,http-response']
+
+[[UserController-프로필이미지변경]]
+=== 사용자 프로필 이미지 변경
+
+operation::user-controller-test/post-user-profile-image[snippets='http-request,request-headers,request-parts,http-response']

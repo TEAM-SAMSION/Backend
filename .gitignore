@@ -38,9 +38,14 @@ out/
 
 ### application ###
 /Api-Module/src/main/resources/application.yml
+**/src/main/resources/application.yml
+**/src/main/resources/application.properties
 
 ### resources static docs ###
 **/src/main/resources/static/docs/
 
 ### logs ###
 logs/logback/*
+
+### jqwik ###
+**/.jqwik-database

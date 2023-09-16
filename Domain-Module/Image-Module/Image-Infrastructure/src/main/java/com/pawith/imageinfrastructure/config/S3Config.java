@@ -1,4 +1,4 @@
-package com.pawith.imageapplication.config;
+package com.pawith.imageinfrastructure.config;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
@@ -6,6 +6,10 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.pawith.imageapplication.service.ImageDeleteUseCase;
+import com.pawith.imageapplication.service.ImageUploadUseCase;
+import com.pawith.imageinfrastructure.service.S3ImageDeleteUseCaseImpl;
+import com.pawith.imageinfrastructure.service.S3ImageUploadUseCaseImpl;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,5 +30,15 @@ public class S3Config {
                 .withCredentials(new AWSStaticCredentialsProvider(credentials))
                 .withRegion(Regions.AP_NORTHEAST_2)
                 .build();
+    }
+
+    @Bean
+    public ImageDeleteUseCase<?> imageDeleteUseCase(){
+        return new S3ImageDeleteUseCaseImpl<>(getS3ClientBean());
+    }
+
+    @Bean
+    public ImageUploadUseCase imageUploadUseCase(){
+        return new S3ImageUploadUseCaseImpl(getS3ClientBean());
     }
 }

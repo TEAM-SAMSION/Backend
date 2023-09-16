@@ -31,7 +31,7 @@ public class TodoTeamGetUseCase {
             final TodoTeam todoTeam = todoTeamQueryService.findTodoTeamById(register.getTodoTeam().getId());
             final LocalDate registerDate = register.getCreatedAt().toLocalDate();
             final int registerPeriod = Period.between(registerDate, LocalDate.now()).getDays();
-            return new TodoTeamSimpleResponse(todoTeam.getId(), todoTeam.getTeamName(), register.getAuthority(), registerPeriod);
+            return new TodoTeamSimpleResponse(todoTeam.getId(), todoTeam.getTeamName(), todoTeam.getImageUrl(),register.getAuthority(), registerPeriod);
         });
         return SliceResponse.from(todoTeamSimpleResponseSlice);
     }
