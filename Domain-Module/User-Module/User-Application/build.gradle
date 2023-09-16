@@ -1,3 +1,4 @@
 dependencies {
     implementation project(":Domain-Module:User-Module:User-Domain")
+    implementation project(":Domain-Module:Image-Module:Image-Application")
 }
