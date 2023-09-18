@@ -2,6 +2,7 @@ package com.pawith.todoapplication.service;
 
 import com.pawith.commonmodule.annotation.ApplicationService;
 import com.pawith.commonmodule.slice.SliceResponse;
+import com.pawith.todoapplication.dto.response.TodoTeamNameSimpleResponse;
 import com.pawith.todoapplication.dto.response.TodoTeamSimpleResponse;
 import com.pawith.tododomain.entity.Register;
 import com.pawith.tododomain.entity.TodoTeam;
@@ -16,6 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @ApplicationService
 @RequiredArgsConstructor
@@ -34,5 +37,16 @@ public class TodoTeamGetUseCase {
             return new TodoTeamSimpleResponse(todoTeam.getId(), todoTeam.getTeamName(), todoTeam.getImageUrl(),register.getAuthority(), registerPeriod);
         });
         return SliceResponse.from(todoTeamSimpleResponseSlice);
+    }
+
+    public List<TodoTeamNameSimpleResponse> getTodoTeamName() {
+        final User requestUser = UserUtils.getAccessUser();
+        final List<Register> registers = registerQueryService.findRegisterByUserId(requestUser.getId());
+        return registers.stream()
+                .map(register -> {
+                    final TodoTeam todoTeam = todoTeamQueryService.findTodoTeamById(register.getTodoTeam().getId());
+                    return new TodoTeamNameSimpleResponse(todoTeam.getId(), todoTeam.getTeamName());
+                })
+                .collect(Collectors.toList());
     }
 }
