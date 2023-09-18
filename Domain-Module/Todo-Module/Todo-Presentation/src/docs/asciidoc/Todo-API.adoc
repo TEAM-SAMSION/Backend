@@ -30,5 +30,10 @@ operation::todo-team-controller-test/get-todo-team-random-code[snippets='http-re
 [[Todo-API-Todo-달성률]]
 === Todo 달성률 (홈 화면)
 
-operation::todo-home-controller-test/get-todo-progress[snippets='http-request,path-parameters,request-headers,http-response']
+operation::todo-home-controller-test/get-todo-progress[snippets='http-request,path-parameters,request-headers,http-response,response-fields']
+
+[[Todo-API-가장-최근에-가입한-Todo-Team-조회]]
+=== 가장 최근에 가입한 TodoTeam 조회 (홈 화면)
+
+operation::todo-home-controller-test/get-recent-todo-team-name[snippets='http-request,request-headers,http-response,response-fields']
 
