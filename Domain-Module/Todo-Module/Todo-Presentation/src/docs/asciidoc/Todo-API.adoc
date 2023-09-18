@@ -12,6 +12,15 @@ operation::todo-team-controller-test/get-todo-teams[snippets='http-request,reque
 
 operation::register-controller-test/unregister-todo-team[snippets='http-request,path-parameters,request-headers,http-response']
 
+[[Todo-API-Todo-Team-가입]]
+=== Todo Team 가입
+
+operation::register-controller-test/post-register[snippets='http-request,request-parameters,request-headers,http-response']
+
+[[Todo-API-Todo-Team-생성]]
+=== Todo Team 생성
+
+operation::todo-team-controller-test/post-todo-team[snippets='http-request,request-fields,request-headers,http-response']
 
 [[Todo-API-Todo-달성률]]
 === Todo 달성률 (홈 화면)

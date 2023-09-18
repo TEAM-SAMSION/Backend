@@ -2,6 +2,7 @@ package com.pawith.todopresentation;
 
 import com.navercorp.fixturemonkey.FixtureMonkey;
 import com.pawith.commonmodule.BaseRestDocsTest;
+import com.pawith.todoapplication.service.TodoTeamRegisterUseCase;
 import com.pawith.todoapplication.service.UnregisterUseCase;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,10 +12,12 @@ import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
+import java.util.UUID;
+
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(RegisterController.class)
@@ -23,6 +26,8 @@ class RegisterControllerTest extends BaseRestDocsTest {
 
     @MockBean
     private UnregisterUseCase unregisterUseCase;
+    @MockBean
+    private TodoTeamRegisterUseCase todoTeamRegisterUseCase;
 
     private static final String REGISTER_REQUEST_URL = "/register";
 
@@ -47,4 +52,25 @@ class RegisterControllerTest extends BaseRestDocsTest {
             ));
     }
 
+    @Test
+    @DisplayName("TodoTeamCode로 TodoTeam을 등록하는 테스트")
+    void postRegister() throws Exception{
+        //given
+        final String todoTeamCode = UUID.randomUUID().toString().split("-")[0];
+        MockHttpServletRequestBuilder request = post(REGISTER_REQUEST_URL)
+            .queryParam("todoTeamCode", todoTeamCode)
+            .header("Authorization", "Bearer accessToken");
+        //when
+        ResultActions result = mvc.perform(request);
+        //then
+        result.andExpect(status().isOk())
+            .andDo(resultHandler.document(
+                requestHeaders(
+                    headerWithName("Authorization").description("access 토큰")
+                ),
+                requestParameters(
+                    parameterWithName("todoTeamCode").description("TodoTeam의 코드")
+                )
+            ));
+    }
 }

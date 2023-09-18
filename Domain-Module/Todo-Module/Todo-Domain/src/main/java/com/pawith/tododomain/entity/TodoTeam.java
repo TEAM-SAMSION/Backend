@@ -1,10 +1,7 @@
 package com.pawith.tododomain.entity;
 
 import com.pawith.commonmodule.domain.BaseEntity;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -23,8 +20,10 @@ public class TodoTeam extends BaseEntity {
     private String teamName;
     private String imageUrl;
 
-    public static TodoTeam createTodoTeam(String teamCode, String teamName, String imageUrl) {
-        return new TodoTeam(null, teamCode, teamName, imageUrl);
+    @Builder
+    public TodoTeam(String teamCode, String teamName, String imageUrl) {
+        this.teamCode = teamCode;
+        this.teamName = teamName;
+        this.imageUrl = imageUrl;
     }
-
 }

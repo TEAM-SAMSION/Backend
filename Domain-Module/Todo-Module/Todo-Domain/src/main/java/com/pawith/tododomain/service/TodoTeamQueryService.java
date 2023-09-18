@@ -22,6 +22,10 @@ public class TodoTeamQueryService {
         return findTodo(todoTeamRepository::findById, todoTeamId);
     }
 
+    public TodoTeam findTodoByCode(String todoTeamCode) {
+        return findTodo(todoTeamRepository::findByTeamCode, todoTeamCode);
+    }
+
      private <T> TodoTeam findTodo(Function<T, Optional<TodoTeam>> findMethod, T specificationData){
         return findMethod.apply(specificationData)
             .orElseThrow(() -> new TodoTeamNotFoundException(Error.TODO_TEAM_NOT_FOUND));

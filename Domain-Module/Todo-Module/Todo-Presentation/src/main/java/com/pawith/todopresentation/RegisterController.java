@@ -1,11 +1,9 @@
 package com.pawith.todopresentation;
 
+import com.pawith.todoapplication.service.TodoTeamRegisterUseCase;
 import com.pawith.todoapplication.service.UnregisterUseCase;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -13,9 +11,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class RegisterController {
 
     private final UnregisterUseCase unregisterUseCase;
+    private final TodoTeamRegisterUseCase todoTeamRegisterUseCase;
 
     @DeleteMapping("/{todoTeamId}")
-    public void unregisterTodoTeam(@PathVariable Long todoTeamId) {
+    public void deleteRegister(@PathVariable Long todoTeamId) {
         unregisterUseCase.unregisterTodoTeam(todoTeamId);
+    }
+
+    @PostMapping
+    public void postRegister(@RequestParam String todoTeamCode) {
+        todoTeamRegisterUseCase.registerTodoTeam(todoTeamCode);
     }
 }

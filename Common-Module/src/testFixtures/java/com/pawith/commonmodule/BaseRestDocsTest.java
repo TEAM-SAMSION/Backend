@@ -34,7 +34,10 @@ public class BaseRestDocsTest {
     void setUp(final WebApplicationContext applicationContext,
                final RestDocumentationContextProvider provider){
         this.mvc = MockMvcBuilders.webAppContextSetup(applicationContext)
-            .apply(MockMvcRestDocumentation.documentationConfiguration(provider).uris().withPort(8080))
+            .apply(MockMvcRestDocumentation.documentationConfiguration(provider).uris()
+                .withScheme("https")
+                .withHost("dev.pawith.com")
+                .withPort(443))
             .alwaysDo(MockMvcResultHandlers.print())
             .alwaysDo(resultHandler)
             .addFilters(new CharacterEncodingFilter("UTF-8", true))

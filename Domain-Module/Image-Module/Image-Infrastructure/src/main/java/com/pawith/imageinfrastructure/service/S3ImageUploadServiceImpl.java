@@ -6,12 +6,13 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.pawith.commonmodule.annotation.ApplicationService;
 import com.pawith.commonmodule.exception.Error;
-import com.pawith.imageapplication.service.ImageUploadUseCase;
-import com.pawith.imageinfrastructure.exception.FileExtentionException;
-import com.pawith.imageinfrastructure.exception.FileUploadException;
+import com.pawith.imageapplication.exception.FileExtentionException;
+import com.pawith.imageapplication.exception.FileUploadException;
+import com.pawith.imagedomain.service.ImageUploadService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -26,19 +27,26 @@ import java.util.concurrent.CompletableFuture;
 @ApplicationService
 @RequiredArgsConstructor
 @Slf4j
-public class S3ImageUploadUseCaseImpl implements ImageUploadUseCase {
+public class S3ImageUploadServiceImpl implements ImageUploadService {
     private final AmazonS3 amazonS3;
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
     public List<String> uploadImgList(List<MultipartFile> imgList) {
-
-        if(Objects.isNull(imgList)) return null;
-        if(imgList.isEmpty()) return null;
+        if(CollectionUtils.isEmpty(imgList)) return List.of();
         List<String> uploadUrl = new ArrayList<>();
         for (MultipartFile img : imgList) {
             uploadUrl.add(uploadImg(img));
+        }
+        return uploadUrl;
+    }
+
+    public List<String> uploadImgListAsync(List<MultipartFile> imgList){
+        if(CollectionUtils.isEmpty(imgList)) return List.of();
+        List<String> uploadUrl = new ArrayList<>();
+        for (MultipartFile img : imgList) {
+            uploadUrl.add(uploadImgAsync(img).join());
         }
         return uploadUrl;
     }

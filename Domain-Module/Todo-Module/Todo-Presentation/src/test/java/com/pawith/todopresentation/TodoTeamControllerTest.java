@@ -4,8 +4,13 @@ import com.navercorp.fixturemonkey.FixtureMonkey;
 import com.navercorp.fixturemonkey.api.introspector.ConstructorPropertiesArbitraryIntrospector;
 import com.pawith.commonmodule.BaseRestDocsTest;
 import com.pawith.commonmodule.slice.SliceResponse;
+import com.pawith.todoapplication.dto.request.PetRegisterRequest;
+import com.pawith.todoapplication.dto.request.TodoTeamCreateRequest;
+import com.pawith.todoapplication.dto.response.TodoTeamRandomCodeResponse;
 import com.pawith.todoapplication.dto.response.TodoTeamSimpleResponse;
+import com.pawith.todoapplication.service.TodoTeamCreateUseCase;
 import com.pawith.todoapplication.service.TodoTeamGetUseCase;
+import com.pawith.todoapplication.service.TodoTeamRandomCodeGetUseCase;
 import lombok.extern.slf4j.Slf4j;
 import net.jqwik.api.Arbitraries;
 import org.junit.jupiter.api.DisplayName;
@@ -14,19 +19,22 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.SliceImpl;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 import java.util.List;
+import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.restdocs.request.RequestDocumentation.*;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Slf4j
@@ -36,6 +44,10 @@ class TodoTeamControllerTest extends BaseRestDocsTest {
 
     @MockBean
     private TodoTeamGetUseCase todoTeamGetUseCase;
+    @MockBean
+    private TodoTeamRandomCodeGetUseCase todoTeamRandomCodeGetUseCase;
+    @MockBean
+    private TodoTeamCreateUseCase todoTeamCreateUseCase;
 
     private static final String TODO_TEAM_REQUEST_URL = "/todo/team";
 
@@ -78,6 +90,65 @@ class TodoTeamControllerTest extends BaseRestDocsTest {
                     fieldWithPath("page").description("요청 페이지"),
                     fieldWithPath("size").description("요청 사이즈"),
                     fieldWithPath("hasNext").description("다음 데이터 존재 여부")
+                )
+            ));
+    }
+
+    @Test
+    @DisplayName("TodoTeam 랜덤 코드를 가져오는 테스트")
+    void getTodoTeamRandomCode() throws Exception {
+        //given
+        given(todoTeamRandomCodeGetUseCase.generateRandomCode()).willReturn(new TodoTeamRandomCodeResponse("randomCode"));
+        MockHttpServletRequestBuilder request = get(TODO_TEAM_REQUEST_URL + "/code")
+            .header("Authorization", "Bearer accessToken");
+        //when
+        ResultActions result = mvc.perform(request);
+        //then
+        result.andExpect(status().isOk())
+            .andDo(resultHandler.document(
+                requestHeaders(
+                    headerWithName("Authorization").description("access 토큰")
+                ),
+                responseFields(
+                    fieldWithPath("randomCode").description("랜덤 코드")
+                )
+            ));
+    }
+
+    @Test
+    @DisplayName("TodoTeam 생성 테스트")
+    void postTodoTeam() throws Exception {
+        //given
+        final List<PetRegisterRequest> petRegisterRequests = getFixtureMonkey().giveMeBuilder(PetRegisterRequest.class)
+            .set("name", Arbitraries.strings().withCharRange('a', 'z').ofMinLength(5).ofMaxLength(10))
+            .set("age", Arbitraries.integers().between(1, 15))
+            .set("imageUrl", "https://image/" + UUID.randomUUID().toString())
+            .sampleList(4);
+        final TodoTeamCreateRequest todoTeamCreateRequest = getFixtureMonkey().giveMeBuilder(TodoTeamCreateRequest.class)
+            .set("teamName", Arbitraries.strings().withCharRange('a', 'z').ofMinLength(5).ofMaxLength(10))
+            .set("randomCode",UUID.randomUUID().toString().split("-")[0])
+            .set("petRegisters", petRegisterRequests)
+            .sample();
+
+        MockHttpServletRequestBuilder request = post(TODO_TEAM_REQUEST_URL)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(todoTeamCreateRequest))
+            .header("Authorization", "Bearer accessToken");
+        //when
+        ResultActions result = mvc.perform(request);
+        //then
+        result.andExpect(status().isOk())
+            .andDo(resultHandler.document(
+                requestHeaders(
+                    headerWithName("Authorization").description("access 토큰")
+                ),
+                requestFields(
+                    fieldWithPath("teamName").description("팀 이름"),
+                    fieldWithPath("randomCode").description("팀 코드"),
+                    fieldWithPath("petRegisters[].name").description("펫 이름"),
+                    fieldWithPath("petRegisters[].age").description("펫 나이"),
+                    fieldWithPath("petRegisters[].description").description("펫 한 줄 설명"),
+                    fieldWithPath("petRegisters[].imageUrl").description("펫 이미지")
                 )
             ));
     }

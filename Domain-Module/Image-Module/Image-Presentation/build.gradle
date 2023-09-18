@@ -1,0 +1,3 @@
+dependencies {
+    implementation project(':Domain-Module:Image-Module:Image-Application')
+}
