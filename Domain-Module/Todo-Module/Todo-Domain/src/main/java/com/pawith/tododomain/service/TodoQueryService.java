@@ -1,6 +1,9 @@
 package com.pawith.tododomain.service;
 
 import com.pawith.commonmodule.annotation.DomainService;
+import com.pawith.commonmodule.exception.Error;
+import com.pawith.tododomain.entity.Todo;
+import com.pawith.tododomain.exception.TodoNotFoundException;
 import com.pawith.tododomain.repository.TodoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,8 +17,8 @@ public class TodoQueryService {
 
     private final TodoRepository todoRepository;
 
-    public Long countTodoByCategoryIdAndCreatedAt(Long categoryId, LocalDateTime createdAt) {
-        return todoRepository.countByCategoryIdAndCreatedAt(categoryId, createdAt);
+    public Todo findTodoByTodoId(Long todoId) {
+        return todoRepository.findById(todoId).orElseThrow(() -> new TodoNotFoundException(Error.TODO_NOT_FOUND));
     }
 
     public Long countTodoByCategoryIdAndCreatedAtAndStatus(Long categoryId, LocalDateTime createdAt, String status) {

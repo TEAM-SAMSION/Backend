@@ -2,19 +2,19 @@ package com.pawith.todoapplication.service;
 
 import com.pawith.commonmodule.annotation.ApplicationService;
 import com.pawith.todoapplication.dto.response.TodoProgressResponse;
-import com.pawith.tododomain.entity.Category;
+import com.pawith.tododomain.entity.Assign;
 import com.pawith.tododomain.entity.Register;
-import com.pawith.tododomain.service.CategoryQueryService;
-import com.pawith.tododomain.service.RegisterQueryService;
-import com.pawith.tododomain.service.TodoQueryService;
-import com.pawith.tododomain.service.TodoTeamQueryService;
+import com.pawith.tododomain.entity.Todo;
+import com.pawith.tododomain.service.*;
 import com.pawith.usermodule.entity.User;
 import com.pawith.usermodule.utils.UserUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @ApplicationService
 @RequiredArgsConstructor
@@ -22,23 +22,24 @@ import java.util.List;
 public class TodoRateGetUseCase {
 
     private final TodoQueryService todoQueryService;
-    private final TodoTeamQueryService todoTeamQueryService;
     private final RegisterQueryService registerQueryService;
-    private final CategoryQueryService categoryQueryService;
+    private final AssignQueryService assignQueryService;
 
     public TodoProgressResponse getTodoProgress(Long todoTeamId) {
-        if(todoTeamId == null) {
-            final User user = UserUtils.getAccessUser();
-            final Register register = registerQueryService.findRecentRegisterByUserId(user.getId());
-            todoTeamQueryService.findTodoTeamById(register.getTodoTeam().getId());
-        }
-        List<Category> categoryList = categoryQueryService.findCategoryListByTodoTeamId(todoTeamId);
-        Long totalTodoCount = categoryList.stream()
-                .mapToLong(category -> todoQueryService.countTodoByCategoryIdAndCreatedAt(category.getId(), LocalDateTime.now()))
-                .sum();
-        Long doneTodoCount = categoryList.stream()
-                .mapToLong(category -> todoQueryService.countTodoByCategoryIdAndCreatedAtAndStatus(category.getId(), LocalDateTime.now(), "COMPLETE"))
-                .sum();
+        LocalDate serverTime = LocalDate.now();
+        User user = UserUtils.getAccessUser();
+        Register register = registerQueryService.findRegisterByTodoTeamIdAndUserId(todoTeamId, user.getId());
+        List<Assign> assignList = assignQueryService.findAssignByRegisterIdAndCreatedAtBetween(register.getId(), serverTime.atStartOfDay(), serverTime.atTime(LocalTime.MAX));
+
+        List<Todo> todoList = assignList.stream()
+                .map(assign -> todoQueryService.findTodoByTodoId(assign.getTodo().getId()))
+                .collect(Collectors.toList());
+        Integer totalTodoCount = todoList.size();
+
+        Long doneTodoCount = todoList.stream()
+                .filter(todo -> todo.getTodoStatus().equals("COMPLETE"))
+                .count();
+
         int result =  (int)((double)doneTodoCount/totalTodoCount*100);
         return new TodoProgressResponse(result);
     }
