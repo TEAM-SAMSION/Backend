@@ -1,14 +1,23 @@
 package com.pawith.imageapplication.service;
 
-import org.springframework.web.multipart.MultipartFile;
+import com.pawith.commonmodule.annotation.ApplicationService;
+import com.pawith.imageapplication.dto.request.ImageUploadListRequest;
+import com.pawith.imageapplication.dto.request.ImageUploadRequest;
+import com.pawith.imageapplication.dto.response.ImageUploadListResponse;
+import com.pawith.imageapplication.dto.response.ImageUploadResponse;
+import com.pawith.imagedomain.service.ImageUploadService;
+import lombok.RequiredArgsConstructor;
 
-import java.util.List;
-import java.util.concurrent.CompletableFuture;
+@ApplicationService
+@RequiredArgsConstructor
+public class ImageUploadUseCase {
+    private final ImageUploadService imageUploadService;
 
-public interface ImageUploadUseCase {
-    List<String> uploadImgList(List<MultipartFile> imgList);
+    public ImageUploadResponse uploadImage(ImageUploadRequest request) {
+        return new ImageUploadResponse(imageUploadService.uploadImg(request.getImageFile()));
+    }
 
-    CompletableFuture<String> uploadImgAsync(MultipartFile file);
-
-    String uploadImg(MultipartFile file);
+    public ImageUploadListResponse uploadImageList(ImageUploadListRequest request) {
+        return new ImageUploadListResponse(imageUploadService.uploadImgList(request.getImageFileList()));
+    }
 }
