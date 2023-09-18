@@ -1,10 +1,7 @@
 package com.pawith.tododomain.entity;
 
 import com.pawith.commonmodule.domain.BaseEntity;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -19,7 +16,7 @@ public class Pet extends BaseEntity {
     private Long id;
 
     private String name;
-    private String age;
+    private Integer age;
     private String description;
     private String imageUrl;
 
@@ -27,4 +24,12 @@ public class Pet extends BaseEntity {
     @JoinColumn(name = "team_id")
     private TodoTeam todoTeam;
 
+    @Builder
+    public Pet(String name, Integer age, String description, String imageUrl, TodoTeam todoTeam) {
+        this.name = name;
+        this.age = age;
+        this.description = description;
+        this.imageUrl = imageUrl;
+        this.todoTeam = todoTeam;
+    }
 }

@@ -1,10 +1,7 @@
 package com.pawith.tododomain.entity;
 
 import com.pawith.commonmodule.domain.BaseEntity;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -28,8 +25,10 @@ public class Register extends BaseEntity {
     @JoinColumn(name = "user_id")
     private Long userId;
 
-    public static Register createRegister(TodoTeam todoTeam, Long userId, Authority authority) {
-        return new Register(null, authority, todoTeam, userId);
+    @Builder
+    public Register(Authority authority, TodoTeam todoTeam, Long userId) {
+        this.authority = authority;
+        this.todoTeam = todoTeam;
+        this.userId = userId;
     }
-
 }
