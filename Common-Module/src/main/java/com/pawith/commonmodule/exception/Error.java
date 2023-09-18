@@ -22,6 +22,7 @@ public enum Error {
     TODO_TEAM_NOT_FOUND("Todo 팀을 찾을 수 없습니다.", 3000),
     NOT_REGISTER_USER("Todo 팀에 등록되지 않은 사용자입니다.", 3001),
     REGISTER_NOT_FOUND("등록된 팀을 찾을 수 없습니다.", 3002),
+    ALREADY_REGISTER_TODO_TEAM("이미 등록된 Todo 팀입니다.", 3003),
 
     // Image
     FILE_EXTENTION_ERROR("잘못된 형식의 파일입니다.", 4001),
