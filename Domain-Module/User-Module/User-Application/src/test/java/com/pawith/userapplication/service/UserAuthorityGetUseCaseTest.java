@@ -1,13 +1,11 @@
-package com.pawith.usermodule.application.service;
+package com.pawith.userapplication.service;
 
-import com.navercorp.fixturemonkey.FixtureMonkey;
-import com.navercorp.fixturemonkey.api.introspector.ConstructorPropertiesArbitraryIntrospector;
 import com.pawith.commonmodule.UnitTestConfig;
 import com.pawith.commonmodule.security.WithMockAuthUser;
-import com.pawith.usermodule.service.UserAuthorityGetUseCase;
-import com.pawith.usermodule.dto.response.UserAuthorityInfoResponse;
-import com.pawith.usermodule.entity.UserAuthority;
-import com.pawith.usermodule.service.UserAuthorityQueryService;
+import com.pawith.commonmodule.utils.FixtureMonkeyUtils;
+import com.pawith.userapplication.dto.response.UserAuthorityInfoResponse;
+import com.pawith.userdomain.entity.UserAuthority;
+import com.pawith.userdomain.service.UserAuthorityQueryService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -26,8 +24,6 @@ class UserAuthorityGetUseCaseTest {
 
     UserAuthorityGetUseCase userAuthorityGetUseCase;
 
-    private static final String MOCK_EMAIL = "email";
-
     @BeforeEach
     void init() {
         userAuthorityGetUseCase = new UserAuthorityGetUseCase(userAuthorityQueryService);
@@ -38,7 +34,7 @@ class UserAuthorityGetUseCaseTest {
     @DisplayName("유저 권한을 조회한다.")
     void getUserAuthority() {
         //given
-        final UserAuthority userAuthority = FixtureMonkey.builder().objectIntrospector(ConstructorPropertiesArbitraryIntrospector.INSTANCE).defaultNotNull(true).build()
+        final UserAuthority userAuthority = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey()
             .giveMeBuilder(UserAuthority.class)
             .sample();
         given(userAuthorityQueryService.findByEmail(anyString())).willReturn(userAuthority);

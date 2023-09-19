@@ -1,15 +1,13 @@
-package com.pawith.usermodule.application.handler;
+package com.pawith.userapplication.handler;
 
-import com.navercorp.fixturemonkey.FixtureMonkey;
-import com.navercorp.fixturemonkey.api.introspector.ConstructorPropertiesArbitraryIntrospector;
 import com.pawith.commonmodule.UnitTestConfig;
 import com.pawith.commonmodule.exception.Error;
-import com.pawith.usermodule.handler.UserSignUpHandler;
-import com.pawith.usermodule.handler.event.UserSignUpEvent;
-import com.pawith.usermodule.exception.AccountAlreadyExistException;
-import com.pawith.usermodule.service.UserAuthoritySaveService;
-import com.pawith.usermodule.service.UserQueryService;
-import com.pawith.usermodule.service.UserSaveService;
+import com.pawith.commonmodule.utils.FixtureMonkeyUtils;
+import com.pawith.userapplication.handler.event.UserSignUpEvent;
+import com.pawith.userdomain.exception.AccountAlreadyExistException;
+import com.pawith.userdomain.service.UserAuthoritySaveService;
+import com.pawith.userdomain.service.UserQueryService;
+import com.pawith.userdomain.service.UserSaveService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -35,21 +33,16 @@ public class UserSignUpHandlerTest {
 
     UserSignUpHandler userSignUpHandler;
 
-    private static final FixtureMonkey fixtureMonkey = FixtureMonkey.builder()
-            .objectIntrospector(ConstructorPropertiesArbitraryIntrospector.INSTANCE)
-            .defaultNotNull(true)
-            .build();
-
-    public static final String PROVIDER = "provider";
-
     @BeforeEach
-    void init() { userSignUpHandler = new UserSignUpHandler(userSaveService, userQueryService, userAuthoritySaveService); }
+    void init() {
+        userSignUpHandler = new UserSignUpHandler(userSaveService, userQueryService, userAuthoritySaveService);
+    }
 
     @Test
     @DisplayName("첫 로그인 시, 사용자 가입 요청을 처리한다.")
     void userSignUp() {
         //given
-        final UserSignUpEvent mockUserSignUpEvent = getMockUserSignUpEvent();
+        final UserSignUpEvent mockUserSignUpEvent = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(UserSignUpEvent.class);
         System.out.println(mockUserSignUpEvent.getProvider());
         //when
         userSignUpHandler.signUp(mockUserSignUpEvent);
@@ -62,7 +55,7 @@ public class UserSignUpHandlerTest {
     @DisplayName("이미 계정이 존재할때, 다른 소셜 로그인을 하는 경우 예외가 발생한다")
     void userSignUpWithDifferentProvider() {
         //given
-        final UserSignUpEvent mockUserSignUpEvent = getMockUserSignUpEvent();
+        final UserSignUpEvent mockUserSignUpEvent = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(UserSignUpEvent.class);
         given(userQueryService.checkEmailAlreadyExist(mockUserSignUpEvent.getEmail())).willReturn(true);
         doThrow(new AccountAlreadyExistException(Error.ACCOUNT_ALREADY_EXIST))
                 .when(userQueryService)
@@ -71,12 +64,6 @@ public class UserSignUpHandlerTest {
         //then
         Assertions.assertThatCode(() -> userSignUpHandler.signUp(mockUserSignUpEvent))
                 .isInstanceOf(AccountAlreadyExistException.class);
-    }
-
-    UserSignUpEvent getMockUserSignUpEvent() {
-        return fixtureMonkey.giveMeBuilder(UserSignUpEvent.class)
-                .set("provider", PROVIDER)
-                .sample();
     }
 
 }

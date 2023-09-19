@@ -1,8 +1,8 @@
 package com.pawith.userdomain.service;
 
 import com.navercorp.fixturemonkey.FixtureMonkey;
-import com.navercorp.fixturemonkey.api.introspector.ConstructorPropertiesArbitraryIntrospector;
 import com.pawith.commonmodule.UnitTestConfig;
+import com.pawith.commonmodule.utils.FixtureMonkeyUtils;
 import com.pawith.userdomain.entity.UserAuthority;
 import com.pawith.userdomain.exception.UserAuthorityNotFoundException;
 import com.pawith.userdomain.repository.UserAuthorityRepository;
@@ -27,13 +27,6 @@ class UserAuthorityQueryServiceTest {
 
     UserAuthorityQueryService userAuthorityQueryService;
 
-    private static FixtureMonkey getFixtureMonkey() {
-        return FixtureMonkey.builder()
-            .objectIntrospector(ConstructorPropertiesArbitraryIntrospector.INSTANCE)
-            .defaultNotNull(true)
-            .build();
-    }
-
     @BeforeEach
     void init() {
         userAuthorityQueryService = new UserAuthorityQueryService(userAuthorityRepository);
@@ -44,7 +37,7 @@ class UserAuthorityQueryServiceTest {
     void findByEmail() {
         //given
         final String email = FixtureMonkey.create().giveMeOne(String.class);
-        final UserAuthority userAuthority = getFixtureMonkey()
+        final UserAuthority userAuthority = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey()
             .giveMeBuilder(UserAuthority.class)
             .set("email", email)
             .sample();

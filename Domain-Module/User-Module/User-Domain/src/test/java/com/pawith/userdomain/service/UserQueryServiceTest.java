@@ -1,9 +1,8 @@
 package com.pawith.userdomain.service;
 
-import com.navercorp.fixturemonkey.FixtureMonkey;
-import com.navercorp.fixturemonkey.api.introspector.ConstructorPropertiesArbitraryIntrospector;
 import com.pawith.commonmodule.UnitTestConfig;
 import com.pawith.commonmodule.enums.Provider;
+import com.pawith.commonmodule.utils.FixtureMonkeyUtils;
 import com.pawith.userdomain.entity.User;
 import com.pawith.userdomain.exception.AccountAlreadyExistException;
 import com.pawith.userdomain.exception.UserNotFoundException;
@@ -39,9 +38,11 @@ public class UserQueryServiceTest {
     @DisplayName("email을 통해 사용자정보를 가져온다.")
     void findByEmail() {
         //given
-        User mockUser = getFixtureMonkey().giveMeBuilder(User.class)
+        User mockUser = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey()
+            .giveMeBuilder(User.class)
             .sample();
         given(userRepository.findByEmail(any())).willReturn(Optional.of(mockUser));
+        log.info("mockUser: {}", mockUser);
         //when
         User user = userQueryService.findByEmail(mockUser.getEmail());
         //then
@@ -53,9 +54,11 @@ public class UserQueryServiceTest {
     @DisplayName("email을 통해 사용자정보를 가져올 때, 사용자가 존재하지 않으면 UserNotFoundException을 발생시킨다.")
     void findByEmailThrowUserNotFoundException() {
         //given
-        User mockUser = getFixtureMonkey().giveMeBuilder(User.class)
+        User mockUser = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey()
+            .giveMeBuilder(User.class)
             .sample();
         given(userRepository.findByEmail(any())).willReturn(Optional.empty());
+        log.info("mockUser: {}", mockUser);
         //when
         //then
         Assertions.assertThatThrownBy(() -> userQueryService.findByEmail(mockUser.getEmail()))
@@ -67,7 +70,8 @@ public class UserQueryServiceTest {
     @DisplayName("사용자 계정이 존재하면 AccountAlreadyExistException을 발생시킨다.")
     void checkAccountAlreadyExist() {
         //given
-        final User mockUser = getFixtureMonkey().giveMeBuilder(User.class)
+        final User mockUser = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey()
+            .giveMeBuilder(User.class)
             .set("id",1L)
             .set("provider", Provider.NAVER)
             .sample();
@@ -83,7 +87,8 @@ public class UserQueryServiceTest {
     @DisplayName("사용자 계정이 존재하지 않으면 예외가 발생하지 않는다.")
     void checkAccountAlreadyExistNotThrow() {
         //given
-        final User mockUser = getFixtureMonkey().giveMeBuilder(User.class)
+        final User mockUser = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey()
+            .giveMeBuilder(User.class)
             .set("id",1L)
             .set("provider", Provider.NAVER)
             .sample();
@@ -99,24 +104,16 @@ public class UserQueryServiceTest {
     @DisplayName("email이 존재하면 true를 반환한다.")
     void checkEmailAlreadyExist() {
         //given
-        final User mockUser = getFixtureMonkey().giveMeBuilder(User.class)
+        final User mockUser = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey()
+            .giveMeBuilder(User.class)
             .set("id",1L)
             .set("provider", Provider.NAVER)
             .sample();
         given(userRepository.existsByEmail(mockUser.getEmail())).willReturn(true);
+        log.info("mockUser: {}", mockUser);
         //when
         boolean result = userQueryService.checkEmailAlreadyExist(mockUser.getEmail());
         //then
         Assertions.assertThat(result).isTrue();
     }
-
-    private FixtureMonkey getFixtureMonkey(){
-        return FixtureMonkey.builder()
-            .objectIntrospector(ConstructorPropertiesArbitraryIntrospector.INSTANCE)
-            .defaultNotNull(true)
-            .build();
-    }
-
-
-
 }

@@ -1,9 +1,8 @@
 package com.pawith.userdomain.service;
 
 
-import com.navercorp.fixturemonkey.FixtureMonkey;
-import com.navercorp.fixturemonkey.api.introspector.ConstructorPropertiesArbitraryIntrospector;
 import com.pawith.commonmodule.UnitTestConfig;
+import com.pawith.commonmodule.utils.FixtureMonkeyUtils;
 import com.pawith.userdomain.entity.User;
 import com.pawith.userdomain.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,11 +21,6 @@ public class UserSaveServiceTest {
     UserRepository userRepository;
     UserSaveService userSaveService;
 
-    private static final FixtureMonkey fixtureMonkey = FixtureMonkey.builder()
-            .objectIntrospector(ConstructorPropertiesArbitraryIntrospector.INSTANCE)
-            .defaultNotNull(true)
-            .build();
-
     @BeforeEach
     void init() { userSaveService = new UserSaveService(userRepository); }
 
@@ -34,7 +28,7 @@ public class UserSaveServiceTest {
     @DisplayName("유저를 생성한다.")
     void saveUser() {
         //given
-        User mockUser = fixtureMonkey.giveMeOne(User.class);
+        User mockUser = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeOne(User.class);
         //when
         userSaveService.saveUser(mockUser);
         //then
