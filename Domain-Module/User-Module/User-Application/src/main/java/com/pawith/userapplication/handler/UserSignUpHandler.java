@@ -1,11 +1,11 @@
-package com.pawith.usermodule.handler;
+package com.pawith.userapplication.handler;
 
-import com.pawith.usermodule.handler.event.UserSignUpEvent;
-import com.pawith.usermodule.mapper.UserMapper;
-import com.pawith.usermodule.entity.User;
-import com.pawith.usermodule.service.UserAuthoritySaveService;
-import com.pawith.usermodule.service.UserQueryService;
-import com.pawith.usermodule.service.UserSaveService;
+import com.pawith.userapplication.handler.event.UserSignUpEvent;
+import com.pawith.userapplication.mapper.UserMapper;
+import com.pawith.userdomain.entity.User;
+import com.pawith.userdomain.service.UserAuthoritySaveService;
+import com.pawith.userdomain.service.UserQueryService;
+import com.pawith.userdomain.service.UserSaveService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;

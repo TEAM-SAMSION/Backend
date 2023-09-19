@@ -1,15 +1,15 @@
-package com.pawith.usermodule.handler.event;
+package com.pawith.userapplication.handler.event;
 
+import com.pawith.commonmodule.enums.Provider;
 import lombok.*;
 
 @Getter
-@Builder
 public class UserSignUpEvent {
     private String nickname;
     private String email;
-    private String provider;
+    private Provider provider;
 
-    public UserSignUpEvent(String nickname, String email, String provider) {
+    public UserSignUpEvent(String nickname, String email, Provider provider) {
         this.nickname = nickname;
         this.email = email;
         this.provider = provider;

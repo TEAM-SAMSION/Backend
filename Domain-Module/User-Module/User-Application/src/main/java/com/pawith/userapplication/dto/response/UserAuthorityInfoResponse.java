@@ -1,6 +1,6 @@
-package com.pawith.usermodule.dto.response;
+package com.pawith.userapplication.dto.response;
 
-import com.pawith.usermodule.entity.Authority;
+import com.pawith.userdomain.entity.Authority;
 import lombok.Getter;
 
 @Getter

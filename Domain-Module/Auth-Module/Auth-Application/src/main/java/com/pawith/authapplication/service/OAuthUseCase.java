@@ -1,7 +1,7 @@
 package com.pawith.authapplication.service;
 
 import com.pawith.authapplication.dto.OAuthResponse;
-import com.pawith.authapplication.dto.Provider;
+import com.pawith.commonmodule.enums.Provider;
 
 public interface OAuthUseCase {
 

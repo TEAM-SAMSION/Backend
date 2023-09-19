@@ -1,4 +1,4 @@
-package com.pawith.usermodule.dto.request;
+package com.pawith.userapplication.dto.request;
 
 import lombok.AccessLevel;
 import lombok.Getter;

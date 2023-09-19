@@ -1,8 +1,8 @@
-package com.pawith.usermodule.mapper;
+package com.pawith.userapplication.mapper;
 
 import com.pawith.commonmodule.annotation.Mapper;
-import com.pawith.usermodule.handler.event.UserSignUpEvent;
-import com.pawith.usermodule.entity.User;
+import com.pawith.userapplication.handler.event.UserSignUpEvent;
+import com.pawith.userdomain.entity.User;
 
 @Mapper
 public class UserMapper {

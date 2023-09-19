@@ -1,4 +1,4 @@
-package com.pawith.usermodule.dto.response;
+package com.pawith.userapplication.dto.response;
 
 import lombok.Getter;
 

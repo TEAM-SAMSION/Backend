@@ -1,9 +1,10 @@
-package com.pawith.usermodule.service;
+package com.pawith.userapplication.service;
 
 import com.pawith.commonmodule.annotation.ApplicationService;
-import com.pawith.usermodule.dto.response.UserAuthorityInfoResponse;
-import com.pawith.usermodule.entity.UserAuthority;
-import com.pawith.usermodule.utils.UserUtils;
+import com.pawith.userapplication.dto.response.UserAuthorityInfoResponse;
+import com.pawith.userdomain.entity.UserAuthority;
+import com.pawith.userdomain.service.UserAuthorityQueryService;
+import com.pawith.userdomain.utils.UserUtils;
 import lombok.RequiredArgsConstructor;
 
 @ApplicationService

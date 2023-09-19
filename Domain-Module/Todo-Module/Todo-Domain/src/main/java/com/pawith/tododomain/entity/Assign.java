@@ -2,7 +2,7 @@ package com.pawith.tododomain.entity;
 
 import com.pawith.commonmodule.domain.BaseEntity;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -10,7 +10,6 @@ import javax.persistence.*;
 
 @Entity
 @Getter
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Assign extends BaseEntity {
     @Id
@@ -25,4 +24,10 @@ public class Assign extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "register_id")
     private Register register;
+
+    @Builder
+    public Assign(Todo todo, Register register) {
+        this.todo = todo;
+        this.register = register;
+    }
 }

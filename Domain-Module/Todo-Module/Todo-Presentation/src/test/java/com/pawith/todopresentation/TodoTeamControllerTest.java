@@ -1,9 +1,8 @@
 package com.pawith.todopresentation;
 
-import com.navercorp.fixturemonkey.FixtureMonkey;
-import com.navercorp.fixturemonkey.api.introspector.ConstructorPropertiesArbitraryIntrospector;
 import com.pawith.commonmodule.BaseRestDocsTest;
 import com.pawith.commonmodule.slice.SliceResponse;
+import com.pawith.commonmodule.utils.FixtureMonkeyUtils;
 import com.pawith.todoapplication.dto.request.PetRegisterRequest;
 import com.pawith.todoapplication.dto.request.TodoTeamCreateRequest;
 import com.pawith.todoapplication.dto.response.TodoTeamRandomCodeResponse;
@@ -56,7 +55,7 @@ class TodoTeamControllerTest extends BaseRestDocsTest {
     void getTodoTeams() throws Exception{
         //given
         final PageRequest pageRequest = PageRequest.of(0, 10);
-        final List<TodoTeamSimpleResponse> todoTeamSimpleResponses = getFixtureMonkey()
+        final List<TodoTeamSimpleResponse> todoTeamSimpleResponses = FixtureMonkeyUtils.getConstructBasedFixtureMonkey()
             .giveMeBuilder(TodoTeamSimpleResponse.class)
             .set("teamId", Arbitraries.longs().greaterOrEqual(1L))
             .set("registerPeriod", Arbitraries.integers().greaterOrEqual(1))
@@ -119,12 +118,14 @@ class TodoTeamControllerTest extends BaseRestDocsTest {
     @DisplayName("TodoTeam 생성 테스트")
     void postTodoTeam() throws Exception {
         //given
-        final List<PetRegisterRequest> petRegisterRequests = getFixtureMonkey().giveMeBuilder(PetRegisterRequest.class)
+        final List<PetRegisterRequest> petRegisterRequests = FixtureMonkeyUtils.getConstructBasedFixtureMonkey()
+            .giveMeBuilder(PetRegisterRequest.class)
             .set("name", Arbitraries.strings().withCharRange('a', 'z').ofMinLength(5).ofMaxLength(10))
             .set("age", Arbitraries.integers().between(1, 15))
             .set("imageUrl", "https://image/" + UUID.randomUUID().toString())
             .sampleList(4);
-        final TodoTeamCreateRequest todoTeamCreateRequest = getFixtureMonkey().giveMeBuilder(TodoTeamCreateRequest.class)
+        final TodoTeamCreateRequest todoTeamCreateRequest = FixtureMonkeyUtils.getConstructBasedFixtureMonkey()
+            .giveMeBuilder(TodoTeamCreateRequest.class)
             .set("teamName", Arbitraries.strings().withCharRange('a', 'z').ofMinLength(5).ofMaxLength(10))
             .set("randomCode",UUID.randomUUID().toString().split("-")[0])
             .set("petRegisters", petRegisterRequests)
@@ -152,12 +153,4 @@ class TodoTeamControllerTest extends BaseRestDocsTest {
                 )
             ));
     }
-
-    private FixtureMonkey getFixtureMonkey() {
-        return FixtureMonkey.builder()
-            .defaultNotNull(true)
-            .objectIntrospector(ConstructorPropertiesArbitraryIntrospector.INSTANCE)
-            .build();
-    }
-
 }
