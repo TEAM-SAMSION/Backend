@@ -4,12 +4,13 @@ import com.pawith.commonmodule.annotation.DomainService;
 import com.pawith.commonmodule.exception.Error;
 import com.pawith.tododomain.entity.Register;
 import com.pawith.tododomain.exception.NotRegisterUserException;
-import com.pawith.tododomain.exception.RegisterNotFoundException;
 import com.pawith.tododomain.repository.RegisterRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @DomainService
 @Transactional(readOnly = true)
@@ -26,8 +27,7 @@ public class RegisterQueryService {
             .orElseThrow(() -> new NotRegisterUserException(Error.NOT_REGISTER_USER));
     }
 
-    public Register findRecentRegisterByUserId(Long userId) {
-        return registerRepository.findTopByUserIdOrderByCreatedAtDesc(userId)
-                .orElseThrow(() -> new RegisterNotFoundException(Error.REGISTER_NOT_FOUND));
+    public List<Register> findRegisterByUserId(Long userId) {
+        return registerRepository.findAllByUserId(userId);
     }
 }
