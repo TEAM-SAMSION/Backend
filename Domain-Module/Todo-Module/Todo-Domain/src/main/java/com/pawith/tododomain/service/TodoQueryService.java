@@ -8,8 +8,6 @@ import com.pawith.tododomain.repository.TodoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-
 @DomainService
 @RequiredArgsConstructor
 @Transactional
@@ -19,9 +17,5 @@ public class TodoQueryService {
 
     public Todo findTodoByTodoId(Long todoId) {
         return todoRepository.findById(todoId).orElseThrow(() -> new TodoNotFoundException(Error.TODO_NOT_FOUND));
-    }
-
-    public Long countTodoByCategoryIdAndCreatedAtAndStatus(Long categoryId, LocalDateTime createdAt, String status) {
-        return todoRepository.countByCategoryIdAndCreatedAtAndTodoStatus(categoryId, createdAt, status);
     }
 }

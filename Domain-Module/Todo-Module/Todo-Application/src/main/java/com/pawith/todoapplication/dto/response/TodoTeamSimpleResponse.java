@@ -4,8 +4,6 @@ import com.pawith.tododomain.entity.Authority;
 import lombok.*;
 
 @Getter
-@ToString
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
 public class TodoTeamSimpleResponse {
     private Long teamId;

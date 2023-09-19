@@ -1,13 +1,12 @@
 package com.pawith.userpresentation;
 
-import com.navercorp.fixturemonkey.FixtureMonkey;
-import com.navercorp.fixturemonkey.api.introspector.ConstructorPropertiesArbitraryIntrospector;
 import com.pawith.commonmodule.BaseRestDocsTest;
-import com.pawith.usermodule.dto.request.UserNicknameChangeRequest;
-import com.pawith.usermodule.dto.response.UserInfoResponse;
-import com.pawith.usermodule.service.UserInfoGetUseCase;
-import com.pawith.usermodule.service.UserNicknameChangeUseCase;
-import com.pawith.usermodule.service.UserProfileImageUpdateUseCase;
+import com.pawith.commonmodule.utils.FixtureMonkeyUtils;
+import com.pawith.userapplication.dto.request.UserNicknameChangeRequest;
+import com.pawith.userapplication.dto.response.UserInfoResponse;
+import com.pawith.userapplication.service.UserInfoGetUseCase;
+import com.pawith.userapplication.service.UserNicknameChangeUseCase;
+import com.pawith.userapplication.service.UserProfileImageUpdateUseCase;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -70,8 +69,7 @@ class UserControllerTest extends BaseRestDocsTest {
         final MockHttpServletRequestBuilder request = get(USER_REQUEST_URL)
             .contentType("application/json")
             .header(AUTHORIZATION_HEADER, ACCESS_TOKEN);
-        final FixtureMonkey fixtureMonkey = FixtureMonkey.builder().defaultNotNull(true).objectIntrospector(ConstructorPropertiesArbitraryIntrospector.INSTANCE).build();
-        given(userInfoGetUseCase.getUserInfo()).willReturn(fixtureMonkey.giveMeOne(UserInfoResponse.class));
+        given(userInfoGetUseCase.getUserInfo()).willReturn(FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(UserInfoResponse.class));
         //when
         ResultActions result = mvc.perform(request);
         //then

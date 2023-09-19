@@ -1,10 +1,10 @@
 package com.pawith.userpresentation;
 
 import com.navercorp.fixturemonkey.FixtureMonkey;
-import com.navercorp.fixturemonkey.api.introspector.ConstructorPropertiesArbitraryIntrospector;
 import com.pawith.commonmodule.BaseRestDocsTest;
-import com.pawith.usermodule.service.UserAuthorityGetUseCase;
-import com.pawith.usermodule.dto.response.UserAuthorityInfoResponse;
+import com.pawith.commonmodule.utils.FixtureMonkeyUtils;
+import com.pawith.userapplication.dto.response.UserAuthorityInfoResponse;
+import com.pawith.userapplication.service.UserAuthorityGetUseCase;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -38,7 +38,7 @@ public class UserAuthorityControllerTest extends BaseRestDocsTest {
     @DisplayName("사용자 권한 조회")
     void getUserAuthority() throws Exception {
         //given
-        final UserAuthorityInfoResponse testUserAuthorityInfoResponse = getFixtureMonkey().giveMeOne(UserAuthorityInfoResponse.class);
+        final UserAuthorityInfoResponse testUserAuthorityInfoResponse = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(UserAuthorityInfoResponse.class);
         given(userAuthorityGetUseCase.getUserAuthority()).willReturn(testUserAuthorityInfoResponse);
         MockHttpServletRequestBuilder request = get(USER_AUTHORITY_URL)
             .header(AUTHORIZATION_HEADER, AUTHORIZATION_HEADER_VALUE + FixtureMonkey.create().giveMeOne(String.class));
@@ -55,11 +55,5 @@ public class UserAuthorityControllerTest extends BaseRestDocsTest {
                     fieldWithPath("authority").description("사용자 권한")
                 )
             ));
-    }
-
-    private FixtureMonkey getFixtureMonkey() {
-        return FixtureMonkey.builder()
-            .objectIntrospector(ConstructorPropertiesArbitraryIntrospector.INSTANCE)
-            .build();
     }
 }

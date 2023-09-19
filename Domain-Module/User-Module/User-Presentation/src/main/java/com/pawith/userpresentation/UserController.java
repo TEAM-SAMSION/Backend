@@ -1,10 +1,10 @@
 package com.pawith.userpresentation;
 
-import com.pawith.usermodule.dto.request.UserNicknameChangeRequest;
-import com.pawith.usermodule.dto.response.UserInfoResponse;
-import com.pawith.usermodule.service.UserInfoGetUseCase;
-import com.pawith.usermodule.service.UserNicknameChangeUseCase;
-import com.pawith.usermodule.service.UserProfileImageUpdateUseCase;
+import com.pawith.userapplication.dto.request.UserNicknameChangeRequest;
+import com.pawith.userapplication.dto.response.UserInfoResponse;
+import com.pawith.userapplication.service.UserInfoGetUseCase;
+import com.pawith.userapplication.service.UserNicknameChangeUseCase;
+import com.pawith.userapplication.service.UserProfileImageUpdateUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;

@@ -2,7 +2,7 @@ package com.pawith.tododomain.entity;
 
 import com.pawith.commonmodule.domain.BaseEntity;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -10,7 +10,6 @@ import javax.persistence.*;
 
 @Entity
 @Getter
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Todo extends BaseEntity {
     @Id
@@ -27,4 +26,10 @@ public class Todo extends BaseEntity {
     @JoinColumn(name = "category_id")
     private Category category;
 
+    @Builder
+    public Todo(String description, TodoStatus todoStatus, Category category) {
+        this.description = description;
+        this.todoStatus = todoStatus;
+        this.category = category;
+    }
 }

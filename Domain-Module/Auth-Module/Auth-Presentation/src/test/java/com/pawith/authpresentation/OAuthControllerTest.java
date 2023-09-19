@@ -1,12 +1,12 @@
 package com.pawith.authpresentation;
 
 import com.navercorp.fixturemonkey.FixtureMonkey;
-import com.navercorp.fixturemonkey.api.introspector.ConstructorPropertiesArbitraryIntrospector;
-import com.pawith.authapplication.service.OAuthUseCase;
+import com.navercorp.fixturemonkey.api.introspector.BuilderArbitraryIntrospector;
 import com.pawith.authapplication.dto.OAuthResponse;
-import com.pawith.authapplication.dto.Provider;
+import com.pawith.authapplication.service.OAuthUseCase;
 import com.pawith.authpresentation.common.FilterConfig;
 import com.pawith.commonmodule.BaseRestDocsTest;
+import com.pawith.commonmodule.enums.Provider;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -66,7 +66,7 @@ class OAuthControllerTest extends BaseRestDocsTest {
 
     private FixtureMonkey getFixtureMonkey() {
         return FixtureMonkey.builder()
-            .objectIntrospector(ConstructorPropertiesArbitraryIntrospector.INSTANCE)
+            .objectIntrospector(BuilderArbitraryIntrospector.INSTANCE)
             .build();
     }
 }

@@ -8,8 +8,8 @@ import com.pawith.tododomain.entity.Register;
 import com.pawith.tododomain.entity.TodoTeam;
 import com.pawith.tododomain.service.RegisterQueryService;
 import com.pawith.tododomain.service.TodoTeamQueryService;
-import com.pawith.usermodule.entity.User;
-import com.pawith.usermodule.utils.UserUtils;
+import com.pawith.userdomain.entity.User;
+import com.pawith.userdomain.utils.UserUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -24,11 +24,12 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class TodoTeamGetUseCase {
+    private final UserUtils userUtils;
     private final RegisterQueryService registerQueryService;
     private final TodoTeamQueryService todoTeamQueryService;
 
     public SliceResponse<TodoTeamSimpleResponse> getTodoTeams(final Pageable pageable){
-        final User requestUser = UserUtils.getAccessUser();
+        final User requestUser = userUtils.getAccessUser();
         final Slice<Register> registers = registerQueryService.findRegisterSliceByUserId(requestUser.getId(), pageable);
         Slice<TodoTeamSimpleResponse> todoTeamSimpleResponseSlice = registers.map(register -> {
             final TodoTeam todoTeam = todoTeamQueryService.findTodoTeamById(register.getTodoTeam().getId());
@@ -40,7 +41,7 @@ public class TodoTeamGetUseCase {
     }
 
     public List<TodoTeamNameSimpleResponse> getTodoTeamName() {
-        final User requestUser = UserUtils.getAccessUser();
+        final User requestUser = userUtils.getAccessUser();
         final List<Register> registers = registerQueryService.findRegisterByUserId(requestUser.getId());
         return registers.stream()
                 .map(register -> {

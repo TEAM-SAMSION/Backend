@@ -1,14 +1,14 @@
 package com.pawith.authapplication.service.command;
 
-import com.pawith.authapplication.exception.AuthException;
 import com.pawith.authapplication.common.consts.AuthConsts;
 import com.pawith.authapplication.dto.OAuthRequest;
 import com.pawith.authapplication.dto.OAuthResponse;
 import com.pawith.authapplication.dto.OAuthUserInfo;
+import com.pawith.authapplication.exception.AuthException;
 import com.pawith.authapplication.service.command.handler.AuthHandler;
-import com.pawith.commonmodule.exception.Error;
 import com.pawith.authdomain.jwt.JWTProvider;
-import com.pawith.usermodule.handler.event.UserSignUpEvent;
+import com.pawith.commonmodule.exception.Error;
+import com.pawith.userapplication.handler.event.UserSignUpEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
@@ -27,7 +27,7 @@ public class OAuthInvoker {
 
     public OAuthResponse execute(OAuthRequest request){
         OAuthUserInfo oAuthUserInfo = attemptLogin(request);
-        publisher.publishEvent(new UserSignUpEvent(oAuthUserInfo.getUsername(), oAuthUserInfo.getEmail(), request.getProvider().toString()));
+        publisher.publishEvent(new UserSignUpEvent(oAuthUserInfo.getUsername(), oAuthUserInfo.getEmail(), request.getProvider()));
         return generateServerAuthenticationTokens(oAuthUserInfo);
     }
 

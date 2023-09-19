@@ -11,6 +11,7 @@ import java.util.UUID;
 public class TodoTeamCodeGenerateService {
     private final TodoTeamRepository todoTeamRepository;
 
+    // TODO: 2023/09/20 랜덤 코드 생성이 너무 오래걸리면 어떻게할지 고민해보기
     public String generateRandomCode(){
         while(true){
             final String randomUUID = UUID.randomUUID().toString();
