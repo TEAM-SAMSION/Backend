@@ -1,4 +1,4 @@
-package com.pawith.authapplication.dto;
+package com.pawith.commonmodule.enums;
 
 public enum Provider {
     GOOGLE, NAVER, KAKAO,APPLE
