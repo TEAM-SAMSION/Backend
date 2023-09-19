@@ -13,7 +13,7 @@ public class RegisterDeleteService {
 
     private final RegisterRepository registerRepository;
 
-    public void deleteRegisterByTodoTeamId(Register requestRegister){
+    public void deleteRegister(Register requestRegister){
         registerRepository.delete(requestRegister);
     }
 }
