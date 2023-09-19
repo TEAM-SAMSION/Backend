@@ -1,9 +1,7 @@
 package com.pawith.userapplication.service;
 
-import com.navercorp.fixturemonkey.FixtureMonkey;
-import com.navercorp.fixturemonkey.api.introspector.BuilderArbitraryIntrospector;
-import com.navercorp.fixturemonkey.api.introspector.ConstructorPropertiesArbitraryIntrospector;
 import com.pawith.commonmodule.UnitTestConfig;
+import com.pawith.commonmodule.utils.FixtureMonkeyUtils;
 import com.pawith.userapplication.dto.request.UserNicknameChangeRequest;
 import com.pawith.userdomain.entity.Authority;
 import com.pawith.userdomain.entity.User;
@@ -40,31 +38,20 @@ class UserNicknameChangeUseCaseTest {
     @DisplayName("유저 닉네임을 변경한다.")
     void changeUserName() {
         //given
-        final UserNicknameChangeRequest mockRequest = getFixtureMonkey().giveMeOne(UserNicknameChangeRequest.class);
-        final User mockUser = FixtureMonkey.builder().objectIntrospector(BuilderArbitraryIntrospector.INSTANCE)
-            .defaultNotNull(true)
-            .build().giveMeOne(User.class);
-        final UserAuthority mockUserAuthority = getFixtureMonkey().
-            giveMeBuilder(UserAuthority.class)
+        final UserNicknameChangeRequest mockRequest = FixtureMonkeyUtils.getConstructBasedFixtureMonkey()
+            .giveMeOne(UserNicknameChangeRequest.class);
+        final User mockUser = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey()
+            .giveMeOne(User.class);
+        final UserAuthority mockUserAuthority = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey()
+            .giveMeBuilder(UserAuthority.class)
             .set("authority", Authority.GUEST)
             .sample();
         given(userUtils.getAccessUser()).willReturn(mockUser);
         given(userAuthorityQueryService.findByEmail(mockUser.getEmail())).willReturn(mockUserAuthority);
-        log.info("mockUser: {}", mockUser);
-        log.info("mockUserAuthority: {}", mockUserAuthority);
-        log.info("mockRequest: {}", mockRequest);
         //when
         userNicknameChangeUseCase.changeUserName(mockRequest);
         //then
         Assertions.assertThat(mockUser.getNickname()).isEqualTo(mockRequest.getNickname());
         Assertions.assertThat(mockUserAuthority.getAuthority()).isEqualTo(Authority.USER);
     }
-
-    private FixtureMonkey getFixtureMonkey() {
-        return FixtureMonkey.builder()
-            .objectIntrospector(ConstructorPropertiesArbitraryIntrospector.INSTANCE)
-            .defaultNotNull(true)
-            .build();
-    }
-
 }
