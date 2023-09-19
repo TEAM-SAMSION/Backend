@@ -1,4 +1,4 @@
-package com.pawith.usermodule.exception;
+package com.pawith.userdomain.exception;
 
 import com.pawith.commonmodule.exception.BusinessException;
 import com.pawith.commonmodule.exception.Error;

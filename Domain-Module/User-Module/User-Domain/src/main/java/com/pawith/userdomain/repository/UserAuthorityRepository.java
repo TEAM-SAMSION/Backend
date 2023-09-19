@@ -1,6 +1,6 @@
-package com.pawith.usermodule.repository;
+package com.pawith.userdomain.repository;
 
-import com.pawith.usermodule.entity.UserAuthority;
+import com.pawith.userdomain.entity.UserAuthority;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

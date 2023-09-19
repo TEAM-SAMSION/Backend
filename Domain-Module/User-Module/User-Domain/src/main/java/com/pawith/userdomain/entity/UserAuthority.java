@@ -1,4 +1,4 @@
-package com.pawith.usermodule.entity;
+package com.pawith.userdomain.entity;
 
 import com.pawith.commonmodule.domain.BaseEntity;
 import lombok.*;

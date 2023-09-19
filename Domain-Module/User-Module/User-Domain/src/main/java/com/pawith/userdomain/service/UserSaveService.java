@@ -1,8 +1,8 @@
-package com.pawith.usermodule.service;
+package com.pawith.userdomain.service;
 
 import com.pawith.commonmodule.annotation.DomainService;
-import com.pawith.usermodule.entity.User;
-import com.pawith.usermodule.repository.UserRepository;
+import com.pawith.userdomain.entity.User;
+import com.pawith.userdomain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 

@@ -1,11 +1,12 @@
-package com.pawith.usermodule.service;
+package com.pawith.userdomain.service;
 
 import com.pawith.commonmodule.annotation.DomainService;
+import com.pawith.commonmodule.enums.Provider;
 import com.pawith.commonmodule.exception.Error;
-import com.pawith.usermodule.entity.User;
-import com.pawith.usermodule.exception.AccountAlreadyExistException;
-import com.pawith.usermodule.exception.UserNotFoundException;
-import com.pawith.usermodule.repository.UserRepository;
+import com.pawith.userdomain.entity.User;
+import com.pawith.userdomain.exception.AccountAlreadyExistException;
+import com.pawith.userdomain.exception.UserNotFoundException;
+import com.pawith.userdomain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserQueryService {
     private final UserRepository userRepository;
 
-    public void checkAccountAlreadyExist(String email, String provider) {
+    public void checkAccountAlreadyExist(String email, Provider provider){
         User user = findByEmail(email);
         if(!user.getProvider().equals(provider))
             throw new AccountAlreadyExistException(Error.ACCOUNT_ALREADY_EXIST);

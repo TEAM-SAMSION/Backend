@@ -1,12 +1,11 @@
-package com.pawith.usermodule.domain.service;
+package com.pawith.userdomain.service;
 
 
 import com.navercorp.fixturemonkey.FixtureMonkey;
 import com.navercorp.fixturemonkey.api.introspector.ConstructorPropertiesArbitraryIntrospector;
 import com.pawith.commonmodule.UnitTestConfig;
-import com.pawith.usermodule.entity.User;
-import com.pawith.usermodule.repository.UserRepository;
-import com.pawith.usermodule.service.UserSaveService;
+import com.pawith.userdomain.entity.User;
+import com.pawith.userdomain.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

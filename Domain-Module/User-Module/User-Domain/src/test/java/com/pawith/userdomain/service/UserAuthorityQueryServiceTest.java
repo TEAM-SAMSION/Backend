@@ -1,12 +1,11 @@
-package com.pawith.usermodule.domain.service;
+package com.pawith.userdomain.service;
 
 import com.navercorp.fixturemonkey.FixtureMonkey;
 import com.navercorp.fixturemonkey.api.introspector.ConstructorPropertiesArbitraryIntrospector;
 import com.pawith.commonmodule.UnitTestConfig;
-import com.pawith.usermodule.entity.UserAuthority;
-import com.pawith.usermodule.exception.UserAuthorityNotFoundException;
-import com.pawith.usermodule.repository.UserAuthorityRepository;
-import com.pawith.usermodule.service.UserAuthorityQueryService;
+import com.pawith.userdomain.entity.UserAuthority;
+import com.pawith.userdomain.exception.UserAuthorityNotFoundException;
+import com.pawith.userdomain.repository.UserAuthorityRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

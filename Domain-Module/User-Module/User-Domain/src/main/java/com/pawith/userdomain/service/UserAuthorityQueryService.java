@@ -1,10 +1,10 @@
-package com.pawith.usermodule.service;
+package com.pawith.userdomain.service;
 
 import com.pawith.commonmodule.annotation.DomainService;
 import com.pawith.commonmodule.exception.Error;
-import com.pawith.usermodule.entity.UserAuthority;
-import com.pawith.usermodule.exception.UserAuthorityNotFoundException;
-import com.pawith.usermodule.repository.UserAuthorityRepository;
+import com.pawith.userdomain.entity.UserAuthority;
+import com.pawith.userdomain.exception.UserAuthorityNotFoundException;
+import com.pawith.userdomain.repository.UserAuthorityRepository;
 import lombok.RequiredArgsConstructor;
 
 @DomainService

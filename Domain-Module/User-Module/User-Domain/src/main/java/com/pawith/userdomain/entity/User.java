@@ -1,16 +1,16 @@
-package com.pawith.usermodule.entity;
+package com.pawith.userdomain.entity;
 
 import com.pawith.commonmodule.domain.BaseEntity;
+import com.pawith.commonmodule.enums.Provider;
 import lombok.*;
 
 import javax.persistence.*;
 import java.util.Objects;
 
-@Builder
+@Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
-@Entity
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class User extends BaseEntity {
 
     @Id
@@ -21,8 +21,16 @@ public class User extends BaseEntity {
     private String nickname;
     private String email;
     private String imageUrl;
-    private String provider;
+    @Enumerated(EnumType.STRING)
+    private Provider provider;
 
+    @Builder
+    public User(String nickname, String email, String imageUrl, Provider provider) {
+        this.nickname = nickname;
+        this.email = email;
+        this.imageUrl = imageUrl;
+        this.provider = provider;
+    }
 
     public void updateNickname(final String nickname) {
         if(this.nickname.equals(nickname))
