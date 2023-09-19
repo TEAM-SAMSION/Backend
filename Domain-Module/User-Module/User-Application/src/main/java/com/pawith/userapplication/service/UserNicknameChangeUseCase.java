@@ -1,10 +1,11 @@
-package com.pawith.usermodule.service;
+package com.pawith.userapplication.service;
 
 import com.pawith.commonmodule.annotation.ApplicationService;
-import com.pawith.usermodule.entity.User;
-import com.pawith.usermodule.entity.UserAuthority;
-import com.pawith.usermodule.dto.request.UserNicknameChangeRequest;
-import com.pawith.usermodule.utils.UserUtils;
+import com.pawith.userapplication.dto.request.UserNicknameChangeRequest;
+import com.pawith.userdomain.entity.User;
+import com.pawith.userdomain.entity.UserAuthority;
+import com.pawith.userdomain.service.UserAuthorityQueryService;
+import com.pawith.userdomain.utils.UserUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,10 +14,11 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class UserNicknameChangeUseCase {
 
+    private final UserUtils userUtils;
     private final UserAuthorityQueryService userAuthorityQueryService;
 
     public void changeUserName(final UserNicknameChangeRequest request){
-        final User user = UserUtils.getAccessUser();
+        final User user = userUtils.getAccessUser();
         user.updateNickname(request.getNickname());
         final UserAuthority userAuthority = userAuthorityQueryService.findByEmail(user.getEmail());
         userAuthority.changeUserAuthority();

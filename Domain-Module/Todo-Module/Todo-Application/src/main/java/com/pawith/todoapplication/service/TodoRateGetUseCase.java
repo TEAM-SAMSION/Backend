@@ -6,8 +6,8 @@ import com.pawith.tododomain.entity.Assign;
 import com.pawith.tododomain.entity.Register;
 import com.pawith.tododomain.entity.Todo;
 import com.pawith.tododomain.service.*;
-import com.pawith.usermodule.entity.User;
-import com.pawith.usermodule.utils.UserUtils;
+import com.pawith.userdomain.entity.User;
+import com.pawith.userdomain.utils.UserUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,13 +21,14 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 public class TodoRateGetUseCase {
 
+    private final UserUtils userUtils;
     private final TodoQueryService todoQueryService;
     private final RegisterQueryService registerQueryService;
     private final AssignQueryService assignQueryService;
 
     public TodoProgressResponse getTodoProgress(Long todoTeamId) {
         LocalDate serverTime = LocalDate.now();
-        User user = UserUtils.getAccessUser();
+        User user = userUtils.getAccessUser();
         Register register = registerQueryService.findRegisterByTodoTeamIdAndUserId(todoTeamId, user.getId());
         List<Assign> assignList = assignQueryService.findAssignByRegisterIdAndCreatedAtBetween(register.getId(), serverTime.atStartOfDay(), serverTime.atTime(LocalTime.MAX));
 

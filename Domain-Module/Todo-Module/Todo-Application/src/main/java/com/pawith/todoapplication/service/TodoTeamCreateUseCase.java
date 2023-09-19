@@ -9,8 +9,8 @@ import com.pawith.tododomain.entity.TodoTeam;
 import com.pawith.tododomain.service.PetSaveService;
 import com.pawith.tododomain.service.RegisterSaveService;
 import com.pawith.tododomain.service.TodoTeamSaveService;
-import com.pawith.usermodule.entity.User;
-import com.pawith.usermodule.utils.UserUtils;
+import com.pawith.userdomain.entity.User;
+import com.pawith.userdomain.utils.UserUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class TodoTeamCreateUseCase {
 
+    private final UserUtils userUtils;
     private final TodoTeamSaveService todoTeamSaveService;
     private final RegisterSaveService registerSaveService;
     private final PetSaveService petSaveService;
@@ -26,7 +27,7 @@ public class TodoTeamCreateUseCase {
     public void createTodoTeam(TodoTeamCreateRequest request) {
         final TodoTeam todoTeam = TodoTeamMapper.mapToTodoTeam(request);
         todoTeamSaveService.saveTodoTeamEntity(todoTeam);
-        final User user = UserUtils.getAccessUser();
+        final User user = userUtils.getAccessUser();
         registerSaveService.saveRegisterAboutPresident(todoTeam, user.getId());
         request.getPetRegisters().forEach(petRegister -> {
             final Pet pet = PetMapper.mapToPet(petRegister, todoTeam, petRegister.getImageUrl());

@@ -4,8 +4,8 @@ import com.pawith.commonmodule.annotation.ApplicationService;
 import com.pawith.tododomain.entity.Register;
 import com.pawith.tododomain.service.RegisterDeleteService;
 import com.pawith.tododomain.service.RegisterQueryService;
-import com.pawith.usermodule.entity.User;
-import com.pawith.usermodule.utils.UserUtils;
+import com.pawith.userdomain.entity.User;
+import com.pawith.userdomain.utils.UserUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,12 +13,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @RequiredArgsConstructor
 public class UnregisterUseCase {
+    private final UserUtils userUtils;
     private final RegisterQueryService registerQueryService;
     private final RegisterDeleteService registerDeleteService;
 
     public void unregisterTodoTeam(final Long todoTeamId) {
-        final User user = UserUtils.getAccessUser();
+        final User user = userUtils.getAccessUser();
         final Register register = registerQueryService.findRegisterByTodoTeamIdAndUserId(todoTeamId, user.getId());
-        registerDeleteService.deleteRegisterByTodoTeamId(register);
+        registerDeleteService.deleteRegister(register);
     }
 }

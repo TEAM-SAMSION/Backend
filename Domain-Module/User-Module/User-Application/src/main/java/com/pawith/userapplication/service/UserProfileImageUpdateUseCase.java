@@ -1,9 +1,9 @@
-package com.pawith.usermodule.service;
+package com.pawith.userapplication.service;
 
 import com.pawith.commonmodule.annotation.ApplicationService;
 import com.pawith.imagedomain.service.ImageUploadService;
-import com.pawith.usermodule.entity.User;
-import com.pawith.usermodule.utils.UserUtils;
+import com.pawith.userdomain.entity.User;
+import com.pawith.userdomain.utils.UserUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -12,13 +12,14 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 public class UserProfileImageUpdateUseCase {
 
+    private final UserUtils userUtils;
     private final ImageUploadService imageUploadService;
 
     @Transactional
     public void updateUserProfileImage(MultipartFile request) {
 //        uploadImgAsync(request);
         final String imageUrl = imageUploadService.uploadImg(request);
-        final User user = UserUtils.getAccessUser();
+        final User user = userUtils.getAccessUser();
         user.updateProfileImage(imageUrl);
     }
 
