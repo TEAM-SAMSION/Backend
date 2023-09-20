@@ -9,5 +9,4 @@ public class PetRegisterRequest {
     private String name;
     private Integer age;
     private String description;
-    private String imageUrl;
 }

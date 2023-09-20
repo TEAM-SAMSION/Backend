@@ -42,13 +42,12 @@ public class S3ImageUploadServiceImpl implements ImageUploadService {
         return uploadUrl;
     }
 
-    public List<String> uploadImgListAsync(List<MultipartFile> imgList){
-        if(CollectionUtils.isEmpty(imgList)) return List.of();
-        List<String> uploadUrl = new ArrayList<>();
-        for (MultipartFile img : imgList) {
-            uploadUrl.add(uploadImgAsync(img).join());
+    public List<CompletableFuture<String>> uploadImgListAsync(List<MultipartFile> imgList){
+        List<CompletableFuture<String>> imageCompletableFuture = new ArrayList<>();
+        for(MultipartFile img : imgList){
+            imageCompletableFuture.add(uploadImgAsync(img));
         }
-        return uploadUrl;
+        return imageCompletableFuture;
     }
 
     public CompletableFuture<String> uploadImgAsync(MultipartFile file) {

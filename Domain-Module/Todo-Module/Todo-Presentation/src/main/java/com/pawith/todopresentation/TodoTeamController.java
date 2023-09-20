@@ -12,7 +12,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -33,8 +37,13 @@ public class TodoTeamController {
         return todoTeamRandomCodeGetUseCase.generateRandomCode();
     }
 
-    @PostMapping
-    public void postTodoTeam(@RequestBody TodoTeamCreateRequest request){
-        todoTeamCreateUseCase.createTodoTeam(request);
+    /**
+     * 리팩터링 전 : 이미지 업로드 API + 팀 생성 API 100회 테스트 평균 : 502ms
+     * <br>리팩터링 후 : 테스트 예정
+     */
+    @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public void postTodoTeam(@RequestPart("imageFiles") List<MultipartFile> imageFiles,
+                             @RequestPart("todoTeamCreateInfo") TodoTeamCreateRequest todoTeamCreateInfo){
+        todoTeamCreateUseCase.createTodoTeam(imageFiles,todoTeamCreateInfo);
     }
 }

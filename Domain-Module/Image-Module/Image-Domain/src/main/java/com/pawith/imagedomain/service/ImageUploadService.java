@@ -8,7 +8,7 @@ import java.util.concurrent.CompletableFuture;
 public interface ImageUploadService {
     List<String> uploadImgList(List<MultipartFile> imgList);
 
-    List<String> uploadImgListAsync(List<MultipartFile> imgList);
+    List<CompletableFuture<String>> uploadImgListAsync(List<MultipartFile> imgList);
 
     CompletableFuture<String> uploadImgAsync(MultipartFile file);
 
