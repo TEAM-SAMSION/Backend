@@ -38,7 +38,7 @@ public class TodoGetUseCase {
 
         Slice<TodoHomeResponse> todoHomeResponseSlice = assignList.map(assign -> {
             final Todo todo = todoQueryService.findTodoByTodoId(assign.getTodo().getId());
-            return new TodoHomeResponse(todo.getDescription(), todo.getTodoStatus().name());
+            return new TodoHomeResponse(todo.getId(), todo.getDescription(), todo.getTodoStatus().name());
         });
         return SliceResponse.from(todoHomeResponseSlice);
     }

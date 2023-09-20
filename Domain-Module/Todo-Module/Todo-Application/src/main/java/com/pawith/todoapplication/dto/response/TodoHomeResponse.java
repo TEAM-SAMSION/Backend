@@ -10,6 +10,7 @@ import lombok.ToString;
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
 public class TodoHomeResponse {
 
+    private Long todoId;
     private String task;
     private String status;
 
