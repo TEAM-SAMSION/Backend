@@ -3,8 +3,6 @@ package com.pawith.todopresentation;
 import com.pawith.commonmodule.BaseRestDocsTest;
 import com.pawith.commonmodule.slice.SliceResponse;
 import com.pawith.commonmodule.utils.FixtureMonkeyUtils;
-import com.pawith.todoapplication.dto.request.PetRegisterRequest;
-import com.pawith.todoapplication.dto.request.TodoTeamCreateRequest;
 import com.pawith.todoapplication.dto.response.TodoTeamRandomCodeResponse;
 import com.pawith.todoapplication.dto.response.TodoTeamSimpleResponse;
 import com.pawith.todoapplication.service.TodoTeamCreateUseCase;
@@ -19,18 +17,18 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.SliceImpl;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 import java.util.List;
-import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.multipart;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
@@ -41,6 +39,23 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @DisplayName("TodoTeamController 테스트")
 class TodoTeamControllerTest extends BaseRestDocsTest {
 
+    private static final String TODO_TEAM_REQUEST_URL = "/todo/team";
+    private static final String TODO_TEAM_CREATE_INFO = "{\n" +
+        "    \"teamName\" : \"test\",\n" +
+        "    \"randomCode\" : \"randomCode\",\n" +
+        "    \"petRegisters\" : [ {\n" +
+        "        \"name\" : \"이름이 뭐에요~\",\n" +
+        "        \"age\" : 2,\n" +
+        "        \"description\" : \"귀엽습니다\"\n" +
+        "    },\n" +
+        "    {\n" +
+        "        \"name\" : \"이름이 뭐에요~\",\n" +
+        "        \"age\" : 2,\n" +
+        "        \"description\" : \"귀엽습니다\"\n" +
+        "    }\n" +
+        "\n" +
+        "    ]\n" +
+        "}";
     @MockBean
     private TodoTeamGetUseCase todoTeamGetUseCase;
     @MockBean
@@ -48,11 +63,9 @@ class TodoTeamControllerTest extends BaseRestDocsTest {
     @MockBean
     private TodoTeamCreateUseCase todoTeamCreateUseCase;
 
-    private static final String TODO_TEAM_REQUEST_URL = "/todo/team";
-
     @Test
     @DisplayName("TodoTeam 목록을 가져오는 테스트")
-    void getTodoTeams() throws Exception{
+    void getTodoTeams() throws Exception {
         //given
         final PageRequest pageRequest = PageRequest.of(0, 10);
         final List<TodoTeamSimpleResponse> todoTeamSimpleResponses = FixtureMonkeyUtils.getConstructBasedFixtureMonkey()
@@ -118,22 +131,14 @@ class TodoTeamControllerTest extends BaseRestDocsTest {
     @DisplayName("TodoTeam 생성 테스트")
     void postTodoTeam() throws Exception {
         //given
-        final List<PetRegisterRequest> petRegisterRequests = FixtureMonkeyUtils.getConstructBasedFixtureMonkey()
-            .giveMeBuilder(PetRegisterRequest.class)
-            .set("name", Arbitraries.strings().withCharRange('a', 'z').ofMinLength(5).ofMaxLength(10))
-            .set("age", Arbitraries.integers().between(1, 15))
-            .set("imageUrl", "https://image/" + UUID.randomUUID().toString())
-            .sampleList(4);
-        final TodoTeamCreateRequest todoTeamCreateRequest = FixtureMonkeyUtils.getConstructBasedFixtureMonkey()
-            .giveMeBuilder(TodoTeamCreateRequest.class)
-            .set("teamName", Arbitraries.strings().withCharRange('a', 'z').ofMinLength(5).ofMaxLength(10))
-            .set("randomCode",UUID.randomUUID().toString().split("-")[0])
-            .set("petRegisters", petRegisterRequests)
-            .sample();
-
-        MockHttpServletRequestBuilder request = post(TODO_TEAM_REQUEST_URL)
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(objectMapper.writeValueAsString(todoTeamCreateRequest))
+        final MockMultipartFile mockMultipartFile1 = new MockMultipartFile("imageFiles", "imageFiles", "image/jpeg", "image".getBytes());
+        final MockMultipartFile mockMultipartFile2 = new MockMultipartFile("imageFiles", "imageFiles", "image/jpeg", "image".getBytes());
+        final MockMultipartFile todoTeamCreateInfo = new MockMultipartFile("todoTeamCreateInfo", "", MediaType.APPLICATION_JSON_VALUE, TODO_TEAM_CREATE_INFO.getBytes());
+        MockHttpServletRequestBuilder request = multipart(TODO_TEAM_REQUEST_URL)
+            .file(mockMultipartFile1)
+            .file(mockMultipartFile2)
+            .file(todoTeamCreateInfo)
+            .accept(MediaType.APPLICATION_JSON)
             .header("Authorization", "Bearer accessToken");
         //when
         ResultActions result = mvc.perform(request);
@@ -143,13 +148,12 @@ class TodoTeamControllerTest extends BaseRestDocsTest {
                 requestHeaders(
                     headerWithName("Authorization").description("access 토큰")
                 ),
-                requestFields(
-                    fieldWithPath("teamName").description("팀 이름"),
-                    fieldWithPath("randomCode").description("팀 코드"),
-                    fieldWithPath("petRegisters[].name").description("펫 이름"),
-                    fieldWithPath("petRegisters[].age").description("펫 나이"),
-                    fieldWithPath("petRegisters[].description").description("펫 한 줄 설명"),
-                    fieldWithPath("petRegisters[].imageUrl").description("펫 이미지")
+                requestPartFields("todoTeamCreateInfo",
+                    fieldWithPath("teamName").description("TodoTeam 이름"),
+                    fieldWithPath("randomCode").description("TodoTeam 랜덤 코드"),
+                    fieldWithPath("petRegisters[].name").description("Pet 이름"),
+                    fieldWithPath("petRegisters[].age").description("Pet 나이"),
+                    fieldWithPath("petRegisters[].description").description("Pet 설명")
                 )
             ));
     }
