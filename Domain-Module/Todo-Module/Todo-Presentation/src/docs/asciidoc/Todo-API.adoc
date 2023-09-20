@@ -35,5 +35,9 @@ operation::todo-home-controller-test/get-todo-progress[snippets='http-request,pa
 [[Todo-API-가장-최근에-가입한-Todo-Team-조회]]
 === 가장 최근에 가입한 TodoTeam 조회 (홈 화면)
 
-operation::todo-home-controller-test/get-recent-todo-team-name[snippets='http-request,request-headers,http-response,response-fields']
+operation::todo-home-controller-test/get-todo-team-name[snippets='http-request,request-headers,http-response,response-fields']
 
+[[Todo-API-할당-받은-Todo-조회]]
+=== 할당받은 Todo 조회
+
+operation::todo-home-controller-test/get-todos[snippets='http-request,path-parameters,request-parameters,request-headers,http-response,response-fields']
