@@ -107,6 +107,7 @@ public class TodoHomeControllerTest extends BaseRestDocsTest {
         final Long testTeamId = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(Long.class);
         final List<TodoHomeResponse> todoHomeResponses = FixtureMonkeyUtils.getConstructBasedFixtureMonkey()
                 .giveMeBuilder(TodoHomeResponse.class)
+                .set("todoId", Arbitraries.longs().greaterOrEqual(1L))
                 .set("task", Arbitraries.strings().withCharRange('a', 'z').ofMinLength(5).ofMaxLength(10))
                 .set("status", FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeBuilder("COMPLETE"))
                 .sampleList(pageRequest.getPageSize());
@@ -132,6 +133,7 @@ public class TodoHomeControllerTest extends BaseRestDocsTest {
                                 parameterWithName("size").description("요청 사이즈")
                         ),
                         responseFields(
+                                fieldWithPath("content[].todoId").description("투두 항목 Id"),
                                 fieldWithPath("content[].task").description("투두 항목 이름"),
                                 fieldWithPath("content[].status").description("투두 항목 상태(완료, 미완료)"),
                                 fieldWithPath("page").description("요청 페이지"),
