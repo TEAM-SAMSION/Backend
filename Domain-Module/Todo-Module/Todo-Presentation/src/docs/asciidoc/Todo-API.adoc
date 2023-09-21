@@ -28,7 +28,7 @@ operation::todo-team-controller-test/post-todo-team[snippets='http-request,reque
 operation::todo-team-controller-test/get-todo-team-random-code[snippets='http-request,request-headers,http-response,response-fields']
 
 [[Todo-API-Todo-달성률]]
-=== Todo 달성률 
+=== Todo 달성률 조회
 
 operation::todo-controller-test/get-todo-progress[snippets='http-request,path-parameters,request-headers,http-response,response-fields']
 
