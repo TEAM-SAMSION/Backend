@@ -34,7 +34,7 @@ public class TodoGetUseCase {
         final LocalDate serverTime = LocalDate.now();
         final User user = userUtils.getAccessUser();
         final Register register = registerQueryService.findRegisterByTodoTeamIdAndUserId(teamId, user.getId());
-        final Slice<Assign> assignList = assignQueryService.findAssignSliceByRegisterIdAndCreatedAtBetween(register.getId(), serverTime.atStartOfDay(), serverTime.atTime(LocalTime.MAX), pageable);
+        final Slice<Assign> assignList = assignQueryService.findTodayAssignSliceByRegisterId(register.getId(), pageable);
 
         Slice<TodoHomeResponse> todoHomeResponseSlice = assignList.map(assign -> {
             final Todo todo = todoQueryService.findTodoByTodoId(assign.getTodo().getId());
