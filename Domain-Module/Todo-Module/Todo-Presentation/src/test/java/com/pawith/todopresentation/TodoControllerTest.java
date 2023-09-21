@@ -1,16 +1,12 @@
 package com.pawith.todopresentation;
 
-import com.navercorp.fixturemonkey.FixtureMonkey;
-import com.navercorp.fixturemonkey.api.introspector.ConstructorPropertiesArbitraryIntrospector;
 import com.pawith.commonmodule.BaseRestDocsTest;
 import com.pawith.commonmodule.slice.SliceResponse;
 import com.pawith.commonmodule.utils.FixtureMonkeyUtils;
 import com.pawith.todoapplication.dto.response.TodoHomeResponse;
 import com.pawith.todoapplication.dto.response.TodoProgressResponse;
-import com.pawith.todoapplication.dto.response.TodoTeamNameSimpleResponse;
 import com.pawith.todoapplication.service.TodoGetUseCase;
 import com.pawith.todoapplication.service.TodoRateGetUseCase;
-import com.pawith.todoapplication.service.TodoTeamGetUseCase;
 import lombok.extern.slf4j.Slf4j;
 import net.jqwik.api.Arbitraries;
 import org.junit.jupiter.api.DisplayName;
@@ -35,29 +31,25 @@ import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Slf4j
-@WebMvcTest(TodoHomeController.class)
-@DisplayName("RegisterController 테스트")
-public class TodoHomeControllerTest extends BaseRestDocsTest {
-
+@WebMvcTest(TodoController.class)
+@DisplayName("TodoController 테스트")
+public class TodoControllerTest extends BaseRestDocsTest {
     @MockBean
     private TodoRateGetUseCase todoRateGetUseCase;
 
     @MockBean
-    private TodoTeamGetUseCase todoTeamGetUseCase;
-
-    @MockBean
     private TodoGetUseCase todoGetUseCase;
 
-    private static final String TODO_HOME_REQUEST_URL = "/todo/home";
+    private static final String TODO_REQUEST_URL = "/todo";
 
     @Test
     @DisplayName("Todo 달성률을 가져오는 테스트")
     void getTodoProgress() throws Exception{
         //given
-        final TodoProgressResponse testTodoProgress = getFixtureMonkey().giveMeOne(TodoProgressResponse.class);
-        final Long testTeamId = getFixtureMonkey().giveMeOne(Long.class);
+        final TodoProgressResponse testTodoProgress = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(TodoProgressResponse.class);
+        final Long testTeamId = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(Long.class);
         given(todoRateGetUseCase.getTodoProgress(testTeamId)).willReturn(testTodoProgress);
-        MockHttpServletRequestBuilder request = get(TODO_HOME_REQUEST_URL + "/progress/{teamId}", testTeamId)
+        MockHttpServletRequestBuilder request = get(TODO_REQUEST_URL + "/progress/{teamId}", testTeamId)
                 .header("Authorization", "Bearer accessToken");
         //when
         ResultActions result = mvc.perform(request);
@@ -77,29 +69,6 @@ public class TodoHomeControllerTest extends BaseRestDocsTest {
     }
 
     @Test
-    @DisplayName("가입한 팀 조회 API 테스트")
-    void getTodoTeamName() throws Exception{
-        //given
-        final List<TodoTeamNameSimpleResponse> todoTeamNameSimpleResponses = getFixtureMonkey().giveMe(TodoTeamNameSimpleResponse.class,5);
-        given(todoTeamGetUseCase.getTodoTeamName()).willReturn(todoTeamNameSimpleResponses);
-        MockHttpServletRequestBuilder request = get(TODO_HOME_REQUEST_URL)
-                .header("Authorization", "Bearer accessToken");
-        //when
-        ResultActions result = mvc.perform(request);
-        //then
-        result.andExpect(status().isOk())
-                .andDo(resultHandler.document(
-                        requestHeaders(
-                                headerWithName("Authorization").description("access 토큰")
-                        ),
-                        responseFields(
-                                fieldWithPath("[].teamId").description("TodoTeam의 Id"),
-                                fieldWithPath("[].teamName").description("TodoTeam의 이름")
-                        )
-                ));
-    }
-
-    @Test
     @DisplayName("할당받은 Todo 조회 API 테스트")
     void getTodos() throws Exception{
         //given
@@ -113,7 +82,7 @@ public class TodoHomeControllerTest extends BaseRestDocsTest {
                 .sampleList(pageRequest.getPageSize());
         final SliceImpl<TodoHomeResponse> slice = new SliceImpl(todoHomeResponses, pageRequest, true);
         given(todoGetUseCase.getTodos(any(), any())).willReturn(SliceResponse.from(slice));
-        MockHttpServletRequestBuilder request = get(TODO_HOME_REQUEST_URL + "/list/{teamId}", testTeamId)
+        MockHttpServletRequestBuilder request = get(TODO_REQUEST_URL + "/list/{teamId}", testTeamId)
                 .queryParam("page", String.valueOf(pageRequest.getPageNumber()))
                 .queryParam("size", String.valueOf(pageRequest.getPageSize()))
                 .header("Authorization", "Bearer accessToken");
@@ -143,10 +112,4 @@ public class TodoHomeControllerTest extends BaseRestDocsTest {
                 ));
     }
 
-    private FixtureMonkey getFixtureMonkey() {
-        return FixtureMonkey.builder()
-                .defaultNotNull(true)
-                .objectIntrospector(ConstructorPropertiesArbitraryIntrospector.INSTANCE)
-                .build();
-    }
 }

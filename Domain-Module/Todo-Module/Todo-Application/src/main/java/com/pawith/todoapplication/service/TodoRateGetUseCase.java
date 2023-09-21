@@ -27,11 +27,9 @@ public class TodoRateGetUseCase {
     private final AssignQueryService assignQueryService;
 
     public TodoProgressResponse getTodoProgress(Long todoTeamId) {
-        LocalDate serverTime = LocalDate.now();
         User user = userUtils.getAccessUser();
         Register register = registerQueryService.findRegisterByTodoTeamIdAndUserId(todoTeamId, user.getId());
-        List<Assign> assignList = assignQueryService.findAssignByRegisterIdAndCreatedAtBetween(register.getId(), serverTime.atStartOfDay(), serverTime.atTime(LocalTime.MAX));
-
+        List<Assign> assignList = assignQueryService.findTodayAssignByRegisterId(register.getId());
         List<Todo> todoList = assignList.stream()
                 .map(assign -> todoQueryService.findTodoByTodoId(assign.getTodo().getId()))
                 .collect(Collectors.toList());

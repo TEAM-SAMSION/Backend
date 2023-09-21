@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @DomainService
@@ -19,11 +20,17 @@ public class AssignQueryService {
 
     private final AssignRepository assignRepository;
 
-    public List<Assign> findAssignByRegisterIdAndCreatedAtBetween(Long registerId, LocalDateTime startOfDay, LocalDateTime endOfDay) {
-        return assignRepository.findAllByRegisterIdAndCreatedAtBetween(registerId, startOfDay, endOfDay);
+    public List<Assign> findTodayAssignByRegisterId(Long registerId) {
+        LocalDate serverTime = getServerTime();
+        return assignRepository.findAllByRegisterIdAndCreatedAtBetween(registerId, serverTime.atStartOfDay(), serverTime.atTime(LocalTime.MAX));
     }
 
-    public Slice<Assign> findAssignSliceByRegisterIdAndCreatedAtBetween(Long registerId, LocalDateTime startOfDay, LocalDateTime endOfDay, Pageable pageable) {
-        return assignRepository.findAllByRegisterIdAndCreatedAtBetween(registerId, startOfDay, endOfDay, pageable);
+    public Slice<Assign> findTodayAssignSliceByRegisterId(Long registerId, Pageable pageable) {
+        LocalDate serverTime = getServerTime();
+        return assignRepository.findAllByRegisterIdAndCreatedAtBetween(registerId, serverTime.atStartOfDay(), serverTime.atTime(LocalTime.MAX), pageable);
+    }
+
+    public LocalDate getServerTime() {
+        return LocalDate.now();
     }
 }
