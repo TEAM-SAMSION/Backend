@@ -7,6 +7,8 @@ import com.pawith.tododomain.exception.TodoNotFoundException;
 import com.pawith.tododomain.repository.TodoRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
@@ -26,5 +28,9 @@ public class TodoQueryService {
         final Long countTodayTodo = todoRepository.countTodayTodo(userId, todoTeamId);
         final Long countCompleteTodayTodo = todoRepository.countTodayCompleteTodo(userId, todoTeamId);
         return (int) ((countCompleteTodayTodo / (double) countTodayTodo) * 100);
+    }
+
+    public Slice<Todo> findTodayTodoSlice(Long userId, Long todoTeamId, Pageable pageable) {
+        return todoRepository.findTodayTodo(userId, todoTeamId, pageable);
     }
 }
