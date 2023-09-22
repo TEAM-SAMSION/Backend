@@ -1,12 +1,14 @@
 package com.pawith.authapplication.service.command.handler.impl;
 
-import com.pawith.authapplication.service.command.handler.AuthHandler;
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.pawith.authapplication.dto.OAuthRequest;
 import com.pawith.authapplication.dto.OAuthUserInfo;
+import com.pawith.authapplication.service.command.handler.AuthHandler;
+import com.pawith.authdomain.jwt.exception.InvalidTokenException;
 import com.pawith.commonmodule.enums.Provider;
 import com.pawith.commonmodule.exception.Error;
-import com.pawith.authdomain.jwt.exception.InvalidTokenException;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,8 +34,8 @@ public class KakaoOAuthHandler implements AuthHandler {
         final TokenInfo tokenInfo = verifyAccessToken(authenticationInfo.getAccessToken());
         if (!tokenInfo.getAppId().equals(appId)) throw new InvalidTokenException(Error.INVALID_TOKEN);
 
-        final KakaoUserInfo kakaoUserInfo = getKaKaoUserInfo(authenticationInfo.getAccessToken());
-        return new OAuthUserInfo(kakaoUserInfo.kakaoAccount.getNickname(), kakaoUserInfo.kakaoAccount.getEmail());
+        final KakaoAccount kakaoAccount = getKaKaoUserInfo(authenticationInfo.getAccessToken());
+        return new OAuthUserInfo(kakaoAccount.getNickname(), kakaoAccount.getEmail());
     }
 
     @Override
@@ -41,13 +43,13 @@ public class KakaoOAuthHandler implements AuthHandler {
         return OAUTH_TYPE.equals(authInfo.getProvider());
     }
 
-    private KakaoUserInfo getKaKaoUserInfo(String accessToken){
+    private KakaoAccount getKaKaoUserInfo(String accessToken){
         return WebClient.create(KAKAO_OAUTH_USER_INFO_URL)
                 .get()
                 .accept(MediaType.APPLICATION_JSON)
                 .header(KAKAO_AUTHORIZATION, KAKAO_AUTHORIZATION_BEARER+accessToken)
                 .retrieve()
-                .bodyToMono(KakaoUserInfo.class)
+                .bodyToMono(KakaoAccount.class)
                 .block();
     }
 
@@ -60,36 +62,31 @@ public class KakaoOAuthHandler implements AuthHandler {
                 .bodyToMono(TokenInfo.class)
                 .block();
     }
-    @Getter
-    @NoArgsConstructor(access = AccessLevel.PROTECTED)
-    private static class KakaoUserInfo{
-        private KakaoAccount kakaoAccount;
-    }
 
     @Getter
+    @AllArgsConstructor
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     private static class KakaoAccount{
         private static final String EMAIL = "email";
-        private static final String NAME = "name";
-        private Map<String, String> response;
+        private static final String NAME = "nickname";
+        private static final String PROFILE = "profile";
+        @JsonAlias("kakao_account")
+        private Map<String, Object> kakakaoAccount;
         public String getNickname(){
-            return response.get(NAME);
+            Map<String, Object> profile = (Map<String, Object>) kakakaoAccount.get(PROFILE);
+            return (String) profile.get(NAME);
         }
 
         public String getEmail(){
-            return response.get(EMAIL);
+            return (String)kakakaoAccount.get(EMAIL);
         }
     }
 
     @Getter
+    @AllArgsConstructor
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     private static class TokenInfo{
-        private static final String APPID = "appId";
-
-        private Map<String, String> response;
-
-        public String getAppId(){
-            return response.get(APPID);
-        }
+        @JsonAlias("app_id")
+        private String appId;
     }
 }
