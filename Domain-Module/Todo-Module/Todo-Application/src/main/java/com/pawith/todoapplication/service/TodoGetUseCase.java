@@ -3,11 +3,7 @@ package com.pawith.todoapplication.service;
 import com.pawith.commonmodule.annotation.ApplicationService;
 import com.pawith.commonmodule.slice.SliceResponse;
 import com.pawith.todoapplication.dto.response.TodoHomeResponse;
-import com.pawith.tododomain.entity.Assign;
-import com.pawith.tododomain.entity.Register;
 import com.pawith.tododomain.entity.Todo;
-import com.pawith.tododomain.service.AssignQueryService;
-import com.pawith.tododomain.service.RegisterQueryService;
 import com.pawith.tododomain.service.TodoQueryService;
 import com.pawith.userdomain.entity.User;
 import com.pawith.userdomain.utils.UserUtils;
@@ -23,8 +19,6 @@ public class TodoGetUseCase {
 
     private final UserUtils userUtils;
     private final TodoQueryService todoQueryService;
-    private final RegisterQueryService registerQueryService;
-    private final AssignQueryService assignQueryService;
 
     /**
      * 성능개선 전 , 100회 테스트 평균 : 915ms
