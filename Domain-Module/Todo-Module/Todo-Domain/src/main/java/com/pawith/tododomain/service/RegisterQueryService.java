@@ -10,11 +10,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @DomainService
-@Transactional(readOnly = true)
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class RegisterQueryService {
     private final RegisterRepository registerRepository;
 
@@ -25,9 +23,5 @@ public class RegisterQueryService {
     public Register findRegisterByTodoTeamIdAndUserId(Long todoTeamId, Long userId) {
         return registerRepository.findByTodoTeamIdAndUserId(todoTeamId, userId)
             .orElseThrow(() -> new NotRegisterUserException(Error.NOT_REGISTER_USER));
-    }
-
-    public List<Register> findRegisterByUserId(Long userId) {
-        return registerRepository.findAllByUserId(userId);
     }
 }

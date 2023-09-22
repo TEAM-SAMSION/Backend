@@ -8,9 +8,11 @@ import com.pawith.tododomain.entity.TodoTeam;
 import com.pawith.tododomain.exception.AlreadyRegisterTodoTeamException;
 import com.pawith.tododomain.repository.RegisterRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
 @DomainService
 @RequiredArgsConstructor
+@Transactional
 public class RegisterSaveService {
     private final RegisterRepository registerRepository;
 

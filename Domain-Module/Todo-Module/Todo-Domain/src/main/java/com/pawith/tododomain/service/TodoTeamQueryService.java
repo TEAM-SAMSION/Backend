@@ -8,6 +8,7 @@ import com.pawith.tododomain.repository.TodoTeamRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -17,6 +18,10 @@ import java.util.function.Function;
 public class TodoTeamQueryService {
 
     private final TodoTeamRepository todoTeamRepository;
+
+    public List<TodoTeam> findAllTodoTeamByUserId(Long userId){
+        return todoTeamRepository.findAllByUserId(userId);
+    }
 
     public TodoTeam findTodoTeamById(Long todoTeamId) {
         return findTodo(todoTeamRepository::findById, todoTeamId);
