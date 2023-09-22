@@ -38,7 +38,7 @@ class UserNicknameChangeUseCaseTest {
     @DisplayName("유저 닉네임을 변경한다.")
     void changeUserName() {
         //given
-        final UserNicknameChangeRequest mockRequest = FixtureMonkeyUtils.getConstructBasedFixtureMonkey()
+        final UserNicknameChangeRequest mockRequest = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey()
             .giveMeOne(UserNicknameChangeRequest.class);
         final User mockUser = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey()
             .giveMeOne(User.class);

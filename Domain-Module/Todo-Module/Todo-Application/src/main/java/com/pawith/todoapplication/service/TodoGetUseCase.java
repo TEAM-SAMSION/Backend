@@ -16,11 +16,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.List;
-import java.util.stream.Collectors;
-
 @ApplicationService
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -30,8 +25,12 @@ public class TodoGetUseCase {
     private final TodoQueryService todoQueryService;
     private final RegisterQueryService registerQueryService;
     private final AssignQueryService assignQueryService;
+
+    /**
+     * 성능개선 전 , 100회 테스트 평균 : 915ms
+     *
+     */
     public SliceResponse<TodoHomeResponse> getTodos(final Long teamId, final Pageable pageable) {
-        final LocalDate serverTime = LocalDate.now();
         final User user = userUtils.getAccessUser();
         final Register register = registerQueryService.findRegisterByTodoTeamIdAndUserId(teamId, user.getId());
         final Slice<Assign> assignList = assignQueryService.findTodayAssignSliceByRegisterId(register.getId(), pageable);
