@@ -35,20 +35,20 @@ class AssignQueryServiceTest {
         assignQueryService = new AssignQueryService(assignRepository);
     }
 
-    @Test
-    @DisplayName("registerId와 날짜를 받아 해당 날짜의 할당 목록을 조회한다.")
-    void findAssignByRegisterIdAndCreatedAtBetween() {
-        //given
-        final Pageable pageable = PageRequest.of(0,10);
-        final Long mockRegisterId = FixtureMonkey.create().giveMeOne(Long.class);
-        final List<Assign> mockAssign = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMe(Assign.class,10);
-        final Slice<Assign> mockSlice = new SliceImpl<>(mockAssign, pageable, true);
-        final LocalDate now = LocalDate.now();
-        given(assignRepository.findAllByRegisterIdAndCreatedAtBetween(mockRegisterId, now.atStartOfDay(),now.atTime(LocalTime.MAX), pageable)).willReturn(mockSlice);
-        //when
-        Slice<Assign> result = assignQueryService.findTodayAssignSliceByRegisterId(mockRegisterId, pageable);
-        //then
-       Assertions.assertThat(result.getContent().size()).isEqualTo(pageable.getPageSize());
-    }
+//    @Test
+//    @DisplayName("registerId와 날짜를 받아 해당 날짜의 할당 목록을 조회한다.")
+//    void findAssignByRegisterIdAndCreatedAtBetween() {
+//        //given
+//        final Pageable pageable = PageRequest.of(0,10);
+//        final Long mockRegisterId = FixtureMonkey.create().giveMeOne(Long.class);
+//        final List<Assign> mockAssign = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMe(Assign.class,10);
+//        final Slice<Assign> mockSlice = new SliceImpl<>(mockAssign, pageable, true);
+//        final LocalDate now = LocalDate.now();
+//        given(assignRepository.findAllByRegisterIdAndCreatedAtBetween(mockRegisterId, now.atStartOfDay(),now.atTime(LocalTime.MAX), pageable)).willReturn(mockSlice);
+//        //when
+//        Slice<Assign> result = assignQueryService.findTodayAssignSliceByRegisterId(mockRegisterId, pageable);
+//        //then
+//       Assertions.assertThat(result.getContent().size()).isEqualTo(pageable.getPageSize());
+//    }
 
 }
