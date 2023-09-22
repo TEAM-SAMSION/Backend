@@ -30,11 +30,9 @@ public class TodoGetUseCase {
      * 성능개선 전 , 100회 테스트 평균 : 915ms
      *
      */
-    public SliceResponse<TodoHomeResponse> getTodos(final Long teamId, final Pageable pageable) {
+    public SliceResponse<TodoHomeResponse> getTodos(final Long todoTeamId, final Pageable pageable) {
         final User user = userUtils.getAccessUser();
-        final Register register = registerQueryService.findRegisterByTodoTeamIdAndUserId(teamId, user.getId());
-        final Slice<Assign> assignList = assignQueryService.findTodayAssignSliceByRegisterId(register.getId(), pageable);
-
+        final Slice<Assign> assignList = assignQueryService.findTodayAssignSliceByRegisterId(user.getId(), todoTeamId, pageable);
         Slice<TodoHomeResponse> todoHomeResponseSlice = assignList.map(assign -> {
             final Todo todo = todoQueryService.findTodoByTodoId(assign.getTodo().getId());
             return new TodoHomeResponse(todo.getId(), todo.getDescription(), todo.getTodoStatus().name());
