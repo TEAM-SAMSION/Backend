@@ -32,9 +32,9 @@ public interface TodoRepository extends JpaRepository<Todo, Long> {
     Long countTodayCompleteTodo(@Param("userId") Long userId, @Param("todoTeamId") Long todoTeamId);
 
 
-    @Query(value = "select t from Todo t " +
+    @Query("select t from Todo t " +
             "join Register r on r.userId=:userId and r.todoTeam.id=:todoTeamId " +
-            "join Assign  a on a.register.id=r.id where date(a.createdAt) = date(now())" +
-            "join Todo t on t.id = a.todo.id")
+            "join Assign  a on a.register.id=r.id and date(a.createdAt) = date(now()) " +
+            "where a.todo.id = t.id")
     Slice<Todo> findTodayTodo(@Param("userId") Long userId, @Param("todoTeamId") Long todoTeamId, Pageable pageable);
 }
