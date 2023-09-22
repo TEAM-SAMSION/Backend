@@ -32,11 +32,8 @@ public class TodoGetUseCase {
      */
     public SliceResponse<TodoHomeResponse> getTodos(final Long todoTeamId, final Pageable pageable) {
         final User user = userUtils.getAccessUser();
-        final Slice<Assign> assignList = assignQueryService.findTodayAssignSliceByRegisterId(user.getId(), todoTeamId, pageable);
-        Slice<TodoHomeResponse> todoHomeResponseSlice = assignList.map(assign -> {
-            final Todo todo = todoQueryService.findTodoByTodoId(assign.getTodo().getId());
-            return new TodoHomeResponse(todo.getId(), todo.getDescription(), todo.getTodoStatus().name());
-        });
+        final Slice <Todo> todoList = todoQueryService.findTodayTodoSlice(user.getId(), todoTeamId, pageable);
+        Slice<TodoHomeResponse> todoHomeResponseSlice = todoList.map(todo -> new TodoHomeResponse(todo.getId(), todo.getDescription(), todo.getTodoStatus().name()));
         return SliceResponse.from(todoHomeResponseSlice);
     }
 }
