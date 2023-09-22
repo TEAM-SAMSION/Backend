@@ -10,8 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
 @ApplicationService
-@Transactional
 @RequiredArgsConstructor
+@Transactional
 public class UnregisterUseCase {
     private final UserUtils userUtils;
     private final RegisterQueryService registerQueryService;

@@ -13,7 +13,6 @@ import com.pawith.tododomain.service.TodoTeamSaveService;
 import com.pawith.userdomain.entity.User;
 import com.pawith.userdomain.utils.UserUtils;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,9 +20,9 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.concurrent.CompletableFuture;
 
-@Slf4j
 @ApplicationService
 @RequiredArgsConstructor
+@Transactional
 public class TodoTeamCreateUseCase {
 
     private final UserUtils userUtils;
@@ -32,7 +31,6 @@ public class TodoTeamCreateUseCase {
     private final PetSaveService petSaveService;
     private final ImageUploadService imageUploadService;
 
-    @Transactional
     public void createTodoTeam(List<MultipartFile> imageFiles, TodoTeamCreateRequest request) {
         List<CompletableFuture<String>> imageAsync = imageUploadService.uploadImgListAsync(imageFiles);
         final TodoTeam todoTeam = TodoTeamMapper.mapToTodoTeam(request);
