@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 import com.pawith.authapplication.dto.OAuthRequest;
 import com.pawith.authapplication.dto.OAuthUserInfo;
 import com.pawith.authapplication.service.command.handler.AuthHandler;
+import com.pawith.authdomain.jwt.exception.InvalidTokenException;
 import com.pawith.commonmodule.enums.Provider;
+import com.pawith.commonmodule.exception.Error;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,8 +31,8 @@ public class KakaoOAuthHandler implements AuthHandler {
     @Override
     public OAuthUserInfo handle(OAuthRequest authenticationInfo) {
         // Access Token 검증
-//        final TokenInfo tokenInfo = verifyAccessToken(authenticationInfo.getAccessToken());
-//        if (!tokenInfo.getAppId().equals(appId)) throw new InvalidTokenException(Error.INVALID_TOKEN);
+        final TokenInfo tokenInfo = verifyAccessToken(authenticationInfo.getAccessToken());
+        if (!tokenInfo.getAppId().equals(appId)) throw new InvalidTokenException(Error.INVALID_TOKEN);
 
         final KakaoAccount kakaoAccount = getKaKaoUserInfo(authenticationInfo.getAccessToken());
         return new OAuthUserInfo(kakaoAccount.getNickname(), kakaoAccount.getEmail());
@@ -60,6 +62,7 @@ public class KakaoOAuthHandler implements AuthHandler {
                 .bodyToMono(TokenInfo.class)
                 .block();
     }
+
     @Getter
     @AllArgsConstructor
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -80,14 +83,10 @@ public class KakaoOAuthHandler implements AuthHandler {
     }
 
     @Getter
+    @AllArgsConstructor
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     private static class TokenInfo{
-        private static final String APPID = "appId";
-
-        private Map<String, String> response;
-
-        public String getAppId(){
-            return response.get(APPID);
-        }
+        @JsonAlias("app_id")
+        private String appId;
     }
 }
