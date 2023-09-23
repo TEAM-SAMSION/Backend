@@ -62,19 +62,6 @@ class RegisterQueryServiceTest {
     }
 
     @Test
-    @DisplayName("userId로 모든 Register 엔티티를 조회한다.")
-    void findAllByUserId() {
-        //given
-        final Long userId = FixtureMonkey.create().giveMeOne(Long.class);
-        final List<Register> mockRegister = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMe(Register.class, 10);
-        given(registerRepository.findAllByUserId(userId)).willReturn(mockRegister);
-        //when
-        List<Register> result = registerQueryService.findRegisterByUserId(userId);
-        //then
-        Assertions.assertThat(result).usingRecursiveComparison().isEqualTo(mockRegister);
-    }
-
-    @Test
     @DisplayName("userId와 Pageable로 Register 엔티티를 조회한다.")
     void findRegisterSliceByUserId() {
         //given
