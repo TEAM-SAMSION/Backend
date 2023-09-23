@@ -22,14 +22,18 @@ public class TodoController {
     private final TodoRateGetUseCase todoRateGetUseCase;
 
     /**
-     * 리팩터링하기 전 : 동시 100명 접속 총 6000회 테스트, 평균 400ms
+     * 리팩터링 전 : 동시 100명 요청 평균 426ms
+     * <br>리팩터링 후 : 동시 100명 요청 평균 67ms(535% 개선)
      */
     @GetMapping("/progress/{teamId}")
     public TodoProgressResponse getTodoProgress(@PathVariable Long teamId) {
         return todoRateGetUseCase.getTodoProgress(teamId);
     }
 
-
+    /**
+     * 리팩터링 전 , 100명 동시 요청 테스트 평균 : 915ms
+     * <br>리팩터링 후 , 100명 동시 요청 테스트 평균 : 85ms(914% 성능개선)
+     */
     @GetMapping("/list/{teamId}")
     public SliceResponse<TodoHomeResponse> getTodos(@PathVariable Long teamId, Pageable pageable) {
         return todoGetUseCase.getTodos(teamId, pageable);
