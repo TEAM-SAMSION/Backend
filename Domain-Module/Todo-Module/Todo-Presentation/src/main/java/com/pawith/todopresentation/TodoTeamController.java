@@ -28,6 +28,10 @@ public class TodoTeamController {
     private final TodoTeamRandomCodeGetUseCase todoTeamRandomCodeGetUseCase;
     private final TodoTeamCreateUseCase todoTeamCreateUseCase;
 
+    /**
+     * 리팩터링 전 : 100명 동시 요청 평균 202ms
+     * <br>리팩터링 후 : 100명 동시 요청 평균
+     */
     @GetMapping("/list")
     public SliceResponse<TodoTeamSimpleResponse> getTodoTeams(Pageable pageable) {
         return todoTeamGetUseCase.getTodoTeams(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("id").descending()));
@@ -48,6 +52,12 @@ public class TodoTeamController {
         todoTeamCreateUseCase.createTodoTeam(imageFiles,todoTeamCreateInfo);
     }
 
+    /**
+     * 리팩터링 전 : 100명 동시 요청 평균 225ms
+     * <br>리팩터링 후 : 100명 동시 요청 평균
+     */
     @GetMapping("/name")
-    public List<TodoTeamNameSimpleResponse> getTodoTeamName() {return todoTeamGetUseCase.getTodoTeamName();}
+    public List<TodoTeamNameSimpleResponse> getTodoTeamName() {
+        return todoTeamGetUseCase.getTodoTeamName();
+    }
 }
