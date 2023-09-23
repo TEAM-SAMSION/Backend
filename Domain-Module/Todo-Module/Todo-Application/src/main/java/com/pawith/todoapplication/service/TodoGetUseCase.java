@@ -20,10 +20,7 @@ public class TodoGetUseCase {
     private final UserUtils userUtils;
     private final TodoQueryService todoQueryService;
 
-    /**
-     * 성능개선 전 , 100회 테스트 평균 : 915ms
-     *
-     */
+
     public SliceResponse<TodoHomeResponse> getTodos(final Long todoTeamId, final Pageable pageable) {
         final User user = userUtils.getAccessUser();
         final Slice <Todo> todoList = todoQueryService.findTodayTodoSlice(user.getId(), todoTeamId, pageable);

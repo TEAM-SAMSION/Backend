@@ -53,7 +53,7 @@ public class KakaoOAuthHandler implements AuthHandler {
                 .block();
     }
 
-    public TokenInfo verifyAccessToken(String accessToken) {
+    private TokenInfo verifyAccessToken(String accessToken) {
         return WebClient.create(KAKAO_OAUTH_TOKEN_INFO_URL)
                 .get()
                 .accept(MediaType.APPLICATION_JSON)
@@ -66,6 +66,7 @@ public class KakaoOAuthHandler implements AuthHandler {
     @Getter
     @AllArgsConstructor
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    @SuppressWarnings("unchecked")
     private static class KakaoAccount{
         private static final String EMAIL = "email";
         private static final String NAME = "nickname";

@@ -9,8 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @DomainService
-@Transactional(readOnly = true)
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class CategoryQueryService {
 
     private final CategoryRepository categoryRepository;

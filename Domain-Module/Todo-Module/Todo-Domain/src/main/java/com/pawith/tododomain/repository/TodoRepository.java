@@ -11,10 +11,6 @@ import org.springframework.data.repository.query.Param;
 import java.time.LocalDateTime;
 
 public interface TodoRepository extends JpaRepository<Todo, Long> {
-    Long countByCategoryIdAndCreatedAt(Long categoryId, LocalDateTime createdAt);
-
-    Long countByCategoryIdAndCreatedAtAndTodoStatus(Long categoryId, LocalDateTime createdAt, String status);
-
     @Query(value = "select count(t) " +
         "from Todo t " +
         "join Register r on r.userId=:userId and r.todoTeam.id=:todoTeamId " +
