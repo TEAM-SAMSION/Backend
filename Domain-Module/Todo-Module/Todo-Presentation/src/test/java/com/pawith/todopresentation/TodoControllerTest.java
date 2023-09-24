@@ -3,8 +3,10 @@ package com.pawith.todopresentation;
 import com.pawith.commonmodule.BaseRestDocsTest;
 import com.pawith.commonmodule.slice.SliceResponse;
 import com.pawith.commonmodule.utils.FixtureMonkeyUtils;
+import com.pawith.todoapplication.dto.request.TodoCreateRequest;
 import com.pawith.todoapplication.dto.response.TodoHomeResponse;
 import com.pawith.todoapplication.dto.response.TodoProgressResponse;
+import com.pawith.todoapplication.service.TodoCreateUseCase;
 import com.pawith.todoapplication.service.TodoGetUseCase;
 import com.pawith.todoapplication.service.TodoRateGetUseCase;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +17,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.SliceImpl;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
@@ -25,8 +28,8 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -36,9 +39,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class TodoControllerTest extends BaseRestDocsTest {
     @MockBean
     private TodoRateGetUseCase todoRateGetUseCase;
-
     @MockBean
     private TodoGetUseCase todoGetUseCase;
+    @MockBean
+    private TodoCreateUseCase todoCreateUseCase;
 
     private static final String TODO_REQUEST_URL = "/todo";
 
@@ -110,6 +114,32 @@ public class TodoControllerTest extends BaseRestDocsTest {
                                 fieldWithPath("hasNext").description("다음 데이터 존재 여부")
                         )
                 ));
+    }
+
+    @Test
+    @DisplayName("todo 등록 API 테스트")
+    void postTodo() throws Exception {
+        //given
+        final TodoCreateRequest todoCreateRequest = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(TodoCreateRequest.class);
+        MockHttpServletRequestBuilder request = post(TODO_REQUEST_URL)
+            .content(objectMapper.writeValueAsString(todoCreateRequest))
+            .contentType(MediaType.APPLICATION_JSON)
+            .header("Authorization", "Bearer accessToken");
+        //when
+        ResultActions result = mvc.perform(request);
+        //then
+        result.andExpect(status().isOk())
+            .andDo(resultHandler.document(
+                requestHeaders(
+                    headerWithName("Authorization").description("access 토큰")
+                ),
+                requestFields(
+                    fieldWithPath("categoryId").description("todo 등록 카테고리 id"),
+                    fieldWithPath("description").description("todo 설명"),
+                    fieldWithPath("scheduledDate").description("todo 완료 기한 날짜"),
+                    fieldWithPath("registerIds[]").description("todo를 할당할 사용자 registerId들")
+                )
+            ));
     }
 
 }

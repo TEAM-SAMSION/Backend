@@ -6,6 +6,11 @@
 
 operation::todo-team-controller-test/get-todo-teams[snippets='http-request,request-parameters,request-headers,http-response,response-fields']
 
+[[Todo-API-Todo-Team에-가입된-사용자-조회]]
+=== Todo Team에 가입된 사용자 조회
+
+operation::register-controller-test/get-registers[snippets='http-request,request-parameters,request-headers,http-response,response-fields']
+
 
 [[Todo-API-Todo-Team-탈퇴]]
 === Todo Team 탈퇴
@@ -27,11 +32,6 @@ operation::todo-team-controller-test/post-todo-team[snippets='http-request,reque
 
 operation::todo-team-controller-test/get-todo-team-random-code[snippets='http-request,request-headers,http-response,response-fields']
 
-[[Todo-API-Todo-달성률]]
-=== Todo 달성률 조회
-
-operation::todo-controller-test/get-todo-progress[snippets='http-request,path-parameters,request-headers,http-response,response-fields']
-
 [[Todo-API-가장-최근에-가입한-Todo-Team-조회]]
 === 가장 최근에 가입한 TodoTeam 조회
 
@@ -41,3 +41,13 @@ operation::todo-team-controller-test/get-todo-team-name[snippets='http-request,r
 === 할당받은 Todo 조회
 
 operation::todo-controller-test/get-todos[snippets='http-request,path-parameters,request-parameters,request-headers,http-response,response-fields']
+
+[[Todo-API-Todo-달성률]]
+=== Todo 달성률 조회
+
+operation::todo-controller-test/get-todo-progress[snippets='http-request,path-parameters,request-headers,http-response,response-fields']
+
+[[Todo-API-투두생성]]
+=== Todo 생성
+
+operation::todo-controller-test/post-todo[snippets='http-request,request-fields,request-headers,http-response']

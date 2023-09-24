@@ -18,4 +18,8 @@ public class CategoryQueryService {
     public List<Category> findCategoryListByTodoTeamId(Long todoTeamId) {
         return categoryRepository.findAllByTodoTeamId(todoTeamId);
     }
+
+    public Category findCategoryById(Long categoryId) {
+        return categoryRepository.findById(categoryId).orElseThrow();
+    }
 }
