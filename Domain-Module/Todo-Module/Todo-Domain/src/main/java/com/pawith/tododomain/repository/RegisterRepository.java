@@ -6,6 +6,7 @@ import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface RegisterRepository extends JpaRepository<Register, Long> {
@@ -16,4 +17,6 @@ public interface RegisterRepository extends JpaRepository<Register, Long> {
     Optional<Register> findByTodoTeamIdAndUserId(Long todoTeamId, Long userId);
 
     Boolean existsByTodoTeamIdAndUserId(Long todoTeamId, Long userId);
+
+    List<Register> findAllByTodoTeamId(Long todoTeamId);
 }

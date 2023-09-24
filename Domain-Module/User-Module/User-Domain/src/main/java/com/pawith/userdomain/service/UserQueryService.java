@@ -10,6 +10,9 @@ import com.pawith.userdomain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+import java.util.function.Function;
+
 @DomainService
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -23,7 +26,15 @@ public class UserQueryService {
     }
 
     public User findByEmail(String email) {
-        return userRepository.findByEmail(email)
+        return findUser(userRepository::findByEmail, email);
+    }
+
+    public User findById(Long userId){
+        return findUser(userRepository::findById, userId);
+    }
+
+    private <T> User findUser(Function<T, Optional<User>> method, T specificationData){
+        return method.apply(specificationData)
                 .orElseThrow(() -> new UserNotFoundException(Error.USER_NOT_FOUND));
     }
 

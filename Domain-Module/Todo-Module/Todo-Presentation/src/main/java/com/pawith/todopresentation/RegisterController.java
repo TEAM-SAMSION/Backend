@@ -1,5 +1,7 @@
 package com.pawith.todopresentation;
 
+import com.pawith.todoapplication.dto.response.RegisterListResponse;
+import com.pawith.todoapplication.service.RegistersGetUseCase;
 import com.pawith.todoapplication.service.TodoTeamRegisterUseCase;
 import com.pawith.todoapplication.service.UnregisterUseCase;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +14,7 @@ public class RegisterController {
 
     private final UnregisterUseCase unregisterUseCase;
     private final TodoTeamRegisterUseCase todoTeamRegisterUseCase;
+    private final RegistersGetUseCase registersGetUseCase;
 
     @DeleteMapping("/{todoTeamId}")
     public void deleteRegister(@PathVariable Long todoTeamId) {
@@ -21,5 +24,10 @@ public class RegisterController {
     @PostMapping
     public void postRegister(@RequestParam String todoTeamCode) {
         todoTeamRegisterUseCase.registerTodoTeam(todoTeamCode);
+    }
+
+    @GetMapping("/list")
+    public RegisterListResponse getRegisters(@RequestParam Long teamId){
+        return registersGetUseCase.getRegisters(teamId);
     }
 }

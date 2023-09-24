@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -18,6 +19,7 @@ public class Todo extends BaseEntity {
     private Long id;
 
     private String description;
+    private LocalDate scheduledDate;
 
     @Enumerated(EnumType.STRING)
     private TodoStatus todoStatus;
@@ -27,9 +29,10 @@ public class Todo extends BaseEntity {
     private Category category;
 
     @Builder
-    public Todo(String description, TodoStatus todoStatus, Category category) {
+    public Todo(String description, LocalDate scheduledDate, Category category) {
         this.description = description;
-        this.todoStatus = todoStatus;
+        this.scheduledDate = scheduledDate;
+        this.todoStatus = TodoStatus.INCOMPLETE;
         this.category = category;
     }
 }
