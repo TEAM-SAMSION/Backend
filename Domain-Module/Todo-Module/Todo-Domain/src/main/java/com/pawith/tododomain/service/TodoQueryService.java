@@ -10,6 +10,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+
 @DomainService
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -23,12 +25,14 @@ public class TodoQueryService {
     }
 
     public Integer findTodoCompleteRate(Long userId, Long todoTeamId) {
-        final Long countTodayTodo = todoRepository.countTodayTodo(userId, todoTeamId);
-        final Long countCompleteTodayTodo = todoRepository.countTodayCompleteTodo(userId, todoTeamId);
+        final LocalDate now = LocalDate.now();
+        final Long countTodayTodo = todoRepository.countTodoByDate(userId, todoTeamId, now);
+        final Long countCompleteTodayTodo = todoRepository.countCompleteTodoByDate(userId, todoTeamId, now);
         return (int) ((countCompleteTodayTodo / (double) countTodayTodo) * 100);
     }
 
     public Slice<Todo> findTodayTodoSlice(Long userId, Long todoTeamId, Pageable pageable) {
-        return todoRepository.findTodayTodo(userId, todoTeamId, pageable);
+        final LocalDate now = LocalDate.now();
+        return todoRepository.findTodoByDate(userId, todoTeamId, now, pageable);
     }
 }
