@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 
 @DomainService
@@ -30,8 +29,9 @@ public class RegisterQueryService {
             .orElseThrow(() -> new NotRegisterUserException(Error.NOT_REGISTER_USER));
     }
 
-    public CompletableFuture<Register> findRegisterByIdAsync(Long registerId){
-        return CompletableFuture.supplyAsync(() -> findRegisterById(registerId));
+
+    public List<Register> findAllRegisterByIds(List<Long> registerIds){
+        return registerRepository.findAllByIds(registerIds);
     }
 
     public Register findRegisterById(Long registerId){

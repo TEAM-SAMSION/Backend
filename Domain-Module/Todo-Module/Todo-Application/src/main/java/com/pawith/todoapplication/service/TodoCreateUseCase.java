@@ -15,8 +15,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ListIterator;
-import java.util.concurrent.CompletableFuture;
-import java.util.stream.Collectors;
 
 @ApplicationService
 @RequiredArgsConstructor
@@ -29,15 +27,12 @@ public class TodoCreateUseCase {
     private final AssignSaveService assignSaveService;
 
     public void createTodo(TodoCreateRequest request) {
-        final ListIterator<CompletableFuture<Register>> registers = request.getRegisterIds().stream()
-            .map(registerQueryService::findRegisterByIdAsync)
-            .collect(Collectors.toList())
-            .listIterator();
         final Category category = categoryQueryService.findCategoryById(request.getCategoryId());
         Todo todo = TodoMapper.mapToTodo(request, category);
         todoSaveService.saveTodoEntity(todo);
+        ListIterator<Register> registerListIterator = registerQueryService.findAllRegisterByIds(request.getRegisterIds()).listIterator();
         request.getRegisterIds().forEach(registerId -> {
-            assignSaveService.saveAssignEntity(new Assign(todo, registers.next().join()));
+            assignSaveService.saveAssignEntity(new Assign(todo, registerListIterator.next()));
         });
     }
 }

@@ -22,7 +22,6 @@ public class Register extends BaseEntity {
     @JoinColumn(name = "todoteam_id")
     private TodoTeam todoTeam;
 
-    @JoinColumn(name = "user_id")
     private Long userId;
 
     @Builder
