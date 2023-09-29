@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public interface TodoRepository extends JpaRepository<Todo, Long> {
     @Query(value = "select count(t) " +
@@ -32,4 +33,9 @@ public interface TodoRepository extends JpaRepository<Todo, Long> {
             "join Assign  a on a.register.id=r.id and t.scheduledDate = :scheduledDate " +
             "where a.todo.id = t.id")
     Slice<Todo> findTodoByDate(@Param("userId") Long userId, @Param("todoTeamId") Long todoTeamId, @Param("scheduledDate") LocalDate scheduledDate, Pageable pageable);
+
+    @Query("select t from Todo t " +
+            "join Category c on c.id=:categoryId " +
+            "where t.category.id = c.id and t.scheduledDate = :moveDate")
+    List<Todo> findTodoListByCategoryIdAndscheduledDate(Long categoryId, LocalDate moveDate);
 }

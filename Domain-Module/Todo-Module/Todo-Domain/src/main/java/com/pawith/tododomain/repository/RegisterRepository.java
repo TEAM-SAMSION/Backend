@@ -23,4 +23,9 @@ public interface RegisterRepository extends JpaRepository<Register, Long> {
 
     @Query("select r from Register r where r.id in :ids")
     List<Register> findAllByIds(@Param("ids") List<Long> ids);
+
+    @Query("select r from Register r " +
+            "join Assign a on a.id=:todoId " +
+            "where a.register.id = r.id")
+    List<Register> findByTodoId(Long todoId);
 }

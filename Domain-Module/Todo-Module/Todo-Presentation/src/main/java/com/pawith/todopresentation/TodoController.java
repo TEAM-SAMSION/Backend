@@ -2,15 +2,18 @@ package com.pawith.todopresentation;
 
 import com.pawith.commonmodule.slice.SliceResponse;
 import com.pawith.todoapplication.dto.request.TodoCreateRequest;
-import com.pawith.todoapplication.dto.response.TodoHomeResponse;
-import com.pawith.todoapplication.dto.response.TodoProgressResponse;
+import com.pawith.todoapplication.dto.response.*;
 import com.pawith.todoapplication.service.TodoCreateUseCase;
 import com.pawith.todoapplication.service.TodoGetUseCase;
 import com.pawith.todoapplication.service.TodoRateGetUseCase;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -43,4 +46,12 @@ public class TodoController {
     public void postTodo(@RequestBody TodoCreateRequest todoCreateRequest){
         todoCreateUseCase.createTodo(todoCreateRequest);
     }
+
+
+    @GetMapping("/{teamId}")
+    public List<TodoListResponse> getTodoList(@PathVariable Long teamId, @RequestParam("moveDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)  LocalDate moveDate){
+        return todoGetUseCase.getTodoList(teamId, moveDate);
+    }
+
+
 }
