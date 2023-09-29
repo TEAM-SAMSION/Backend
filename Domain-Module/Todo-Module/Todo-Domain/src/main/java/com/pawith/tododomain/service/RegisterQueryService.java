@@ -49,4 +49,8 @@ public class RegisterQueryService {
         }
         return registerRepository.findAllByTodoTeamId(todoTeamId);
     }
+
+    public List<Register> findRegisterByTodoId(Long todoId) {
+        return registerRepository.findByTodoId(todoId);
+    }
 }
