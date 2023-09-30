@@ -5,3 +5,8 @@
 === Auth 소셜 로그인
 
 operation::o-auth-controller-test/o-auth-login[snippets='http-request,path-parameters,request-parameters,http-response,response-fields']
+
+[[Auth-로그아웃]]
+=== Auth 로그아웃
+
+operation::o-auth-controller-test/logout[snippets='http-request,request-headers,http-response']

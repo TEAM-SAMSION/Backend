@@ -1,7 +1,7 @@
 package com.pawith.authapplication.application;
 
 import com.pawith.authapplication.exception.InvalidAuthorizationTypeException;
-import com.pawith.authapplication.service.impl.JWTExtractTokenService;
+import com.pawith.authapplication.service.impl.JWTExtractTokenUseCaseImpl;
 import com.pawith.commonmodule.UnitTestConfig;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,12 +12,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @UnitTestConfig
 @DisplayName("JWTExtractTokenService 테스트")
-public class JWTExtractTokenServiceTest {
+public class JWTExtractTokenUseCaseImplTest {
 
-    JWTExtractTokenService jwtExtractTokenService;
+    JWTExtractTokenUseCaseImpl jwtExtractTokenUseCaseImpl;
 
     @BeforeEach
-    void init() { jwtExtractTokenService = new JWTExtractTokenService(); }
+    void init() { jwtExtractTokenUseCaseImpl = new JWTExtractTokenUseCaseImpl(); }
 
     private static String TOKEN_HEADER = "Bearer access_token";
     private static String WRONG_TOKEN_HEADER = "Wrong access_token";
@@ -28,7 +28,7 @@ public class JWTExtractTokenServiceTest {
     void extractToken() {
         //given
         //when
-        final String extractedToken = jwtExtractTokenService.extractToken(TOKEN_HEADER);
+        final String extractedToken = jwtExtractTokenUseCaseImpl.extractToken(TOKEN_HEADER);
         //then
         assertEquals(ACCESS_TOKEN,extractedToken);
     }
@@ -39,7 +39,7 @@ public class JWTExtractTokenServiceTest {
         //given
         //when
         //then
-        Assertions.assertThatCode(() -> jwtExtractTokenService.extractToken(WRONG_TOKEN_HEADER))
+        Assertions.assertThatCode(() -> jwtExtractTokenUseCaseImpl.extractToken(WRONG_TOKEN_HEADER))
                 .isInstanceOf(InvalidAuthorizationTypeException.class);
     }
 }

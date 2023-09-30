@@ -93,7 +93,7 @@ public class JWTProvider {
      * @throws NotExistTokenException : 존재하지 않는 토큰 요청시 발생
      */
     private String extractEmailFromRefreshToken(String refreshToken) {
-        final String email = tokenQueryService.findEmailByToken(refreshToken, TokenType.REFRESH_TOKEN);
+        final String email = tokenQueryService.findEmailByValue(refreshToken, TokenType.REFRESH_TOKEN);
         return email;
     }
 

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class OAuthService implements OAuthUseCase {
+public class OAuthUseCaseImpl implements OAuthUseCase {
 
     private final OAuthInvoker oAuthInvoker;
 

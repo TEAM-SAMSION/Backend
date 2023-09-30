@@ -1,6 +1,6 @@
 package com.pawith.authapplication.service.command;
 
-import com.pawith.authapplication.common.consts.AuthConsts;
+import com.pawith.authapplication.consts.AuthConsts;
 import com.pawith.authapplication.dto.OAuthRequest;
 import com.pawith.authapplication.dto.OAuthResponse;
 import com.pawith.authapplication.dto.OAuthUserInfo;

@@ -69,7 +69,7 @@ public class JWTProviderTest {
         //given
         final String randomEmail = FixtureMonkey.create().giveMe(String.class).findFirst().get();
         final String refreshToken = jwtProvider.generateRefreshToken(randomEmail);
-        given(tokenQueryService.findEmailByToken(refreshToken, TokenType.REFRESH_TOKEN)).willReturn(randomEmail);
+        given(tokenQueryService.findEmailByValue(refreshToken, TokenType.REFRESH_TOKEN)).willReturn(randomEmail);
         //when
         final String accessToken = jwtProvider.reIssueAccessToken(refreshToken);
         final Claims claims = extractClaimsFromToken(accessToken);
@@ -85,7 +85,7 @@ public class JWTProviderTest {
         //given
         final String randomEmail = FixtureMonkey.create().giveMe(String.class).findFirst().get();
         final String refreshToken = jwtProvider.generateRefreshToken(randomEmail);
-        given(tokenQueryService.findEmailByToken(refreshToken, TokenType.REFRESH_TOKEN)).willReturn(randomEmail);
+        given(tokenQueryService.findEmailByValue(refreshToken, TokenType.REFRESH_TOKEN)).willReturn(randomEmail);
         //when
         final String newRefreshToken = jwtProvider.reIssueRefreshToken(refreshToken);
         final Claims claims = extractClaimsFromToken(newRefreshToken);
@@ -127,7 +127,7 @@ public class JWTProviderTest {
         //given
         final String randomEmail = FixtureMonkey.create().giveMe(String.class).findFirst().get();
         final String refreshToken = jwtProvider.generateRefreshToken(randomEmail);
-        given(tokenQueryService.findEmailByToken(refreshToken, TokenType.REFRESH_TOKEN)).willThrow(NotExistTokenException.class);
+        given(tokenQueryService.findEmailByValue(refreshToken, TokenType.REFRESH_TOKEN)).willThrow(NotExistTokenException.class);
         //when
         //then
         Assertions.assertThatCode(() -> jwtProvider.reIssueRefreshToken(refreshToken))

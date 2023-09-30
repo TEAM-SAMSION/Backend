@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class JWTExtractEmailService implements JWTExtractEmailUseCase {
+public class JWTExtractEmailUseCaseImpl implements JWTExtractEmailUseCase {
     private final JWTProvider jwtProvider;
 
     @Override
