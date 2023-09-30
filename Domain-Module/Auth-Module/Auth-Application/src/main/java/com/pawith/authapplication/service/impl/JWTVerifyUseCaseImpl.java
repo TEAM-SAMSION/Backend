@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class JWTVerifyService implements JWTVerifyUseCase {
+public class JWTVerifyUseCaseImpl implements JWTVerifyUseCase {
     private final JWTProvider jwtProvider;
 
     @Override

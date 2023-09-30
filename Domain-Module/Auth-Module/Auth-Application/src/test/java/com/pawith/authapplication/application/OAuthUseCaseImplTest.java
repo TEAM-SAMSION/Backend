@@ -3,7 +3,7 @@ package com.pawith.authapplication.application;
 import com.navercorp.fixturemonkey.FixtureMonkey;
 import com.pawith.commonmodule.enums.Provider;
 import com.pawith.authapplication.service.command.OAuthInvoker;
-import com.pawith.authapplication.service.impl.OAuthService;
+import com.pawith.authapplication.service.impl.OAuthUseCaseImpl;
 import com.pawith.commonmodule.UnitTestConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -16,14 +16,14 @@ import static org.mockito.Mockito.times;
 
 @UnitTestConfig
 @DisplayName("OAuthService 테스트")
-public class OAuthServiceTest {
+public class OAuthUseCaseImplTest {
 
     @Mock
     OAuthInvoker oAuthInvoker;
-    OAuthService oAuthService;
+    OAuthUseCaseImpl oAuthUseCaseImpl;
 
     @BeforeEach
-    void init() { oAuthService = new OAuthService(oAuthInvoker); }
+    void init() { oAuthUseCaseImpl = new OAuthUseCaseImpl(oAuthInvoker); }
 
     @Test
     @DisplayName("로그인을 수행한다.")
@@ -32,7 +32,7 @@ public class OAuthServiceTest {
         final Provider testProvider = FixtureMonkey.create().giveMeOne(Provider.class);
         final String token = FixtureMonkey.create().giveMeOne(String.class);
         //when
-        oAuthService.oAuthLogin(testProvider, token);
+        oAuthUseCaseImpl.oAuthLogin(testProvider, token);
         //then
         then(oAuthInvoker).should(times(1)).execute(any());
     }
