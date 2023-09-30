@@ -1,4 +1,4 @@
-package com.pawith.authapplication.common.consts;
+package com.pawith.authapplication.consts;
 
 import lombok.AccessLevel;
 import lombok.Getter;

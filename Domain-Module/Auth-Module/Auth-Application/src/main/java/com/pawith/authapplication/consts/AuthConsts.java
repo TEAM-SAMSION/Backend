@@ -1,4 +1,4 @@
-package com.pawith.authapplication.common.consts;
+package com.pawith.authapplication.consts;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -7,5 +7,6 @@ import lombok.NoArgsConstructor;
 public class AuthConsts {
     public static final String AUTHENTICATION_TYPE= "Bearer";
     public static final String AUTHORIZATION = "Authorization";
+    public static final String REFRESH_TOKEN_HEADER = "RefreshToken";
     public static final String EMPTY_HEADER = null;
 }
