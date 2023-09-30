@@ -1,17 +1,20 @@
 package com.pawith.authdomain.entity;
 
-import com.pawith.commonmodule.domain.BaseEntity;
 import com.pawith.authdomain.jwt.TokenType;
+import com.pawith.commonmodule.domain.BaseEntity;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 
 @Entity
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SQLDelete(sql = "UPDATE token SET deleted = true WHERE token_id = ?")
+@Where(clause = "deleted = false")
 @Getter
 public class Token extends BaseEntity {
     @Id@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,8 +26,12 @@ public class Token extends BaseEntity {
 
     private String email;
     private String value;
+    private Boolean deleted = Boolean.FALSE;
 
-    public static Token createToken(TokenType type, String email, String value){
-        return new Token(null, type, email, value);
+    @Builder
+    public Token(TokenType tokenType, String email, String value) {
+        this.tokenType = tokenType;
+        this.email = email;
+        this.value = value;
     }
 }
