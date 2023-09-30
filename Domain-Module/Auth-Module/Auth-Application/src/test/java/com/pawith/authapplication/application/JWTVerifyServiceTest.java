@@ -1,7 +1,7 @@
 package com.pawith.authapplication.application;
 
 import com.navercorp.fixturemonkey.FixtureMonkey;
-import com.pawith.authapplication.service.impl.JWTVerifyService;
+import com.pawith.authapplication.service.impl.JWTVerifyUseCaseImpl;
 import com.pawith.commonmodule.UnitTestConfig;
 import com.pawith.authdomain.jwt.JWTProvider;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,10 +18,10 @@ public class JWTVerifyServiceTest {
 
     @Mock
     JWTProvider jwtProvider;
-    JWTVerifyService jwtVerifyService;
+    JWTVerifyUseCaseImpl jwtVerifyUseCaseImpl;
 
     @BeforeEach
-    void init() { jwtVerifyService = new JWTVerifyService(jwtProvider); }
+    void init() { jwtVerifyUseCaseImpl = new JWTVerifyUseCaseImpl(jwtProvider); }
 
     @Test
     @DisplayName("토큰을 검증한다")
@@ -29,7 +29,7 @@ public class JWTVerifyServiceTest {
         //given
         final String token = FixtureMonkey.create().giveMe(String.class).findFirst().get();
         //when
-        jwtVerifyService.validateToken(token);
+        jwtVerifyUseCaseImpl.validateToken(token);
         //then
         then(jwtProvider).should(times(1)).validateToken(token);
     }
