@@ -56,3 +56,8 @@ operation::todo-controller-test/post-todo[snippets='http-request,request-fields,
 === Todo 생성
 
 operation::todo-controller-test/get-todo-list[snippets='http-request,path-parameters,request-headers,request-parameters,http-response,response-fields']
+
+[[Todo-API-투두-주차-달성률-비교-조회]]
+=== Todo 주차 달성률 비교
+
+operation::todo-controller-test/get-week-progress-compare[snippets='http-request,path-parameters,request-headers,http-response,response-fields']

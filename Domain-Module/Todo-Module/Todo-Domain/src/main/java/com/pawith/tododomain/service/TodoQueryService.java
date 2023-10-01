@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -39,5 +40,23 @@ public class TodoQueryService {
 
     public List<Todo> findTodoListByCategoryIdAndscheduledDate(Long categoryId, LocalDate moveDate){
         return todoRepository.findTodoListByCategoryIdAndscheduledDate(categoryId, moveDate);
+    }
+
+    public Integer findThisWeekTodoCompleteRate(Long userId, Long todoTeamId) {
+        final LocalDate now = LocalDate.now();
+        final LocalDate firstDayOfWeek = now.with(DayOfWeek.SUNDAY);
+        return getWeekProgress(userId, todoTeamId, now, firstDayOfWeek);
+    }
+
+    public Integer findLastWeekTodoCompleteRate(Long userId, Long todoTeamId) {
+        final LocalDate now = LocalDate.now();
+        final LocalDate firstDayOfLastWeek = now.with(DayOfWeek.SUNDAY).minusWeeks(1);
+        return getWeekProgress(userId, todoTeamId, now, firstDayOfLastWeek);
+    }
+
+    public Integer getWeekProgress(Long userId, Long todoTeamId, LocalDate now, LocalDate firstDayOfWeek) {
+        final Long countWeekTodo = todoRepository.countTodoByBetweenDate(userId, todoTeamId, now, firstDayOfWeek);
+        final Long countCompleteWeekTodo = todoRepository.countCompleteTodoByBetweenDate(userId, todoTeamId, now, firstDayOfWeek);
+        return (int) ((countCompleteWeekTodo / (double) countWeekTodo) * 100);
     }
 }
