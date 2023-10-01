@@ -211,8 +211,7 @@ public class TodoControllerTest extends BaseRestDocsTest {
                                 parameterWithName("teamId").description("TodoTeam의 Id")
                         ),
                         responseFields(
-                                fieldWithPath("isHigherThanLastWeek").description("이번주 달성률이 지난주 달성률보다 높은지 여부"),
-                                fieldWithPath("isSameAsLastWeek").description("이번주 달성률이 지난달 달성률과 같은지 여부")
+                                fieldWithPath("compareWithLastWeek").description("지난주 달성률과 이번주 달성률 비교. HIGER : 지난주보다 높음, LOWER : 지난주보다 낮음, SAME : 지난주와 같음")
                         )
                 ));
     }
