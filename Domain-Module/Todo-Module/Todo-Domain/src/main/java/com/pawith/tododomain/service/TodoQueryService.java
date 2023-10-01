@@ -42,7 +42,7 @@ public class TodoQueryService {
         return todoRepository.findTodoListByCategoryIdAndscheduledDate(categoryId, moveDate);
     }
 
-    public Integer findTodoWeekCompleteRate(Long userId, Long todoTeamId) {
+    public Integer findThisWeekTodoCompleteRate(Long userId, Long todoTeamId) {
         final LocalDate now = LocalDate.now();
         final LocalDate firstDayOfWeek = now.with(DayOfWeek.SUNDAY);
         return getWeekProgress(userId, todoTeamId, now, firstDayOfWeek);

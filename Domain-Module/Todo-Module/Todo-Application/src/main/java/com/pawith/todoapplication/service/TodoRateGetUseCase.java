@@ -29,7 +29,7 @@ public class TodoRateGetUseCase {
 
     public TodoRateCompareResponse getWeekProgressCompare(final Long todoTeamId) {
         final User user = userUtils.getAccessUser();
-        final Integer todoCompleteRate = todoQueryService.findTodoWeekCompleteRate(user.getId(), todoTeamId);
+        final Integer todoCompleteRate = todoQueryService.findThisWeekTodoCompleteRate(user.getId(), todoTeamId);
         final Integer lastWeekTodoCompleteRate = todoQueryService.findLastWeekTodoCompleteRate(user.getId(), todoTeamId);
         return new TodoRateCompareResponse(todoCompleteRate > lastWeekTodoCompleteRate, todoCompleteRate.equals(lastWeekTodoCompleteRate));
     }
