@@ -6,7 +6,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class TodoRateCompareResponse {
-    Boolean isHigherThanLastWeek;
-    Boolean isSameAsLastWeek;
+    private Boolean isHigherThanLastWeek;
+    private Boolean isSameAsLastWeek;
 
 }
