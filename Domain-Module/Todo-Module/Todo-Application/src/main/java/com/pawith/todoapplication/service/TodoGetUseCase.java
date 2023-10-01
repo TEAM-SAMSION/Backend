@@ -50,7 +50,7 @@ public class TodoGetUseCase {
                 final List<Todo> todoList = todoQueryService.findTodoListByCategoryIdAndscheduledDate(category.getId(), moveDate);
                 List<TodoSimpleResponse> todoSimpleResponses = todoList.stream()
                     .map(todo -> {
-                        final List<Register> registers = registerQueryService.findRegisterByTodoId(todo.getId());
+                        final List<Register> registers = registerQueryService.findAllRegisterByTodoId(todo.getId());
                         final List<AssignSimpleInfoResponse> assignSimpleInfoResponses = registers.stream()
                             .map(register -> {
                                 final User findUser = userQueryService.findById(register.getUserId());
