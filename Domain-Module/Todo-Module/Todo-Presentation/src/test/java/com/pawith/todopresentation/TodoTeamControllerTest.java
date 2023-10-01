@@ -132,12 +132,14 @@ class TodoTeamControllerTest extends BaseRestDocsTest {
     @DisplayName("TodoTeam 생성 테스트")
     void postTodoTeam() throws Exception {
         //given
-        final MockMultipartFile mockMultipartFile1 = new MockMultipartFile("imageFiles", "imageFiles", "image/jpeg", "image".getBytes());
-        final MockMultipartFile mockMultipartFile2 = new MockMultipartFile("imageFiles", "imageFiles", "image/jpeg", "image".getBytes());
+        final MockMultipartFile mockMultipartFileTeam = new MockMultipartFile("teamImageFile", "teamImageFile", "image/jpeg", "image".getBytes());
+        final MockMultipartFile mockMultipartFilePet1 = new MockMultipartFile("petimageFiles", "petimageFiles", "image/jpeg", "image".getBytes());
+        final MockMultipartFile mockMultipartFilePet2 = new MockMultipartFile("petimageFiles", "petimageFiles", "image/jpeg", "image".getBytes());
         final MockMultipartFile todoTeamCreateInfo = new MockMultipartFile("todoTeamCreateInfo", "", MediaType.APPLICATION_JSON_VALUE, TODO_TEAM_CREATE_INFO.getBytes());
         MockHttpServletRequestBuilder request = multipart(TODO_TEAM_REQUEST_URL)
-            .file(mockMultipartFile1)
-            .file(mockMultipartFile2)
+            .file(mockMultipartFileTeam)
+            .file(mockMultipartFilePet1)
+            .file(mockMultipartFilePet2)
             .file(todoTeamCreateInfo)
             .accept(MediaType.APPLICATION_JSON)
             .header("Authorization", "Bearer accessToken");
