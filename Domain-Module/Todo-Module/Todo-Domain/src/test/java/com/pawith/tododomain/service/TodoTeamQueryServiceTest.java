@@ -66,7 +66,7 @@ class TodoTeamQueryServiceTest {
             .giveMeOne(TodoTeam.class);
         given(todoTeamRepository.findByTeamCode(teamCode)).willReturn(Optional.of(mockTodoTeam));
         //when
-        TodoTeam todoTeam = todoTeamQueryService.findTodoByCode(teamCode);
+        TodoTeam todoTeam = todoTeamQueryService.findTodoTeamByCode(teamCode);
         //then
         Assertions.assertThat(todoTeam).usingRecursiveComparison().isEqualTo(mockTodoTeam);
     }
@@ -79,7 +79,7 @@ class TodoTeamQueryServiceTest {
         given(todoTeamRepository.findByTeamCode(teamCode)).willReturn(Optional.empty());
         //when
         //then
-        Assertions.assertThatCode(() -> todoTeamQueryService.findTodoByCode(teamCode))
+        Assertions.assertThatCode(() -> todoTeamQueryService.findTodoTeamByCode(teamCode))
             .isInstanceOf(TodoTeamNotFoundException.class);
     }
 

@@ -2,6 +2,7 @@ package com.pawith.tododomain.service;
 
 import com.pawith.commonmodule.annotation.DomainService;
 import com.pawith.commonmodule.exception.Error;
+import com.pawith.tododomain.entity.Authority;
 import com.pawith.tododomain.entity.Register;
 import com.pawith.tododomain.exception.NotRegisterUserException;
 import com.pawith.tododomain.repository.RegisterRepository;
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 @DomainService
@@ -25,10 +27,12 @@ public class RegisterQueryService {
     }
 
     public Register findRegisterByTodoTeamIdAndUserId(Long todoTeamId, Long userId) {
-        return registerRepository.findByTodoTeamIdAndUserId(todoTeamId, userId)
-            .orElseThrow(() -> new NotRegisterUserException(Error.NOT_REGISTER_USER));
+        return findRegister(registerRepository::findByTodoTeamIdAndUserId, todoTeamId, userId);
     }
 
+    public Register findPresidentRegisterByTodoTeamId(Long todoTeamId){
+        return findRegister(registerRepository::findByTodoTeamIdAndAuthority, todoTeamId, Authority.PRESIDENT);
+    }
 
     public List<Register> findAllRegisterByIds(List<Long> registerIds){
         return registerRepository.findAllByIds(registerIds);
@@ -38,11 +42,6 @@ public class RegisterQueryService {
         return findRegister(registerRepository::findById, registerId);
     }
 
-    private <T> Register findRegister(Function<T, Optional<Register>> method, T specificationData) {
-        return method.apply(specificationData)
-            .orElseThrow(() -> new NotRegisterUserException(Error.NOT_REGISTER_USER));
-    }
-
     public List<Register> findAllRegisters(Long userId, Long todoTeamId){
         if(!registerRepository.existsByTodoTeamIdAndUserId(todoTeamId, userId)){
             return List.of();
@@ -50,7 +49,22 @@ public class RegisterQueryService {
         return registerRepository.findAllByTodoTeamId(todoTeamId);
     }
 
-    public List<Register> findRegisterByTodoId(Long todoId) {
+    public List<Register> findAllRegisterByTodoId(Long todoId) {
         return registerRepository.findByTodoId(todoId);
+    }
+
+    public Integer countRegisterByTodoTeamId(Long todoTeamId){
+        return registerRepository.countByTodoTeamId(todoTeamId);
+    }
+
+    private <T> Register findRegister(Function<T, Optional<Register>> method, T specificationData) {
+        return method.apply(specificationData)
+            .orElseThrow(() -> new NotRegisterUserException(Error.NOT_REGISTER_USER));
+    }
+
+    private <T,U> Register findRegister(BiFunction<T,U,Optional<Register>> method,
+                                        T specificationData1, U specificationData2) {
+        return method.apply(specificationData1, specificationData2)
+            .orElseThrow(() -> new NotRegisterUserException(Error.NOT_REGISTER_USER));
     }
 }

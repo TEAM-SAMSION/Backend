@@ -27,7 +27,7 @@ public class TodoTeamQueryService {
         return findTodo(todoTeamRepository::findById, todoTeamId);
     }
 
-    public TodoTeam findTodoByCode(String todoTeamCode) {
+    public TodoTeam findTodoTeamByCode(String todoTeamCode) {
         return findTodo(todoTeamRepository::findByTeamCode, todoTeamCode);
     }
 

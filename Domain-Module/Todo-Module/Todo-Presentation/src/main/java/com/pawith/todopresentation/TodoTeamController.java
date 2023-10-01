@@ -4,6 +4,7 @@ import com.pawith.commonmodule.slice.SliceResponse;
 import com.pawith.todoapplication.dto.request.TodoTeamCreateRequest;
 import com.pawith.todoapplication.dto.response.TodoTeamNameSimpleResponse;
 import com.pawith.todoapplication.dto.response.TodoTeamRandomCodeResponse;
+import com.pawith.todoapplication.dto.response.TodoTeamSearchInfoResponse;
 import com.pawith.todoapplication.dto.response.TodoTeamSimpleResponse;
 import com.pawith.todoapplication.service.TodoTeamCreateUseCase;
 import com.pawith.todoapplication.service.TodoTeamGetUseCase;
@@ -42,6 +43,11 @@ public class TodoTeamController {
         return todoTeamRandomCodeGetUseCase.generateRandomCode();
     }
 
+    @GetMapping
+    public TodoTeamSearchInfoResponse getTodoTeamByCode(@RequestParam String code) {
+        return todoTeamGetUseCase.searchTodoTeamByCode(code);
+    }
+
     /**
      * 리팩터링 전 : 이미지 업로드 API + 팀 생성 API 100회 테스트 평균 : 160ms
      * <br>리팩터링 후 : 이미지 업로드 비동기 + 팀 생성 API 100회 테스트 평균 98.3ms(60% 감소)
@@ -55,7 +61,7 @@ public class TodoTeamController {
 
     /**
      * 리팩터링 전 : 100명 동시 요청 평균 225ms
-     * <br>리팩터링 후 : 100명 동시 요청 평균
+     * <br>리팩터링 후 : 100명 동시 요청 평균 63ms(257% 감소)
      */
     @GetMapping("/name")
     public List<TodoTeamNameSimpleResponse> getTodoTeamName() {
