@@ -53,5 +53,9 @@ public class TodoController {
         return todoGetUseCase.getTodoList(teamId, moveDate);
     }
 
+    @GetMapping("/compare/{teamId}")
+    public TodoRateCompareResponse getWeekProgressCompare(@PathVariable Long teamId){
+        return todoRateGetUseCase.getWeekProgressCompare(teamId);
+    }
 
 }

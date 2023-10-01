@@ -27,6 +27,21 @@ public interface TodoRepository extends JpaRepository<Todo, Long> {
     )
     Long countCompleteTodoByDate(@Param("userId") Long userId, @Param("todoTeamId") Long todoTeamId, @Param("scheduledDate") LocalDate scheduledDate);
 
+    @Query(value = "select count(t) " +
+            "from Todo t " +
+            "join Register r on r.userId=:userId and r.todoTeam.id=:todoTeamId " +
+            "join Assign  a on a.register.id=r.id " +
+            "where a.todo.id=t.id and t.scheduledDate between :startDate and :endDate"
+    )
+    Long countTodoByBetweenDate(@Param("userId") Long userId, @Param("todoTeamId") Long todoTeamId, @Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
+
+    @Query(value = "select count(t) " +
+            "from Todo t " +
+            "join Register r on r.userId=:userId and r.todoTeam.id=:todoTeamId " +
+            "join Assign  a on a.register.id=r.id " +
+            "where a.todo.id=t.id and t.scheduledDate between :startDate and :endDate and t.todoStatus='COMPLETE'"
+    )
+    Long countCompleteTodoByBetweenDate(@Param("userId") Long userId, @Param("todoTeamId") Long todoTeamId, @Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
 
     @Query("select t from Todo t " +
             "join Register r on r.userId=:userId and r.todoTeam.id=:todoTeamId " +
