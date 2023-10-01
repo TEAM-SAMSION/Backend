@@ -190,4 +190,31 @@ public class TodoControllerTest extends BaseRestDocsTest {
                 ));
     }
 
+
+    @Test
+    @DisplayName("주차 달성률 비교 API 테스트")
+    void getWeekProgressCompare() throws Exception {
+        //given
+        final Long testTeamId = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(Long.class);
+        given(todoRateGetUseCase.getWeekProgressCompare(testTeamId)).willReturn(new TodoRateCompareResponse(true, false));
+        MockHttpServletRequestBuilder request = get(TODO_REQUEST_URL + "/compare/{teamId}", testTeamId)
+                .header("Authorization", "Bearer accessToken");
+        //when
+        ResultActions result = mvc.perform(request);
+        //then
+        result.andExpect(status().isOk())
+                .andDo(resultHandler.document(
+                        requestHeaders(
+                                headerWithName("Authorization").description("access 토큰")
+                        ),
+                        pathParameters(
+                                parameterWithName("teamId").description("TodoTeam의 Id")
+                        ),
+                        responseFields(
+                                fieldWithPath("isHigherThanLastWeek").description("이번주 달성률이 지난주 달성률보다 높은지 여부"),
+                                fieldWithPath("isSameAsLastWeek").description("이번주 달성률이 지난달 달성률과 같은지 여부")
+                        )
+                ));
+    }
+
 }
