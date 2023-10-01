@@ -1,9 +1,11 @@
 package com.pawith.todoapplication.mapper;
 
 import com.pawith.todoapplication.dto.request.TodoTeamCreateRequest;
+import com.pawith.todoapplication.dto.response.TodoTeamSearchInfoResponse;
 import com.pawith.todoapplication.dto.response.TodoTeamSimpleResponse;
 import com.pawith.tododomain.entity.Register;
 import com.pawith.tododomain.entity.TodoTeam;
+import com.pawith.userdomain.entity.User;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -29,6 +31,17 @@ public class TodoTeamMapper {
             .teamProfileImageUrl(todoTeam.getImageUrl())
             .authority(register.getAuthority())
             .registerPeriod(registerPeriod)
+            .build();
+    }
+
+    public static TodoTeamSearchInfoResponse mapToTodoTeamSearchInfoResponse(final TodoTeam todoTeam, final User user, final Integer registerCount) {
+        return TodoTeamSearchInfoResponse.builder()
+            .teamName(todoTeam.getTeamName())
+            .code(todoTeam.getTeamCode())
+            .description(null)
+            .teamImageUrl(todoTeam.getImageUrl())
+            .presidentName(user.getNickname())
+            .registerCount(registerCount)
             .build();
     }
 }

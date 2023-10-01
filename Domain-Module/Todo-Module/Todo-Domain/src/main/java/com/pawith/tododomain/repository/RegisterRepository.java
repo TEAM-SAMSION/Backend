@@ -1,5 +1,6 @@
 package com.pawith.tododomain.repository;
 
+import com.pawith.tododomain.entity.Authority;
 import com.pawith.tododomain.entity.Register;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -17,6 +18,8 @@ public interface RegisterRepository extends JpaRepository<Register, Long> {
 
     Optional<Register> findByTodoTeamIdAndUserId(Long todoTeamId, Long userId);
 
+    Optional<Register> findByTodoTeamIdAndAuthority(Long todoTeamId, Authority authority);
+
     Boolean existsByTodoTeamIdAndUserId(Long todoTeamId, Long userId);
 
     List<Register> findAllByTodoTeamId(Long todoTeamId);
@@ -28,4 +31,6 @@ public interface RegisterRepository extends JpaRepository<Register, Long> {
             "join Assign a on a.id=:todoId " +
             "where a.register.id = r.id")
     List<Register> findByTodoId(Long todoId);
+
+    Integer countByTodoTeamId(Long todoTeamId);
 }
