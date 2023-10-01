@@ -38,7 +38,7 @@ public class TodoTeamController {
     }
 
     @GetMapping("/code")
-    public TodoTeamRandomCodeResponse getTodoTeamRandomCode(){
+    public TodoTeamRandomCodeResponse getTodoTeamRandomCode() {
         return todoTeamRandomCodeGetUseCase.generateRandomCode();
     }
 
@@ -47,9 +47,10 @@ public class TodoTeamController {
      * <br>리팩터링 후 : 이미지 업로드 비동기 + 팀 생성 API 100회 테스트 평균 98.3ms(60% 감소)
      */
     @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public void postTodoTeam(@RequestPart("imageFiles") List<MultipartFile> imageFiles,
-                             @RequestPart("todoTeamCreateInfo") TodoTeamCreateRequest todoTeamCreateInfo){
-        todoTeamCreateUseCase.createTodoTeam(imageFiles,todoTeamCreateInfo);
+    public void postTodoTeam(@RequestPart("teamImageFile") MultipartFile teamImageFile,
+                             @RequestPart("petimageFiles") List<MultipartFile> petImageFiles,
+                             @RequestPart("todoTeamCreateInfo") TodoTeamCreateRequest todoTeamCreateInfo) {
+        todoTeamCreateUseCase.createTodoTeam(teamImageFile,petImageFiles, todoTeamCreateInfo);
     }
 
     /**
