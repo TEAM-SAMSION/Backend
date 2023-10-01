@@ -5,6 +5,7 @@ import com.pawith.commonmodule.slice.SliceResponse;
 import com.pawith.commonmodule.utils.FixtureMonkeyUtils;
 import com.pawith.todoapplication.dto.response.TodoTeamNameSimpleResponse;
 import com.pawith.todoapplication.dto.response.TodoTeamRandomCodeResponse;
+import com.pawith.todoapplication.dto.response.TodoTeamSearchInfoResponse;
 import com.pawith.todoapplication.dto.response.TodoTeamSimpleResponse;
 import com.pawith.todoapplication.service.TodoTeamCreateUseCase;
 import com.pawith.todoapplication.service.TodoTeamGetUseCase;
@@ -163,24 +164,60 @@ class TodoTeamControllerTest extends BaseRestDocsTest {
 
     @Test
     @DisplayName("가입한 팀 조회 API 테스트")
-    void getTodoTeamName() throws Exception{
+    void getTodoTeamName() throws Exception {
         //given
-        final List<TodoTeamNameSimpleResponse> todoTeamNameSimpleResponses =  FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMe(TodoTeamNameSimpleResponse.class,5);
+        final List<TodoTeamNameSimpleResponse> todoTeamNameSimpleResponses = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMe(TodoTeamNameSimpleResponse.class, 5);
         given(todoTeamGetUseCase.getTodoTeamName()).willReturn(todoTeamNameSimpleResponses);
         MockHttpServletRequestBuilder request = get(TODO_TEAM_REQUEST_URL + "/name")
-                .header("Authorization", "Bearer accessToken");
+            .header("Authorization", "Bearer accessToken");
         //when
         ResultActions result = mvc.perform(request);
         //then
         result.andExpect(status().isOk())
-                .andDo(resultHandler.document(
-                        requestHeaders(
-                                headerWithName("Authorization").description("access 토큰")
-                        ),
-                        responseFields(
-                                fieldWithPath("[].teamId").description("TodoTeam의 Id"),
-                                fieldWithPath("[].teamName").description("TodoTeam의 이름")
-                        )
-                ));
+            .andDo(resultHandler.document(
+                requestHeaders(
+                    headerWithName("Authorization").description("access 토큰")
+                ),
+                responseFields(
+                    fieldWithPath("[].teamId").description("TodoTeam의 Id"),
+                    fieldWithPath("[].teamName").description("TodoTeam의 이름")
+                )
+            ));
+    }
+
+
+    @Test
+    @DisplayName("code를 이용해서 TodoTeam을 조회 테스트")
+    void getTodoTeamByCode() throws Exception {
+        //given
+        final String code = "e7ce90da";
+        final TodoTeamSearchInfoResponse todoTeamSearchInfoResponse = FixtureMonkeyUtils.getConstructBasedFixtureMonkey()
+            .giveMeBuilder(TodoTeamSearchInfoResponse.class)
+            .set("code", code)
+            .sample();
+        given(todoTeamGetUseCase.searchTodoTeamByCode(code)).willReturn(todoTeamSearchInfoResponse);
+        MockHttpServletRequestBuilder request = get(TODO_TEAM_REQUEST_URL)
+            .param("code", code)
+            .header("Authorization", "Bearer accessToken");
+        //when
+        ResultActions result = mvc.perform(request);
+        //then
+        result.andExpect(status().isOk())
+            .andDo(resultHandler.document(
+                requestHeaders(
+                    headerWithName("Authorization").description("access 토큰")
+                ),
+                requestParameters(
+                    parameterWithName("code").description("TodoTeam의 코드")
+                ),
+                responseFields(
+                    fieldWithPath("code").description("TodoTeam의 코드"),
+                    fieldWithPath("teamName").description("TodoTeam의 이름"),
+                    fieldWithPath("presidentName").description("TodoTeam의 대표자 이름"),
+                    fieldWithPath("registerCount").description("TodoTeam의 가입자 수"),
+                    fieldWithPath("description").description("TodoTeam의 설명"),
+                    fieldWithPath("teamImageUrl").description("TodoTeam의 이미지")
+                )
+            ));
     }
 }
