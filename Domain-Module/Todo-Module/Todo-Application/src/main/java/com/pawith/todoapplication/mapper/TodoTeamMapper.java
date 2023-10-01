@@ -13,11 +13,11 @@ import java.time.Period;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class TodoTeamMapper {
 
-    public static TodoTeam mapToTodoTeam(final TodoTeamCreateRequest request) {
+    public static TodoTeam mapToTodoTeam(final TodoTeamCreateRequest request, String imageUrl) {
         return TodoTeam.builder()
             .teamCode(request.getRandomCode())
             .teamName(request.getTeamName())
-            .imageUrl(null)
+            .imageUrl(imageUrl)
             .build();
     }
 
