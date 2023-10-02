@@ -12,6 +12,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -81,6 +82,19 @@ class TodoTeamQueryServiceTest {
         //then
         Assertions.assertThatCode(() -> todoTeamQueryService.findTodoTeamByCode(teamCode))
             .isInstanceOf(TodoTeamNotFoundException.class);
+    }
+
+    @Test
+    @DisplayName("userId로 TodoTeam을 조회한다.")
+    void findAllTodoTeamByUserId() {
+        //given
+        final Long userId = FixtureMonkey.create().giveMeOne(Long.class);
+        final List<TodoTeam> mockTodoTeam = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMe(TodoTeam.class, 10);
+        given(todoTeamRepository.findAllByUserId(userId)).willReturn(mockTodoTeam);
+        //when
+        List<TodoTeam> result = todoTeamQueryService.findAllTodoTeamByUserId(userId);
+        //then
+        Assertions.assertThat(result).usingRecursiveComparison().isEqualTo(mockTodoTeam);
     }
 
 
