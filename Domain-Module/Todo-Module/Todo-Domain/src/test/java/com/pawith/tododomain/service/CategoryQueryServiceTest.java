@@ -42,4 +42,17 @@ class CategoryQueryServiceTest {
         Assertions.assertThat(result).usingRecursiveComparison().isEqualTo(mockCategoryList);
     }
 
+    @Test
+    @DisplayName("categoryId를 받아 해당 카테고리를 조회한다.")
+    void findCategoryById() {
+        //given
+        final Long mockCategoryId = FixtureMonkey.create().giveMeOne(Long.class);
+        final Category mockCategory = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeOne(Category.class);
+        given(categoryRepository.findById(mockCategoryId)).willReturn(java.util.Optional.of(mockCategory));
+        //when
+        Category result = categoryQueryService.findCategoryById(mockCategoryId);
+        //then
+        Assertions.assertThat(result).usingRecursiveComparison().isEqualTo(mockCategory);
+    }
+
 }
