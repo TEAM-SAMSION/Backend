@@ -3,7 +3,7 @@ package com.pawith.userapplication.handler;
 import com.pawith.commonmodule.UnitTestConfig;
 import com.pawith.commonmodule.exception.Error;
 import com.pawith.commonmodule.utils.FixtureMonkeyUtils;
-import com.pawith.userapplication.handler.event.UserSignUpEvent;
+import com.pawith.commonmodule.event.UserSignUpEvent;
 import com.pawith.userdomain.exception.AccountAlreadyExistException;
 import com.pawith.userdomain.service.UserAuthoritySaveService;
 import com.pawith.userdomain.service.UserQueryService;

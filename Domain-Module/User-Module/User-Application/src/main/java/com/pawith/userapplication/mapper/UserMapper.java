@@ -1,7 +1,7 @@
 package com.pawith.userapplication.mapper;
 
 import com.pawith.commonmodule.annotation.Mapper;
-import com.pawith.userapplication.handler.event.UserSignUpEvent;
+import com.pawith.commonmodule.event.UserSignUpEvent;
 import com.pawith.userdomain.entity.User;
 
 @Mapper
