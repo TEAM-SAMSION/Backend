@@ -1,6 +1,6 @@
 package com.pawith.userapplication.handler;
 
-import com.pawith.userapplication.handler.event.UserSignUpEvent;
+import com.pawith.commonmodule.event.UserSignUpEvent;
 import com.pawith.userapplication.mapper.UserMapper;
 import com.pawith.userdomain.entity.User;
 import com.pawith.userdomain.service.UserAuthoritySaveService;

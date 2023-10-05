@@ -8,7 +8,7 @@ import com.pawith.authapplication.exception.AuthException;
 import com.pawith.authapplication.service.command.handler.AuthHandler;
 import com.pawith.authdomain.jwt.JWTProvider;
 import com.pawith.commonmodule.exception.Error;
-import com.pawith.userapplication.handler.event.UserSignUpEvent;
+import com.pawith.commonmodule.event.UserSignUpEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;

@@ -1,4 +1,4 @@
-package com.pawith.userapplication.handler.event;
+package com.pawith.commonmodule.event;
 
 import com.pawith.commonmodule.enums.Provider;
 import lombok.*;
