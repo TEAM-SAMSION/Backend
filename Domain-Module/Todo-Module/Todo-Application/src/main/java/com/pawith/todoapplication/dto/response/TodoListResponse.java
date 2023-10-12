@@ -13,6 +13,6 @@ import java.util.List;
 public class TodoListResponse {
 
     private String categoryName;
-    private List<TodoSimpleResponse> todos;
+    private List<CategorySubTodoResponse> todos;
 
 }

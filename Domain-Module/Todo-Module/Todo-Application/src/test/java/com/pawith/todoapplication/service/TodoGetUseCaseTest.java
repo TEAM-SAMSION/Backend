@@ -6,6 +6,7 @@ import com.pawith.commonmodule.slice.SliceResponse;
 import com.pawith.commonmodule.utils.FixtureMonkeyUtils;
 import com.pawith.todoapplication.dto.response.TodoHomeResponse;
 import com.pawith.tododomain.entity.Todo;
+import com.pawith.tododomain.service.AssignQueryService;
 import com.pawith.tododomain.service.CategoryQueryService;
 import com.pawith.tododomain.service.RegisterQueryService;
 import com.pawith.tododomain.service.TodoQueryService;
@@ -40,12 +41,14 @@ class TodoGetUseCaseTest {
     private UserQueryService userQueryService;
     @Mock
     private RegisterQueryService registerQueryService;
+    @Mock
+    private AssignQueryService assignQueryService;
 
     private TodoGetUseCase todoGetUseCase;
 
     @BeforeEach
     void init(){
-        todoGetUseCase = new TodoGetUseCase(userUtils, todoQueryService, categoryQueryService, userQueryService, registerQueryService);
+        todoGetUseCase = new TodoGetUseCase(userUtils, todoQueryService, userQueryService, registerQueryService, assignQueryService);
     }
 
     @Test
@@ -62,7 +65,7 @@ class TodoGetUseCaseTest {
         given(userUtils.getAccessUser()).willReturn(mockUser);
         given(todoQueryService.findTodayTodoSlice(mockUser.getId(), todoTeamId, mockPageable)).willReturn(todos);
         // when
-        SliceResponse<TodoHomeResponse> result = todoGetUseCase.getTodos(todoTeamId, mockPageable);
+        SliceResponse<TodoHomeResponse> result = todoGetUseCase.getTodoListByTodoTeamId(todoTeamId, mockPageable);
         // then
         Assertions.assertThat(result).isNotNull();
         Assertions.assertThat(result.getContent().size()).isEqualTo(todoList.size());
