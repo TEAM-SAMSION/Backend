@@ -4,9 +4,8 @@ import com.pawith.commonmodule.BaseRestDocsTest;
 import com.pawith.commonmodule.slice.SliceResponse;
 import com.pawith.commonmodule.utils.FixtureMonkeyUtils;
 import com.pawith.todoapplication.dto.request.TodoCreateRequest;
-import com.pawith.todoapplication.dto.response.TodoHomeResponse;
-import com.pawith.todoapplication.dto.response.TodoProgressResponse;
-import com.pawith.todoapplication.dto.response.TodoRateCompareResponse;
+import com.pawith.todoapplication.dto.response.*;
+import com.pawith.todoapplication.service.RegistersGetUseCase;
 import com.pawith.todoapplication.service.TodoCreateUseCase;
 import com.pawith.todoapplication.service.TodoGetUseCase;
 import com.pawith.todoapplication.service.TodoRateGetUseCase;
@@ -45,6 +44,8 @@ public class TodoControllerTest extends BaseRestDocsTest {
     private TodoGetUseCase todoGetUseCase;
     @MockBean
     private TodoCreateUseCase todoCreateUseCase;
+    @MockBean
+    private RegistersGetUseCase registersGetUseCase;
 
     private static final String TODO_REQUEST_URL = "/todo";
 
@@ -209,6 +210,33 @@ public class TodoControllerTest extends BaseRestDocsTest {
                         ),
                         responseFields(
                                 fieldWithPath("compareWithLastWeek").description("지난주 달성률과 이번주 달성률 비교. HIGER : 지난주보다 높음, LOWER : 지난주보다 낮음, SAME : 지난주와 같음")
+                        )
+                ));
+    }
+
+
+    @Test
+    @DisplayName("팀 가입 기간 조회 API 테스트")
+    void getRegisterTerm() throws Exception {
+        //given
+        final Long testTeamId = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(Long.class);
+        final RegisterTermResponse registerTermResponse = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(RegisterTermResponse.class);
+        given(registersGetUseCase.getRegisterTerm(testTeamId)).willReturn(registerTermResponse);
+        MockHttpServletRequestBuilder request = get(TODO_REQUEST_URL + "/register/{teamId}", testTeamId)
+                .header("Authorization", "Bearer accessToken");
+        //when
+        ResultActions result = mvc.perform(request);
+        //then
+        result.andExpect(status().isOk())
+                .andDo(resultHandler.document(
+                        requestHeaders(
+                                headerWithName("Authorization").description("access 토큰")
+                        ),
+                        pathParameters(
+                                parameterWithName("teamId").description("TodoTeam의 Id")
+                        ),
+                        responseFields(
+                                fieldWithPath("registerTerm").description("팀 가입 한 기간. FIRST_WEEK : 1주, SECOND_WEEK : 2주, AFTER_SECOND_WEEK : 2주 이상")
                         )
                 ));
     }

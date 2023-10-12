@@ -71,3 +71,8 @@ operation::todo-controller-test/get-todo-list[snippets='http-request,path-parame
 === Todo 주차 달성률 비교
 
 operation::todo-controller-test/get-week-progress-compare[snippets='http-request,path-parameters,request-headers,http-response,response-fields']
+
+[[Todo-API-투두-팀-가입-기간-조회]]
+=== Todo 팀 가입 기간 조회
+
+operation::todo-controller-test/get-register-term[snippets='http-request,path-parameters,request-headers,http-response,response-fields']
