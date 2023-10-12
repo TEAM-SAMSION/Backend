@@ -15,10 +15,9 @@ public class CategoryQueryService {
 
     private final CategoryRepository categoryRepository;
 
-    public List<Category> findCategoryListByTodoTeamId(Long todoTeamId) {
-        return categoryRepository.findAllByTodoTeamId(todoTeamId);
+    public List<Category> findCategoryListByTodoTeamIdAndStatus(Long todoTeamId) {
+        return categoryRepository.findAllByTodoTeamIdAndCategoryStatus(todoTeamId);
     }
-
     public Category findCategoryById(Long categoryId) {
         return categoryRepository.findById(categoryId).orElseThrow();
     }
