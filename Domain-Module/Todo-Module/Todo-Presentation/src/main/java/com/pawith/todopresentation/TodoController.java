@@ -48,9 +48,9 @@ public class TodoController {
     }
 
 
-    @GetMapping("/{teamId}")
-    public List<CategorySubTodoResponse> getTodoList(@PathVariable Long teamId, @RequestParam("moveDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)  LocalDate moveDate){
-        return todoGetUseCase.getTodoListByCategoryId(teamId, moveDate);
+    @GetMapping("/{categoryId}")
+    public TodoListResponse getTodoList(@PathVariable Long categoryId, @RequestParam("moveDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)  LocalDate moveDate){
+        return todoGetUseCase.getTodoListByCategoryId(categoryId, moveDate);
     }
 
     @GetMapping("/compare/{teamId}")

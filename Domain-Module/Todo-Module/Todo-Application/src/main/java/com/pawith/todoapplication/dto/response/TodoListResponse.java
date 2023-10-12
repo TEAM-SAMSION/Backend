@@ -11,8 +11,6 @@ import java.util.List;
 @ToString
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
 public class TodoListResponse {
-
-    private String categoryName;
     private List<CategorySubTodoResponse> todos;
 
 }
