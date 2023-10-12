@@ -10,8 +10,11 @@ import com.pawith.userdomain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @DomainService
 @Transactional(readOnly = true)
@@ -31,6 +34,13 @@ public class UserQueryService {
 
     public User findById(Long userId){
         return findUser(userRepository::findById, userId);
+    }
+
+    public <T> Map<Long,User> findUserMapByIds(Function<T, List<Long>> userIdsReturnMethod, T specificationData){
+        final List<Long> userIds = userIdsReturnMethod.apply(specificationData);
+        return userRepository.findAllByIds(userIds)
+            .stream()
+            .collect(Collectors.toMap(User::getId, Function.identity()));
     }
 
     private <T> User findUser(Function<T, Optional<User>> method, T specificationData){

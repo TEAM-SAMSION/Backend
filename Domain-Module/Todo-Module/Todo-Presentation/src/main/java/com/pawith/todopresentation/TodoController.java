@@ -39,7 +39,7 @@ public class TodoController {
      */
     @GetMapping("/list/{teamId}")
     public SliceResponse<TodoHomeResponse> getTodos(@PathVariable Long teamId, Pageable pageable) {
-        return todoGetUseCase.getTodos(teamId, pageable);
+        return todoGetUseCase.getTodoListByTodoTeamId(teamId, pageable);
     }
 
     @PostMapping
@@ -49,8 +49,8 @@ public class TodoController {
 
 
     @GetMapping("/{teamId}")
-    public List<TodoListResponse> getTodoList(@PathVariable Long teamId, @RequestParam("moveDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)  LocalDate moveDate){
-        return todoGetUseCase.getTodoList(teamId, moveDate);
+    public List<CategorySubTodoResponse> getTodoList(@PathVariable Long teamId, @RequestParam("moveDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)  LocalDate moveDate){
+        return todoGetUseCase.getTodoListByCategoryId(teamId, moveDate);
     }
 
     @GetMapping("/compare/{teamId}")

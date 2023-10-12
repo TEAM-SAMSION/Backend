@@ -10,10 +10,10 @@ import java.util.List;
 @Getter
 @ToString
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
-public class TodoSimpleResponse {
+public class CategorySubTodoResponse {
 
     private Long todoId;
     private String task;
     private String status;
-    private List<AssignSimpleInfoResponse> assignNames;
+    private List<AssignUserInfoResponse> assignNames;
 }

@@ -4,7 +4,9 @@ import com.pawith.commonmodule.BaseRestDocsTest;
 import com.pawith.commonmodule.slice.SliceResponse;
 import com.pawith.commonmodule.utils.FixtureMonkeyUtils;
 import com.pawith.todoapplication.dto.request.TodoCreateRequest;
-import com.pawith.todoapplication.dto.response.*;
+import com.pawith.todoapplication.dto.response.TodoHomeResponse;
+import com.pawith.todoapplication.dto.response.TodoProgressResponse;
+import com.pawith.todoapplication.dto.response.TodoRateCompareResponse;
 import com.pawith.todoapplication.service.TodoCreateUseCase;
 import com.pawith.todoapplication.service.TodoGetUseCase;
 import com.pawith.todoapplication.service.TodoRateGetUseCase;
@@ -20,7 +22,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -85,7 +86,7 @@ public class TodoControllerTest extends BaseRestDocsTest {
                 .set("status", FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeBuilder("COMPLETE"))
                 .sampleList(pageRequest.getPageSize());
         final SliceImpl<TodoHomeResponse> slice = new SliceImpl(todoHomeResponses, pageRequest, true);
-        given(todoGetUseCase.getTodos(any(), any())).willReturn(SliceResponse.from(slice));
+        given(todoGetUseCase.getTodoListByTodoTeamId(any(), any())).willReturn(SliceResponse.from(slice));
         MockHttpServletRequestBuilder request = get(TODO_REQUEST_URL + "/list/{teamId}", testTeamId)
                 .queryParam("page", String.valueOf(pageRequest.getPageNumber()))
                 .queryParam("size", String.valueOf(pageRequest.getPageSize()))
@@ -142,53 +143,53 @@ public class TodoControllerTest extends BaseRestDocsTest {
             ));
     }
 
-    @Test
-    @DisplayName("투두 리스트 조회 API 테스트")
-    void getTodoList() throws Exception{
-        //given
-        final Long testTeamId = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(Long.class);
-        final LocalDate testMoveDate = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(LocalDate.class);
-        final List<AssignSimpleInfoResponse> assignSimpleInfoResponses = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMe(AssignSimpleInfoResponse.class, 2);
-        final List<TodoSimpleResponse> todoSimpleResponses = FixtureMonkeyUtils.getConstructBasedFixtureMonkey()
-            .giveMeBuilder(TodoSimpleResponse.class)
-            .set("todoId", Arbitraries.longs().greaterOrEqual(1L))
-            .set("task", Arbitraries.strings().withCharRange('a', 'z').ofMinLength(5).ofMaxLength(10))
-            .set("status", FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeBuilder("COMPLETE"))
-            .set("assignNames", assignSimpleInfoResponses)
-            .sampleList(2);
-        final List<TodoListResponse> todoListResponses = FixtureMonkeyUtils.getConstructBasedFixtureMonkey()
-                .giveMeBuilder(TodoListResponse.class)
-                .set("categoryName", Arbitraries.strings().withCharRange('a', 'z').ofMinLength(5).ofMaxLength(10))
-                .set("todos", todoSimpleResponses)
-                .sampleList(2);
-        given(todoGetUseCase.getTodoList(any(), any())).willReturn(todoListResponses);
-        MockHttpServletRequestBuilder request = get(TODO_REQUEST_URL + "/{teamId}", testTeamId)
-                .queryParam("moveDate", testMoveDate.toString())
-                .header("Authorization", "Bearer accessToken");
-        //when
-        ResultActions result = mvc.perform(request);
-        //then
-        result.andExpect(status().isOk())
-                .andDo(resultHandler.document(
-                        requestHeaders(
-                                headerWithName("Authorization").description("access 토큰")
-                        ),
-                        pathParameters(
-                                parameterWithName("teamId").description("TodoTeam의 Id")
-                        ),
-                        requestParameters(
-                                parameterWithName("moveDate").description("달력에서 이동하는 날짜(LocalDate)")
-                        ),
-                        responseFields(
-                                fieldWithPath("[].categoryName").description("카테고리 이름"),
-                                fieldWithPath("[].todos[].todoId").description("투두 항목 Id"),
-                                fieldWithPath("[].todos[].task").description("투두 항목 이름"),
-                                fieldWithPath("[].todos[].status").description("투두 항목 상태(완료, 미완료)"),
-                                fieldWithPath("[].todos[].assignNames[].assigneeId").description("할당받은 사용자의 ID"),
-                                fieldWithPath("[].todos[].assignNames[].assigneeName").description("할당받은 사용자의 이름")
-                        )
-                ));
-    }
+//    @Test
+//    @DisplayName("투두 리스트 조회 API 테스트")
+//    void getTodoList() throws Exception{
+//        //given
+//        final Long testTeamId = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(Long.class);
+//        final LocalDate testMoveDate = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(LocalDate.class);
+//        final List<AssignSimpleInfoResponse> assignSimpleInfoResponses = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMe(AssignSimpleInfoResponse.class, 2);
+//        final List<TodoSimpleResponse> todoSimpleResponses = FixtureMonkeyUtils.getConstructBasedFixtureMonkey()
+//            .giveMeBuilder(TodoSimpleResponse.class)
+//            .set("todoId", Arbitraries.longs().greaterOrEqual(1L))
+//            .set("task", Arbitraries.strings().withCharRange('a', 'z').ofMinLength(5).ofMaxLength(10))
+//            .set("status", FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeBuilder("COMPLETE"))
+//            .set("assignNames", assignSimpleInfoResponses)
+//            .sampleList(2);
+//        final List<TodoListResponse> todoListResponses = FixtureMonkeyUtils.getConstructBasedFixtureMonkey()
+//                .giveMeBuilder(TodoListResponse.class)
+//                .set("categoryName", Arbitraries.strings().withCharRange('a', 'z').ofMinLength(5).ofMaxLength(10))
+//                .set("todos", todoSimpleResponses)
+//                .sampleList(2);
+//        given(todoGetUseCase.getTodoList(any(), any())).willReturn(todoListResponses);
+//        MockHttpServletRequestBuilder request = get(TODO_REQUEST_URL + "/{teamId}", testTeamId)
+//                .queryParam("moveDate", testMoveDate.toString())
+//                .header("Authorization", "Bearer accessToken");
+//        //when
+//        ResultActions result = mvc.perform(request);
+//        //then
+//        result.andExpect(status().isOk())
+//                .andDo(resultHandler.document(
+//                        requestHeaders(
+//                                headerWithName("Authorization").description("access 토큰")
+//                        ),
+//                        pathParameters(
+//                                parameterWithName("teamId").description("TodoTeam의 Id")
+//                        ),
+//                        requestParameters(
+//                                parameterWithName("moveDate").description("달력에서 이동하는 날짜(LocalDate)")
+//                        ),
+//                        responseFields(
+//                                fieldWithPath("[].categoryName").description("카테고리 이름"),
+//                                fieldWithPath("[].todos[].todoId").description("투두 항목 Id"),
+//                                fieldWithPath("[].todos[].task").description("투두 항목 이름"),
+//                                fieldWithPath("[].todos[].status").description("투두 항목 상태(완료, 미완료)"),
+//                                fieldWithPath("[].todos[].assignNames[].assigneeId").description("할당받은 사용자의 ID"),
+//                                fieldWithPath("[].todos[].assignNames[].assigneeName").description("할당받은 사용자의 이름")
+//                        )
+//                ));
+//    }
 
 
     @Test

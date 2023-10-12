@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class AssignSimpleInfoResponse {
+public class AssignUserInfoResponse {
     private final Long assigneeId;
     private final String assigneeName;
 }
