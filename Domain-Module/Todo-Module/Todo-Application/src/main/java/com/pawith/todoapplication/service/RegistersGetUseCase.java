@@ -3,6 +3,7 @@ package com.pawith.todoapplication.service;
 import com.pawith.commonmodule.annotation.ApplicationService;
 import com.pawith.todoapplication.dto.response.RegisterListResponse;
 import com.pawith.todoapplication.dto.response.RegisterSimpleInfoResponse;
+import com.pawith.todoapplication.dto.response.RegisterTermResponse;
 import com.pawith.tododomain.entity.Register;
 import com.pawith.tododomain.service.RegisterQueryService;
 import com.pawith.userdomain.entity.User;
@@ -36,5 +37,11 @@ public class RegistersGetUseCase {
             })
             .collect(Collectors.toList());
         return new RegisterListResponse(registerSimpleInfoResponses);
+    }
+
+    public RegisterTermResponse getRegisterTerm(final Long teamId) {
+        final User user = userUtils.getAccessUser();
+        final Integer registerTerm = registerQueryService.findUserRegisterTerm(teamId, user.getId());
+        return new RegisterTermResponse(registerTerm);
     }
 }
