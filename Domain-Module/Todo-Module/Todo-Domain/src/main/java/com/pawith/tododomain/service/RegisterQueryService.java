@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @DomainService
 @RequiredArgsConstructor
@@ -40,6 +41,12 @@ public class RegisterQueryService {
 
     public Register findRegisterById(Long registerId){
         return findRegister(registerRepository::findById, registerId);
+    }
+
+    public List<Long> findUserIdsByCategoryId(Long categoryId){
+        return registerRepository.findAllByCategoryId(categoryId).stream()
+            .map(Register::getUserId)
+            .collect(Collectors.toList());
     }
 
     public List<Register> findAllRegisters(Long userId, Long todoTeamId){

@@ -20,6 +20,9 @@ public interface RegisterRepository extends JpaRepository<Register, Long> {
 
     Optional<Register> findByTodoTeamIdAndAuthority(Long todoTeamId, Authority authority);
 
+    @Query("select r from Register r join Category c on c.id = :categoryId where c.todoTeam.id= r.todoTeam.id")
+    List<Register> findAllByCategoryId(Long categoryId);
+
     Boolean existsByTodoTeamIdAndUserId(Long todoTeamId, Long userId);
 
     List<Register> findAllByTodoTeamId(Long todoTeamId);
