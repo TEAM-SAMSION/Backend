@@ -16,8 +16,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.mockito.BDDMockito.given;
 
@@ -169,5 +172,32 @@ class RegisterQueryServiceTest {
         Assertions.assertThat(result).isEqualTo(mockCount);
     }
 
+    @Test
+    @DisplayName("CategoryId로 UserId를 조회한다.")
+    void findUserIdsByCategoryId() {
+        //given
+        final Long categoryId = FixtureMonkey.create().giveMeOne(Long.class);
+        final List<Register> mockRegister = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMe(Register.class, 10);
+        given(registerRepository.findAllByCategoryId(categoryId)).willReturn(mockRegister);
+        //when
+        List<Long> result = registerQueryService.findUserIdsByCategoryId(categoryId);
+        //then
+        Assertions.assertThat(result).isEqualTo(mockRegister.stream().map(Register::getUserId).collect(Collectors.toList()));
+    }
+
+    @Test
+    @DisplayName("todoTeam 가입 기간을 조회한다")
+    void findUserRegisterTerm() {
+        //given
+        final Long todoTeamId = FixtureMonkey.create().giveMeOne(Long.class);
+        final Long userId = FixtureMonkey.create().giveMeOne(Long.class);
+        final Register mockRegister = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeOne(Register.class);
+        final LocalDate mockDate = LocalDate.now();
+        given(registerRepository.findByTodoTeamIdAndUserId(todoTeamId, userId)).willReturn(Optional.of(mockRegister));
+        //when
+        Integer result = registerQueryService.findUserRegisterTerm(todoTeamId, userId);
+        //then
+        Assertions.assertThat(result).isEqualTo((int) ChronoUnit.DAYS.between(mockRegister.getCreatedAt().toLocalDate(), mockDate));
+    }
 
 }
