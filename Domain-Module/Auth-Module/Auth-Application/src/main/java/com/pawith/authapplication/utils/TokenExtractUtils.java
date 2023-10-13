@@ -19,10 +19,10 @@ public class TokenExtractUtils {
 
         final String[] splitToken = tokenHeader.split(" ");
         final String authorizationType = splitToken[0];
-        final String accessToken = splitToken[1];
+        final String token = splitToken[1];
         if(!Objects.equals(authorizationType, AuthConsts.AUTHENTICATION_TYPE)){
             throw new InvalidAuthorizationTypeException(Error.INVALID_AUTHORIZATION_TYPE);
         }
-        return accessToken;
+        return token;
     }
 }
