@@ -13,10 +13,6 @@ public class NaverUserInfo {
     private static final String NICKNAME = "nickname";
     private Map<String, String> response;
 
-    public NaverUserInfo(Map<String, String> response) {
-        this.response = response;
-    }
-
     public String getNickname(){
         return response.get(NICKNAME);
     }
