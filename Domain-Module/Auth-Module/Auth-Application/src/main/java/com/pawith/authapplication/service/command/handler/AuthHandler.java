@@ -6,5 +6,7 @@ import com.pawith.authapplication.dto.OAuthUserInfo;
 public interface AuthHandler{
     OAuthUserInfo handle(OAuthRequest authenticationInfo);
 
-    boolean isAccessible(OAuthRequest authenticationInfo);
+    default boolean isAccessible(OAuthRequest authenticationInfo){
+        return false;
+    }
 }
