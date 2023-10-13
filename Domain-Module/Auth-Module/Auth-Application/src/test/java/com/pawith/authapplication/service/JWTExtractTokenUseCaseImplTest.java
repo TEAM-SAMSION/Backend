@@ -1,4 +1,4 @@
-package com.pawith.authapplication.application;
+package com.pawith.authapplication.service;
 
 import com.pawith.authapplication.exception.InvalidAuthorizationTypeException;
 import com.pawith.authapplication.service.impl.JWTExtractTokenUseCaseImpl;

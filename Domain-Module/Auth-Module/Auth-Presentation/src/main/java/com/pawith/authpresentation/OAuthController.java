@@ -23,8 +23,8 @@ public class OAuthController {
     }
 
     @DeleteMapping("/logout")
-    public void logout(){
-        logoutUseCase.logoutAccessUser();
+    public void logout(@RequestHeader("RefreshToken") String refreshToken){
+        logoutUseCase.logoutAccessUser(refreshToken);
     }
 
 }

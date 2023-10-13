@@ -1,4 +1,4 @@
-package com.pawith.authapplication.application;
+package com.pawith.authapplication.service;
 
 import com.navercorp.fixturemonkey.FixtureMonkey;
 import com.pawith.authapplication.service.impl.JWTVerifyUseCaseImpl;

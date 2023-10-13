@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class GoogleOAuthHandler implements AuthHandler {
     private static final Provider OAUTH_TYPE = Provider.GOOGLE;
-    public static final String GOOGLE_AUTHORIZATION_BEARER = "Bearer ";
+    private static final String GOOGLE_AUTHORIZATION_BEARER = "Bearer ";
 
     private final GoogleOAuthFeignClient googleOAuthFeignClient;
 
