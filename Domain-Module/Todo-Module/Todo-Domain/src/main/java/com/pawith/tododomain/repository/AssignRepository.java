@@ -11,9 +11,8 @@ public interface AssignRepository extends JpaRepository<Assign, Long> {
 
     @Query("select a " +
         "from Assign a " +
-        "join Category c on c.id=:categoryId "+
         "join fetch a.register " +
         "join fetch a.todo t " +
-        "where c.id=t.category.id and t.scheduledDate=:scheduledDate")
+        "where t.category.id=:categoryId and t.scheduledDate=:scheduledDate")
     List<Assign> findAllByCategoryIdAndScheduledDate(Long categoryId, LocalDate scheduledDate);
 }
