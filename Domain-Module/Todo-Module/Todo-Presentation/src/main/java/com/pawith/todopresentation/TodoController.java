@@ -3,6 +3,7 @@ package com.pawith.todopresentation;
 import com.pawith.commonmodule.slice.SliceResponse;
 import com.pawith.todoapplication.dto.request.TodoCreateRequest;
 import com.pawith.todoapplication.dto.response.*;
+import com.pawith.todoapplication.service.RegistersGetUseCase;
 import com.pawith.todoapplication.service.TodoCreateUseCase;
 import com.pawith.todoapplication.service.TodoGetUseCase;
 import com.pawith.todoapplication.service.TodoRateGetUseCase;
@@ -23,6 +24,7 @@ public class TodoController {
     private final TodoGetUseCase todoGetUseCase;
     private final TodoRateGetUseCase todoRateGetUseCase;
     private final TodoCreateUseCase todoCreateUseCase;
+    private final RegistersGetUseCase registersGetUseCase;
 
     /**
      * 리팩터링 전 : 동시 100명 요청 평균 426ms
@@ -48,14 +50,19 @@ public class TodoController {
     }
 
 
-    @GetMapping("/{teamId}")
-    public List<CategorySubTodoResponse> getTodoList(@PathVariable Long teamId, @RequestParam("moveDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)  LocalDate moveDate){
-        return todoGetUseCase.getTodoListByCategoryId(teamId, moveDate);
+    @GetMapping("/{categoryId}")
+    public TodoListResponse getTodoList(@PathVariable Long categoryId, @RequestParam("moveDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)  LocalDate moveDate){
+        return todoGetUseCase.getTodoListByCategoryId(categoryId, moveDate);
     }
 
     @GetMapping("/compare/{teamId}")
     public TodoRateCompareResponse getWeekProgressCompare(@PathVariable Long teamId){
         return todoRateGetUseCase.getWeekProgressCompare(teamId);
+    }
+
+    @GetMapping("/register/{teamId}")
+    public RegisterTermResponse getRegisterTerm(@PathVariable Long teamId){
+        return registersGetUseCase.getRegisterTerm(teamId);
     }
 
 }

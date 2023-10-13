@@ -35,9 +35,9 @@ class CategoryQueryServiceTest {
         //given
         final Long mockTodoTeamId = FixtureMonkey.create().giveMeOne(Long.class);
         final List<Category> mockCategoryList = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMe(Category.class, 10);
-        given(categoryRepository.findAllByTodoTeamId(mockTodoTeamId)).willReturn(mockCategoryList);
+        given(categoryRepository.findAllByTodoTeamIdAndCategoryStatus(mockTodoTeamId)).willReturn(mockCategoryList);
         //when
-        List<Category> result = categoryQueryService.findCategoryListByTodoTeamId(mockTodoTeamId);
+        List<Category> result = categoryQueryService.findCategoryListByTodoTeamIdAndStatus(mockTodoTeamId);
         //then
         Assertions.assertThat(result).usingRecursiveComparison().isEqualTo(mockCategoryList);
     }

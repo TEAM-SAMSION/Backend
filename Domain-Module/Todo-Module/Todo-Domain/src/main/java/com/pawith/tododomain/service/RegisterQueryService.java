@@ -11,6 +11,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.BiFunction;
@@ -73,5 +75,10 @@ public class RegisterQueryService {
                                         T specificationData1, U specificationData2) {
         return method.apply(specificationData1, specificationData2)
             .orElseThrow(() -> new NotRegisterUserException(Error.NOT_REGISTER_USER));
+    }
+
+    public Integer findUserRegisterTerm (Long todoTeamId, Long userId){
+        Register register = findRegisterByTodoTeamIdAndUserId(todoTeamId, userId);
+        return (int) ChronoUnit.DAYS.between(register.getCreatedAt().toLocalDate(), LocalDate.now());
     }
 }

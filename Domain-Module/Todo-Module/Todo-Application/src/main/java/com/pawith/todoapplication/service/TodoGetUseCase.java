@@ -5,6 +5,7 @@ import com.pawith.commonmodule.slice.SliceResponse;
 import com.pawith.todoapplication.dto.response.AssignUserInfoResponse;
 import com.pawith.todoapplication.dto.response.TodoHomeResponse;
 import com.pawith.todoapplication.dto.response.CategorySubTodoResponse;
+import com.pawith.todoapplication.dto.response.TodoListResponse;
 import com.pawith.tododomain.entity.Assign;
 import com.pawith.tododomain.entity.Register;
 import com.pawith.tododomain.entity.Todo;
@@ -45,20 +46,20 @@ public class TodoGetUseCase {
     }
 
 
-    public List<CategorySubTodoResponse> getTodoListByCategoryId(Long categoryId, LocalDate moveDate) {
+    public TodoListResponse getTodoListByCategoryId(Long categoryId, LocalDate moveDate) {
         final Map<Long, User> userMap = userQueryService.findUserMapByIds(registerQueryService::findUserIdsByCategoryId, categoryId);
         final Map<Todo, List<Register>> groupByTodo = getTodoMap(categoryId, moveDate);
-        final ArrayList<CategorySubTodoResponse> todoMainRespons = new ArrayList<>();
+        final ArrayList<CategorySubTodoResponse> todoMainResponses = new ArrayList<>();
         for (Todo todo : groupByTodo.keySet()) {
             final List<Register> registers = groupByTodo.get(todo);
-            ArrayList<AssignUserInfoResponse> assignUserInfoRespons = new ArrayList<>();
+            ArrayList<AssignUserInfoResponse> assignUserInfoResponses = new ArrayList<>();
             for (Register register : registers) {
                 final User findUser = userMap.get(register.getUserId());
-                assignUserInfoRespons.add(new AssignUserInfoResponse(findUser.getId(), findUser.getNickname()));
+                assignUserInfoResponses.add(new AssignUserInfoResponse(findUser.getId(), findUser.getNickname()));
             }
-            todoMainRespons.add(new CategorySubTodoResponse(todo.getId(), todo.getDescription(), todo.getTodoStatus().name(), assignUserInfoRespons));
+            todoMainResponses.add(new CategorySubTodoResponse(todo.getId(), todo.getDescription(), todo.getTodoStatus().name(), assignUserInfoResponses));
         }
-        return todoMainRespons;
+        return new TodoListResponse(todoMainResponses);
     }
 
     private Map<Todo, List<Register>> getTodoMap(Long categoryId, LocalDate moveDate) {
