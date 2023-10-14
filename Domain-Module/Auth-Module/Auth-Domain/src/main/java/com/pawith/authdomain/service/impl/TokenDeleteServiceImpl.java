@@ -7,6 +7,8 @@ import com.pawith.commonmodule.annotation.DomainService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @DomainService
 @RequiredArgsConstructor
 @Transactional
@@ -16,5 +18,9 @@ public class TokenDeleteServiceImpl implements TokenDeleteService {
 
     public void deleteRefreshToken(final Token token){
         tokenRepository.delete(token);
+    }
+
+    public void deleteAllToken(final List<Token> tokenList){
+        tokenRepository.deleteAll(tokenList);
     }
 }
