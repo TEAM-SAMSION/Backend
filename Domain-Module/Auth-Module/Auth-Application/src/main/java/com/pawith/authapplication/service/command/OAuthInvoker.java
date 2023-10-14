@@ -24,9 +24,6 @@ public class OAuthInvoker {
     private final List<AuthHandler> authHandlerList;
     private final JWTProvider jwtProvider;
     private final ApplicationEventPublisher publisher;
-
-    private static final String AUTHENTICATION_TYPE = AuthConsts.AUTHENTICATION_TYPE + " ";
-
     public OAuthResponse execute(OAuthRequest request){
         OAuthUserInfo oAuthUserInfo = attemptLogin(request);
         publishEvent(request, oAuthUserInfo);
@@ -57,6 +54,6 @@ public class OAuthInvoker {
     }
 
     private <T> String attachAuthenticationType(Function<T, String> generateTokenMethod, T includeClaimData) {
-        return AUTHENTICATION_TYPE + generateTokenMethod.apply(includeClaimData);
+        return AuthConsts.AUTHENTICATION_TYPE_PREFIX + generateTokenMethod.apply(includeClaimData);
     }
 }

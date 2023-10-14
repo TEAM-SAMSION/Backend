@@ -24,6 +24,6 @@ public class LogoutUseCaseImpl implements LogoutUseCase {
     public void logoutAccessUser(String refreshTokenHeader) {
         final String refreshToken = TokenExtractUtils.extractToken(refreshTokenHeader);
         final Token refreshTokenEntity = tokenQueryService.findTokenByValue(refreshToken, TokenType.REFRESH_TOKEN);
-        tokenDeleteService.deleteRefreshToken(refreshTokenEntity);
+        tokenDeleteService.deleteToken(refreshTokenEntity);
     }
 }

@@ -37,7 +37,7 @@ class LogoutUseCaseImplTest {
     void logoutAccessUser() {
         // given
         final String refreshToken = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(String.class);
-        final String refreshTokenHeader = AuthConsts.AUTHENTICATION_TYPE + " " + refreshToken;
+        final String refreshTokenHeader = AuthConsts.AUTHENTICATION_TYPE_PREFIX+ refreshToken;
         final Token mockToken = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeBuilder(Token.class)
             .set("value", refreshToken)
             .sample();
@@ -45,6 +45,6 @@ class LogoutUseCaseImplTest {
         // when
         logoutUseCase.logoutAccessUser(refreshTokenHeader);
         // then
-        then(tokenDeleteService).should().deleteRefreshToken(mockToken);
+        then(tokenDeleteService).should().deleteToken(mockToken);
     }
 }
