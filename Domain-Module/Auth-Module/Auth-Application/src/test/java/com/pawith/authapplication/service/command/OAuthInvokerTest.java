@@ -53,8 +53,6 @@ class OAuthInvokerTest {
         final OAuthUserInfo mockOAuthUserInfo = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(OAuthUserInfo.class);
         final String accessToken = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(String.class);
         final String refreshToken = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(String.class);
-        log.info("accessToken: {}", accessToken);
-        log.info("refreshToken: {}", refreshToken);
         given(authHandler.isAccessible(mockRequest)).willReturn(true);
         given(authHandler.handle(mockRequest)).willReturn(mockOAuthUserInfo);
         given(jwtProvider.generateAccessToken(mockOAuthUserInfo.getEmail())).willReturn(accessToken);
