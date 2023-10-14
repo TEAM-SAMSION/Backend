@@ -16,11 +16,16 @@ public class TokenDeleteServiceImpl implements TokenDeleteService {
 
     private final TokenRepository tokenRepository;
 
-    public void deleteRefreshToken(final Token token){
+    public void deleteToken(final Token token){
         tokenRepository.delete(token);
     }
 
     public void deleteAllToken(final List<Token> tokenList){
         tokenRepository.deleteAll(tokenList);
+    }
+
+    @Override
+    public void deleteTokenByValue(String value) {
+        tokenRepository.deleteByValue(value);
     }
 }
