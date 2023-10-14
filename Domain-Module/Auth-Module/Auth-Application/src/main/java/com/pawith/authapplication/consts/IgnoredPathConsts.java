@@ -15,6 +15,7 @@ public class IgnoredPathConsts {
         "/docs/**", HttpMethod.GET,
         "/oauth/**", HttpMethod.GET,
         "/jwt", HttpMethod.GET,
+        "/reissue",HttpMethod.POST,
         "/actuator/**", HttpMethod.GET
     );
 
