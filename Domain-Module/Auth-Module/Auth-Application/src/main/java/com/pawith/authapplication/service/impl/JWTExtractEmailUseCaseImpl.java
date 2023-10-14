@@ -2,10 +2,10 @@ package com.pawith.authapplication.service.impl;
 
 import com.pawith.authapplication.service.JWTExtractEmailUseCase;
 import com.pawith.authdomain.jwt.JWTProvider;
+import com.pawith.commonmodule.annotation.ApplicationService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
-@Service
+@ApplicationService
 @RequiredArgsConstructor
 public class JWTExtractEmailUseCaseImpl implements JWTExtractEmailUseCase {
     private final JWTProvider jwtProvider;

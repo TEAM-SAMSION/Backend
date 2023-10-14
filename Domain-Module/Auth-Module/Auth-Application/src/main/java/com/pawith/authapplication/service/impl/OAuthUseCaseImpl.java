@@ -1,14 +1,14 @@
 package com.pawith.authapplication.service.impl;
 
-import com.pawith.authapplication.service.OAuthUseCase;
 import com.pawith.authapplication.dto.OAuthRequest;
 import com.pawith.authapplication.dto.OAuthResponse;
-import com.pawith.commonmodule.enums.Provider;
+import com.pawith.authapplication.service.OAuthUseCase;
 import com.pawith.authapplication.service.command.OAuthInvoker;
+import com.pawith.commonmodule.annotation.ApplicationService;
+import com.pawith.commonmodule.enums.Provider;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
-@Service
+@ApplicationService
 @RequiredArgsConstructor
 public class OAuthUseCaseImpl implements OAuthUseCase {
 
