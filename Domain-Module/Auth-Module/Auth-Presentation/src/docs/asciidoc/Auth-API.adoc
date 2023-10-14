@@ -10,3 +10,8 @@ operation::o-auth-controller-test/o-auth-login[snippets='http-request,path-param
 === Auth 로그아웃
 
 operation::o-auth-controller-test/logout[snippets='http-request,request-headers,http-response']
+
+[[Auth-토큰-재발급]]
+=== Auth 토큰 재발급
+
+operation::o-auth-controller-test/reissue[snippets='http-request,request-headers,http-response,response-fields']
