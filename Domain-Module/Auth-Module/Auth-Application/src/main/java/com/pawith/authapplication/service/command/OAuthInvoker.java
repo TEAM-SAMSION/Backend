@@ -5,8 +5,10 @@ import com.pawith.authapplication.dto.OAuthRequest;
 import com.pawith.authapplication.dto.OAuthResponse;
 import com.pawith.authapplication.dto.OAuthUserInfo;
 import com.pawith.authapplication.exception.AuthException;
+import com.pawith.authapplication.handler.request.UnusedTokenExpireEvent;
 import com.pawith.authapplication.service.command.handler.AuthHandler;
 import com.pawith.authdomain.jwt.JWTProvider;
+import com.pawith.authdomain.jwt.TokenType;
 import com.pawith.commonmodule.exception.Error;
 import com.pawith.commonmodule.event.UserSignUpEvent;
 import lombok.RequiredArgsConstructor;
@@ -27,8 +29,13 @@ public class OAuthInvoker {
 
     public OAuthResponse execute(OAuthRequest request){
         OAuthUserInfo oAuthUserInfo = attemptLogin(request);
-        publisher.publishEvent(new UserSignUpEvent(oAuthUserInfo.getUsername(), oAuthUserInfo.getEmail(), request.getProvider()));
+        publishEvent(request, oAuthUserInfo);
         return generateServerAuthenticationTokens(oAuthUserInfo);
+    }
+
+    private void publishEvent(OAuthRequest request, OAuthUserInfo oAuthUserInfo) {
+        publisher.publishEvent(new UserSignUpEvent(oAuthUserInfo.getUsername(), oAuthUserInfo.getEmail(), request.getProvider()));
+        publisher.publishEvent(new UnusedTokenExpireEvent(oAuthUserInfo.getEmail(), TokenType.REFRESH_TOKEN));
     }
 
     private OAuthUserInfo attemptLogin(OAuthRequest request) {
