@@ -62,6 +62,8 @@ class OAuthInvokerTest {
         // then
         Assertions.assertThat(result.getAccessToken()).startsWith(AuthConsts.AUTHENTICATION_TYPE);
         Assertions.assertThat(result.getRefreshToken()).startsWith(AuthConsts.AUTHENTICATION_TYPE);
+        Assertions.assertThat(result.getAccessToken()).startsWith(AuthConsts.AUTHENTICATION_TYPE_PREFIX);
+        Assertions.assertThat(result.getRefreshToken()).startsWith(AuthConsts.AUTHENTICATION_TYPE_PREFIX);
         Assertions.assertThat(TokenExtractUtils.extractToken(result.getAccessToken())).isEqualTo(accessToken);
         Assertions.assertThat(TokenExtractUtils.extractToken(result.getRefreshToken())).isEqualTo(refreshToken);
     }
