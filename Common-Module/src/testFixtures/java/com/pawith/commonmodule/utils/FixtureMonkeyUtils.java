@@ -1,9 +1,11 @@
 package com.pawith.commonmodule.utils;
 
 import com.navercorp.fixturemonkey.FixtureMonkey;
-import com.navercorp.fixturemonkey.api.generator.JavaDefaultArbitraryGeneratorBuilder;
 import com.navercorp.fixturemonkey.api.introspector.ConstructorPropertiesArbitraryIntrospector;
 import com.navercorp.fixturemonkey.api.introspector.FieldReflectionArbitraryIntrospector;
+import com.navercorp.fixturemonkey.api.introspector.JavaTypeArbitraryGenerator;
+import net.jqwik.api.Arbitraries;
+import net.jqwik.api.arbitraries.StringArbitrary;
 
 public class FixtureMonkeyUtils {
     private FixtureMonkeyUtils() {
@@ -25,7 +27,12 @@ public class FixtureMonkeyUtils {
         .build();
 
     private static final FixtureMonkey JAVA_TYPE_BASED_FIXTURE_MONKEY = FixtureMonkey.builder()
-        .objectIntrospector(JavaDefaultArbitraryGeneratorBuilder.JAVA_INTROSPECTOR)
+        .javaTypeArbitraryGenerator(new JavaTypeArbitraryGenerator() {
+            @Override
+            public StringArbitrary strings() {
+                return Arbitraries.strings().alpha().numeric().ofMinLength(1).ofMaxLength(10);
+            }
+        })
         .defaultNotNull(true)
         .build();
 
