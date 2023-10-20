@@ -11,6 +11,11 @@ operation::todo-team-controller-test/get-todo-teams[snippets='http-request,reque
 
 operation::register-controller-test/get-registers[snippets='http-request,request-parameters,request-headers,http-response,response-fields']
 
+[[Todo-API-Todo-Team에-가입된-사용자-권한-수정]]
+=== Todo Team에 가입된 사용자 권한 수정
+
+operation::register-controller-test/change-authority[snippets='http-request,path-parameters,request-parameters,request-headers,http-response']
+
 
 [[Todo-API-Todo-Team-탈퇴]]
 === Todo Team 탈퇴
