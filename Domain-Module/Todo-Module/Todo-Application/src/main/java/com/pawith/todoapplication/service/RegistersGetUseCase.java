@@ -1,9 +1,7 @@
 package com.pawith.todoapplication.service;
 
 import com.pawith.commonmodule.annotation.ApplicationService;
-import com.pawith.todoapplication.dto.response.RegisterListResponse;
-import com.pawith.todoapplication.dto.response.RegisterSimpleInfoResponse;
-import com.pawith.todoapplication.dto.response.RegisterTermResponse;
+import com.pawith.todoapplication.dto.response.*;
 import com.pawith.tododomain.entity.Register;
 import com.pawith.tododomain.service.RegisterQueryService;
 import com.pawith.userdomain.entity.User;
@@ -33,10 +31,22 @@ public class RegistersGetUseCase {
         final List<RegisterSimpleInfoResponse> registerSimpleInfoResponses = allRegisters.stream()
             .map(register -> {
                 final User findUser = userQueryService.findById(register.getUserId());
-                return new RegisterSimpleInfoResponse(register.getId(), register.getAuthority().toString(), findUser.getNickname(), findUser.getEmail());
+                return new RegisterSimpleInfoResponse(register.getId(), findUser.getNickname());
             })
             .collect(Collectors.toList());
         return new RegisterListResponse(registerSimpleInfoResponses);
+    }
+
+    public ManageRegisterListResponse getManageRegisters(final Long teamId) {
+        final User user = userUtils.getAccessUser();
+        final List<Register> allRegisters = registerQueryService.findAllRegisters(user.getId(), teamId);
+        final List<ManageRegisterInfoResponse> manageRegisterInfoResponses = allRegisters.stream()
+                .map(register -> {
+                    final User findUser = userQueryService.findById(register.getUserId());
+                    return new ManageRegisterInfoResponse(register.getId(), register.getAuthority().toString(), findUser.getNickname(), findUser.getEmail());
+                })
+                .collect(Collectors.toList());
+        return new ManageRegisterListResponse(manageRegisterInfoResponses);
     }
 
     public RegisterTermResponse getRegisterTerm(final Long teamId) {

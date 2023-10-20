@@ -1,5 +1,6 @@
 package com.pawith.todopresentation;
 
+import com.pawith.todoapplication.dto.response.ManageRegisterListResponse;
 import com.pawith.todoapplication.dto.response.RegisterListResponse;
 import com.pawith.todoapplication.service.ChangeRegisterUseCase;
 import com.pawith.todoapplication.service.RegistersGetUseCase;
@@ -31,6 +32,11 @@ public class RegisterController {
     @GetMapping("/list")
     public RegisterListResponse getRegisters(@RequestParam Long teamId){
         return registersGetUseCase.getRegisters(teamId);
+    }
+
+    @GetMapping("/manage/list")
+    public ManageRegisterListResponse getManageRegisters(@RequestParam Long teamId){
+        return registersGetUseCase.getManageRegisters(teamId);
     }
 
     @PostMapping("/{registerId}")
