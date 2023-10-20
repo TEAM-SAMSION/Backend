@@ -33,6 +33,11 @@ operation::todo-team-controller-test/post-todo-team[snippets='http-request,reque
 operation::todo-team-controller-test/get-todo-team-random-code[snippets='http-request,request-headers,http-response,response-fields']
 
 [[Todo-API-Todo-Team-Code-조회]]
+=== Todo Team Id로 Todo Team Code 조회
+
+operation::todo-team-controller-test/get-todo-team-code[snippets='http-request,path-parameters,request-headers,http-response,response-fields']
+
+[[Todo-API-Todo-Team-Code-조회]]
 === Todo Team Code로 Todo Team 조회
 
 operation::todo-team-controller-test/get-todo-team-by-code[snippets='http-request,request-parameters,request-headers,http-response,response-fields']
