@@ -7,9 +7,14 @@
 operation::todo-team-controller-test/get-todo-teams[snippets='http-request,request-parameters,request-headers,http-response,response-fields']
 
 [[Todo-API-Todo-Team에-가입된-사용자-조회]]
-=== Todo Team에 가입된 사용자 조회
+=== Todo Team에 가입된 사용자 조회 (todo 생성할 때 사용)
 
 operation::register-controller-test/get-registers[snippets='http-request,request-parameters,request-headers,http-response,response-fields']
+
+[[Todo-API-Todo-Team에-가입된-사용자-조회]]
+=== Todo Team에 가입된 사용자 조회 (관리자 페이지에서 회원 정보 조회할 때 사용)
+
+operation::register-controller-test/get-manage-registers[snippets='http-request,request-parameters,request-headers,http-response,response-fields']
 
 [[Todo-API-Todo-Team에-가입된-사용자-권한-수정]]
 === Todo Team에 가입된 사용자 권한 수정

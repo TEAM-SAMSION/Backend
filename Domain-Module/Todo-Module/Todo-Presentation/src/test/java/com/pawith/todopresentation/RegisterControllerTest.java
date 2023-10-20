@@ -3,6 +3,8 @@ package com.pawith.todopresentation;
 import com.navercorp.fixturemonkey.FixtureMonkey;
 import com.pawith.commonmodule.BaseRestDocsTest;
 import com.pawith.commonmodule.utils.FixtureMonkeyUtils;
+import com.pawith.todoapplication.dto.response.ManageRegisterInfoResponse;
+import com.pawith.todoapplication.dto.response.ManageRegisterListResponse;
 import com.pawith.todoapplication.dto.response.RegisterListResponse;
 import com.pawith.todoapplication.dto.response.RegisterSimpleInfoResponse;
 import com.pawith.todoapplication.service.ChangeRegisterUseCase;
@@ -111,11 +113,41 @@ class RegisterControllerTest extends BaseRestDocsTest {
                 ),
                 responseFields(
                     fieldWithPath("registers[].registerId").description("TodoTeam에 등록된 사용자 registerId"),
-                    fieldWithPath("registers[].authority").description("TodoTeam에 등록된 사용자 권한"),
-                    fieldWithPath("registers[].registerName").description("TodoTeam에 등록된 사용자 이름"),
-                    fieldWithPath("registers[].registerEmail").description("TodoTeam에 등록된 사용자 이메일")
+                    fieldWithPath("registers[].registerName").description("TodoTeam에 등록된 사용자 이메일")
                 )
             ));
+
+    }
+
+
+    @Test
+    @DisplayName("TodoTeam의 등록된 Register들을 조회하는 테스트 (관리자 페이지에서 사용)")
+    void getManageRegisters() throws Exception {
+        //given
+        final Long todoTeamId = FixtureMonkey.create().giveMeOne(Long.class);
+        final List<ManageRegisterInfoResponse> manageRegisterInfoResponses = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMe(ManageRegisterInfoResponse.class, 10);
+        final ManageRegisterListResponse manageRegisterListResponse = new ManageRegisterListResponse(manageRegisterInfoResponses);
+        given(registersGetUseCase.getManageRegisters(todoTeamId)).willReturn(manageRegisterListResponse);
+        MockHttpServletRequestBuilder request = get(REGISTER_REQUEST_URL + "/manage/list?teamId={teamId}", todoTeamId)
+                .header("Authorization", "Bearer accessToken");
+        //when
+        ResultActions result = mvc.perform(request);
+        //then
+        result.andExpect(status().isOk())
+                .andDo(resultHandler.document(
+                        requestHeaders(
+                                headerWithName("Authorization").description("access 토큰")
+                        ),
+                        requestParameters(
+                                parameterWithName("teamId").description("조회하는 TodoTeamId")
+                        ),
+                        responseFields(
+                                fieldWithPath("registers[].registerId").description("TodoTeam에 등록된 사용자 registerId"),
+                                fieldWithPath("registers[].authority").description("TodoTeam에 등록된 사용자 권한"),
+                                fieldWithPath("registers[].registerName").description("TodoTeam에 등록된 사용자 이름"),
+                                fieldWithPath("registers[].registerEmail").description("TodoTeam에 등록된 사용자 이메일")
+                        )
+                ));
 
     }
 
