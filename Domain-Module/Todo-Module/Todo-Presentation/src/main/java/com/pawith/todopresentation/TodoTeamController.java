@@ -67,4 +67,9 @@ public class TodoTeamController {
     public List<TodoTeamNameSimpleResponse> getTodoTeamName() {
         return todoTeamGetUseCase.getTodoTeamName();
     }
+
+    @GetMapping("/code/{teamId}")
+    public TodoTeamRandomCodeResponse getTodoTeamCode(@PathVariable Long teamId){
+        return todoTeamGetUseCase.getTodoTeamCode(teamId);
+    }
 }
