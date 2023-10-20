@@ -4,6 +4,7 @@ import com.pawith.commonmodule.domain.BaseEntity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Arrays;
 
 @Entity
 @Getter
@@ -29,5 +30,16 @@ public class Register extends BaseEntity {
         this.authority = authority;
         this.todoTeam = todoTeam;
         this.userId = userId;
+    }
+
+    public void updateAuthority(String authority) {
+        if(!this.authority.toString().equals(authority) && authority != null && isValidAuthority(authority)) {
+            this.authority = Authority.valueOf(authority);
+        }
+    }
+
+    private boolean isValidAuthority(String authority) {
+        return Arrays.stream(Authority.values())
+                .anyMatch(enumValue -> enumValue.name().equals(authority));
     }
 }

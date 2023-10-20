@@ -33,7 +33,7 @@ public class RegistersGetUseCase {
         final List<RegisterSimpleInfoResponse> registerSimpleInfoResponses = allRegisters.stream()
             .map(register -> {
                 final User findUser = userQueryService.findById(register.getUserId());
-                return new RegisterSimpleInfoResponse(register.getId(), findUser.getNickname());
+                return new RegisterSimpleInfoResponse(register.getId(), register.getAuthority().toString(), findUser.getNickname(), findUser.getEmail());
             })
             .collect(Collectors.toList());
         return new RegisterListResponse(registerSimpleInfoResponses);
