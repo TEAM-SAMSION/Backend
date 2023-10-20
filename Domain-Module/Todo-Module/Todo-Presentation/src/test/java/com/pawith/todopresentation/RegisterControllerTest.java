@@ -125,7 +125,7 @@ class RegisterControllerTest extends BaseRestDocsTest {
         //given
         final Long registerId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
         final String authority = Authrotity;
-        MockHttpServletRequestBuilder request = post(REGISTER_REQUEST_URL + "/authority/{registerId}", registerId)
+        MockHttpServletRequestBuilder request = post(REGISTER_REQUEST_URL + "/{registerId}", registerId)
             .queryParam("authority", authority)
             .header("Authorization", "Bearer accessToken");
         //when
