@@ -3,6 +3,7 @@ package com.pawith.todoapplication.service;
 import com.pawith.commonmodule.annotation.ApplicationService;
 import com.pawith.commonmodule.slice.SliceResponse;
 import com.pawith.todoapplication.dto.response.TodoTeamNameSimpleResponse;
+import com.pawith.todoapplication.dto.response.TodoTeamRandomCodeResponse;
 import com.pawith.todoapplication.dto.response.TodoTeamSearchInfoResponse;
 import com.pawith.todoapplication.dto.response.TodoTeamSimpleResponse;
 import com.pawith.todoapplication.mapper.TodoTeamMapper;
@@ -54,5 +55,10 @@ public class TodoTeamGetUseCase {
         final User presidentUser = userQueryService.findById(presidentRegister.getUserId());
         final Integer registerCount = registerQueryService.countRegisterByTodoTeamId(todoTeam.getId());
         return TodoTeamMapper.mapToTodoTeamSearchInfoResponse(todoTeam, presidentUser, registerCount);
+    }
+
+    public TodoTeamRandomCodeResponse getTodoTeamCode(Long teamId) {
+        TodoTeam todoTeam = todoTeamQueryService.findTodoTeamById(teamId);
+        return TodoTeamMapper.mapToTodoTeamRandomCodeResponse(todoTeam);
     }
 }

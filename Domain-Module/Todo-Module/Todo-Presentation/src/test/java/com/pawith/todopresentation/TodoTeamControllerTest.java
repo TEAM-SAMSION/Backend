@@ -32,8 +32,7 @@ import static org.springframework.restdocs.headers.HeaderDocumentation.requestHe
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.multipart;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Slf4j
@@ -127,6 +126,31 @@ class TodoTeamControllerTest extends BaseRestDocsTest {
                     fieldWithPath("randomCode").description("랜덤 코드")
                 )
             ));
+    }
+
+    @Test
+    @DisplayName("teamId를 이용해서 TodoTeam의 code를 조회 테스트")
+    void getTodoTeamCode() throws Exception {
+        //given
+        final Long teamId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
+        given(todoTeamGetUseCase.getTodoTeamCode(teamId)).willReturn(new TodoTeamRandomCodeResponse("randomCode"));
+        MockHttpServletRequestBuilder request = get(TODO_TEAM_REQUEST_URL + "/code/{teamId}", teamId)
+                .header("Authorization", "Bearer accessToken");
+        //when
+        ResultActions result = mvc.perform(request);
+        //then
+        result.andExpect(status().isOk())
+                .andDo(resultHandler.document(
+                        requestHeaders(
+                                headerWithName("Authorization").description("access 토큰")
+                        ),
+                        pathParameters(
+                                parameterWithName("teamId").description("TodoTeam의 Id")
+                        ),
+                        responseFields(
+                                fieldWithPath("randomCode").description("TodoTeam의 코드")
+                        )
+                ));
     }
 
     @Test

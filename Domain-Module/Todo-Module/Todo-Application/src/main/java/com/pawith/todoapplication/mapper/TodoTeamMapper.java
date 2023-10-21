@@ -1,6 +1,7 @@
 package com.pawith.todoapplication.mapper;
 
 import com.pawith.todoapplication.dto.request.TodoTeamCreateRequest;
+import com.pawith.todoapplication.dto.response.TodoTeamRandomCodeResponse;
 import com.pawith.todoapplication.dto.response.TodoTeamSearchInfoResponse;
 import com.pawith.todoapplication.dto.response.TodoTeamSimpleResponse;
 import com.pawith.tododomain.entity.Register;
@@ -43,5 +44,9 @@ public class TodoTeamMapper {
             .presidentName(user.getNickname())
             .registerCount(registerCount)
             .build();
+    }
+
+    public static TodoTeamRandomCodeResponse mapToTodoTeamRandomCodeResponse(final TodoTeam todoTeam) {
+        return new TodoTeamRandomCodeResponse(todoTeam.getTeamCode());
     }
 }
