@@ -66,12 +66,12 @@ public class TodoController {
     }
 
     @PutMapping("/change/date/{todoId}")
-    public void changeScheduledDate(@PathVariable Long todoId, @RequestBody ScheduledDateChangeRequest scheduledDateChangeRequest){
+    public void putScheduledDate(@PathVariable Long todoId, @RequestBody ScheduledDateChangeRequest scheduledDateChangeRequest){
         todoChangeUseCase.changeScheduledDate(todoId, scheduledDateChangeRequest);
     }
 
     @PutMapping("/change/description/{todoId}")
-    public void changeTodoName(@PathVariable Long todoId, @RequestBody TodoDescriptionChangeRequest todoDescriptionChangeRequest){
+    public void putTodoName(@PathVariable Long todoId, @RequestBody TodoDescriptionChangeRequest todoDescriptionChangeRequest){
         todoChangeUseCase.changeTodoName(todoId, todoDescriptionChangeRequest);
     }
 
