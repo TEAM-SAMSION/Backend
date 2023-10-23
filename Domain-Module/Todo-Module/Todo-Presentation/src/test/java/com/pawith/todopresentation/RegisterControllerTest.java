@@ -3,6 +3,7 @@ package com.pawith.todopresentation;
 import com.navercorp.fixturemonkey.FixtureMonkey;
 import com.pawith.commonmodule.BaseRestDocsTest;
 import com.pawith.commonmodule.utils.FixtureMonkeyUtils;
+import com.pawith.todoapplication.dto.request.AuthorityChangeRequest;
 import com.pawith.todoapplication.dto.response.ManageRegisterInfoResponse;
 import com.pawith.todoapplication.dto.response.ManageRegisterListResponse;
 import com.pawith.todoapplication.dto.response.RegisterListResponse;
@@ -25,8 +26,7 @@ import java.util.UUID;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -153,13 +153,14 @@ class RegisterControllerTest extends BaseRestDocsTest {
 
     @Test
     @DisplayName("Register의 권한을 변경하는 테스트")
-    void changeAuthority() throws Exception {
+    void putAuthority() throws Exception {
         //given
         final Long registerId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
-        final String authority = Authrotity;
-        MockHttpServletRequestBuilder request = post(REGISTER_REQUEST_URL + "/{registerId}", registerId)
-            .queryParam("authority", authority)
-            .header("Authorization", "Bearer accessToken");
+        final AuthorityChangeRequest authorityChangeRequest = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(AuthorityChangeRequest.class);
+        MockHttpServletRequestBuilder request = put(REGISTER_REQUEST_URL + "/{registerId}", registerId)
+            .contentType("application/json")
+            .header("Authorization", "Bearer accessToken")
+            .content(objectMapper.writeValueAsString(authorityChangeRequest));
         //when
         ResultActions result = mvc.perform(request);
         //then
@@ -171,8 +172,8 @@ class RegisterControllerTest extends BaseRestDocsTest {
                 pathParameters(
                     parameterWithName("registerId").description("변경할 register의 Id")
                 ),
-                requestParameters(
-                    parameterWithName("authority").description("변경할 register의 권한")
+                requestFields(
+                    fieldWithPath("authority").description("변경할 권한")
                 )
             ));
     }
