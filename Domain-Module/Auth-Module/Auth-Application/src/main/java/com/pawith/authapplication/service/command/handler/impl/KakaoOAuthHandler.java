@@ -3,7 +3,6 @@ package com.pawith.authapplication.service.command.handler.impl;
 import com.pawith.authapplication.dto.OAuthRequest;
 import com.pawith.authapplication.dto.OAuthUserInfo;
 import com.pawith.authapplication.service.command.feign.KakaoOAuthFeignClient;
-import com.pawith.authapplication.service.command.feign.KakaoTokenOAuthFeignClient;
 import com.pawith.authapplication.service.command.feign.response.KakaoUserInfo;
 import com.pawith.authapplication.service.command.feign.response.TokenInfo;
 import com.pawith.authapplication.service.command.handler.AuthHandler;
@@ -19,7 +18,6 @@ import org.springframework.stereotype.Component;
 public class KakaoOAuthHandler implements AuthHandler {
     private static final Provider OAUTH_TYPE = Provider.KAKAO;
     private final KakaoOAuthFeignClient kakaoOAuthFeignClient;
-    private final KakaoTokenOAuthFeignClient kakaoTokenOAuthFeignClient;
     private static final String KAKAO_AUTHORIZATION_BEARER = "Bearer ";
     @Value("${app-id.kakao}")
     private String appId;
@@ -40,7 +38,7 @@ public class KakaoOAuthHandler implements AuthHandler {
     }
 
     private TokenInfo getKakaoTokenInfo(String accessToken) {
-        return kakaoTokenOAuthFeignClient.getKakaoTokenInfo(KAKAO_AUTHORIZATION_BEARER + accessToken);
+        return kakaoOAuthFeignClient.getKakaoTokenInfo(KAKAO_AUTHORIZATION_BEARER + accessToken);
     }
 
     private KakaoUserInfo getKaKaoUserInfo(String accessToken) {

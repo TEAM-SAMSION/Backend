@@ -3,7 +3,6 @@ package com.pawith.authapplication.service.command.handler.impl;
 import com.pawith.authapplication.dto.OAuthRequest;
 import com.pawith.authapplication.dto.OAuthUserInfo;
 import com.pawith.authapplication.service.command.feign.KakaoOAuthFeignClient;
-import com.pawith.authapplication.service.command.feign.KakaoTokenOAuthFeignClient;
 import com.pawith.authapplication.service.command.feign.response.KakaoUserInfo;
 import com.pawith.authapplication.service.command.feign.response.TokenInfo;
 import com.pawith.authdomain.jwt.exception.InvalidTokenException;
@@ -28,15 +27,13 @@ import static org.mockito.BDDMockito.given;
 public class KakaoOAuthHandlerTest {
 
     @Mock
-    private KakaoTokenOAuthFeignClient kakaoTokenOAuthFeignClient;
-    @Mock
     private KakaoOAuthFeignClient kakaoOAuthFeignClient;
 
     private KakaoOAuthHandler kakaoOAuthHandler;
 
     @BeforeEach
     void setUp() {
-        kakaoOAuthHandler = new KakaoOAuthHandler(kakaoOAuthFeignClient, kakaoTokenOAuthFeignClient);
+        kakaoOAuthHandler = new KakaoOAuthHandler(kakaoOAuthFeignClient);
         ReflectionTestUtils.setField(kakaoOAuthHandler, "appId", "testAppId");
     }
 
@@ -62,7 +59,7 @@ public class KakaoOAuthHandlerTest {
                 .set("appId", "testAppId")
                 .sample();
         KakaoUserInfo mockKakaoUserInfo = getKakaoUserInfo();
-        given(kakaoTokenOAuthFeignClient.getKakaoTokenInfo("Bearer " + mockRequest.getAccessToken())).willReturn(mockTokenInfo);
+        given(kakaoOAuthFeignClient.getKakaoTokenInfo("Bearer " + mockRequest.getAccessToken())).willReturn(mockTokenInfo);
         given(kakaoOAuthFeignClient.getKakaoUserInfo("Bearer " + mockRequest.getAccessToken())).willReturn(mockKakaoUserInfo);
         // when
         final OAuthUserInfo result = kakaoOAuthHandler.handle(mockRequest);
@@ -80,7 +77,7 @@ public class KakaoOAuthHandlerTest {
         TokenInfo mockTokenInfo = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeBuilder(TokenInfo.class)
                 .set("appId", "anotherTestAppId")
                 .sample();
-        given(kakaoTokenOAuthFeignClient.getKakaoTokenInfo("Bearer " + mockRequest.getAccessToken())).willReturn(mockTokenInfo);
+        given(kakaoOAuthFeignClient.getKakaoTokenInfo("Bearer " + mockRequest.getAccessToken())).willReturn(mockTokenInfo);
         // when
         // then
         Assertions.assertThatCode(() -> kakaoOAuthHandler.handle(mockRequest))
