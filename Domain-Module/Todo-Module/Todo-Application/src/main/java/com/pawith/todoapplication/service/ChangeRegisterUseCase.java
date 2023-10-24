@@ -1,6 +1,7 @@
 package com.pawith.todoapplication.service;
 
 import com.pawith.commonmodule.annotation.ApplicationService;
+import com.pawith.todoapplication.dto.request.AuthorityChangeRequest;
 import com.pawith.tododomain.entity.Register;
 import com.pawith.tododomain.service.RegisterQueryService;
 import lombok.RequiredArgsConstructor;
@@ -13,9 +14,9 @@ public class ChangeRegisterUseCase {
 
     private final RegisterQueryService registerQueryService;
 
-    public void changeAuthority(Long registerId, String authority) {
+    public void changeAuthority(Long registerId, AuthorityChangeRequest request) {
         Register register = registerQueryService.findRegisterById(registerId);
-        register.updateAuthority(authority);
+        register.updateAuthority(request.getAuthority());
     }
 
 }

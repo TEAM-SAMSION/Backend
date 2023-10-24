@@ -1,12 +1,11 @@
 package com.pawith.todopresentation;
 
 import com.pawith.commonmodule.slice.SliceResponse;
+import com.pawith.todoapplication.dto.request.ScheduledDateChangeRequest;
 import com.pawith.todoapplication.dto.request.TodoCreateRequest;
+import com.pawith.todoapplication.dto.request.TodoDescriptionChangeRequest;
 import com.pawith.todoapplication.dto.response.*;
-import com.pawith.todoapplication.service.RegistersGetUseCase;
-import com.pawith.todoapplication.service.TodoCreateUseCase;
-import com.pawith.todoapplication.service.TodoGetUseCase;
-import com.pawith.todoapplication.service.TodoRateGetUseCase;
+import com.pawith.todoapplication.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -25,6 +24,7 @@ public class TodoController {
     private final TodoRateGetUseCase todoRateGetUseCase;
     private final TodoCreateUseCase todoCreateUseCase;
     private final RegistersGetUseCase registersGetUseCase;
+    private final TodoChangeUseCase todoChangeUseCase;
 
     /**
      * 리팩터링 전 : 동시 100명 요청 평균 426ms
@@ -63,6 +63,16 @@ public class TodoController {
     @GetMapping("/register/{teamId}")
     public RegisterTermResponse getRegisterTerm(@PathVariable Long teamId){
         return registersGetUseCase.getRegisterTerm(teamId);
+    }
+
+    @PutMapping("/change/date/{todoId}")
+    public void putScheduledDate(@PathVariable Long todoId, @RequestBody ScheduledDateChangeRequest scheduledDateChangeRequest){
+        todoChangeUseCase.changeScheduledDate(todoId, scheduledDateChangeRequest);
+    }
+
+    @PutMapping("/change/description/{todoId}")
+    public void putTodoName(@PathVariable Long todoId, @RequestBody TodoDescriptionChangeRequest todoDescriptionChangeRequest){
+        todoChangeUseCase.changeTodoName(todoId, todoDescriptionChangeRequest);
     }
 
 }

@@ -2,6 +2,7 @@ package com.pawith.todoapplication.service;
 
 import com.pawith.commonmodule.UnitTestConfig;
 import com.pawith.commonmodule.utils.FixtureMonkeyUtils;
+import com.pawith.todoapplication.dto.request.AuthorityChangeRequest;
 import com.pawith.tododomain.entity.Authority;
 import com.pawith.tododomain.entity.Register;
 import com.pawith.tododomain.service.RegisterQueryService;
@@ -32,11 +33,13 @@ public class ChangeRegisterUseCaseTest {
         // given
         final Register mockRegister = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeOne(Register.class);
         final Long registerId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
-        final String authority = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(Authority.class).toString();
+        final AuthorityChangeRequest authorityChangeRequest = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeBuilder(AuthorityChangeRequest.class)
+            .set("authority", "EXECUTIVE")
+            .sample();
         given(registerQueryService.findRegisterById(registerId)).willReturn(mockRegister);
         // when
-        changeRegisterUseCase.changeAuthority(registerId, authority);
+        changeRegisterUseCase.changeAuthority(registerId, authorityChangeRequest);
         // then
-        Assertions.assertThat(mockRegister.getAuthority()).isEqualTo(Authority.valueOf(authority));
+        Assertions.assertThat(mockRegister.getAuthority()).isEqualTo(Authority.valueOf(authorityChangeRequest.getAuthority()));
     }
 }

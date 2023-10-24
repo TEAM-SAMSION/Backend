@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -34,5 +35,17 @@ public class Todo extends BaseEntity {
         this.scheduledDate = scheduledDate;
         this.todoStatus = TodoStatus.INCOMPLETE;
         this.category = category;
+    }
+
+    public void updateScheduledDate(LocalDate scheduledDate) {
+        if(this.scheduledDate.equals(scheduledDate))
+            return;
+        this.scheduledDate = Objects.requireNonNull(scheduledDate, "nickname must be not null");
+    }
+
+    public void updateDescription(String description) {
+        if(this.description.equals(description))
+            return;
+        this.description = Objects.requireNonNull(description, "nickname must be not null");
     }
 }

@@ -3,12 +3,11 @@ package com.pawith.todopresentation;
 import com.pawith.commonmodule.BaseRestDocsTest;
 import com.pawith.commonmodule.slice.SliceResponse;
 import com.pawith.commonmodule.utils.FixtureMonkeyUtils;
+import com.pawith.todoapplication.dto.request.ScheduledDateChangeRequest;
 import com.pawith.todoapplication.dto.request.TodoCreateRequest;
+import com.pawith.todoapplication.dto.request.TodoDescriptionChangeRequest;
 import com.pawith.todoapplication.dto.response.*;
-import com.pawith.todoapplication.service.RegistersGetUseCase;
-import com.pawith.todoapplication.service.TodoCreateUseCase;
-import com.pawith.todoapplication.service.TodoGetUseCase;
-import com.pawith.todoapplication.service.TodoRateGetUseCase;
+import com.pawith.todoapplication.service.*;
 import lombok.extern.slf4j.Slf4j;
 import net.jqwik.api.Arbitraries;
 import org.junit.jupiter.api.DisplayName;
@@ -28,8 +27,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -46,6 +44,8 @@ public class TodoControllerTest extends BaseRestDocsTest {
     private TodoCreateUseCase todoCreateUseCase;
     @MockBean
     private RegistersGetUseCase registersGetUseCase;
+    @MockBean
+    private TodoChangeUseCase todoChangeUseCase;
 
     private static final String TODO_REQUEST_URL = "/todo";
 
@@ -237,6 +237,60 @@ public class TodoControllerTest extends BaseRestDocsTest {
                         ),
                         responseFields(
                                 fieldWithPath("registerTerm").description("팀 가입 한 기간. FIRST_WEEK : 1주, SECOND_WEEK : 2주, AFTER_SECOND_WEEK : 2주 이상")
+                        )
+                ));
+    }
+
+    @Test
+    @DisplayName("투두 날짜 변경 API 테스트")
+    void changeScheduledDate() throws Exception {
+        //given
+        final Long testTodoId = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(Long.class);
+        final ScheduledDateChangeRequest scheduledDateChangeRequest = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(ScheduledDateChangeRequest.class);
+        MockHttpServletRequestBuilder request = put(TODO_REQUEST_URL + "/change/date/{todoId}", testTodoId)
+                .contentType("application/json")
+                .header("Authorization", "Bearer accessToken")
+                .content(objectMapper.writeValueAsString(scheduledDateChangeRequest));
+        //when
+        ResultActions result = mvc.perform(request);
+        //then
+        result.andExpect(status().isOk())
+                .andDo(resultHandler.document(
+                        requestHeaders(
+                                headerWithName("Authorization").description("access 토큰")
+                        ),
+                        pathParameters(
+                                parameterWithName("todoId").description("투두 항목 Id")
+                        ),
+                        requestFields(
+                                fieldWithPath("scheduledDate").description("변경할 날짜")
+                        )
+                ));
+    }
+
+    @Test
+    @DisplayName("투두 이름 변경 API 테스트")
+    void changeTodoName() throws Exception {
+        //given
+        final Long testTodoId = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(Long.class);
+        final TodoDescriptionChangeRequest todoDescriptionChangeRequest = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(TodoDescriptionChangeRequest.class);
+        MockHttpServletRequestBuilder request = put(TODO_REQUEST_URL + "/change/description/{todoId}", testTodoId)
+                .contentType("application/json")
+                .header("Authorization", "Bearer accessToken")
+                .content(objectMapper.writeValueAsString(todoDescriptionChangeRequest));
+        //when
+        ResultActions result = mvc.perform(request);
+        //then
+        result.andExpect(status().isOk())
+                .andDo(resultHandler.document(
+                        requestHeaders(
+                                headerWithName("Authorization").description("access 토큰")
+                        ),
+                        pathParameters(
+                                parameterWithName("todoId").description("투두 항목 Id")
+                        ),
+                        requestFields(
+                                fieldWithPath("description").description("변경할 이름")
                         )
                 ));
     }

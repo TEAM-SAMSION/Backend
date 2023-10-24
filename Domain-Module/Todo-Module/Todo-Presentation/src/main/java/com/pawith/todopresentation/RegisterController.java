@@ -1,5 +1,6 @@
 package com.pawith.todopresentation;
 
+import com.pawith.todoapplication.dto.request.AuthorityChangeRequest;
 import com.pawith.todoapplication.dto.response.ManageRegisterListResponse;
 import com.pawith.todoapplication.dto.response.RegisterListResponse;
 import com.pawith.todoapplication.service.ChangeRegisterUseCase;
@@ -39,8 +40,8 @@ public class RegisterController {
         return registersGetUseCase.getManageRegisters(teamId);
     }
 
-    @PostMapping("/{registerId}")
-    public void changeAuthority(@PathVariable Long registerId, @RequestParam String authority) {
-        changeRegisterUseCase.changeAuthority(registerId, authority);
+    @PutMapping("/{registerId}")
+    public void putAuthority(@PathVariable Long registerId, @RequestBody AuthorityChangeRequest authorityChangeRequest) {
+        changeRegisterUseCase.changeAuthority(registerId, authorityChangeRequest);
     }
 }

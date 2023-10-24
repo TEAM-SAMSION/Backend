@@ -24,6 +24,7 @@ public enum Error {
     REGISTER_NOT_FOUND("등록된 팀을 찾을 수 없습니다.", 3002),
     ALREADY_REGISTER_TODO_TEAM("이미 등록된 Todo 팀입니다.", 3003),
     TODO_NOT_FOUND("Todo를 찾을 수 없습니다.", 3004),
+    WRONG_SCHEDULED_DATE("예정일이 잘못되었습니다.", 3005),
 
     // Image
     FILE_EXTENTION_ERROR("잘못된 형식의 파일입니다.", 4001),
