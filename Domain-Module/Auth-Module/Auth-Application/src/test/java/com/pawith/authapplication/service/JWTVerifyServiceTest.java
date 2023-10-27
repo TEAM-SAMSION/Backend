@@ -2,6 +2,7 @@ package com.pawith.authapplication.service;
 
 import com.navercorp.fixturemonkey.FixtureMonkey;
 import com.pawith.authapplication.service.impl.JWTVerifyUseCaseImpl;
+import com.pawith.authdomain.jwt.TokenType;
 import com.pawith.commonmodule.UnitTestConfig;
 import com.pawith.authdomain.jwt.JWTProvider;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,7 +32,7 @@ public class JWTVerifyServiceTest {
         //when
         jwtVerifyUseCaseImpl.validateToken(token);
         //then
-        then(jwtProvider).should(times(1)).validateToken(token);
+        then(jwtProvider).should(times(1)).validateToken(token, TokenType.ACCESS_TOKEN);
     }
 
 }
