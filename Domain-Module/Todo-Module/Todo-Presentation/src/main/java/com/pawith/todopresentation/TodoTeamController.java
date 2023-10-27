@@ -23,7 +23,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/todo/team")
+@RequestMapping("/teams")
 public class TodoTeamController {
     private final TodoTeamGetUseCase todoTeamGetUseCase;
     private final TodoTeamRandomCodeGetUseCase todoTeamRandomCodeGetUseCase;
@@ -33,25 +33,21 @@ public class TodoTeamController {
      * 리팩터링 전 : 100명 동시 요청 평균 202ms
      * <br>리팩터링 후 : 100명 동시 요청 평균
      */
-    @GetMapping("/list")
+    @GetMapping
     public SliceResponse<TodoTeamSimpleResponse> getTodoTeams(Pageable pageable) {
         return todoTeamGetUseCase.getTodoTeams(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("id").descending()));
     }
 
-    @GetMapping("/code")
+    @GetMapping("/codes/random")
     public TodoTeamRandomCodeResponse getTodoTeamRandomCode() {
         return todoTeamRandomCodeGetUseCase.generateRandomCode();
     }
 
-    @GetMapping
-    public TodoTeamSearchInfoResponse getTodoTeamByCode(@RequestParam String code) {
+    @GetMapping("/codes/{code}")
+    public TodoTeamSearchInfoResponse getTodoTeamByCode(@PathVariable String code) {
         return todoTeamGetUseCase.searchTodoTeamByCode(code);
     }
 
-    /**
-     * 리팩터링 전 : 이미지 업로드 API + 팀 생성 API 100회 테스트 평균 : 160ms
-     * <br>리팩터링 후 : 이미지 업로드 비동기 + 팀 생성 API 100회 테스트 평균 98.3ms(60% 감소)
-     */
     @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public void postTodoTeam(@RequestPart("teamImageFile") MultipartFile teamImageFile,
                              @RequestPart("petimageFiles") List<MultipartFile> petImageFiles,
@@ -59,17 +55,13 @@ public class TodoTeamController {
         todoTeamCreateUseCase.createTodoTeam(teamImageFile,petImageFiles, todoTeamCreateInfo);
     }
 
-    /**
-     * 리팩터링 전 : 100명 동시 요청 평균 225ms
-     * <br>리팩터링 후 : 100명 동시 요청 평균 63ms(257% 감소)
-     */
     @GetMapping("/name")
     public List<TodoTeamNameSimpleResponse> getTodoTeamName() {
         return todoTeamGetUseCase.getTodoTeamName();
     }
 
-    @GetMapping("/code/{teamId}")
-    public TodoTeamRandomCodeResponse getTodoTeamCode(@PathVariable Long teamId){
-        return todoTeamGetUseCase.getTodoTeamCode(teamId);
+    @GetMapping("/{todoTeamId}/codes")
+    public TodoTeamRandomCodeResponse getTodoTeamCode(@PathVariable Long todoTeamId){
+        return todoTeamGetUseCase.getTodoTeamCode(todoTeamId);
     }
 }
