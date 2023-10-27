@@ -4,10 +4,7 @@ import com.navercorp.fixturemonkey.FixtureMonkey;
 import com.pawith.commonmodule.BaseRestDocsTest;
 import com.pawith.commonmodule.utils.FixtureMonkeyUtils;
 import com.pawith.todoapplication.dto.request.AuthorityChangeRequest;
-import com.pawith.todoapplication.dto.response.ManageRegisterInfoResponse;
-import com.pawith.todoapplication.dto.response.ManageRegisterListResponse;
-import com.pawith.todoapplication.dto.response.RegisterListResponse;
-import com.pawith.todoapplication.dto.response.RegisterSimpleInfoResponse;
+import com.pawith.todoapplication.dto.response.*;
 import com.pawith.todoapplication.service.ChangeRegisterUseCase;
 import com.pawith.todoapplication.service.RegistersGetUseCase;
 import com.pawith.todoapplication.service.TodoTeamRegisterUseCase;
@@ -44,7 +41,7 @@ class RegisterControllerTest extends BaseRestDocsTest {
     @MockBean
     private ChangeRegisterUseCase changeRegisterUseCase;
 
-    private static final String REGISTER_REQUEST_URL = "/registers";
+    private static final String REGISTER_REQUEST_URL = "/teams";
     private static final String Authrotity = "EXECUTIVE";
 
     @Test
@@ -52,7 +49,7 @@ class RegisterControllerTest extends BaseRestDocsTest {
     void unregisterTodoTeam() throws Exception {
         // given
         final Long todoTeamId = FixtureMonkey.create().giveMeOne(Long.class);
-        MockHttpServletRequestBuilder request = RestDocumentationRequestBuilders.delete(REGISTER_REQUEST_URL + "/{todoTeamId}", todoTeamId)
+        MockHttpServletRequestBuilder request = RestDocumentationRequestBuilders.delete(REGISTER_REQUEST_URL + "/{todoTeamId}/registers", todoTeamId)
             .header("Authorization", "Bearer accessToken");
         // when
         ResultActions result = mvc.perform(request);
@@ -73,7 +70,7 @@ class RegisterControllerTest extends BaseRestDocsTest {
     void postRegister() throws Exception{
         //given
         final String todoTeamCode = UUID.randomUUID().toString().split("-")[0];
-        MockHttpServletRequestBuilder request = post(REGISTER_REQUEST_URL)
+        MockHttpServletRequestBuilder request = post(REGISTER_REQUEST_URL+"/registers")
             .queryParam("todoTeamCode", todoTeamCode)
             .header("Authorization", "Bearer accessToken");
         //when
@@ -98,7 +95,7 @@ class RegisterControllerTest extends BaseRestDocsTest {
         final List<RegisterSimpleInfoResponse> registerSimpleInfoResponses = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMe(RegisterSimpleInfoResponse.class, 10);
         final RegisterListResponse registerListResponse = new RegisterListResponse(registerSimpleInfoResponses);
         given(registersGetUseCase.getRegisters(todoTeamId)).willReturn(registerListResponse);
-        MockHttpServletRequestBuilder request = get(REGISTER_REQUEST_URL + "/{todoTeamId}",todoTeamId)
+        MockHttpServletRequestBuilder request = get(REGISTER_REQUEST_URL + "/{todoTeamId}/registers",todoTeamId)
             .header("Authorization", "Bearer accessToken");
         //when
         ResultActions result = mvc.perform(request);
@@ -128,7 +125,7 @@ class RegisterControllerTest extends BaseRestDocsTest {
         final List<ManageRegisterInfoResponse> manageRegisterInfoResponses = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMe(ManageRegisterInfoResponse.class, 10);
         final ManageRegisterListResponse manageRegisterListResponse = new ManageRegisterListResponse(manageRegisterInfoResponses);
         given(registersGetUseCase.getManageRegisters(todoTeamId)).willReturn(manageRegisterListResponse);
-        MockHttpServletRequestBuilder request = get(REGISTER_REQUEST_URL + "/{todoTeamId}"+"/manage",todoTeamId)
+        MockHttpServletRequestBuilder request = get(REGISTER_REQUEST_URL + "/{todoTeamId}/registers/manage",todoTeamId)
                 .header("Authorization", "Bearer accessToken");
         //when
         ResultActions result = mvc.perform(request);
@@ -157,7 +154,7 @@ class RegisterControllerTest extends BaseRestDocsTest {
         //given
         final Long registerId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
         final AuthorityChangeRequest authorityChangeRequest = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(AuthorityChangeRequest.class);
-        MockHttpServletRequestBuilder request = put(REGISTER_REQUEST_URL + "/{registerId}", registerId)
+        MockHttpServletRequestBuilder request = put(REGISTER_REQUEST_URL + "/registers/{registerId}", registerId)
             .contentType("application/json")
             .header("Authorization", "Bearer accessToken")
             .content(objectMapper.writeValueAsString(authorityChangeRequest));
@@ -174,6 +171,33 @@ class RegisterControllerTest extends BaseRestDocsTest {
                 ),
                 requestFields(
                     fieldWithPath("authority").description("변경할 권한")
+                )
+            ));
+    }
+
+
+    @Test
+    @DisplayName("팀 가입 기간 조회 API 테스트")
+    void getRegisterTerm() throws Exception {
+        //given
+        final Long testTeamId = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(Long.class);
+        final RegisterTermResponse registerTermResponse = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(RegisterTermResponse.class);
+        given(registersGetUseCase.getRegisterTerm(testTeamId)).willReturn(registerTermResponse);
+        MockHttpServletRequestBuilder request = get(REGISTER_REQUEST_URL + "/{todoTeamId}/registers/term", testTeamId)
+            .header("Authorization", "Bearer accessToken");
+        //when
+        ResultActions result = mvc.perform(request);
+        //then
+        result.andExpect(status().isOk())
+            .andDo(resultHandler.document(
+                requestHeaders(
+                    headerWithName("Authorization").description("access 토큰")
+                ),
+                pathParameters(
+                    parameterWithName("todoTeamId").description("TodoTeam의 Id")
+                ),
+                responseFields(
+                    fieldWithPath("registerTerm").description("팀 가입 한 기간. FIRST_WEEK : 1주, SECOND_WEEK : 2주, AFTER_SECOND_WEEK : 2주 이상")
                 )
             ));
     }
