@@ -141,7 +141,7 @@ public class JWTProviderTest {
         final String randomToken = FixtureMonkey.create().giveMe(String.class).findFirst().get();
         //when
         //then
-        Assertions.assertThatCode(() -> jwtProvider.validateToken(randomToken))
+        Assertions.assertThatCode(() -> jwtProvider.validateToken(randomToken, TokenType.ACCESS_TOKEN))
             .isInstanceOf(InvalidTokenException.class);
     }
 
@@ -155,7 +155,7 @@ public class JWTProviderTest {
         Thread.sleep(JWTTestConsts.REFRESH_TOKEN_EXPIRED_TIME+1);
         //when
         //then
-        Assertions.assertThatCode(() -> jwtProvider.validateToken(refreshToken))
+        Assertions.assertThatCode(() -> jwtProvider.validateToken(refreshToken, TokenType.REFRESH_TOKEN))
             .isInstanceOf(ExpiredTokenException.class);
     }
 

@@ -2,6 +2,7 @@ package com.pawith.authapplication.service.impl;
 
 import com.pawith.authapplication.service.JWTVerifyUseCase;
 import com.pawith.authdomain.jwt.JWTProvider;
+import com.pawith.authdomain.jwt.TokenType;
 import com.pawith.commonmodule.annotation.ApplicationService;
 import lombok.RequiredArgsConstructor;
 
@@ -12,6 +13,6 @@ public class JWTVerifyUseCaseImpl implements JWTVerifyUseCase {
 
     @Override
     public void validateToken(final String token){
-        jwtProvider.validateToken(token);
+        jwtProvider.validateToken(token, TokenType.ACCESS_TOKEN);
     }
 }
