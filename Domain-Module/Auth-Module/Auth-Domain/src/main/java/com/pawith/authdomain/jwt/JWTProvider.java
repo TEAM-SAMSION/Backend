@@ -1,11 +1,11 @@
 package com.pawith.authdomain.jwt;
 
-import com.pawith.commonmodule.exception.Error;
-import com.pawith.authdomain.service.TokenQueryService;
-import com.pawith.authdomain.service.TokenSaveService;
+import com.pawith.authdomain.exception.NotExistTokenException;
 import com.pawith.authdomain.jwt.exception.ExpiredTokenException;
 import com.pawith.authdomain.jwt.exception.InvalidTokenException;
-import com.pawith.authdomain.exception.NotExistTokenException;
+import com.pawith.authdomain.service.TokenQueryService;
+import com.pawith.authdomain.service.TokenSaveService;
+import com.pawith.commonmodule.exception.Error;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -57,29 +57,31 @@ public class JWTProvider {
      * @throws ExpiredTokenException : 만료된 토큰 요청시 발생
      */
     public String reIssueAccessToken(final String refreshToken) {
-        validateToken(refreshToken);
+        validateToken(refreshToken, TokenType.REFRESH_TOKEN);
         final String email = extractEmailFromRefreshToken(refreshToken);
         return generateAccessToken(email);
     }
 
     /**
      * refresh token을 이용하여 refresh token 재발급
-     * @TODO : RefreshToken 인증 범위 결정
+     *
      * @throws InvalidTokenException : 잘못된 토큰 요청시 발생
+     * @TODO : RefreshToken 인증 범위 결정
      */
     public String reIssueRefreshToken(final String refreshToken) {
-        validateToken(refreshToken);
+        validateToken(refreshToken, TokenType.REFRESH_TOKEN);
         final String email = extractEmailFromRefreshToken(refreshToken);
         return generateRefreshToken(email);
     }
 
     /**
      * accessToken에서 email 추출
+     *
      * @throws InvalidTokenException : 잘못된 토큰 요청시 발생
      * @throws ExpiredTokenException : 만료된 토큰 요청시 발생
      */
-    public String extractEmailFromAccessToken(final String accessToken){
-        return initializeJwtParser()
+    public String extractEmailFromAccessToken(final String accessToken) {
+        return initializeJwtParser(TokenType.ACCESS_TOKEN)
             .parseClaimsJws(accessToken)
             .getBody()
             .get(JWTConsts.EMAIL)
@@ -93,8 +95,7 @@ public class JWTProvider {
      * @throws NotExistTokenException : 존재하지 않는 토큰 요청시 발생
      */
     private String extractEmailFromRefreshToken(String refreshToken) {
-        final String email = tokenQueryService.findEmailByValue(refreshToken, TokenType.REFRESH_TOKEN);
-        return email;
+        return tokenQueryService.findEmailByValue(refreshToken, TokenType.REFRESH_TOKEN);
     }
 
     /**
@@ -140,11 +141,11 @@ public class JWTProvider {
      * @throws InvalidTokenException 잘못된 토큰이 요청되었을 때 반환(서명 오류, 잘못된 토큰 형식, 잘못된 토큰 발급자, null이거나 공백인 경우)
      * @throws ExpiredTokenException 만료된 토큰이 요청되었을 때 반환
      */
-    public void validateToken(final String token) {
-        final JwtParser jwtParser = initializeJwtParser();
+    public void validateToken(final String token, final TokenType tokenType) {
+        final JwtParser jwtParser = initializeJwtParser(tokenType);
         try {
             jwtParser.parse(token);
-        } catch (MalformedJwtException | SignatureException | IllegalArgumentException e) {
+        } catch (MalformedJwtException | SignatureException | IncorrectClaimException | IllegalArgumentException e) {
             throw new InvalidTokenException(Error.INVALID_TOKEN);
         } catch (ExpiredJwtException e) {
             throw new ExpiredTokenException(Error.EXPIRED_TOKEN);
@@ -156,10 +157,11 @@ public class JWTProvider {
      *
      * @return 토큰 검증 위한 JwtParser 반환
      */
-    private JwtParser initializeJwtParser() {
+    private JwtParser initializeJwtParser(final TokenType tokenType) {
         return Jwts.parserBuilder()
             .setSigningKey(getSigningKey())
             .requireIssuer(JWTConsts.TOKEN_ISSUER)
+            .require(JWTConsts.TOKEN_TYPE, tokenType.name())
             .build();
     }
 
