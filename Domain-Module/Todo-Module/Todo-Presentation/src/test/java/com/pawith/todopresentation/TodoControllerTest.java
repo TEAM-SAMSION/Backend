@@ -43,11 +43,9 @@ public class TodoControllerTest extends BaseRestDocsTest {
     @MockBean
     private TodoCreateUseCase todoCreateUseCase;
     @MockBean
-    private RegistersGetUseCase registersGetUseCase;
-    @MockBean
     private TodoChangeUseCase todoChangeUseCase;
 
-    private static final String TODO_REQUEST_URL = "/todo";
+    private static final String TODO_REQUEST_URL = "/teams";
 
     @Test
     @DisplayName("Todo 달성률을 가져오는 테스트")
@@ -56,7 +54,7 @@ public class TodoControllerTest extends BaseRestDocsTest {
         final TodoProgressResponse testTodoProgress = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(TodoProgressResponse.class);
         final Long testTeamId = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(Long.class);
         given(todoRateGetUseCase.getTodoProgress(testTeamId)).willReturn(testTodoProgress);
-        MockHttpServletRequestBuilder request = get(TODO_REQUEST_URL + "/progress/{teamId}", testTeamId)
+        MockHttpServletRequestBuilder request = get(TODO_REQUEST_URL + "/{todoTeamId}/todos/progress", testTeamId)
                 .header("Authorization", "Bearer accessToken");
         //when
         ResultActions result = mvc.perform(request);
@@ -67,7 +65,7 @@ public class TodoControllerTest extends BaseRestDocsTest {
                                 headerWithName("Authorization").description("access 토큰")
                         ),
                         pathParameters(
-                                parameterWithName("teamId").description("TodoTeam의 Id")
+                                parameterWithName("todoTeamId").description("TodoTeam의 Id")
                         ),
                         responseFields(
                                 fieldWithPath("progress").description("달성률")
@@ -89,7 +87,7 @@ public class TodoControllerTest extends BaseRestDocsTest {
                 .sampleList(pageRequest.getPageSize());
         final SliceImpl<TodoHomeResponse> slice = new SliceImpl(todoHomeResponses, pageRequest, true);
         given(todoGetUseCase.getTodoListByTodoTeamId(any(), any())).willReturn(SliceResponse.from(slice));
-        MockHttpServletRequestBuilder request = get(TODO_REQUEST_URL + "/list/{teamId}", testTeamId)
+        MockHttpServletRequestBuilder request = get(TODO_REQUEST_URL + "/{todoTeamId}/todos", testTeamId)
                 .queryParam("page", String.valueOf(pageRequest.getPageNumber()))
                 .queryParam("size", String.valueOf(pageRequest.getPageSize()))
                 .header("Authorization", "Bearer accessToken");
@@ -102,7 +100,7 @@ public class TodoControllerTest extends BaseRestDocsTest {
                                 headerWithName("Authorization").description("access 토큰")
                         ),
                         pathParameters(
-                                parameterWithName("teamId").description("TodoTeam의 Id")
+                                parameterWithName("todoTeamId").description("TodoTeam의 Id")
                         ),
                         requestParameters(
                                 parameterWithName("page").description("요청 페이지"),
@@ -124,7 +122,7 @@ public class TodoControllerTest extends BaseRestDocsTest {
     void postTodo() throws Exception {
         //given
         final TodoCreateRequest todoCreateRequest = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(TodoCreateRequest.class);
-        MockHttpServletRequestBuilder request = post(TODO_REQUEST_URL)
+        MockHttpServletRequestBuilder request = post(TODO_REQUEST_URL+"/todos")
             .content(objectMapper.writeValueAsString(todoCreateRequest))
             .contentType(MediaType.APPLICATION_JSON)
             .header("Authorization", "Bearer accessToken");
@@ -161,7 +159,7 @@ public class TodoControllerTest extends BaseRestDocsTest {
             .sampleList(2);
         final TodoListResponse todoListResponse = new TodoListResponse(categorySubTodoResponses);
         given(todoGetUseCase.getTodoListByCategoryId(any(), any())).willReturn(todoListResponse);
-        MockHttpServletRequestBuilder request = get(TODO_REQUEST_URL + "/{categoryId}", testCategoryId)
+        MockHttpServletRequestBuilder request = get(TODO_REQUEST_URL + "/category/{categoryId}/todos", testCategoryId)
                 .queryParam("moveDate", testMoveDate.toString())
                 .header("Authorization", "Bearer accessToken");
         //when
@@ -195,7 +193,7 @@ public class TodoControllerTest extends BaseRestDocsTest {
         //given
         final Long testTeamId = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(Long.class);
         given(todoRateGetUseCase.getWeekProgressCompare(testTeamId)).willReturn(new TodoRateCompareResponse(true, false));
-        MockHttpServletRequestBuilder request = get(TODO_REQUEST_URL + "/compare/{teamId}", testTeamId)
+        MockHttpServletRequestBuilder request = get(TODO_REQUEST_URL + "/{todoTeamId}/todos/progress/compare", testTeamId)
                 .header("Authorization", "Bearer accessToken");
         //when
         ResultActions result = mvc.perform(request);
@@ -206,37 +204,10 @@ public class TodoControllerTest extends BaseRestDocsTest {
                                 headerWithName("Authorization").description("access 토큰")
                         ),
                         pathParameters(
-                                parameterWithName("teamId").description("TodoTeam의 Id")
+                                parameterWithName("todoTeamId").description("TodoTeam의 Id")
                         ),
                         responseFields(
                                 fieldWithPath("compareWithLastWeek").description("지난주 달성률과 이번주 달성률 비교. HIGER : 지난주보다 높음, LOWER : 지난주보다 낮음, SAME : 지난주와 같음")
-                        )
-                ));
-    }
-
-
-    @Test
-    @DisplayName("팀 가입 기간 조회 API 테스트")
-    void getRegisterTerm() throws Exception {
-        //given
-        final Long testTeamId = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(Long.class);
-        final RegisterTermResponse registerTermResponse = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(RegisterTermResponse.class);
-        given(registersGetUseCase.getRegisterTerm(testTeamId)).willReturn(registerTermResponse);
-        MockHttpServletRequestBuilder request = get(TODO_REQUEST_URL + "/register/{teamId}", testTeamId)
-                .header("Authorization", "Bearer accessToken");
-        //when
-        ResultActions result = mvc.perform(request);
-        //then
-        result.andExpect(status().isOk())
-                .andDo(resultHandler.document(
-                        requestHeaders(
-                                headerWithName("Authorization").description("access 토큰")
-                        ),
-                        pathParameters(
-                                parameterWithName("teamId").description("TodoTeam의 Id")
-                        ),
-                        responseFields(
-                                fieldWithPath("registerTerm").description("팀 가입 한 기간. FIRST_WEEK : 1주, SECOND_WEEK : 2주, AFTER_SECOND_WEEK : 2주 이상")
                         )
                 ));
     }
@@ -247,7 +218,7 @@ public class TodoControllerTest extends BaseRestDocsTest {
         //given
         final Long testTodoId = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(Long.class);
         final ScheduledDateChangeRequest scheduledDateChangeRequest = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(ScheduledDateChangeRequest.class);
-        MockHttpServletRequestBuilder request = put(TODO_REQUEST_URL + "/change/date/{todoId}", testTodoId)
+        MockHttpServletRequestBuilder request = put(TODO_REQUEST_URL + "/todos/{todoId}/date", testTodoId)
                 .contentType("application/json")
                 .header("Authorization", "Bearer accessToken")
                 .content(objectMapper.writeValueAsString(scheduledDateChangeRequest));
@@ -274,7 +245,7 @@ public class TodoControllerTest extends BaseRestDocsTest {
         //given
         final Long testTodoId = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(Long.class);
         final TodoDescriptionChangeRequest todoDescriptionChangeRequest = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(TodoDescriptionChangeRequest.class);
-        MockHttpServletRequestBuilder request = put(TODO_REQUEST_URL + "/change/description/{todoId}", testTodoId)
+        MockHttpServletRequestBuilder request = put(TODO_REQUEST_URL + "/todos/{todoId}/description", testTodoId)
                 .contentType("application/json")
                 .header("Authorization", "Bearer accessToken")
                 .content(objectMapper.writeValueAsString(todoDescriptionChangeRequest));
