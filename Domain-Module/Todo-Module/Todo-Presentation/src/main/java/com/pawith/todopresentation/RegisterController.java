@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/register")
+@RequestMapping("/registers")
 public class RegisterController {
 
     private final UnregisterUseCase unregisterUseCase;
@@ -30,14 +30,14 @@ public class RegisterController {
         todoTeamRegisterUseCase.registerTodoTeam(todoTeamCode);
     }
 
-    @GetMapping("/list")
-    public RegisterListResponse getRegisters(@RequestParam Long teamId){
-        return registersGetUseCase.getRegisters(teamId);
+    @GetMapping("/{todoTeamId}")
+    public RegisterListResponse getRegisters(@PathVariable Long todoTeamId){
+        return registersGetUseCase.getRegisters(todoTeamId);
     }
 
-    @GetMapping("/manage/list")
-    public ManageRegisterListResponse getManageRegisters(@RequestParam Long teamId){
-        return registersGetUseCase.getManageRegisters(teamId);
+    @GetMapping("/{todoTeamId}/manage")
+    public ManageRegisterListResponse getRegistersForManage(@PathVariable Long todoTeamId){
+        return registersGetUseCase.getManageRegisters(todoTeamId);
     }
 
     @PutMapping("/{registerId}")

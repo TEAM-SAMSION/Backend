@@ -44,7 +44,7 @@ class RegisterControllerTest extends BaseRestDocsTest {
     @MockBean
     private ChangeRegisterUseCase changeRegisterUseCase;
 
-    private static final String REGISTER_REQUEST_URL = "/register";
+    private static final String REGISTER_REQUEST_URL = "/registers";
     private static final String Authrotity = "EXECUTIVE";
 
     @Test
@@ -98,7 +98,7 @@ class RegisterControllerTest extends BaseRestDocsTest {
         final List<RegisterSimpleInfoResponse> registerSimpleInfoResponses = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMe(RegisterSimpleInfoResponse.class, 10);
         final RegisterListResponse registerListResponse = new RegisterListResponse(registerSimpleInfoResponses);
         given(registersGetUseCase.getRegisters(todoTeamId)).willReturn(registerListResponse);
-        MockHttpServletRequestBuilder request = get(REGISTER_REQUEST_URL + "/list?teamId={teamId}", todoTeamId)
+        MockHttpServletRequestBuilder request = get(REGISTER_REQUEST_URL + "/{todoTeamId}",todoTeamId)
             .header("Authorization", "Bearer accessToken");
         //when
         ResultActions result = mvc.perform(request);
@@ -108,8 +108,8 @@ class RegisterControllerTest extends BaseRestDocsTest {
                 requestHeaders(
                     headerWithName("Authorization").description("access 토큰")
                 ),
-                requestParameters(
-                    parameterWithName("teamId").description("조회하는 TodoTeamId")
+                pathParameters(
+                    parameterWithName("todoTeamId").description("조회하는 TodoTeamId")
                 ),
                 responseFields(
                     fieldWithPath("registers[].registerId").description("TodoTeam에 등록된 사용자 registerId"),
@@ -128,7 +128,7 @@ class RegisterControllerTest extends BaseRestDocsTest {
         final List<ManageRegisterInfoResponse> manageRegisterInfoResponses = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMe(ManageRegisterInfoResponse.class, 10);
         final ManageRegisterListResponse manageRegisterListResponse = new ManageRegisterListResponse(manageRegisterInfoResponses);
         given(registersGetUseCase.getManageRegisters(todoTeamId)).willReturn(manageRegisterListResponse);
-        MockHttpServletRequestBuilder request = get(REGISTER_REQUEST_URL + "/manage/list?teamId={teamId}", todoTeamId)
+        MockHttpServletRequestBuilder request = get(REGISTER_REQUEST_URL + "/{todoTeamId}"+"/manage",todoTeamId)
                 .header("Authorization", "Bearer accessToken");
         //when
         ResultActions result = mvc.perform(request);
@@ -138,8 +138,8 @@ class RegisterControllerTest extends BaseRestDocsTest {
                         requestHeaders(
                                 headerWithName("Authorization").description("access 토큰")
                         ),
-                        requestParameters(
-                                parameterWithName("teamId").description("조회하는 TodoTeamId")
+                        pathParameters(
+                                parameterWithName("todoTeamId").description("조회하는 TodoTeamId")
                         ),
                         responseFields(
                                 fieldWithPath("registers[].registerId").description("TodoTeam에 등록된 사용자 registerId"),
