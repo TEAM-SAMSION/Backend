@@ -33,7 +33,7 @@ public class CategoryControllerTest extends BaseRestDocsTest {
     @MockBean
     private CategoryGetUseCase categoryGetUseCase;
 
-    private static final String CATEGORY_REQUEST_URL = "/category";
+    private static final String CATEGORY_REQUEST_URL = "/teams";
 
     @Test
     @DisplayName("카테고리 조회 테스트")
@@ -43,7 +43,7 @@ public class CategoryControllerTest extends BaseRestDocsTest {
         final List<CategoryInfoResponse> categoryListResponses = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMe(CategoryInfoResponse.class, 2);
         final CategoryListResponse categoryListResponse = new CategoryListResponse(categoryListResponses);
         given(categoryGetUseCase.getCategoryList(testTeamId)).willReturn(categoryListResponse);
-        MockHttpServletRequestBuilder request = get(CATEGORY_REQUEST_URL + "/{teamId}", testTeamId)
+        MockHttpServletRequestBuilder request = get(CATEGORY_REQUEST_URL + "/{teamId}/category", testTeamId)
                 .header("Authorization", "Bearer accessToken");
         // when
         ResultActions result = mvc.perform(request);
