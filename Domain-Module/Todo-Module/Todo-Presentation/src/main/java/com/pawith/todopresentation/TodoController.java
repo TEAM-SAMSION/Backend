@@ -13,65 +13,50 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/todo")
+@RequestMapping("/teams")
 public class TodoController {
     private final TodoGetUseCase todoGetUseCase;
     private final TodoRateGetUseCase todoRateGetUseCase;
     private final TodoCreateUseCase todoCreateUseCase;
-    private final RegistersGetUseCase registersGetUseCase;
     private final TodoChangeUseCase todoChangeUseCase;
 
-    /**
-     * 리팩터링 전 : 동시 100명 요청 평균 426ms
-     * <br>리팩터링 후 : 동시 100명 요청 평균 67ms(535% 개선)
-     */
-    @GetMapping("/progress/{teamId}")
-    public TodoProgressResponse getTodoProgress(@PathVariable Long teamId) {
-        return todoRateGetUseCase.getTodoProgress(teamId);
+    @GetMapping("/{todoTeamId}/todos/progress")
+    public TodoProgressResponse getTodoProgress(@PathVariable Long todoTeamId) {
+        return todoRateGetUseCase.getTodoProgress(todoTeamId);
     }
 
-    /**
-     * 리팩터링 전 , 100명 동시 요청 테스트 평균 : 915ms
-     * <br>리팩터링 후 , 100명 동시 요청 테스트 평균 : 85ms(914% 성능개선)
-     */
-    @GetMapping("/list/{teamId}")
-    public SliceResponse<TodoHomeResponse> getTodos(@PathVariable Long teamId, Pageable pageable) {
-        return todoGetUseCase.getTodoListByTodoTeamId(teamId, pageable);
+    @GetMapping("/{todoTeamId}/todos")
+    public SliceResponse<TodoHomeResponse> getTodos(@PathVariable Long todoTeamId, Pageable pageable) {
+        return todoGetUseCase.getTodoListByTodoTeamId(todoTeamId, pageable);
     }
 
-    @PostMapping
+    @PostMapping("/todos")
     public void postTodo(@RequestBody TodoCreateRequest todoCreateRequest){
         todoCreateUseCase.createTodo(todoCreateRequest);
     }
 
-
-    @GetMapping("/{categoryId}")
-    public TodoListResponse getTodoList(@PathVariable Long categoryId, @RequestParam("moveDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)  LocalDate moveDate){
+    @GetMapping("/category/{categoryId}/todos")
+    public TodoListResponse getTodosAboutCategorySubTodo(@PathVariable Long categoryId, @RequestParam("moveDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)  LocalDate moveDate){
         return todoGetUseCase.getTodoListByCategoryId(categoryId, moveDate);
     }
 
-    @GetMapping("/compare/{teamId}")
-    public TodoRateCompareResponse getWeekProgressCompare(@PathVariable Long teamId){
-        return todoRateGetUseCase.getWeekProgressCompare(teamId);
+    @GetMapping("/{todoTeamId}/todos/progress/compare")
+    public TodoRateCompareResponse getTodoWeekProgressCompare(@PathVariable Long todoTeamId){
+        return todoRateGetUseCase.getWeekProgressCompare(todoTeamId);
     }
 
-    @GetMapping("/register/{teamId}")
-    public RegisterTermResponse getRegisterTerm(@PathVariable Long teamId){
-        return registersGetUseCase.getRegisterTerm(teamId);
-    }
 
-    @PutMapping("/change/date/{todoId}")
-    public void putScheduledDate(@PathVariable Long todoId, @RequestBody ScheduledDateChangeRequest scheduledDateChangeRequest){
+    @PutMapping("/todos/{todoId}/date")
+    public void putTodoScheduledDate(@PathVariable Long todoId, @RequestBody ScheduledDateChangeRequest scheduledDateChangeRequest){
         todoChangeUseCase.changeScheduledDate(todoId, scheduledDateChangeRequest);
     }
 
-    @PutMapping("/change/description/{todoId}")
-    public void putTodoName(@PathVariable Long todoId, @RequestBody TodoDescriptionChangeRequest todoDescriptionChangeRequest){
+    @PutMapping("/todos/{todoId}/description")
+    public void putTodoDescription(@PathVariable Long todoId, @RequestBody TodoDescriptionChangeRequest todoDescriptionChangeRequest){
         todoChangeUseCase.changeTodoName(todoId, todoDescriptionChangeRequest);
     }
 

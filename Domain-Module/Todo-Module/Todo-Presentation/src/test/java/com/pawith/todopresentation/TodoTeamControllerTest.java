@@ -40,7 +40,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @DisplayName("TodoTeamController 테스트")
 class TodoTeamControllerTest extends BaseRestDocsTest {
 
-    private static final String TODO_TEAM_REQUEST_URL = "/todo/team";
+    private static final String TODO_TEAM_REQUEST_URL = "/teams";
     private static final String TODO_TEAM_CREATE_INFO = "{\n" +
         "    \"teamName\" : \"test\",\n" +
         "    \"randomCode\" : \"randomCode\",\n" +
@@ -78,7 +78,7 @@ class TodoTeamControllerTest extends BaseRestDocsTest {
         todoTeamSimpleResponses.sort(((o1, o2) -> (int) (o2.getTeamId() - o1.getTeamId())));
         final SliceImpl<TodoTeamSimpleResponse> slice = new SliceImpl(todoTeamSimpleResponses, pageRequest, true);
         given(todoTeamGetUseCase.getTodoTeams(any())).willReturn(SliceResponse.from(slice));
-        MockHttpServletRequestBuilder request = get(TODO_TEAM_REQUEST_URL + "/list")
+        MockHttpServletRequestBuilder request = get(TODO_TEAM_REQUEST_URL)
             .queryParam("page", String.valueOf(pageRequest.getPageNumber()))
             .queryParam("size", String.valueOf(pageRequest.getPageSize()))
             .header("Authorization", "Bearer accessToken");
@@ -112,7 +112,7 @@ class TodoTeamControllerTest extends BaseRestDocsTest {
     void getTodoTeamRandomCode() throws Exception {
         //given
         given(todoTeamRandomCodeGetUseCase.generateRandomCode()).willReturn(new TodoTeamRandomCodeResponse("randomCode"));
-        MockHttpServletRequestBuilder request = get(TODO_TEAM_REQUEST_URL + "/code")
+        MockHttpServletRequestBuilder request = get(TODO_TEAM_REQUEST_URL + "/codes/random")
             .header("Authorization", "Bearer accessToken");
         //when
         ResultActions result = mvc.perform(request);
@@ -134,7 +134,7 @@ class TodoTeamControllerTest extends BaseRestDocsTest {
         //given
         final Long teamId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
         given(todoTeamGetUseCase.getTodoTeamCode(teamId)).willReturn(new TodoTeamRandomCodeResponse("randomCode"));
-        MockHttpServletRequestBuilder request = get(TODO_TEAM_REQUEST_URL + "/code/{teamId}", teamId)
+        MockHttpServletRequestBuilder request = get(TODO_TEAM_REQUEST_URL + "/{todoTeamId}/codes", teamId)
                 .header("Authorization", "Bearer accessToken");
         //when
         ResultActions result = mvc.perform(request);
@@ -145,7 +145,7 @@ class TodoTeamControllerTest extends BaseRestDocsTest {
                                 headerWithName("Authorization").description("access 토큰")
                         ),
                         pathParameters(
-                                parameterWithName("teamId").description("TodoTeam의 Id")
+                                parameterWithName("todoTeamId").description("TodoTeam의 Id")
                         ),
                         responseFields(
                                 fieldWithPath("randomCode").description("TodoTeam의 코드")
@@ -220,8 +220,7 @@ class TodoTeamControllerTest extends BaseRestDocsTest {
             .set("code", code)
             .sample();
         given(todoTeamGetUseCase.searchTodoTeamByCode(code)).willReturn(todoTeamSearchInfoResponse);
-        MockHttpServletRequestBuilder request = get(TODO_TEAM_REQUEST_URL)
-            .param("code", code)
+        MockHttpServletRequestBuilder request = get(TODO_TEAM_REQUEST_URL+"/codes/{code}", code)
             .header("Authorization", "Bearer accessToken");
         //when
         ResultActions result = mvc.perform(request);
@@ -231,7 +230,7 @@ class TodoTeamControllerTest extends BaseRestDocsTest {
                 requestHeaders(
                     headerWithName("Authorization").description("access 토큰")
                 ),
-                requestParameters(
+                pathParameters(
                     parameterWithName("code").description("TodoTeam의 코드")
                 ),
                 responseFields(

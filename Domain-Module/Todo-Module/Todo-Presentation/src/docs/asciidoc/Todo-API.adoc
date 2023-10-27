@@ -1,103 +1,112 @@
-[[Todo-API]]
-== Todo API
+[[Todo-Team-API]]
+== Todo Team API
 
-[[Todo-API-가입된-Todo-Team-목록]]
-=== 가입된 Todo Team 목록
+[[가입된-Todo-Team-조회-마이페이지]]
+=== 가입된 Todo Team 조회 (마이페이지용)
 
 operation::todo-team-controller-test/get-todo-teams[snippets='http-request,request-parameters,request-headers,http-response,response-fields']
 
-[[Todo-API-Todo-Team에-가입된-사용자-조회]]
-=== Todo Team에 가입된 사용자 조회 (todo 생성할 때 사용)
+[[가입된-Todo-Team-조회-메인페이지-todo페이지]]
+=== 가입된 Todo Team 조회 (메인페이지, todo페이지에서 페밀리 선택 버튼)
 
-operation::register-controller-test/get-registers[snippets='http-request,request-parameters,request-headers,http-response,response-fields']
+operation::todo-team-controller-test/get-todo-team-name[snippets='http-request,request-headers,http-response,response-fields']
 
-[[Todo-API-Todo-Team에-가입된-사용자-조회]]
-=== Todo Team에 가입된 사용자 조회 (관리자 페이지에서 회원 정보 조회할 때 사용)
-
-operation::register-controller-test/get-manage-registers[snippets='http-request,request-parameters,request-headers,http-response,response-fields']
-
-[[Todo-API-Todo-Team에-가입된-사용자-권한-수정]]
-=== Todo Team에 가입된 사용자 권한 수정
-
-operation::register-controller-test/put-authority[snippets='http-request,path-parameters,request-headers,request-fields,http-response']
-
-
-[[Todo-API-Todo-Team-탈퇴]]
-=== Todo Team 탈퇴
-
-operation::register-controller-test/unregister-todo-team[snippets='http-request,path-parameters,request-headers,http-response']
-
-[[Todo-API-Todo-Team-가입]]
+[[Todo-Team-가입]]
 === Todo Team 가입
 
 operation::register-controller-test/post-register[snippets='http-request,request-parameters,request-headers,http-response']
 
-[[Todo-API-Todo-Team-생성]]
+[[Todo-Team-생성]]
 === Todo Team 생성
 
 operation::todo-team-controller-test/post-todo-team[snippets='http-request,request-part-todoTeamCreateInfo-fields,request-headers,http-response']
 
-[[Todo-API-Todo-Team-Code-생성]]
+[[Todo-Team-Code-생성]]
 === Todo Team Code 생성
 
 operation::todo-team-controller-test/get-todo-team-random-code[snippets='http-request,request-headers,http-response,response-fields']
 
-[[Todo-API-Todo-Team-Code-조회]]
+[[Todo-Team-Id로-Code-조회]]
 === Todo Team Id로 Todo Team Code 조회
 
 operation::todo-team-controller-test/get-todo-team-code[snippets='http-request,path-parameters,request-headers,http-response,response-fields']
 
-[[Todo-API-Todo-Team-Code-조회]]
+[[Todo-Team-Code로-조회]]
 === Todo Team Code로 Todo Team 조회
 
 operation::todo-team-controller-test/get-todo-team-by-code[snippets='http-request,request-parameters,request-headers,http-response,response-fields']
 
-[[Todo-API-가장-최근에-가입한-Todo-Team-조회]]
-=== 가장 최근에 가입한 TodoTeam 조회
+[[Todo-API]]
+== Todo API
 
-operation::todo-team-controller-test/get-todo-team-name[snippets='http-request,request-headers,http-response,response-fields']
-
-[[Todo-API-할당-받은-Todo-조회]]
-=== 할당받은 Todo 조회
+[[할당-받은-Todo-조회-메인페이지-조회용]]
+=== 할당받은 Todo 조회 (메인페이지 조회용)
 
 operation::todo-controller-test/get-todos[snippets='http-request,path-parameters,request-parameters,request-headers,http-response,response-fields']
 
-[[Todo-API-Todo-달성률]]
+[[카테고리-하위-Todo-조회]]
+=== 카테고리 하위 Todo 조회
+
+operation::todo-controller-test/get-todo-list[snippets='http-request,path-parameters,request-headers,request-parameters,http-response,response-fields']
+
+[[Todo-달성률]]
 === Todo 달성률 조회
 
 operation::todo-controller-test/get-todo-progress[snippets='http-request,path-parameters,request-headers,http-response,response-fields']
-
-[[Todo-API-투두생성]]
-=== Todo 생성
-
-operation::todo-controller-test/post-todo[snippets='http-request,request-fields,request-headers,http-response']
-
-[[Todo-API-투두-리스트-조회]]
-=== Todo 카테고리 리스트 조회
-
-operation::category-controller-test/get-category-list[snippets='http-request,path-parameters,request-headers,http-response,response-fields']
-
-[[Todo-API-투두-리스트-조회]]
-=== Todo 투두 리스트 조회
-
-operation::todo-controller-test/get-todo-list[snippets='http-request,path-parameters,request-headers,request-parameters,http-response,response-fields']
 
 [[Todo-API-투두-주차-달성률-비교-조회]]
 === Todo 주차 달성률 비교
 
 operation::todo-controller-test/get-week-progress-compare[snippets='http-request,path-parameters,request-headers,http-response,response-fields']
 
-[[Todo-API-투두-팀-가입-기간-조회]]
-=== Todo 팀 가입 기간 조회
+[[Todo-API-투두생성]]
+=== Todo 생성
 
-operation::todo-controller-test/get-register-term[snippets='http-request,path-parameters,request-headers,http-response,response-fields']
+operation::todo-controller-test/post-todo[snippets='http-request,request-fields,request-headers,http-response']
 
-[[Todo-API-투두-날짜-변경]]
+[[Todo-날짜-변경]]
 === Todo 날짜 변경
 
 operation::todo-controller-test/change-scheduled-date[snippets='http-request,path-parameters,request-headers,request-fields,http-response']
 
-[[Todo-API-투두-이름-변경]]
+[[Todo-이름-변경]]
 === Todo 이름 변경
 
 operation::todo-controller-test/change-todo-name[snippets='http-request,path-parameters,request-headers,request-fields,http-response']
+
+
+[[Category-API]]
+== Category API
+
+[[todo-team-id로-카테고리-조회]]
+=== Todo Team Id로 카테고리 조회
+
+operation::category-controller-test/get-category-list[snippets='http-request,path-parameters,request-headers,http-response,response-fields']
+
+[[Register-API]]
+== Register API
+
+[[Todo-Team에-가입된-사용자-조회]]
+=== Todo Team에 가입된 사용자 조회 (todo 생성할 때 사용)
+
+operation::register-controller-test/get-registers[snippets='http-request,path-parameters,request-headers,http-response,response-fields']
+
+[[Todo-Team에-가입된-사용자-조회]]
+=== Todo Team에 가입된 사용자 조회 (관리자 페이지에서 회원 정보 조회할 때 사용)
+
+operation::register-controller-test/get-manage-registers[snippets='http-request,path-parameters,request-headers,http-response,response-fields']
+
+[[Todo-API-Todo-Team에-가입된-사용자-권한-수정]]
+=== Todo Team에 가입된 사용자 권한 수정
+
+operation::register-controller-test/put-authority[snippets='http-request,path-parameters,request-headers,request-fields,http-response']
+
+[[Todo-Team-탈퇴]]
+=== Todo Team 탈퇴
+
+operation::register-controller-test/unregister-todo-team[snippets='http-request,path-parameters,request-headers,http-response']
+
+[[Todo-팀-가입-기간-조회]]
+=== Todo 팀 가입 기간 조회
+
+operation::register-controller-test/get-register-term[snippets='http-request,path-parameters,request-headers,http-response,response-fields']
