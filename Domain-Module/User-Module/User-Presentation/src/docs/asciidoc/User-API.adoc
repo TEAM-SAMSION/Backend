@@ -21,3 +21,9 @@ operation::user-controller-test/put-nickname-on-user[snippets='http-request,requ
 === 사용자 프로필 이미지 변경
 
 operation::user-controller-test/post-user-profile-image[snippets='http-request,request-headers,request-parts,http-response']
+
+
+[[UserController-알게된경로저장]]
+=== 포잇을 알게된 경로 저장
+
+operation::user-controller-test/post-path-history[snippets='http-request,request-headers,request-fields,http-response']

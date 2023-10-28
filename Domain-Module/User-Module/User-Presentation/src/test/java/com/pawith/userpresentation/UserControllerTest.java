@@ -2,8 +2,10 @@ package com.pawith.userpresentation;
 
 import com.pawith.commonmodule.BaseRestDocsTest;
 import com.pawith.commonmodule.utils.FixtureMonkeyUtils;
+import com.pawith.userapplication.dto.request.PathHistoryCreateRequest;
 import com.pawith.userapplication.dto.request.UserNicknameChangeRequest;
 import com.pawith.userapplication.dto.response.UserInfoResponse;
+import com.pawith.userapplication.service.PathHistoryCreateUseCase;
 import com.pawith.userapplication.service.UserInfoGetUseCase;
 import com.pawith.userapplication.service.UserNicknameChangeUseCase;
 import com.pawith.userapplication.service.UserProfileImageUpdateUseCase;
@@ -34,6 +36,8 @@ class UserControllerTest extends BaseRestDocsTest {
     private UserInfoGetUseCase userInfoGetUseCase;
     @MockBean
     private UserProfileImageUpdateUseCase userProfileImageUpdateUseCase;
+    @MockBean
+    private PathHistoryCreateUseCase pathHistoryCreateUseCase;
 
     private static final String USER_REQUEST_URL = "/user";
     private static final String ACCESS_TOKEN = "Bearer accessToken";
@@ -105,6 +109,29 @@ class UserControllerTest extends BaseRestDocsTest {
                 ),
                 requestParts(
                     partWithName("profileImage").description("유저 프로필 이미지")
+                )
+            ));
+    }
+
+    @Test
+    @DisplayName("유저 알게 된 경로 히스토리 생성 테스트")
+    void postPathHistory() throws Exception {
+        //given
+        final PathHistoryCreateRequest pathHistoryCreateRequest = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(PathHistoryCreateRequest.class);
+        final MockHttpServletRequestBuilder request = post(USER_REQUEST_URL + "/path")
+            .content(objectMapper.writeValueAsString(pathHistoryCreateRequest))
+            .contentType("application/json")
+            .header(AUTHORIZATION_HEADER, ACCESS_TOKEN);
+        //when
+        ResultActions result = mvc.perform(request);
+        //then
+        result.andExpect(status().isOk())
+            .andDo(resultHandler.document(
+                requestHeaders(
+                    headerWithName(AUTHORIZATION_HEADER).description("access 토큰")
+                ),
+                requestFields(
+                    fieldWithPath("path").description("유저가 포잇을 알게 된 경로")
                 )
             ));
     }
