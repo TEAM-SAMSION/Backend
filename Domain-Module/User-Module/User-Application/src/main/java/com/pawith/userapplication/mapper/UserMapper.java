@@ -17,10 +17,4 @@ public class UserMapper {
                 .build();
     }
 
-    public static PathHistory toPathHistoryEntity(PathHistoryCreateRequest pathHistoryCreateRequest) {
-        return PathHistory.builder()
-                .path(pathHistoryCreateRequest.getPath())
-                .build();
-    }
-
 }
