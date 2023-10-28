@@ -25,7 +25,7 @@ public class UserSignUpHandler {
     @EventListener
     public void signUp(final UserSignUpEvent userSignUpEvent){
         if(!userQueryService.checkEmailAlreadyExist(userSignUpEvent.getEmail())) {
-            final User user = UserMapper.toEntity(userSignUpEvent);
+            final User user = UserMapper.toUserEntity(userSignUpEvent);
             userSaveService.saveUser(user);
             userAuthoritySaveService.saveUserAuthority(userSignUpEvent.getEmail());
         }

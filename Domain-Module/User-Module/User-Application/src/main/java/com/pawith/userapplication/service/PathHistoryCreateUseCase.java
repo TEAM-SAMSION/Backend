@@ -15,7 +15,7 @@ public class PathHistoryCreateUseCase {
     private final PathHistorySaveService pathHistroySaveService;
 
     public void createPathHistory(PathHistoryCreateRequest request){
-        PathHistory pathHistory = UserMapper.toEntity(request);
+        PathHistory pathHistory = UserMapper.toPathHistoryEntity(request);
         pathHistroySaveService.savePathHistoryEntity(pathHistory);
     }
 }

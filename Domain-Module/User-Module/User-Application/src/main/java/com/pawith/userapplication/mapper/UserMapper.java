@@ -9,7 +9,7 @@ import com.pawith.userdomain.entity.User;
 @Mapper
 public class UserMapper {
 
-    public static User toEntity(UserSignUpEvent userSignUpEvent){
+    public static User toUserEntity(UserSignUpEvent userSignUpEvent){
         return User.builder()
                 .nickname(userSignUpEvent.getNickname())
                 .email(userSignUpEvent.getEmail())
@@ -17,7 +17,7 @@ public class UserMapper {
                 .build();
     }
 
-    public static PathHistory toEntity(PathHistoryCreateRequest pathHistoryCreateRequest) {
+    public static PathHistory toPathHistoryEntity(PathHistoryCreateRequest pathHistoryCreateRequest) {
         return PathHistory.builder()
                 .path(pathHistoryCreateRequest.getPath())
                 .build();
