@@ -95,6 +95,10 @@ operation::category-controller-test/delete-category[snippets='http-request,path-
 === Category 생성
 operation::category-controller-test/post-category[snippets='http-request,request-fields,request-headers,http-response']
 
+[[Category-이름-변경]]
+=== Category 이름 변경
+operation::category-controller-test/put-category-name[snippets='http-request,path-parameters,request-headers,request-fields,http-response']
+
 [[Register-API]]
 == Register API
 
