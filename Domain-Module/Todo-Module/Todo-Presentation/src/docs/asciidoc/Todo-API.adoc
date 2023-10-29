@@ -83,6 +83,12 @@ operation::todo-controller-test/change-todo-name[snippets='http-request,path-par
 
 operation::category-controller-test/get-category-list[snippets='http-request,path-parameters,request-headers,http-response,response-fields']
 
+[[Category-활성-비활성]]
+=== Category 활성/비활성
+operation::category-controller-test/put-category-status[snippets='http-request,path-parameters,request-headers,http-response']
+
+[[Category-생성]]
+
 [[Register-API]]
 == Register API
 
