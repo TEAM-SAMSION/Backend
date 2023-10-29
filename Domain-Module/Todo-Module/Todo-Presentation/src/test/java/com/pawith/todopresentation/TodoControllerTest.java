@@ -79,13 +79,13 @@ public class TodoControllerTest extends BaseRestDocsTest {
         //given
         final PageRequest pageRequest = PageRequest.of(0, 6);
         final Long testTeamId = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(Long.class);
-        final List<TodoHomeResponse> todoHomeResponses = FixtureMonkeyUtils.getConstructBasedFixtureMonkey()
-                .giveMeBuilder(TodoHomeResponse.class)
+        final List<TodoInfoResponse> todoRespons = FixtureMonkeyUtils.getConstructBasedFixtureMonkey()
+                .giveMeBuilder(TodoInfoResponse.class)
                 .set("todoId", Arbitraries.longs().greaterOrEqual(1L))
                 .set("task", Arbitraries.strings().withCharRange('a', 'z').ofMinLength(5).ofMaxLength(10))
                 .set("status", FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeBuilder("COMPLETE"))
                 .sampleList(pageRequest.getPageSize());
-        final SliceImpl<TodoHomeResponse> slice = new SliceImpl(todoHomeResponses, pageRequest, true);
+        final SliceImpl<TodoInfoResponse> slice = new SliceImpl(todoRespons, pageRequest, true);
         given(todoGetUseCase.getTodoListByTodoTeamId(any(), any())).willReturn(SliceResponse.from(slice));
         MockHttpServletRequestBuilder request = get(TODO_REQUEST_URL + "/{todoTeamId}/todos", testTeamId)
                 .queryParam("page", String.valueOf(pageRequest.getPageNumber()))
@@ -157,8 +157,8 @@ public class TodoControllerTest extends BaseRestDocsTest {
             .set("status", FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeBuilder("COMPLETE"))
             .set("assignNames", assignUserInfoResponses)
             .sampleList(2);
-        final TodoListResponse todoListResponse = new TodoListResponse(categorySubTodoResponses);
-        given(todoGetUseCase.getTodoListByCategoryId(any(), any())).willReturn(todoListResponse);
+        final CategorySubTodoListResponse categorySubTodoListResponse = new CategorySubTodoListResponse(categorySubTodoResponses);
+        given(todoGetUseCase.getTodoListByCategoryId(any(), any())).willReturn(categorySubTodoListResponse);
         MockHttpServletRequestBuilder request = get(TODO_REQUEST_URL + "/category/{categoryId}/todos", testCategoryId)
                 .queryParam("moveDate", testMoveDate.toString())
                 .header("Authorization", "Bearer accessToken");
@@ -192,7 +192,7 @@ public class TodoControllerTest extends BaseRestDocsTest {
     void getWeekProgressCompare() throws Exception {
         //given
         final Long testTeamId = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(Long.class);
-        given(todoRateGetUseCase.getWeekProgressCompare(testTeamId)).willReturn(new TodoRateCompareResponse(true, false));
+        given(todoRateGetUseCase.getWeekProgressCompare(testTeamId)).willReturn(new TodoProgressRateCompareResponse(true, false));
         MockHttpServletRequestBuilder request = get(TODO_REQUEST_URL + "/{todoTeamId}/todos/progress/compare", testTeamId)
                 .header("Authorization", "Bearer accessToken");
         //when

@@ -92,9 +92,9 @@ class RegisterControllerTest extends BaseRestDocsTest {
     void getRegisters() throws Exception {
         //given
         final Long todoTeamId = FixtureMonkey.create().giveMeOne(Long.class);
-        final List<RegisterSimpleInfoResponse> registerSimpleInfoResponses = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMe(RegisterSimpleInfoResponse.class, 10);
-        final RegisterListResponse registerListResponse = new RegisterListResponse(registerSimpleInfoResponses);
-        given(registersGetUseCase.getRegisters(todoTeamId)).willReturn(registerListResponse);
+        final List<RegisterInfoResponse> registerInfoRespons = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMe(RegisterInfoResponse.class, 10);
+        final RegisterInfoListResponse registerInfoListResponse = new RegisterInfoListResponse(registerInfoRespons);
+        given(registersGetUseCase.getRegisters(todoTeamId)).willReturn(registerInfoListResponse);
         MockHttpServletRequestBuilder request = get(REGISTER_REQUEST_URL + "/{todoTeamId}/registers",todoTeamId)
             .header("Authorization", "Bearer accessToken");
         //when
@@ -122,9 +122,9 @@ class RegisterControllerTest extends BaseRestDocsTest {
     void getManageRegisters() throws Exception {
         //given
         final Long todoTeamId = FixtureMonkey.create().giveMeOne(Long.class);
-        final List<ManageRegisterInfoResponse> manageRegisterInfoResponses = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMe(ManageRegisterInfoResponse.class, 10);
-        final ManageRegisterListResponse manageRegisterListResponse = new ManageRegisterListResponse(manageRegisterInfoResponses);
-        given(registersGetUseCase.getManageRegisters(todoTeamId)).willReturn(manageRegisterListResponse);
+        final List<RegisterManageInfoResponse> registerManageInfoRespons = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMe(RegisterManageInfoResponse.class, 10);
+        final RegisterManageListResponse registerManageListResponse = new RegisterManageListResponse(registerManageInfoRespons);
+        given(registersGetUseCase.getManageRegisters(todoTeamId)).willReturn(registerManageListResponse);
         MockHttpServletRequestBuilder request = get(REGISTER_REQUEST_URL + "/{todoTeamId}/registers/manage",todoTeamId)
                 .header("Authorization", "Bearer accessToken");
         //when

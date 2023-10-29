@@ -3,10 +3,10 @@ package com.pawith.todopresentation;
 import com.pawith.commonmodule.BaseRestDocsTest;
 import com.pawith.commonmodule.slice.SliceResponse;
 import com.pawith.commonmodule.utils.FixtureMonkeyUtils;
-import com.pawith.todoapplication.dto.response.TodoTeamNameSimpleResponse;
+import com.pawith.todoapplication.dto.response.TodoTeamNameResponse;
 import com.pawith.todoapplication.dto.response.TodoTeamRandomCodeResponse;
 import com.pawith.todoapplication.dto.response.TodoTeamSearchInfoResponse;
-import com.pawith.todoapplication.dto.response.TodoTeamSimpleResponse;
+import com.pawith.todoapplication.dto.response.TodoTeamInfoResponse;
 import com.pawith.todoapplication.service.TodoTeamCreateUseCase;
 import com.pawith.todoapplication.service.TodoTeamGetUseCase;
 import com.pawith.todoapplication.service.TodoTeamRandomCodeGetUseCase;
@@ -69,14 +69,14 @@ class TodoTeamControllerTest extends BaseRestDocsTest {
     void getTodoTeams() throws Exception {
         //given
         final PageRequest pageRequest = PageRequest.of(0, 10);
-        final List<TodoTeamSimpleResponse> todoTeamSimpleResponses = FixtureMonkeyUtils.getConstructBasedFixtureMonkey()
-            .giveMeBuilder(TodoTeamSimpleResponse.class)
+        final List<TodoTeamInfoResponse> myPageTodoTeamRespons = FixtureMonkeyUtils.getConstructBasedFixtureMonkey()
+            .giveMeBuilder(TodoTeamInfoResponse.class)
             .set("teamId", Arbitraries.longs().greaterOrEqual(1L))
             .set("registerPeriod", Arbitraries.integers().greaterOrEqual(1))
             .set("teamName", Arbitraries.strings().withCharRange('a', 'z').ofMinLength(5).ofMaxLength(10))
             .sampleList(pageRequest.getPageSize());
-        todoTeamSimpleResponses.sort(((o1, o2) -> (int) (o2.getTeamId() - o1.getTeamId())));
-        final SliceImpl<TodoTeamSimpleResponse> slice = new SliceImpl(todoTeamSimpleResponses, pageRequest, true);
+        myPageTodoTeamRespons.sort(((o1, o2) -> (int) (o2.getTeamId() - o1.getTeamId())));
+        final SliceImpl<TodoTeamInfoResponse> slice = new SliceImpl(myPageTodoTeamRespons, pageRequest, true);
         given(todoTeamGetUseCase.getTodoTeams(any())).willReturn(SliceResponse.from(slice));
         MockHttpServletRequestBuilder request = get(TODO_TEAM_REQUEST_URL)
             .queryParam("page", String.valueOf(pageRequest.getPageNumber()))
@@ -190,8 +190,8 @@ class TodoTeamControllerTest extends BaseRestDocsTest {
     @DisplayName("가입한 팀 조회 API 테스트")
     void getTodoTeamName() throws Exception {
         //given
-        final List<TodoTeamNameSimpleResponse> todoTeamNameSimpleResponses = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMe(TodoTeamNameSimpleResponse.class, 5);
-        given(todoTeamGetUseCase.getTodoTeamName()).willReturn(todoTeamNameSimpleResponses);
+        final List<TodoTeamNameResponse> todoTeamNameRespons = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMe(TodoTeamNameResponse.class, 5);
+        given(todoTeamGetUseCase.getTodoTeamName()).willReturn(todoTeamNameRespons);
         MockHttpServletRequestBuilder request = get(TODO_TEAM_REQUEST_URL + "/name")
             .header("Authorization", "Bearer accessToken");
         //when

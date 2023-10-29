@@ -3,10 +3,10 @@ package com.pawith.todoapplication.service;
 import com.pawith.commonmodule.UnitTestConfig;
 import com.pawith.commonmodule.slice.SliceResponse;
 import com.pawith.commonmodule.utils.FixtureMonkeyUtils;
-import com.pawith.todoapplication.dto.response.TodoTeamNameSimpleResponse;
+import com.pawith.todoapplication.dto.response.TodoTeamNameResponse;
 import com.pawith.todoapplication.dto.response.TodoTeamRandomCodeResponse;
 import com.pawith.todoapplication.dto.response.TodoTeamSearchInfoResponse;
-import com.pawith.todoapplication.dto.response.TodoTeamSimpleResponse;
+import com.pawith.todoapplication.dto.response.TodoTeamInfoResponse;
 import com.pawith.tododomain.entity.Register;
 import com.pawith.tododomain.entity.TodoTeam;
 import com.pawith.tododomain.service.RegisterQueryService;
@@ -54,17 +54,17 @@ public class TodoTeamGetUseCaseTest {
         // given
         final Pageable mockPageable = PageRequest.of(0,10);
         final User mockUser = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeOne(User.class);
-        final List<TodoTeamSimpleResponse> todoTeamSimpleResponseList = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMe(TodoTeamSimpleResponse.class, mockPageable.getPageSize());
+        final List<TodoTeamInfoResponse> todoTeamInfoResponseList = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMe(TodoTeamInfoResponse.class, mockPageable.getPageSize());
         final List<Register> registerList = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMe(Register.class, mockPageable.getPageSize());
         final Slice<Register> registers = new SliceImpl<>(registerList, mockPageable, true);
         given(userUtils.getAccessUser()).willReturn(mockUser);
         given(registerQueryService.findRegisterSliceByUserId(mockUser.getId(), mockPageable)).willReturn(registers);
         // when
-        SliceResponse<TodoTeamSimpleResponse> result = todoTeamGetUseCase.getTodoTeams(mockPageable);
+        SliceResponse<TodoTeamInfoResponse> result = todoTeamGetUseCase.getTodoTeams(mockPageable);
         // then
         Assertions.assertThat(result).isNotNull();
         Assertions.assertThat(result.getContent()).isNotNull();
-        Assertions.assertThat(result.getContent().size()).isEqualTo(todoTeamSimpleResponseList.size());
+        Assertions.assertThat(result.getContent().size()).isEqualTo(todoTeamInfoResponseList.size());
     }
 
     @Test
@@ -76,7 +76,7 @@ public class TodoTeamGetUseCaseTest {
         given(userUtils.getAccessUser()).willReturn(mockUser);
         given(todoTeamQueryService.findAllTodoTeamByUserId(mockUser.getId())).willReturn(todoTeamList);
         // when
-        List<TodoTeamNameSimpleResponse> result = todoTeamGetUseCase.getTodoTeamName();
+        List<TodoTeamNameResponse> result = todoTeamGetUseCase.getTodoTeamName();
         // then
         Assertions.assertThat(result).isNotNull();
         Assertions.assertThat(result.size()).isEqualTo(todoTeamList.size());

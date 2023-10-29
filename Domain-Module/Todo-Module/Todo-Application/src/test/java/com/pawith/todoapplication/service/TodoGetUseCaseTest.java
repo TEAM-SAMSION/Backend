@@ -4,7 +4,7 @@ import com.navercorp.fixturemonkey.FixtureMonkey;
 import com.pawith.commonmodule.UnitTestConfig;
 import com.pawith.commonmodule.slice.SliceResponse;
 import com.pawith.commonmodule.utils.FixtureMonkeyUtils;
-import com.pawith.todoapplication.dto.response.TodoHomeResponse;
+import com.pawith.todoapplication.dto.response.TodoInfoResponse;
 import com.pawith.tododomain.entity.Todo;
 import com.pawith.tododomain.service.AssignQueryService;
 import com.pawith.tododomain.service.CategoryQueryService;
@@ -65,7 +65,7 @@ class TodoGetUseCaseTest {
         given(userUtils.getAccessUser()).willReturn(mockUser);
         given(todoQueryService.findTodayTodoSlice(mockUser.getId(), todoTeamId, mockPageable)).willReturn(todos);
         // when
-        SliceResponse<TodoHomeResponse> result = todoGetUseCase.getTodoListByTodoTeamId(todoTeamId, mockPageable);
+        SliceResponse<TodoInfoResponse> result = todoGetUseCase.getTodoListByTodoTeamId(todoTeamId, mockPageable);
         // then
         Assertions.assertThat(result).isNotNull();
         Assertions.assertThat(result.getContent().size()).isEqualTo(todoList.size());
