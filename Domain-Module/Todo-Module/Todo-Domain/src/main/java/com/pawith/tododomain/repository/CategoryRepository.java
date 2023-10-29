@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface CategoryRepository extends JpaRepository<Category, Long> {
-    @Query("select c from Category c where c.todoTeam.id = :todoTeamId and c.categoryStatus = 'ON'")
+    @Query("select c from Category c where c.todoTeam.id = :todoTeamId and c.categoryStatus = 'ON' and c.isDeleted = false")
     List<Category> findAllByTodoTeamIdAndCategoryStatus(Long todoTeamId);
 }
