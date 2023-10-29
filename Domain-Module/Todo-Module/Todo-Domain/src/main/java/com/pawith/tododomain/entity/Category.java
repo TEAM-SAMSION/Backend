@@ -1,6 +1,7 @@
 package com.pawith.tododomain.entity;
 
 import com.pawith.commonmodule.domain.BaseEntity;
+import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -31,5 +32,11 @@ public class Category extends BaseEntity {
         this.name = name;
         this.categoryStatus = categoryStatus;
         this.todoTeam = todoTeam;
+    }
+
+    public void updateCategoryStatus(CategoryStatus categoryStatus) {
+        if(this.categoryStatus.equals(categoryStatus))
+            return;
+        this.categoryStatus = Objects.requireNonNull(categoryStatus, "categoryStatus must be not null");
     }
 }
