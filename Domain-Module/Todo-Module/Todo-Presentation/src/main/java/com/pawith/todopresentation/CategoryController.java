@@ -1,6 +1,7 @@
 package com.pawith.todopresentation;
 
 import com.pawith.todoapplication.dto.request.CategoryCreateRequest;
+import com.pawith.todoapplication.dto.request.CategoryNameChageRequest;
 import com.pawith.todoapplication.dto.response.CategoryInfoListResponse;
 import com.pawith.todoapplication.service.CategoryChangeUseCase;
 import com.pawith.todoapplication.service.CategoryCreateUseCase;
@@ -44,7 +45,9 @@ public class CategoryController {
         categoryCreateUseCase.createCategory(todoTeamId, categoryCreateRequest);
     }
 
-
-
+    @PutMapping("/teams/category/{categoryId}/name")
+    public void putCategoryName(@PathVariable Long categoryId, @RequestBody CategoryNameChageRequest categoryNameChageRequest){
+        categoryChangeUseCase.changeCategoryName(categoryId, categoryNameChageRequest);
+    }
 
 }

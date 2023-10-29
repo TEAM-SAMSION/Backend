@@ -45,4 +45,10 @@ public class Category extends BaseEntity {
             return;
         this.categoryStatus = Objects.requireNonNull(categoryStatus, "categoryStatus must be not null");
     }
+
+    public void updateCategoryName(String categoryName) {
+        if(this.name.equals(categoryName))
+            return;
+        this.name = Objects.requireNonNull(categoryName, "categoryName must be not null");
+    }
 }
