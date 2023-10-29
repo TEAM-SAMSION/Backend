@@ -2,9 +2,11 @@ package com.pawith.todopresentation;
 
 import com.pawith.commonmodule.BaseRestDocsTest;
 import com.pawith.commonmodule.utils.FixtureMonkeyUtils;
+import com.pawith.todoapplication.dto.request.CategoryCreateRequest;
 import com.pawith.todoapplication.dto.response.CategoryInfoResponse;
 import com.pawith.todoapplication.dto.response.CategoryInfoListResponse;
 import com.pawith.todoapplication.service.CategoryChangeUseCase;
+import com.pawith.todoapplication.service.CategoryCreateUseCase;
 import com.pawith.todoapplication.service.CategoryDeleteUseCase;
 import com.pawith.todoapplication.service.CategoryGetUseCase;
 import lombok.extern.slf4j.Slf4j;
@@ -22,8 +24,10 @@ import static org.springframework.restdocs.headers.HeaderDocumentation.headerWit
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
@@ -40,6 +44,10 @@ public class CategoryControllerTest extends BaseRestDocsTest {
     private CategoryChangeUseCase categoryChangeUseCase;
     @MockBean
     private CategoryDeleteUseCase categoryDeleteUseCase;
+    @MockBean
+    private CategoryCreateUseCase categoryCreateUseCase;
+
+
     private static final String CATEGORY_REQUEST_URL = "/teams";
 
     @Test
@@ -108,6 +116,33 @@ public class CategoryControllerTest extends BaseRestDocsTest {
                         ),
                         pathParameters(
                                 parameterWithName("categoryId").description("Category의 Id")
+                        )
+                ));
+    }
+
+    @Test
+    @DisplayName("카테고리 생성 테스트")
+    public void postCategory() throws Exception {
+        // given
+        final Long testTeamId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
+        final CategoryCreateRequest categoryCreateRequest = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(CategoryCreateRequest.class);
+        MockHttpServletRequestBuilder request = post(CATEGORY_REQUEST_URL + "/{teamId}/category", testTeamId)
+                .header("Authorization", "Bearer accessToken")
+                .content(objectMapper.writeValueAsString(categoryCreateRequest))
+                .contentType("application/json");
+        // when
+        ResultActions result = mvc.perform(request);
+        // then
+        result.andExpect(status().isOk())
+                .andDo(resultHandler.document(
+                        requestHeaders(
+                                headerWithName("Authorization").description("access 토큰")
+                        ),
+                        pathParameters(
+                                parameterWithName("teamId").description("TodoTeam의 Id")
+                        ),
+                        requestFields(
+                                fieldWithPath("categoryName").description("생성할 Category의 이름")
                         )
                 ));
     }
