@@ -5,6 +5,7 @@ import com.pawith.commonmodule.utils.FixtureMonkeyUtils;
 import com.pawith.todoapplication.dto.response.CategoryInfoResponse;
 import com.pawith.todoapplication.dto.response.CategoryInfoListResponse;
 import com.pawith.todoapplication.service.CategoryChangeUseCase;
+import com.pawith.todoapplication.service.CategoryDeleteUseCase;
 import com.pawith.todoapplication.service.CategoryGetUseCase;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
@@ -19,6 +20,7 @@ import java.util.List;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
@@ -36,7 +38,8 @@ public class CategoryControllerTest extends BaseRestDocsTest {
     private CategoryGetUseCase categoryGetUseCase;
     @MockBean
     private CategoryChangeUseCase categoryChangeUseCase;
-
+    @MockBean
+    private CategoryDeleteUseCase categoryDeleteUseCase;
     private static final String CATEGORY_REQUEST_URL = "/teams";
 
     @Test
@@ -88,5 +91,25 @@ public class CategoryControllerTest extends BaseRestDocsTest {
                 ));
     }
 
+    @Test
+    @DisplayName("카테고리 삭제 테스트")
+    public void deleteCategory() throws Exception {
+        // given
+        final Long testCategoryId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
+        MockHttpServletRequestBuilder request = delete(CATEGORY_REQUEST_URL + "/category/{categoryId}", testCategoryId)
+                .header("Authorization", "Bearer accessToken");
+        // when
+        ResultActions result = mvc.perform(request);
+        // then
+        result.andExpect(status().isOk())
+                .andDo(resultHandler.document(
+                        requestHeaders(
+                                headerWithName("Authorization").description("access 토큰")
+                        ),
+                        pathParameters(
+                                parameterWithName("categoryId").description("Category의 Id")
+                        )
+                ));
+    }
 
 }

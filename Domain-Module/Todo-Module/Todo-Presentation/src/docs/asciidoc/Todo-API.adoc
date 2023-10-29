@@ -87,7 +87,9 @@ operation::category-controller-test/get-category-list[snippets='http-request,pat
 === Category 활성/비활성
 operation::category-controller-test/put-category-status[snippets='http-request,path-parameters,request-headers,http-response']
 
-[[Category-생성]]
+[[Category-삭제]]
+=== Category 삭제
+operation::category-controller-test/delete-category[snippets='http-request,path-parameters,request-headers,http-response']
 
 [[Register-API]]
 == Register API
