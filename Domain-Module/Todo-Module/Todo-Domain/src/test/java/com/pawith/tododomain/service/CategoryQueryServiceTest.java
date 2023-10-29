@@ -50,7 +50,7 @@ class CategoryQueryServiceTest {
         final Category mockCategory = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeOne(Category.class);
         given(categoryRepository.findById(mockCategoryId)).willReturn(java.util.Optional.of(mockCategory));
         //when
-        Category result = categoryQueryService.findCategoryById(mockCategoryId);
+        Category result = categoryQueryService.findCategoryByCategoryId(mockCategoryId);
         //then
         Assertions.assertThat(result).usingRecursiveComparison().isEqualTo(mockCategory);
     }
