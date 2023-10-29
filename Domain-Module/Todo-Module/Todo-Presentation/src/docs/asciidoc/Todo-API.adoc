@@ -34,7 +34,7 @@ operation::todo-team-controller-test/get-todo-team-code[snippets='http-request,p
 [[Todo-Team-Code로-조회]]
 === Todo Team Code로 Todo Team 조회
 
-operation::todo-team-controller-test/get-todo-team-by-code[snippets='http-request,request-parameters,request-headers,http-response,response-fields']
+operation::todo-team-controller-test/get-todo-team-by-code[snippets='http-request,path-parameters,request-headers,http-response,response-fields']
 
 [[Todo-API]]
 == Todo API
