@@ -2,10 +2,10 @@ package com.pawith.todoapplication.service;
 
 import com.pawith.commonmodule.annotation.ApplicationService;
 import com.pawith.commonmodule.slice.SliceResponse;
-import com.pawith.todoapplication.dto.response.TodoTeamNameSimpleResponse;
+import com.pawith.todoapplication.dto.response.TodoTeamNameResponse;
 import com.pawith.todoapplication.dto.response.TodoTeamRandomCodeResponse;
+import com.pawith.todoapplication.dto.response.TodoTeamInfoResponse;
 import com.pawith.todoapplication.dto.response.TodoTeamSearchInfoResponse;
-import com.pawith.todoapplication.dto.response.TodoTeamSimpleResponse;
 import com.pawith.todoapplication.mapper.TodoTeamMapper;
 import com.pawith.tododomain.entity.Register;
 import com.pawith.tododomain.entity.TodoTeam;
@@ -33,19 +33,19 @@ public class TodoTeamGetUseCase {
     private final UserQueryService userQueryService;
 
 
-    public SliceResponse<TodoTeamSimpleResponse> getTodoTeams(final Pageable pageable) {
+    public SliceResponse<TodoTeamInfoResponse> getTodoTeams(final Pageable pageable) {
         final User requestUser = userUtils.getAccessUser();
-        final Slice<TodoTeamSimpleResponse> todoTeamSimpleResponses =
+        final Slice<TodoTeamInfoResponse> todoTeamSimpleResponses =
             registerQueryService.findRegisterSliceByUserId(requestUser.getId(), pageable)
                 .map(register -> TodoTeamMapper.mapToTodoTeamSimpleResponse(register.getTodoTeam(), register));
         return SliceResponse.from(todoTeamSimpleResponses);
     }
 
-    public List<TodoTeamNameSimpleResponse> getTodoTeamName() {
+    public List<TodoTeamNameResponse> getTodoTeamName() {
         final User requestUser = userUtils.getAccessUser();
         return todoTeamQueryService.findAllTodoTeamByUserId(requestUser.getId())
             .stream()
-            .map(todoTeam -> new TodoTeamNameSimpleResponse(todoTeam.getId(), todoTeam.getTeamName()))
+            .map(todoTeam -> new TodoTeamNameResponse(todoTeam.getId(), todoTeam.getTeamName()))
             .collect(Collectors.toList());
     }
 

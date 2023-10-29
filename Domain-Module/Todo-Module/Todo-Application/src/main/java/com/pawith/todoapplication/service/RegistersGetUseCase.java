@@ -25,28 +25,28 @@ public class RegistersGetUseCase {
     /**
      * TODO : 성능 최적화 방안으로 캐시 고민
      */
-    public RegisterListResponse getRegisters(final Long teamId) {
+    public RegisterInfoListResponse getRegisters(final Long teamId) {
         final User user = userUtils.getAccessUser();
         final List<Register> allRegisters = registerQueryService.findAllRegisters(user.getId(), teamId);
-        final List<RegisterSimpleInfoResponse> registerSimpleInfoResponses = allRegisters.stream()
+        final List<RegisterInfoResponse> registerInfoRespons = allRegisters.stream()
             .map(register -> {
                 final User findUser = userQueryService.findById(register.getUserId());
-                return new RegisterSimpleInfoResponse(register.getId(), findUser.getNickname());
+                return new RegisterInfoResponse(register.getId(), findUser.getNickname());
             })
             .collect(Collectors.toList());
-        return new RegisterListResponse(registerSimpleInfoResponses);
+        return new RegisterInfoListResponse(registerInfoRespons);
     }
 
-    public ManageRegisterListResponse getManageRegisters(final Long teamId) {
+    public RegisterManageListResponse getManageRegisters(final Long teamId) {
         final User user = userUtils.getAccessUser();
         final List<Register> allRegisters = registerQueryService.findAllRegisters(user.getId(), teamId);
-        final List<ManageRegisterInfoResponse> manageRegisterInfoResponses = allRegisters.stream()
+        final List<RegisterManageInfoResponse> registerManageInfoRespons = allRegisters.stream()
                 .map(register -> {
                     final User findUser = userQueryService.findById(register.getUserId());
-                    return new ManageRegisterInfoResponse(register.getId(), register.getAuthority().toString(), findUser.getNickname(), findUser.getEmail());
+                    return new RegisterManageInfoResponse(register.getId(), register.getAuthority().toString(), findUser.getNickname(), findUser.getEmail());
                 })
                 .collect(Collectors.toList());
-        return new ManageRegisterListResponse(manageRegisterInfoResponses);
+        return new RegisterManageListResponse(registerManageInfoRespons);
     }
 
     public RegisterTermResponse getRegisterTerm(final Long teamId) {

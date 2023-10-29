@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class ManageRegisterInfoResponse {
+public class RegisterManageInfoResponse {
     private final Long registerId;
     private final String authority;
     private final String registerName;

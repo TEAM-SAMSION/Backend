@@ -2,10 +2,10 @@ package com.pawith.todopresentation;
 
 import com.pawith.commonmodule.slice.SliceResponse;
 import com.pawith.todoapplication.dto.request.TodoTeamCreateRequest;
-import com.pawith.todoapplication.dto.response.TodoTeamNameSimpleResponse;
+import com.pawith.todoapplication.dto.response.TodoTeamNameResponse;
 import com.pawith.todoapplication.dto.response.TodoTeamRandomCodeResponse;
 import com.pawith.todoapplication.dto.response.TodoTeamSearchInfoResponse;
-import com.pawith.todoapplication.dto.response.TodoTeamSimpleResponse;
+import com.pawith.todoapplication.dto.response.TodoTeamInfoResponse;
 import com.pawith.todoapplication.service.TodoTeamCreateUseCase;
 import com.pawith.todoapplication.service.TodoTeamGetUseCase;
 import com.pawith.todoapplication.service.TodoTeamRandomCodeGetUseCase;
@@ -29,12 +29,8 @@ public class TodoTeamController {
     private final TodoTeamRandomCodeGetUseCase todoTeamRandomCodeGetUseCase;
     private final TodoTeamCreateUseCase todoTeamCreateUseCase;
 
-    /**
-     * 리팩터링 전 : 100명 동시 요청 평균 202ms
-     * <br>리팩터링 후 : 100명 동시 요청 평균
-     */
     @GetMapping
-    public SliceResponse<TodoTeamSimpleResponse> getTodoTeams(Pageable pageable) {
+    public SliceResponse<TodoTeamInfoResponse> getTodoTeams(Pageable pageable) {
         return todoTeamGetUseCase.getTodoTeams(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("id").descending()));
     }
 
@@ -56,7 +52,7 @@ public class TodoTeamController {
     }
 
     @GetMapping("/name")
-    public List<TodoTeamNameSimpleResponse> getTodoTeamName() {
+    public List<TodoTeamNameResponse> getTodoTeamName() {
         return todoTeamGetUseCase.getTodoTeamName();
     }
 

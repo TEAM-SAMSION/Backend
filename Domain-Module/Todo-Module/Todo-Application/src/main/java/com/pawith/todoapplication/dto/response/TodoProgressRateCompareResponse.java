@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class TodoRateCompareResponse {
+public class TodoProgressRateCompareResponse {
     private ComparisonResult compareWithLastWeek;
 
     public enum ComparisonResult {
@@ -14,7 +14,7 @@ public class TodoRateCompareResponse {
         LOWER
     }
 
-    public TodoRateCompareResponse(Boolean isHigher, Boolean isSame) {
+    public TodoProgressRateCompareResponse(Boolean isHigher, Boolean isSame) {
         if (isHigher) {
             compareWithLastWeek = ComparisonResult.HIGHER;
         } else if (isSame) {

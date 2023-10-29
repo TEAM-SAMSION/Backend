@@ -11,7 +11,6 @@ import java.util.List;
 @ToString
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
 public class CategorySubTodoResponse {
-
     private Long todoId;
     private String task;
     private String status;

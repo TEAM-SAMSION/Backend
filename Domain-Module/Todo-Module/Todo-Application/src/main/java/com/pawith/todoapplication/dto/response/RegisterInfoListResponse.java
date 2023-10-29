@@ -7,7 +7,6 @@ import java.util.List;
 
 @Getter
 @AllArgsConstructor
-public class ManageRegisterListResponse {
-
-    List<ManageRegisterInfoResponse> registers;
+public class RegisterInfoListResponse {
+    private final List<RegisterInfoResponse> registers;
 }

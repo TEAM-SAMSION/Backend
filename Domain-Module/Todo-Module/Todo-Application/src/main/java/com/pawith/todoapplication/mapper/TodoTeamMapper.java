@@ -3,7 +3,7 @@ package com.pawith.todoapplication.mapper;
 import com.pawith.todoapplication.dto.request.TodoTeamCreateRequest;
 import com.pawith.todoapplication.dto.response.TodoTeamRandomCodeResponse;
 import com.pawith.todoapplication.dto.response.TodoTeamSearchInfoResponse;
-import com.pawith.todoapplication.dto.response.TodoTeamSimpleResponse;
+import com.pawith.todoapplication.dto.response.TodoTeamInfoResponse;
 import com.pawith.tododomain.entity.Register;
 import com.pawith.tododomain.entity.TodoTeam;
 import com.pawith.userdomain.entity.User;
@@ -24,9 +24,9 @@ public class TodoTeamMapper {
             .build();
     }
 
-    public static TodoTeamSimpleResponse mapToTodoTeamSimpleResponse(final TodoTeam todoTeam, final Register register) {
+    public static TodoTeamInfoResponse mapToTodoTeamSimpleResponse(final TodoTeam todoTeam, final Register register) {
         final int registerPeriod = Period.between(register.getCreatedAt().toLocalDate(), LocalDate.now()).getDays();
-        return TodoTeamSimpleResponse.builder()
+        return TodoTeamInfoResponse.builder()
             .teamId(todoTeam.getId())
             .teamName(todoTeam.getTeamName())
             .teamProfileImageUrl(todoTeam.getImageUrl())
