@@ -47,7 +47,8 @@ public class TodoGetUseCase {
 
 
     public CategorySubTodoListResponse getTodoListByCategoryId(Long categoryId, LocalDate moveDate) {
-        final Map<Long, User> userMap = userQueryService.findUserMapByIds(registerQueryService::findUserIdsByCategoryId, categoryId);
+        final List<Long> userIds = registerQueryService.findUserIdsByCategoryId(categoryId);
+        final Map<Long, User> userMap = userQueryService.findUserMapByIds(userIds);
         final Map<Todo, List<Register>> groupByTodo = getTodoMap(categoryId, moveDate);
         final ArrayList<CategorySubTodoResponse> todoMainResponses = new ArrayList<>();
         for (Todo todo : groupByTodo.keySet()) {

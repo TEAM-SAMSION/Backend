@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @ApplicationService
@@ -26,32 +27,40 @@ public class RegistersGetUseCase {
      * TODO : 성능 최적화 방안으로 캐시 고민
      */
     public RegisterInfoListResponse getRegisters(final Long teamId) {
-        final User user = userUtils.getAccessUser();
-        final List<Register> allRegisters = registerQueryService.findAllRegisters(user.getId(), teamId);
-        final List<RegisterInfoResponse> registerInfoRespons = allRegisters.stream()
+        final List<Register> allRegisters = registerQueryService.findAllRegistersByTodoTeamId(teamId);
+        final Map<Long, User> registerUserMap = getRegisterUserMap(allRegisters);
+        final List<RegisterInfoResponse> registerSimpleInfoResponses = allRegisters.stream()
             .map(register -> {
-                final User findUser = userQueryService.findById(register.getUserId());
-                return new RegisterInfoResponse(register.getId(), findUser.getNickname());
+                final User registerUser = registerUserMap.get(register.getUserId());
+                return new RegisterInfoResponse(register.getId(), registerUser.getNickname());
             })
             .collect(Collectors.toList());
-        return new RegisterInfoListResponse(registerInfoRespons);
+        return new RegisterInfoListResponse(registerSimpleInfoResponses);
     }
 
     public RegisterManageListResponse getManageRegisters(final Long teamId) {
-        final User user = userUtils.getAccessUser();
-        final List<Register> allRegisters = registerQueryService.findAllRegisters(user.getId(), teamId);
-        final List<RegisterManageInfoResponse> registerManageInfoRespons = allRegisters.stream()
+        final List<Register> allRegisters = registerQueryService.findAllRegistersByTodoTeamId(teamId);
+        final Map<Long, User> registerUserMap = getRegisterUserMap(allRegisters);
+        final List<RegisterManageInfoResponse> manageRegisterInfoResponses = allRegisters.stream()
                 .map(register -> {
-                    final User findUser = userQueryService.findById(register.getUserId());
-                    return new RegisterManageInfoResponse(register.getId(), register.getAuthority().toString(), findUser.getNickname(), findUser.getEmail());
+                    final User registerUser = registerUserMap.get(register.getUserId());
+                    return new RegisterManageInfoResponse(register.getId(), register.getAuthority().toString(), registerUser.getNickname(), registerUser.getEmail());
                 })
                 .collect(Collectors.toList());
-        return new RegisterManageListResponse(registerManageInfoRespons);
+        return new RegisterManageListResponse(manageRegisterInfoResponses);
     }
 
     public RegisterTermResponse getRegisterTerm(final Long teamId) {
         final User user = userUtils.getAccessUser();
         final Integer registerTerm = registerQueryService.findUserRegisterTerm(teamId, user.getId());
         return new RegisterTermResponse(registerTerm);
+    }
+
+
+    private Map<Long, User> getRegisterUserMap(List<Register> allRegisters) {
+        final List<Long> registerUserIds = allRegisters.stream()
+            .map(Register::getUserId)
+            .collect(Collectors.toList());
+        return userQueryService.findUserMapByIds(registerUserIds);
     }
 }

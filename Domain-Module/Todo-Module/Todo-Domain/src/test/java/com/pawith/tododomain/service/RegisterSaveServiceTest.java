@@ -36,7 +36,7 @@ class RegisterSaveServiceTest {
         //given
         final TodoTeam todoTeam = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeOne(TodoTeam.class);
         final Long userId = FixtureMonkey.create().giveMeOne(Long.class);
-        given(registerRepository.existsByTodoTeamIdAndUserId(todoTeam.getId(), userId)).willReturn(false);
+        given(registerRepository.existsByTodoTeamIdAndUserIdAndIsRegistered(todoTeam.getId(), userId,true)).willReturn(false);
         //when
         registerSaveService.saveRegisterAboutMember(todoTeam, userId);
         //then
@@ -49,7 +49,7 @@ class RegisterSaveServiceTest {
         //given
         final TodoTeam todoTeam = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeOne(TodoTeam.class);
         final Long userId = FixtureMonkey.create().giveMeOne(Long.class);
-        given(registerRepository.existsByTodoTeamIdAndUserId(todoTeam.getId(), userId)).willReturn(false);
+        given(registerRepository.existsByTodoTeamIdAndUserIdAndIsRegistered(todoTeam.getId(), userId,true)).willReturn(false);
         //when
         registerSaveService.saveRegisterAboutPresident(todoTeam, userId);
         //then
@@ -62,7 +62,7 @@ class RegisterSaveServiceTest {
         //given
         final TodoTeam todoTeam = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeOne(TodoTeam.class);
         final Long userId = FixtureMonkey.create().giveMeOne(Long.class);
-        given(registerRepository.existsByTodoTeamIdAndUserId(todoTeam.getId(), userId)).willReturn(true);
+        given(registerRepository.existsByTodoTeamIdAndUserIdAndIsRegistered(todoTeam.getId(), userId,true)).willReturn(true);
         //when
         //then
         Assertions.assertThatCode(() -> registerSaveService.saveRegisterAboutMember(todoTeam, userId))

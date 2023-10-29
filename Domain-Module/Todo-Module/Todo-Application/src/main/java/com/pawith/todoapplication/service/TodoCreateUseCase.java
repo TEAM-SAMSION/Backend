@@ -28,9 +28,9 @@ public class TodoCreateUseCase {
 
     public void createTodo(TodoCreateRequest request) {
         final Category category = categoryQueryService.findCategoryById(request.getCategoryId());
-        Todo todo = TodoMapper.mapToTodo(request, category);
+        final Todo todo = TodoMapper.mapToTodo(request, category);
         todoSaveService.saveTodoEntity(todo);
-        ListIterator<Register> registerListIterator = registerQueryService.findAllRegisterByIds(request.getRegisterIds()).listIterator();
+        ListIterator<Register> registerListIterator = registerQueryService.findAllRegistersByIds(request.getRegisterIds()).listIterator();
         request.getRegisterIds().forEach(registerId -> {
             assignSaveService.saveAssignEntity(new Assign(todo, registerListIterator.next()));
         });

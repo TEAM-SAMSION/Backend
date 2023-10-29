@@ -17,6 +17,8 @@ public class KakaoUserInfo {
     private static final String PROFILE = "profile";
     @JsonAlias("kakao_account")
     private Map<String, Object> kakaoAccount;
+
+    @SuppressWarnings("unchecked")
     public String getNickname(){
         Map<String, Object> profile = (Map<String, Object>) kakaoAccount.get(PROFILE);
         return (String) profile.get(NAME);

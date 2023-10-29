@@ -2,11 +2,11 @@ package com.pawith.tododomain.service;
 
 import com.navercorp.fixturemonkey.FixtureMonkey;
 import com.pawith.commonmodule.UnitTestConfig;
-import com.pawith.commonmodule.utils.FixtureMonkeyUtils;
 import com.pawith.tododomain.entity.Authority;
 import com.pawith.tododomain.entity.Register;
 import com.pawith.tododomain.exception.NotRegisterUserException;
 import com.pawith.tododomain.repository.RegisterRepository;
+import com.pawith.tododomain.utils.RegisterTestFixtureEntityUtils;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -44,7 +44,7 @@ class RegisterQueryServiceTest {
         //given
         final Long todoTeamId = FixtureMonkey.create().giveMeOne(Long.class);
         final Long userId = FixtureMonkey.create().giveMeOne(Long.class);
-        final Register mockRegister = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeOne(Register.class);
+        final Register mockRegister = RegisterTestFixtureEntityUtils.getRegisterEntity();
         given(registerRepository.findByTodoTeamIdAndUserId(todoTeamId, userId)).willReturn(Optional.of(mockRegister));
         //when
         Register result = registerQueryService.findRegisterByTodoTeamIdAndUserId(todoTeamId, userId);
@@ -71,7 +71,7 @@ class RegisterQueryServiceTest {
         //given
         final Long userId = FixtureMonkey.create().giveMeOne(Long.class);
         final PageRequest pageRequest = PageRequest.of(0, 10);
-        final List<Register> mockRegister = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMe(Register.class, 10);
+        final List<Register> mockRegister = RegisterTestFixtureEntityUtils.getRegisterEntityList(pageRequest.getPageSize());
         SliceImpl<Register> mockSlice = new SliceImpl<>(mockRegister, pageRequest, true);
         given(registerRepository.findAllByUserId(userId,pageRequest)).willReturn(mockSlice);
         //when
@@ -85,7 +85,7 @@ class RegisterQueryServiceTest {
     void findByTodoTeamIdAndAuthority() {
         //given
         final Long todoTeamId = FixtureMonkey.create().giveMeOne(Long.class);
-        final Register mockRegister = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeOne(Register.class);
+        final Register mockRegister = RegisterTestFixtureEntityUtils.getRegisterEntity();
         given(registerRepository.findByTodoTeamIdAndAuthority(todoTeamId, Authority.PRESIDENT)).willReturn(Optional.of(mockRegister));
         //when
         Register result = registerQueryService.findPresidentRegisterByTodoTeamId(todoTeamId);
@@ -110,10 +110,10 @@ class RegisterQueryServiceTest {
     void findAllRegisterByIds() {
         //given
         final List<Long> registerIds = FixtureMonkey.create().giveMe(Long.class, 10);
-        final List<Register> mockRegister = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMe(Register.class, 10);
+        final List<Register> mockRegister = RegisterTestFixtureEntityUtils.getRegisterEntityList(registerIds.size());
         given(registerRepository.findAllByIds(registerIds)).willReturn(mockRegister);
         //when
-        List<Register> result = registerQueryService.findAllRegisterByIds(registerIds);
+        List<Register> result = registerQueryService.findAllRegistersByIds(registerIds);
         //then
         Assertions.assertThat(result).usingRecursiveComparison().isEqualTo(mockRegister);
     }
@@ -124,11 +124,10 @@ class RegisterQueryServiceTest {
         //given
         final Long userId = FixtureMonkey.create().giveMeOne(Long.class);
         final Long todoTeamId = FixtureMonkey.create().giveMeOne(Long.class);
-        final List<Register> mockRegister = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMe(Register.class, 10);
-        given(registerRepository.existsByTodoTeamIdAndUserId(todoTeamId, userId)).willReturn(true);
+        final List<Register> mockRegister = RegisterTestFixtureEntityUtils.getRegisterEntityList(5);
         given(registerRepository.findAllByTodoTeamId(todoTeamId)).willReturn(mockRegister);
         //when
-        List<Register> result = registerQueryService.findAllRegisters(userId, todoTeamId);
+        List<Register> result = registerQueryService.findAllRegistersByTodoTeamId(todoTeamId);
         //then
         Assertions.assertThat(result).usingRecursiveComparison().isEqualTo(mockRegister);
     }
@@ -139,9 +138,8 @@ class RegisterQueryServiceTest {
         //given
         final Long userId = FixtureMonkey.create().giveMeOne(Long.class);
         final Long todoTeamId = FixtureMonkey.create().giveMeOne(Long.class);
-        given(registerRepository.existsByTodoTeamIdAndUserId(todoTeamId, userId)).willReturn(false);
         //when
-        List<Register> result = registerQueryService.findAllRegisters(userId, todoTeamId);
+        List<Register> result = registerQueryService.findAllRegistersByTodoTeamId(todoTeamId);
         //then
         Assertions.assertThat(result).isEmpty();
     }
@@ -151,10 +149,10 @@ class RegisterQueryServiceTest {
     void findAllRegisterByTodoId() {
         //given
         final Long todoId = FixtureMonkey.create().giveMeOne(Long.class);
-        final List<Register> mockRegister = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMe(Register.class, 10);
+        final List<Register> mockRegister = RegisterTestFixtureEntityUtils.getRegisterEntityList(5);
         given(registerRepository.findByTodoId(todoId)).willReturn(mockRegister);
         //when
-        List<Register> result = registerQueryService.findAllRegisterByTodoId(todoId);
+        List<Register> result = registerQueryService.findAllRegistersByTodoId(todoId);
         //then
         Assertions.assertThat(result).usingRecursiveComparison().isEqualTo(mockRegister);
     }
@@ -177,7 +175,7 @@ class RegisterQueryServiceTest {
     void findUserIdsByCategoryId() {
         //given
         final Long categoryId = FixtureMonkey.create().giveMeOne(Long.class);
-        final List<Register> mockRegister = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMe(Register.class, 10);
+        final List<Register> mockRegister = RegisterTestFixtureEntityUtils.getRegisterEntityList(5);
         given(registerRepository.findAllByCategoryId(categoryId)).willReturn(mockRegister);
         //when
         List<Long> result = registerQueryService.findUserIdsByCategoryId(categoryId);
@@ -191,7 +189,7 @@ class RegisterQueryServiceTest {
         //given
         final Long todoTeamId = FixtureMonkey.create().giveMeOne(Long.class);
         final Long userId = FixtureMonkey.create().giveMeOne(Long.class);
-        final Register mockRegister = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeOne(Register.class);
+        final Register mockRegister = RegisterTestFixtureEntityUtils.getRegisterEntity();
         final LocalDate mockDate = LocalDate.now();
         given(registerRepository.findByTodoTeamIdAndUserId(todoTeamId, userId)).willReturn(Optional.of(mockRegister));
         //when
