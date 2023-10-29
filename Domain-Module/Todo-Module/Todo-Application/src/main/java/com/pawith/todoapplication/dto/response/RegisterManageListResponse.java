@@ -7,6 +7,6 @@ import java.util.List;
 
 @Getter
 @AllArgsConstructor
-public class CategoryListResponse {
-    private final List<CategoryInfoResponse> categories;
+public class RegisterManageListResponse {
+    List<RegisterManageInfoResponse> registers;
 }

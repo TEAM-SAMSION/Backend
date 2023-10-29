@@ -30,7 +30,7 @@ public class TodoController {
     }
 
     @GetMapping("/{todoTeamId}/todos")
-    public SliceResponse<TodoHomeResponse> getTodos(@PathVariable Long todoTeamId, Pageable pageable) {
+    public SliceResponse<TodoInfoResponse> getTodos(@PathVariable Long todoTeamId, Pageable pageable) {
         return todoGetUseCase.getTodoListByTodoTeamId(todoTeamId, pageable);
     }
 
@@ -40,12 +40,12 @@ public class TodoController {
     }
 
     @GetMapping("/category/{categoryId}/todos")
-    public TodoListResponse getTodosAboutCategorySubTodo(@PathVariable Long categoryId, @RequestParam("moveDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)  LocalDate moveDate){
+    public CategorySubTodoListResponse getTodosAboutCategorySubTodo(@PathVariable Long categoryId, @RequestParam("moveDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)  LocalDate moveDate){
         return todoGetUseCase.getTodoListByCategoryId(categoryId, moveDate);
     }
 
     @GetMapping("/{todoTeamId}/todos/progress/compare")
-    public TodoRateCompareResponse getTodoWeekProgressCompare(@PathVariable Long todoTeamId){
+    public TodoProgressRateCompareResponse getTodoWeekProgressCompare(@PathVariable Long todoTeamId){
         return todoRateGetUseCase.getWeekProgressCompare(todoTeamId);
     }
 

@@ -5,7 +5,7 @@ import lombok.*;
 @Getter
 @ToString
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
-public class TodoTeamNameSimpleResponse {
+public class TodoTeamNameResponse {
     private Long teamId;
     private String teamName;
 }

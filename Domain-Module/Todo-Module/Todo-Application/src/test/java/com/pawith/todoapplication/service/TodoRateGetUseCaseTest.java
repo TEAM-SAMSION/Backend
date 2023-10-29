@@ -4,7 +4,7 @@ import com.navercorp.fixturemonkey.FixtureMonkey;
 import com.pawith.commonmodule.UnitTestConfig;
 import com.pawith.commonmodule.utils.FixtureMonkeyUtils;
 import com.pawith.todoapplication.dto.response.TodoProgressResponse;
-import com.pawith.todoapplication.dto.response.TodoRateCompareResponse;
+import com.pawith.todoapplication.dto.response.TodoProgressRateCompareResponse;
 import com.pawith.tododomain.service.TodoQueryService;
 import com.pawith.userdomain.entity.User;
 import com.pawith.userdomain.utils.UserUtils;
@@ -62,10 +62,10 @@ class TodoRateGetUseCaseTest {
         given(todoQueryService.findThisWeekTodoCompleteRate(mockUser.getId(), todoTeamId)).willReturn(thisWeekTodoCompleteRate);
         given(todoQueryService.findLastWeekTodoCompleteRate(mockUser.getId(), todoTeamId)).willReturn(lastWeekTodoCompleteRate);
         // when
-        TodoRateCompareResponse todoRateCompareResponse = todoRateGetUseCase.getWeekProgressCompare(todoTeamId);
+        TodoProgressRateCompareResponse todoProgressRateCompareResponse = todoRateGetUseCase.getWeekProgressCompare(todoTeamId);
         // then
-        Assertions.assertThat(todoRateCompareResponse).isNotNull();
-        Assertions.assertThat(todoRateCompareResponse.getCompareWithLastWeek()).isEqualTo(TodoRateCompareResponse.ComparisonResult.HIGHER);
+        Assertions.assertThat(todoProgressRateCompareResponse).isNotNull();
+        Assertions.assertThat(todoProgressRateCompareResponse.getCompareWithLastWeek()).isEqualTo(TodoProgressRateCompareResponse.ComparisonResult.HIGHER);
     }
 
 }

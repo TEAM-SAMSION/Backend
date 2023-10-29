@@ -5,13 +5,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.util.List;
+
 @Getter
 @ToString
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
-public class TodoHomeResponse {
-
-    private Long todoId;
-    private String task;
-    private String status;
-
+public class CategorySubTodoListResponse {
+    private List<CategorySubTodoResponse> todos;
 }

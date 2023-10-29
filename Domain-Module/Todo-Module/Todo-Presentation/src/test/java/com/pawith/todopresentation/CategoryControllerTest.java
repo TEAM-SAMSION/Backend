@@ -3,7 +3,7 @@ package com.pawith.todopresentation;
 import com.pawith.commonmodule.BaseRestDocsTest;
 import com.pawith.commonmodule.utils.FixtureMonkeyUtils;
 import com.pawith.todoapplication.dto.response.CategoryInfoResponse;
-import com.pawith.todoapplication.dto.response.CategoryListResponse;
+import com.pawith.todoapplication.dto.response.CategoryInfoListResponse;
 import com.pawith.todoapplication.service.CategoryGetUseCase;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
@@ -41,8 +41,8 @@ public class CategoryControllerTest extends BaseRestDocsTest {
         // given
         final Long testTeamId = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(Long.class);
         final List<CategoryInfoResponse> categoryListResponses = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMe(CategoryInfoResponse.class, 2);
-        final CategoryListResponse categoryListResponse = new CategoryListResponse(categoryListResponses);
-        given(categoryGetUseCase.getCategoryList(testTeamId)).willReturn(categoryListResponse);
+        final CategoryInfoListResponse categoryInfoListResponse = new CategoryInfoListResponse(categoryListResponses);
+        given(categoryGetUseCase.getCategoryList(testTeamId)).willReturn(categoryInfoListResponse);
         MockHttpServletRequestBuilder request = get(CATEGORY_REQUEST_URL + "/{teamId}/category", testTeamId)
                 .header("Authorization", "Bearer accessToken");
         // when

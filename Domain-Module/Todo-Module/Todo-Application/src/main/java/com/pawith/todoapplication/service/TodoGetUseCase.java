@@ -3,9 +3,9 @@ package com.pawith.todoapplication.service;
 import com.pawith.commonmodule.annotation.ApplicationService;
 import com.pawith.commonmodule.slice.SliceResponse;
 import com.pawith.todoapplication.dto.response.AssignUserInfoResponse;
-import com.pawith.todoapplication.dto.response.TodoHomeResponse;
+import com.pawith.todoapplication.dto.response.TodoInfoResponse;
 import com.pawith.todoapplication.dto.response.CategorySubTodoResponse;
-import com.pawith.todoapplication.dto.response.TodoListResponse;
+import com.pawith.todoapplication.dto.response.CategorySubTodoListResponse;
 import com.pawith.tododomain.entity.Assign;
 import com.pawith.tododomain.entity.Register;
 import com.pawith.tododomain.entity.Todo;
@@ -38,15 +38,15 @@ public class TodoGetUseCase {
     private final RegisterQueryService registerQueryService;
     private final AssignQueryService assignQueryService;
 
-    public SliceResponse<TodoHomeResponse> getTodoListByTodoTeamId(final Long todoTeamId, final Pageable pageable) {
+    public SliceResponse<TodoInfoResponse> getTodoListByTodoTeamId(final Long todoTeamId, final Pageable pageable) {
         final User user = userUtils.getAccessUser();
         final Slice<Todo> todoList = todoQueryService.findTodayTodoSlice(user.getId(), todoTeamId, pageable);
-        Slice<TodoHomeResponse> todoHomeResponseSlice = todoList.map(todo -> new TodoHomeResponse(todo.getId(), todo.getDescription(), todo.getTodoStatus().name()));
+        Slice<TodoInfoResponse> todoHomeResponseSlice = todoList.map(todo -> new TodoInfoResponse(todo.getId(), todo.getDescription(), todo.getTodoStatus().name()));
         return SliceResponse.from(todoHomeResponseSlice);
     }
 
 
-    public TodoListResponse getTodoListByCategoryId(Long categoryId, LocalDate moveDate) {
+    public CategorySubTodoListResponse getTodoListByCategoryId(Long categoryId, LocalDate moveDate) {
         final Map<Long, User> userMap = userQueryService.findUserMapByIds(registerQueryService::findUserIdsByCategoryId, categoryId);
         final Map<Todo, List<Register>> groupByTodo = getTodoMap(categoryId, moveDate);
         final ArrayList<CategorySubTodoResponse> todoMainResponses = new ArrayList<>();
@@ -59,7 +59,7 @@ public class TodoGetUseCase {
             }
             todoMainResponses.add(new CategorySubTodoResponse(todo.getId(), todo.getDescription(), todo.getTodoStatus().name(), assignUserInfoResponses));
         }
-        return new TodoListResponse(todoMainResponses);
+        return new CategorySubTodoListResponse(todoMainResponses);
     }
 
     private Map<Todo, List<Register>> getTodoMap(Long categoryId, LocalDate moveDate) {

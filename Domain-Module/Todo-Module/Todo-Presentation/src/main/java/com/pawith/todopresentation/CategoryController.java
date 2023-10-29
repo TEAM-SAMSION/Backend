@@ -1,6 +1,6 @@
 package com.pawith.todopresentation;
 
-import com.pawith.todoapplication.dto.response.CategoryListResponse;
+import com.pawith.todoapplication.dto.response.CategoryInfoListResponse;
 import com.pawith.todoapplication.service.CategoryGetUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +14,7 @@ public class CategoryController {
     private final CategoryGetUseCase categoryGetUseCase;
 
     @GetMapping("/teams/{todoTeamId}/category")
-    public CategoryListResponse getCategoryList(@PathVariable Long todoTeamId){
+    public CategoryInfoListResponse getCategoryList(@PathVariable Long todoTeamId){
         return categoryGetUseCase.getCategoryList(todoTeamId);
     }
 }

@@ -3,7 +3,7 @@ package com.pawith.todoapplication.service;
 import com.navercorp.fixturemonkey.FixtureMonkey;
 import com.pawith.commonmodule.UnitTestConfig;
 import com.pawith.commonmodule.utils.FixtureMonkeyUtils;
-import com.pawith.todoapplication.dto.response.RegisterListResponse;
+import com.pawith.todoapplication.dto.response.RegisterInfoListResponse;
 import com.pawith.todoapplication.dto.response.RegisterTermResponse;
 import com.pawith.tododomain.entity.Register;
 import com.pawith.tododomain.service.RegisterQueryService;
@@ -54,10 +54,10 @@ public class RegistersGetUseCaseTest {
         given(registerQueryService.findAllRegisters(mockUser.getId(), todoTeamId)).willReturn(registerList);
         given(userQueryService.findById(any())).willReturn(mockFindUser);
         // when
-        RegisterListResponse registerListResponse = registersGetUseCase.getRegisters(todoTeamId);
+        RegisterInfoListResponse registerInfoListResponse = registersGetUseCase.getRegisters(todoTeamId);
         // then
-        Assertions.assertThat(registerListResponse).isNotNull();
-        Assertions.assertThat(registerListResponse.getRegisters().size()).isEqualTo(registerList.size());
+        Assertions.assertThat(registerInfoListResponse).isNotNull();
+        Assertions.assertThat(registerInfoListResponse.getRegisters().size()).isEqualTo(registerList.size());
 
     }
 
