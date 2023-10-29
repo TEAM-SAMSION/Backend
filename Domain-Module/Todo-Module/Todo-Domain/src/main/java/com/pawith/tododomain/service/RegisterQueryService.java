@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 @DomainService
@@ -37,48 +38,62 @@ public class RegisterQueryService {
         return findRegister(registerRepository::findByTodoTeamIdAndAuthority, todoTeamId, Authority.PRESIDENT);
     }
 
-    public List<Register> findAllRegisterByIds(List<Long> registerIds){
-        return registerRepository.findAllByIds(registerIds);
-    }
-
     public Register findRegisterById(Long registerId){
         return findRegister(registerRepository::findById, registerId);
     }
 
+    public List<Register> findAllRegistersByTodoTeamId(Long todoTeamId){
+        return findRegisterList(registerRepository::findAllByTodoTeamId,todoTeamId);
+    }
+
+    public List<Register> findAllRegistersByIds(List<Long> registerIds){
+        return findRegisterList(registerRepository::findAllByIds,registerIds);
+    }
+
+    public List<Register> findAllRegistersByTodoId(Long todoId) {
+        return findRegisterList(registerRepository::findByTodoId,todoId);
+    }
+
     public List<Long> findUserIdsByCategoryId(Long categoryId){
-        return registerRepository.findAllByCategoryId(categoryId).stream()
+        return findRegisterList(registerRepository::findAllByCategoryId,categoryId).stream()
             .map(Register::getUserId)
             .collect(Collectors.toList());
-    }
-
-    public List<Register> findAllRegisters(Long userId, Long todoTeamId){
-        if(!registerRepository.existsByTodoTeamIdAndUserId(todoTeamId, userId)){
-            return List.of();
-        }
-        return registerRepository.findAllByTodoTeamId(todoTeamId);
-    }
-
-    public List<Register> findAllRegisterByTodoId(Long todoId) {
-        return registerRepository.findByTodoId(todoId);
     }
 
     public Integer countRegisterByTodoTeamId(Long todoTeamId){
         return registerRepository.countByTodoTeamId(todoTeamId);
     }
 
+    public Integer findUserRegisterTerm (Long todoTeamId, Long userId){
+        final Register register = findRegisterByTodoTeamIdAndUserId(todoTeamId, userId);
+        return (int) ChronoUnit.DAYS.between(register.getCreatedAt().toLocalDate(), LocalDate.now());
+    }
+
     private <T> Register findRegister(Function<T, Optional<Register>> method, T specificationData) {
-        return method.apply(specificationData)
-            .orElseThrow(() -> new NotRegisterUserException(Error.NOT_REGISTER_USER));
+        return registerOptionalHandle(() -> method.apply(specificationData));
     }
 
     private <T,U> Register findRegister(BiFunction<T,U,Optional<Register>> method,
                                         T specificationData1, U specificationData2) {
-        return method.apply(specificationData1, specificationData2)
+        return registerOptionalHandle(() -> method.apply(specificationData1, specificationData2));
+    }
+
+    private <T> List<Register> findRegisterList(Function<T, List<Register>> method, T specificationData) {
+        return filterUnregister(method.apply(specificationData));
+    }
+
+    private Register registerOptionalHandle(Supplier<Optional<Register>> method){
+        return filterUnregister(method.get())
             .orElseThrow(() -> new NotRegisterUserException(Error.NOT_REGISTER_USER));
     }
 
-    public Integer findUserRegisterTerm (Long todoTeamId, Long userId){
-        Register register = findRegisterByTodoTeamIdAndUserId(todoTeamId, userId);
-        return (int) ChronoUnit.DAYS.between(register.getCreatedAt().toLocalDate(), LocalDate.now());
+    private Optional<Register> filterUnregister(Optional<Register> registerOptional) {
+        return registerOptional.filter(Register::getIsRegistered);
+    }
+
+    private List<Register> filterUnregister(List<Register> registers) {
+        return registers.stream()
+            .filter(Register::getIsRegistered)
+            .collect(Collectors.toList());
     }
 }

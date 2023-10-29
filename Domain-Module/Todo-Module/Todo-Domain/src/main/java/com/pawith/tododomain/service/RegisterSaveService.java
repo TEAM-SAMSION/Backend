@@ -34,7 +34,7 @@ public class RegisterSaveService {
     }
 
     private void checkAlreadyRegisterTodoTeam(TodoTeam todoTeam, Long userId) {
-        if(registerRepository.existsByTodoTeamIdAndUserId(todoTeam.getId(), userId)){
+        if(registerRepository.existsByTodoTeamIdAndUserIdAndIsRegistered(todoTeam.getId(), userId, true)){
             throw new AlreadyRegisterTodoTeamException(Error.ALREADY_REGISTER_TODO_TEAM);
         }
     }
