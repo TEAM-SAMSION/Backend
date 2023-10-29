@@ -17,8 +17,9 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 @UnitTestConfig
@@ -43,22 +44,23 @@ public class RegistersGetUseCaseTest {
     @DisplayName("Registers 조회 테스트")
     void getRegisters() {
         // given
-        final User mockUser = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey()
-                .giveMeOne(User.class);
         final User mockFindUser = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey()
-                .giveMeOne(User.class);
+            .giveMeOne(User.class);
         final Long todoTeamId = FixtureMonkey.create().giveMeOne(Long.class);
-        final List<Register> registerList = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey()
-                .giveMe(Register.class, 5);
-        given(userUtils.getAccessUser()).willReturn(mockUser);
-        given(registerQueryService.findAllRegisters(mockUser.getId(), todoTeamId)).willReturn(registerList);
-        given(userQueryService.findById(any())).willReturn(mockFindUser);
+        final List<Register> registerList = List.of(FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeBuilder(Register.class)
+            .set("userId", mockFindUser.getId())
+            .set("todoTeamId", todoTeamId)
+            .set("isRegistered", true)
+            .sample()
+        );
+        final List<Long> userIds = registerList.stream().map(Register::getUserId).collect(Collectors.toList());
+        given(registerQueryService.findAllRegistersByTodoTeamId(todoTeamId)).willReturn(registerList);
+        given(userQueryService.findUserMapByIds(userIds)).willReturn(Map.of(mockFindUser.getId(), mockFindUser));
         // when
         RegisterInfoListResponse registerInfoListResponse = registersGetUseCase.getRegisters(todoTeamId);
         // then
         Assertions.assertThat(registerInfoListResponse).isNotNull();
         Assertions.assertThat(registerInfoListResponse.getRegisters().size()).isEqualTo(registerList.size());
-
     }
 
     @Test
@@ -66,7 +68,7 @@ public class RegistersGetUseCaseTest {
     void getRegisterTerm() {
         // given
         final User mockUser = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey()
-                .giveMeOne(User.class);
+            .giveMeOne(User.class);
         final Long todoTeamId = FixtureMonkey.create().giveMeOne(Long.class);
         final Integer registerTerm = FixtureMonkey.create().giveMeOne(Integer.class);
         given(userUtils.getAccessUser()).willReturn(mockUser);

@@ -36,8 +36,7 @@ public class UserQueryService {
         return findUser(userRepository::findById, userId);
     }
 
-    public <T> Map<Long,User> findUserMapByIds(Function<T, List<Long>> userIdsReturnMethod, T specificationData){
-        final List<Long> userIds = userIdsReturnMethod.apply(specificationData);
+    public <T> Map<Long,User> findUserMapByIds(List<Long> userIds){
         return userRepository.findAllByIds(userIds)
             .stream()
             .collect(Collectors.toMap(User::getId, Function.identity()));
