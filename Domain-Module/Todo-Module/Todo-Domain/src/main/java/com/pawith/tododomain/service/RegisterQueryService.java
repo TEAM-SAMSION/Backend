@@ -60,6 +60,10 @@ public class RegisterQueryService {
             .collect(Collectors.toList());
     }
 
+    public List<Long> findRegisterIdsByUserId(Long userId){
+        return registerRepository.findIdsByUserId(userId);
+    }
+
     public Integer countRegisterByTodoTeamId(Long todoTeamId){
         return registerRepository.countByTodoTeamId(todoTeamId);
     }
