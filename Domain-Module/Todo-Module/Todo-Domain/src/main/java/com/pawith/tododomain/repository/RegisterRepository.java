@@ -5,6 +5,7 @@ import com.pawith.tododomain.entity.Register;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -27,6 +28,9 @@ public interface RegisterRepository extends JpaRepository<Register, Long> {
     @Query("select r from Register r join Category c on c.id = :categoryId where c.todoTeam.id= r.todoTeam.id")
     List<Register> findAllByCategoryId(Long categoryId);
 
+    @Query("select r.id from Register r where r.userId = :userId")
+    List<Long> findIdsByUserId(Long userId);
+
     Optional<Register> findByTodoTeamIdAndUserId(Long todoTeamId, Long userId);
 
     Optional<Register> findByTodoTeamIdAndAuthority(Long todoTeamId, Authority authority);
@@ -35,4 +39,8 @@ public interface RegisterRepository extends JpaRepository<Register, Long> {
     Integer countByTodoTeamId(Long todoTeamId);
 
     Boolean existsByTodoTeamIdAndUserIdAndIsRegistered(Long todoTeamId, Long userId, boolean isRegistered);
+
+    @Modifying
+    @Query("update Register r set r.isDeleted=true , r.isRegistered=false where r.id in (:registerIds)")
+    void deleteByRegisterIds(List<Long> registerIds);
 }
