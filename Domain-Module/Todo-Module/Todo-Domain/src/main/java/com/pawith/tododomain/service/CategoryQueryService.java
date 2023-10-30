@@ -1,7 +1,9 @@
 package com.pawith.tododomain.service;
 
 import com.pawith.commonmodule.annotation.DomainService;
+import com.pawith.commonmodule.exception.Error;
 import com.pawith.tododomain.entity.Category;
+import com.pawith.tododomain.exception.CategoryNotFoundException;
 import com.pawith.tododomain.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,7 +20,7 @@ public class CategoryQueryService {
     public List<Category> findCategoryListByTodoTeamIdAndStatus(Long todoTeamId) {
         return categoryRepository.findAllByTodoTeamIdAndCategoryStatus(todoTeamId);
     }
-    public Category findCategoryById(Long categoryId) {
-        return categoryRepository.findById(categoryId).orElseThrow();
+    public Category findCategoryByCategoryId(Long categoryId) {
+        return categoryRepository.findById(categoryId).orElseThrow(() -> new CategoryNotFoundException(Error.CATEGORY_NOT_FOUND));
     }
 }
