@@ -3,10 +3,7 @@ package com.pawith.userpresentation;
 import com.pawith.userapplication.dto.request.PathHistoryCreateRequest;
 import com.pawith.userapplication.dto.request.UserNicknameChangeRequest;
 import com.pawith.userapplication.dto.response.UserInfoResponse;
-import com.pawith.userapplication.service.PathHistoryCreateUseCase;
-import com.pawith.userapplication.service.UserInfoGetUseCase;
-import com.pawith.userapplication.service.UserNicknameChangeUseCase;
-import com.pawith.userapplication.service.UserProfileImageUpdateUseCase;
+import com.pawith.userapplication.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,6 +17,7 @@ public class UserController {
     private final UserInfoGetUseCase userInfoGetUseCase;
     private final UserProfileImageUpdateUseCase userProfileImageUpdateUseCase;
     private final PathHistoryCreateUseCase pathHistoryCreateUseCase;
+    private final UserDeleteUseCase userDeleteUseCase;
 
     @PutMapping("/name")
     public void putNicknameOnUser(@RequestBody UserNicknameChangeRequest request){
@@ -39,5 +37,10 @@ public class UserController {
     @PostMapping("/path")
     public void postPathHistory(@RequestBody PathHistoryCreateRequest pathHistoryCreateRequest){
         pathHistoryCreateUseCase.createPathHistory(pathHistoryCreateRequest);
+    }
+
+    @DeleteMapping
+    public void deleteUser(){
+        userDeleteUseCase.deleteUser();
     }
 }
