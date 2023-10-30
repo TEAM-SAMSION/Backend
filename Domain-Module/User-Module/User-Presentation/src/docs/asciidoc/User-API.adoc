@@ -27,3 +27,8 @@ operation::user-controller-test/post-user-profile-image[snippets='http-request,r
 === 포잇을 알게된 경로 저장
 
 operation::user-controller-test/post-path-history[snippets='http-request,request-headers,request-fields,http-response']
+
+[[사용자-탈퇴]]
+=== 사용자 탈퇴
+
+operation::user-controller-test/delete-user[snippets='http-request,request-headers,http-response']
