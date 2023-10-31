@@ -3,6 +3,8 @@ package com.pawith.userdomain.entity;
 import com.pawith.commonmodule.domain.BaseEntity;
 import com.pawith.commonmodule.enums.Provider;
 import lombok.*;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -10,6 +12,8 @@ import java.util.Objects;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SQLDelete(sql = "UPDATE user SET is_deleted = true WHERE user_id = ?")
+@Where(clause = "is_deleted = false")
 public class User extends BaseEntity {
 
     @Id
@@ -22,6 +26,8 @@ public class User extends BaseEntity {
     private String imageUrl;
     @Enumerated(EnumType.STRING)
     private Provider provider;
+
+    private Boolean isDeleted = Boolean.FALSE;
 
     @Builder
     public User(String nickname, String email, String imageUrl, Provider provider) {

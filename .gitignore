@@ -49,3 +49,6 @@ logs/logback/*
 
 ### jqwik ###
 **/.jqwik-database
+
+### firebase ###
+**/src/main/resources/firebase/

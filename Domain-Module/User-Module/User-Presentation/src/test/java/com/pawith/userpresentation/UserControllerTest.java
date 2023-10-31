@@ -5,10 +5,7 @@ import com.pawith.commonmodule.utils.FixtureMonkeyUtils;
 import com.pawith.userapplication.dto.request.PathHistoryCreateRequest;
 import com.pawith.userapplication.dto.request.UserNicknameChangeRequest;
 import com.pawith.userapplication.dto.response.UserInfoResponse;
-import com.pawith.userapplication.service.PathHistoryCreateUseCase;
-import com.pawith.userapplication.service.UserInfoGetUseCase;
-import com.pawith.userapplication.service.UserNicknameChangeUseCase;
-import com.pawith.userapplication.service.UserProfileImageUpdateUseCase;
+import com.pawith.userapplication.service.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -38,6 +35,8 @@ class UserControllerTest extends BaseRestDocsTest {
     private UserProfileImageUpdateUseCase userProfileImageUpdateUseCase;
     @MockBean
     private PathHistoryCreateUseCase pathHistoryCreateUseCase;
+    @MockBean
+    private UserDeleteUseCase userDeleteUseCase;
 
     private static final String USER_REQUEST_URL = "/user";
     private static final String ACCESS_TOKEN = "Bearer accessToken";
@@ -132,6 +131,23 @@ class UserControllerTest extends BaseRestDocsTest {
                 ),
                 requestFields(
                     fieldWithPath("path").description("유저가 포잇을 알게 된 경로")
+                )
+            ));
+    }
+
+    @Test
+    @DisplayName("사용자 탈퇴 테스트")
+    void deleteUser() throws Exception {
+        //given
+        MockHttpServletRequestBuilder request = delete(USER_REQUEST_URL)
+            .header(AUTHORIZATION_HEADER, ACCESS_TOKEN);
+        //when
+        ResultActions result = mvc.perform(request);
+        //then
+        result.andExpect(status().isOk())
+            .andDo(resultHandler.document(
+                requestHeaders(
+                    headerWithName(AUTHORIZATION_HEADER).description("access 토큰")
                 )
             ));
     }
