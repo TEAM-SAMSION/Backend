@@ -288,4 +288,30 @@ public class TodoControllerTest extends BaseRestDocsTest {
                         )
                 ));
     }
+
+    @Test
+    @DisplayName("투두 완료 여부 조회 API 테스트")
+    void getTodoCompletion() throws Exception {
+        //given
+        final Long testTodoId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
+        final TodoCompletionResponse todoCompletionResponse = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(TodoCompletionResponse.class);
+        given(todoGetUseCase.getTodoCompletion(testTodoId)).willReturn(todoCompletionResponse);
+        MockHttpServletRequestBuilder request = get(TODO_REQUEST_URL + "/todos/{todoId}/completion", testTodoId)
+                .header("Authorization", "Bearer accessToken");
+        //when
+        ResultActions result = mvc.perform(request);
+        //then
+        result.andExpect(status().isOk())
+                .andDo(resultHandler.document(
+                        requestHeaders(
+                                headerWithName("Authorization").description("access 토큰")
+                        ),
+                        pathParameters(
+                                parameterWithName("todoId").description("투두 항목 Id")
+                        ),
+                        responseFields(
+                                fieldWithPath("completionStatus").description("투두 완료 여부")
+                        )
+                ));
+    }
 }
