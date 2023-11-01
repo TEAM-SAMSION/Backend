@@ -22,7 +22,7 @@ public class TodoCompletionCheckOnTodoHandler {
     private final TodoQueryService todoQueryService;
 
     @EventListener
-    public void changeAssignStatus(TodoCompletionCheckEvent todoCompletionCheckEvent){
+    public void changeTodoStatus(TodoCompletionCheckEvent todoCompletionCheckEvent){
         final List<Assign> assigns = assignQueryService.findAllAssignByTodoId(todoCompletionCheckEvent.getTodoId());
         final Todo todo = todoQueryService.findTodoByTodoId(todoCompletionCheckEvent.getTodoId());
         CompletionStatus newStatus = assigns.stream()
