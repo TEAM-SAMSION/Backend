@@ -44,6 +44,8 @@ public class TodoControllerTest extends BaseRestDocsTest {
     private TodoCreateUseCase todoCreateUseCase;
     @MockBean
     private TodoChangeUseCase todoChangeUseCase;
+    @MockBean
+    private AssignChangeUseCase assignChangeUseCase;
 
     private static final String TODO_REQUEST_URL = "/teams";
 
@@ -266,4 +268,24 @@ public class TodoControllerTest extends BaseRestDocsTest {
                 ));
     }
 
+    @Test
+    @DisplayName("담당자 투두 완료 API 테스트")
+    void putAssignStatus() throws Exception {
+        //given
+        final Long testTodoId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
+        MockHttpServletRequestBuilder request = put(TODO_REQUEST_URL + "/todos/{todoId}/assign/complete", testTodoId)
+                .header("Authorization", "Bearer accessToken");
+        //when
+        ResultActions result = mvc.perform(request);
+        //then
+        result.andExpect(status().isOk())
+                .andDo(resultHandler.document(
+                        requestHeaders(
+                                headerWithName("Authorization").description("access 토큰")
+                        ),
+                        pathParameters(
+                                parameterWithName("todoId").description("투두 항목 Id")
+                        )
+                ));
+    }
 }
