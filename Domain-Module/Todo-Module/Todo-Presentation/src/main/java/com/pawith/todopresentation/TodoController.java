@@ -66,4 +66,9 @@ public class TodoController {
         assignChangeUseCase.changeAssignStatus(todoId);
     }
 
+    @GetMapping("/todos/{todoId}/completion")
+    public TodoCompletionResponse getTodoCompletion(@PathVariable Long todoId){
+        return todoGetUseCase.getTodoCompletion(todoId);
+    }
+
 }

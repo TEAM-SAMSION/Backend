@@ -3,6 +3,7 @@ package com.pawith.todoapplication.service;
 import com.pawith.commonmodule.annotation.ApplicationService;
 import com.pawith.commonmodule.slice.SliceResponse;
 import com.pawith.todoapplication.dto.response.AssignUserInfoResponse;
+import com.pawith.todoapplication.dto.response.TodoCompletionResponse;
 import com.pawith.todoapplication.dto.response.TodoInfoResponse;
 import com.pawith.todoapplication.dto.response.CategorySubTodoResponse;
 import com.pawith.todoapplication.dto.response.CategorySubTodoListResponse;
@@ -60,6 +61,11 @@ public class TodoGetUseCase {
             todoMainResponses.add(new CategorySubTodoResponse(todo.getId(), todo.getDescription(), todo.getCompletionStatus().name(), assignUserInfoResponses));
         }
         return new CategorySubTodoListResponse(todoMainResponses);
+    }
+
+    public TodoCompletionResponse getTodoCompletion(Long todoId) {
+        final Todo todo = todoQueryService.findTodoByTodoId(todoId);
+        return new TodoCompletionResponse(todo.getCompletionStatus().name());
     }
 
     private Map<Todo, List<Register>> getTodoMap(Long categoryId, LocalDate moveDate) {
