@@ -15,17 +15,16 @@ import com.pawith.tododomain.service.TodoQueryService;
 import com.pawith.userdomain.entity.User;
 import com.pawith.userdomain.service.UserQueryService;
 import com.pawith.userdomain.utils.UserUtils;
-import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.transaction.annotation.Transactional;
 
 @ApplicationService
 @RequiredArgsConstructor
@@ -41,7 +40,7 @@ public class TodoGetUseCase {
     public SliceResponse<TodoInfoResponse> getTodoListByTodoTeamId(final Long todoTeamId, final Pageable pageable) {
         final User user = userUtils.getAccessUser();
         final Slice<Todo> todoList = todoQueryService.findTodayTodoSlice(user.getId(), todoTeamId, pageable);
-        Slice<TodoInfoResponse> todoHomeResponseSlice = todoList.map(todo -> new TodoInfoResponse(todo.getId(), todo.getDescription(), todo.getTodoStatus().name()));
+        Slice<TodoInfoResponse> todoHomeResponseSlice = todoList.map(todo -> new TodoInfoResponse(todo.getId(), todo.getDescription(), todo.getCompletionStatus().name()));
         return SliceResponse.from(todoHomeResponseSlice);
     }
 
@@ -58,7 +57,7 @@ public class TodoGetUseCase {
                 final User findUser = userMap.get(register.getUserId());
                 assignUserInfoResponses.add(new AssignUserInfoResponse(findUser.getId(), findUser.getNickname()));
             }
-            todoMainResponses.add(new CategorySubTodoResponse(todo.getId(), todo.getDescription(), todo.getTodoStatus().name(), assignUserInfoResponses));
+            todoMainResponses.add(new CategorySubTodoResponse(todo.getId(), todo.getDescription(), todo.getCompletionStatus().name(), assignUserInfoResponses));
         }
         return new CategorySubTodoListResponse(todoMainResponses);
     }
