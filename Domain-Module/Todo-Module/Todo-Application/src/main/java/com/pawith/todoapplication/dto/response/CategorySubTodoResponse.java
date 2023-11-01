@@ -13,6 +13,6 @@ import java.util.List;
 public class CategorySubTodoResponse {
     private Long todoId;
     private String task;
-    private String status;
+    private String completionStatus;
     private List<AssignUserInfoResponse> assignNames;
 }

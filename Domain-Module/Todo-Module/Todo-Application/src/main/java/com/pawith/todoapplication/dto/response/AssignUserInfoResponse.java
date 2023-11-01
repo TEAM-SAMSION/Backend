@@ -8,4 +8,5 @@ import lombok.Getter;
 public class AssignUserInfoResponse {
     private final Long assigneeId;
     private final String assigneeName;
+    private final String completionStatus;
 }

@@ -50,13 +50,16 @@ public class TodoGetUseCase {
         final List<Long> userIds = registerQueryService.findUserIdsByCategoryId(categoryId);
         final Map<Long, User> userMap = userQueryService.findUserMapByIds(userIds);
         final Map<Todo, List<Register>> groupByTodo = getTodoMap(categoryId, moveDate);
+        final Map<Register,Assign> assignMap = assignQueryService.findAllAssignByCategoryIdAndScheduledDate(categoryId, moveDate)
+            .stream()
+            .collect(Collectors.toMap(Assign::getRegister, assign -> assign));
         final ArrayList<CategorySubTodoResponse> todoMainResponses = new ArrayList<>();
         for (Todo todo : groupByTodo.keySet()) {
             final List<Register> registers = groupByTodo.get(todo);
             ArrayList<AssignUserInfoResponse> assignUserInfoResponses = new ArrayList<>();
             for (Register register : registers) {
                 final User findUser = userMap.get(register.getUserId());
-                assignUserInfoResponses.add(new AssignUserInfoResponse(findUser.getId(), findUser.getNickname()));
+                assignUserInfoResponses.add(new AssignUserInfoResponse(findUser.getId(), findUser.getNickname(), assignMap.get(register).getCompletionStatus().name()));
             }
             todoMainResponses.add(new CategorySubTodoResponse(todo.getId(), todo.getDescription(), todo.getCompletionStatus().name(), assignUserInfoResponses));
         }
