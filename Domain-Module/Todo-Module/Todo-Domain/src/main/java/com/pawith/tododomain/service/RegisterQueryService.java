@@ -15,8 +15,6 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.BiFunction;
-import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -31,31 +29,31 @@ public class RegisterQueryService {
     }
 
     public Register findRegisterByTodoTeamIdAndUserId(Long todoTeamId, Long userId) {
-        return findRegister(registerRepository::findByTodoTeamIdAndUserId, todoTeamId, userId);
+        return findRegister(() -> registerRepository.findByTodoTeamIdAndUserId(todoTeamId, userId));
     }
 
     public Register findPresidentRegisterByTodoTeamId(Long todoTeamId){
-        return findRegister(registerRepository::findByTodoTeamIdAndAuthority, todoTeamId, Authority.PRESIDENT);
+        return findRegister(() -> registerRepository.findByTodoTeamIdAndAuthority(todoTeamId, Authority.PRESIDENT));
     }
 
     public Register findRegisterById(Long registerId){
-        return findRegister(registerRepository::findById, registerId);
+        return findRegister(() -> registerRepository.findById(registerId));
     }
 
     public List<Register> findAllRegistersByTodoTeamId(Long todoTeamId){
-        return findRegisterList(registerRepository::findAllByTodoTeamId,todoTeamId);
+        return findRegisterList(() -> registerRepository.findAllByTodoTeamId(todoTeamId));
     }
 
     public List<Register> findAllRegistersByIds(List<Long> registerIds){
-        return findRegisterList(registerRepository::findAllByIds,registerIds);
+        return findRegisterList(() -> registerRepository.findAllByIds(registerIds));
     }
 
     public List<Register> findAllRegistersByTodoId(Long todoId) {
-        return findRegisterList(registerRepository::findByTodoId,todoId);
+        return findRegisterList(() -> registerRepository.findByTodoId(todoId));
     }
 
     public List<Long> findUserIdsByCategoryId(Long categoryId){
-        return findRegisterList(registerRepository::findAllByCategoryId,categoryId).stream()
+        return findRegisterList(() -> registerRepository.findAllByCategoryId(categoryId)).stream()
             .map(Register::getUserId)
             .collect(Collectors.toList());
     }
@@ -73,26 +71,22 @@ public class RegisterQueryService {
         return (int) ChronoUnit.DAYS.between(register.getCreatedAt().toLocalDate(), LocalDate.now());
     }
 
-    private <T> Register findRegister(Function<T, Optional<Register>> method, T specificationData) {
-        return registerOptionalHandle(() -> method.apply(specificationData));
+    private Register findRegister(Supplier<Optional<Register>> optionalSupplier){
+        return registerOptionalHandle(optionalSupplier);
     }
 
-    private <T,U> Register findRegister(BiFunction<T,U,Optional<Register>> method,
-                                        T specificationData1, U specificationData2) {
-        return registerOptionalHandle(() -> method.apply(specificationData1, specificationData2));
-    }
-
-    private <T> List<Register> findRegisterList(Function<T, List<Register>> method, T specificationData) {
-        return filterUnregister(method.apply(specificationData));
+    private <T> List<Register> findRegisterList(Supplier<List<Register>> listSupplier) {
+        return filterUnregister(listSupplier.get());
     }
 
     private Register registerOptionalHandle(Supplier<Optional<Register>> method){
-        return filterUnregister(method.get())
+        return filterUnregister(method)
             .orElseThrow(() -> new NotRegisterUserException(Error.NOT_REGISTER_USER));
     }
 
-    private Optional<Register> filterUnregister(Optional<Register> registerOptional) {
-        return registerOptional.filter(Register::getIsRegistered);
+    private Optional<Register> filterUnregister(Supplier<Optional<Register>> registerOptional) {
+        return registerOptional.get()
+            .filter(Register::getIsRegistered);
     }
 
     private List<Register> filterUnregister(List<Register> registers) {
