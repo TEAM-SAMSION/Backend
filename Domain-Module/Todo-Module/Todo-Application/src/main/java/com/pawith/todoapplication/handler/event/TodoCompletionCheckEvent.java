@@ -1,4 +1,4 @@
-package com.pawith.commonmodule.event;
+package com.pawith.todoapplication.handler.event;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

@@ -3,7 +3,7 @@ package com.pawith.todoapplication.handler;
 import static org.mockito.BDDMockito.given;
 
 import com.pawith.commonmodule.UnitTestConfig;
-import com.pawith.commonmodule.event.TodoCompletionCheckEvent;
+import com.pawith.todoapplication.handler.event.TodoCompletionCheckEvent;
 import com.pawith.commonmodule.utils.FixtureMonkeyUtils;
 import com.pawith.tododomain.entity.Assign;
 import com.pawith.tododomain.entity.CompletionStatus;

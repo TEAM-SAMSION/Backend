@@ -1,6 +1,6 @@
 package com.pawith.todoapplication.handler;
 
-import com.pawith.commonmodule.event.TodoCompletionCheckEvent;
+import com.pawith.todoapplication.handler.event.TodoCompletionCheckEvent;
 import com.pawith.tododomain.entity.Assign;
 import com.pawith.tododomain.entity.CompletionStatus;
 import com.pawith.tododomain.entity.Todo;

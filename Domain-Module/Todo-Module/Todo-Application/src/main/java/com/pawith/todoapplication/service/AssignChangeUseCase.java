@@ -1,7 +1,7 @@
 package com.pawith.todoapplication.service;
 
 import com.pawith.commonmodule.annotation.ApplicationService;
-import com.pawith.commonmodule.event.TodoCompletionCheckEvent;
+import com.pawith.todoapplication.handler.event.TodoCompletionCheckEvent;
 import com.pawith.tododomain.entity.Assign;
 import com.pawith.tododomain.entity.Todo;
 import com.pawith.tododomain.service.AssignQueryService;
