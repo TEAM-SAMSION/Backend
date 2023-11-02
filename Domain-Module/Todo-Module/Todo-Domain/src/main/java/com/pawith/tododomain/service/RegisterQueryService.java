@@ -55,7 +55,7 @@ public class RegisterQueryService {
     }
 
     public List<Register> findAllRegistersByCategoryId(Long categoryId) {
-        return findRegisterList(registerRepository::findAllByCategoryId,categoryId);
+        return registerRepository.findAllByCategoryId(categoryId);
     }
 
     public List<Long> findUserIdsByCategoryId(Long categoryId){
