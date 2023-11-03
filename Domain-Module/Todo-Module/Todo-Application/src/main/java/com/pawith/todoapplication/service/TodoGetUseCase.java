@@ -60,16 +60,16 @@ public class TodoGetUseCase {
             for (Assign assign : assigns) {
                 final Register register = registerMap.get(assign.getRegister().getId());
                 final User findUser = userMap.get(register.getUserId());
-                assignUserInfoResponses.add(new AssignUserInfoResponse(findUser.getId(), findUser.getNickname(), assign.getCompletionStatus().name()));
+                assignUserInfoResponses.add(new AssignUserInfoResponse(findUser.getId(), findUser.getNickname(), assign.getCompletionStatus()));
             }
-            todoMainResponses.add(new CategorySubTodoResponse(todo.getId(), todo.getDescription(), todo.getCompletionStatus().name(), assignUserInfoResponses));
+            todoMainResponses.add(new CategorySubTodoResponse(todo.getId(), todo.getDescription(), todo.getCompletionStatus(), assignUserInfoResponses));
         }
         return new CategorySubTodoListResponse(todoMainResponses);
     }
 
     public TodoCompletionResponse getTodoCompletion(Long todoId) {
         final Todo todo = todoQueryService.findTodoByTodoId(todoId);
-        return new TodoCompletionResponse(todo.getCompletionStatus().name());
+        return new TodoCompletionResponse(todo.getCompletionStatus());
     }
 
     private Map<Todo, List<Assign>> getTodoMap(Long categoryId, LocalDate moveDate) {

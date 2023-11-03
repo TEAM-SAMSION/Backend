@@ -1,5 +1,6 @@
 package com.pawith.todoapplication.dto.response;
 
+import com.pawith.tododomain.entity.CompletionStatus;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,6 +14,6 @@ import java.util.List;
 public class CategorySubTodoResponse {
     private Long todoId;
     private String task;
-    private String completionStatus;
+    private CompletionStatus completionStatus;
     private List<AssignUserInfoResponse> assignNames;
 }

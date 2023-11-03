@@ -1,5 +1,6 @@
 package com.pawith.todoapplication.dto.response;
 
+import com.pawith.tododomain.entity.CompletionStatus;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,5 +10,5 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
 public class TodoCompletionResponse {
-    private String completionStatus;
+    private CompletionStatus completionStatus;
 }
