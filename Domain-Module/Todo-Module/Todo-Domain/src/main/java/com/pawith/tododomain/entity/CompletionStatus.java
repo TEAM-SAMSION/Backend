@@ -1,5 +1,5 @@
 package com.pawith.tododomain.entity;
 
-public enum TodoStatus {
+public enum CompletionStatus {
     COMPLETE, INCOMPLETE
 }

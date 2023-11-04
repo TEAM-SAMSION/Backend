@@ -44,6 +44,8 @@ public class TodoControllerTest extends BaseRestDocsTest {
     private TodoCreateUseCase todoCreateUseCase;
     @MockBean
     private TodoChangeUseCase todoChangeUseCase;
+    @MockBean
+    private AssignChangeUseCase assignChangeUseCase;
 
     private static final String TODO_REQUEST_URL = "/teams";
 
@@ -179,9 +181,10 @@ public class TodoControllerTest extends BaseRestDocsTest {
                         responseFields(
                                 fieldWithPath("todos[].todoId").description("투두 항목 Id"),
                                 fieldWithPath("todos[].task").description("투두 항목 이름"),
-                                fieldWithPath("todos[].status").description("투두 항목 상태(완료, 미완료)"),
+                                fieldWithPath("todos[].completionStatus").description("투두 항목 상태(완료, 미완료)"),
                                 fieldWithPath("todos[].assignNames[].assigneeId").description("할당받은 사용자의 ID"),
-                                fieldWithPath("todos[].assignNames[].assigneeName").description("할당받은 사용자의 이름")
+                                fieldWithPath("todos[].assignNames[].assigneeName").description("할당받은 사용자의 이름"),
+                                fieldWithPath("todos[].assignNames[].completionStatus").description("할당받은 사용자의 완료 상태(완료, 미완료)")
                         )
                 ));
     }
@@ -266,4 +269,50 @@ public class TodoControllerTest extends BaseRestDocsTest {
                 ));
     }
 
+    @Test
+    @DisplayName("담당자 투두 완료 API 테스트")
+    void putAssignStatus() throws Exception {
+        //given
+        final Long testTodoId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
+        MockHttpServletRequestBuilder request = put(TODO_REQUEST_URL + "/todos/{todoId}/assign/complete", testTodoId)
+                .header("Authorization", "Bearer accessToken");
+        //when
+        ResultActions result = mvc.perform(request);
+        //then
+        result.andExpect(status().isOk())
+                .andDo(resultHandler.document(
+                        requestHeaders(
+                                headerWithName("Authorization").description("access 토큰")
+                        ),
+                        pathParameters(
+                                parameterWithName("todoId").description("투두 항목 Id")
+                        )
+                ));
+    }
+
+    @Test
+    @DisplayName("투두 완료 여부 조회 API 테스트")
+    void getTodoCompletion() throws Exception {
+        //given
+        final Long testTodoId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
+        final TodoCompletionResponse todoCompletionResponse = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(TodoCompletionResponse.class);
+        given(todoGetUseCase.getTodoCompletion(testTodoId)).willReturn(todoCompletionResponse);
+        MockHttpServletRequestBuilder request = get(TODO_REQUEST_URL + "/todos/{todoId}/completion", testTodoId)
+                .header("Authorization", "Bearer accessToken");
+        //when
+        ResultActions result = mvc.perform(request);
+        //then
+        result.andExpect(status().isOk())
+                .andDo(resultHandler.document(
+                        requestHeaders(
+                                headerWithName("Authorization").description("access 토큰")
+                        ),
+                        pathParameters(
+                                parameterWithName("todoId").description("투두 항목 Id")
+                        ),
+                        responseFields(
+                                fieldWithPath("completionStatus").description("투두 완료 여부")
+                        )
+                ));
+    }
 }

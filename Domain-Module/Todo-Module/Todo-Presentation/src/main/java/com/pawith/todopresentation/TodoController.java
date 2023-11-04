@@ -23,6 +23,7 @@ public class TodoController {
     private final TodoRateGetUseCase todoRateGetUseCase;
     private final TodoCreateUseCase todoCreateUseCase;
     private final TodoChangeUseCase todoChangeUseCase;
+    private final AssignChangeUseCase assignChangeUseCase;
 
     @GetMapping("/{todoTeamId}/todos/progress")
     public TodoProgressResponse getTodoProgress(@PathVariable Long todoTeamId) {
@@ -58,6 +59,16 @@ public class TodoController {
     @PutMapping("/todos/{todoId}/description")
     public void putTodoDescription(@PathVariable Long todoId, @RequestBody TodoDescriptionChangeRequest todoDescriptionChangeRequest){
         todoChangeUseCase.changeTodoName(todoId, todoDescriptionChangeRequest);
+    }
+
+    @PutMapping("/todos/{todoId}/assign/complete")
+    public void putAssignStatus(@PathVariable Long todoId){
+        assignChangeUseCase.changeAssignStatus(todoId);
+    }
+
+    @GetMapping("/todos/{todoId}/completion")
+    public TodoCompletionResponse getTodoCompletion(@PathVariable Long todoId){
+        return todoGetUseCase.getTodoCompletion(todoId);
     }
 
 }

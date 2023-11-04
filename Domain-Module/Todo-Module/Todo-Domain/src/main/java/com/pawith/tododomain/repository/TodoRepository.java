@@ -23,7 +23,7 @@ public interface TodoRepository extends JpaRepository<Todo, Long> {
         "from Todo t " +
         "join Register r on r.userId=:userId and r.todoTeam.id=:todoTeamId " +
         "join Assign  a on a.register.id=r.id " +
-        "where a.todo.id=t.id and t.scheduledDate = :scheduledDate and t.todoStatus='COMPLETE'"
+        "where a.todo.id=t.id and t.scheduledDate = :scheduledDate and t.completionStatus='COMPLETE'"
     )
     Long countCompleteTodoByDate(@Param("userId") Long userId, @Param("todoTeamId") Long todoTeamId, @Param("scheduledDate") LocalDate scheduledDate);
 
@@ -39,7 +39,7 @@ public interface TodoRepository extends JpaRepository<Todo, Long> {
             "from Todo t " +
             "join Register r on r.userId=:userId and r.todoTeam.id=:todoTeamId " +
             "join Assign  a on a.register.id=r.id " +
-            "where a.todo.id=t.id and t.scheduledDate between :startDate and :endDate and t.todoStatus='COMPLETE'"
+            "where a.todo.id=t.id and t.scheduledDate between :startDate and :endDate and t.completionStatus='COMPLETE'"
     )
     Long countCompleteTodoByBetweenDate(@Param("userId") Long userId, @Param("todoTeamId") Long todoTeamId, @Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
 

@@ -6,14 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
 
-import java.util.List;
-
 @Getter
 @ToString
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
-public class CategorySubTodoResponse {
-    private Long todoId;
-    private String task;
+public class TodoCompletionResponse {
     private CompletionStatus completionStatus;
-    private List<AssignUserInfoResponse> assignNames;
 }

@@ -1,14 +1,22 @@
 package com.pawith.tododomain.entity;
 
 import com.pawith.commonmodule.domain.BaseEntity;
+import java.time.LocalDate;
+import java.util.Objects;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
-import java.time.LocalDate;
-import java.util.Objects;
 
 @Entity
 @Getter
@@ -23,7 +31,7 @@ public class Todo extends BaseEntity {
     private LocalDate scheduledDate;
 
     @Enumerated(EnumType.STRING)
-    private TodoStatus todoStatus;
+    private CompletionStatus completionStatus;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
@@ -33,7 +41,7 @@ public class Todo extends BaseEntity {
     public Todo(String description, LocalDate scheduledDate, Category category) {
         this.description = description;
         this.scheduledDate = scheduledDate;
-        this.todoStatus = TodoStatus.INCOMPLETE;
+        this.completionStatus = CompletionStatus.INCOMPLETE;
         this.category = category;
     }
 
@@ -47,5 +55,11 @@ public class Todo extends BaseEntity {
         if(this.description.equals(description))
             return;
         this.description = Objects.requireNonNull(description, "nickname must be not null");
+    }
+
+    public void updateCompletionStatus(CompletionStatus completionStatus){
+        if(this.completionStatus.equals(completionStatus))
+            return;
+        this.completionStatus = Objects.requireNonNull(completionStatus, "nickname must be not null");
     }
 }

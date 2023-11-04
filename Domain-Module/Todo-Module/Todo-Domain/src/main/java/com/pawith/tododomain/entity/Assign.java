@@ -23,6 +23,9 @@ public class Assign extends BaseEntity {
 
     private Boolean isDeleted = Boolean.FALSE;
 
+    @Enumerated(EnumType.STRING)
+    private CompletionStatus completionStatus;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "todo_id")
     private Todo todo;
@@ -35,5 +38,12 @@ public class Assign extends BaseEntity {
     public Assign(Todo todo, Register register) {
         this.todo = todo;
         this.register = register;
+    }
+
+    public void updateCompletionStatus() {
+        if(this.completionStatus.equals(CompletionStatus.COMPLETE))
+            this.completionStatus = CompletionStatus.INCOMPLETE;
+        else
+            this.completionStatus = CompletionStatus.COMPLETE;
     }
 }

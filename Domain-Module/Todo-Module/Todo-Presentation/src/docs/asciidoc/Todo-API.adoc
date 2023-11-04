@@ -74,6 +74,15 @@ operation::todo-controller-test/change-scheduled-date[snippets='http-request,pat
 
 operation::todo-controller-test/change-todo-name[snippets='http-request,path-parameters,request-headers,request-fields,http-response']
 
+[[담당자-Todo-완료]]
+=== 담당자 Todo 완료
+
+operation::todo-controller-test/put-assign-status[snippets='http-request,path-parameters,request-headers,http-response']
+
+[[Todo-완료-여부-조회]]
+=== Todo 완료 여부 조회
+
+operation::todo-controller-test/get-todo-completion[snippets='http-request,path-parameters,request-headers,http-response,response-fields']
 
 [[Category-API]]
 == Category API

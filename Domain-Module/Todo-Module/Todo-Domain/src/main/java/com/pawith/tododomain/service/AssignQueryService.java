@@ -20,4 +20,12 @@ public class AssignQueryService {
         return assignRepository.findAllByCategoryIdAndScheduledDate(categoryId, scheduledDate);
     }
 
+    public Assign findAssignByTodoIdAndUserId(Long todoId, Long userId) {
+        return assignRepository.findByTodoIdAndUserId(todoId, userId);
+    }
+
+    public List<Assign> findAllAssignByTodoId(Long todoId) {
+        return assignRepository.findAllByTodoId(todoId);
+    }
+
 }

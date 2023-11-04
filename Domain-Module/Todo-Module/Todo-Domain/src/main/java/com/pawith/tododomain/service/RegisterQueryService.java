@@ -52,6 +52,10 @@ public class RegisterQueryService {
         return findRegisterList(() -> registerRepository.findByTodoId(todoId));
     }
 
+    public List<Register> findAllRegistersByCategoryId(Long categoryId) {
+        return registerRepository.findAllByCategoryId(categoryId);
+    }
+
     public List<Long> findUserIdsByCategoryId(Long categoryId){
         return findRegisterList(() -> registerRepository.findAllByCategoryId(categoryId)).stream()
             .map(Register::getUserId)
