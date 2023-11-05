@@ -1,0 +1,35 @@
+subprojects {
+
+    apply plugin: 'jacoco'
+    apply plugin: 'jacoco-report-aggregation'
+
+
+    jacocoTestReport {
+        dependsOn test
+        reports {
+            html.required.set(true)
+        }
+        finalizedBy jacocoTestCoverageVerification
+    }
+
+    jacocoTestCoverageVerification {
+        violationRules {
+            rule {
+                limit {
+                    minimum = 0.1
+                }
+            }
+        }
+        finalizedBy testCodeCoverageReport
+    }
+
+    jacoco{
+        toolVersion = "0.8.7"
+    }
+
+}
+
+project(":Api-Module"){
+    apply plugin: 'jacoco'
+    apply plugin: 'jacoco-report-aggregation'
+}
