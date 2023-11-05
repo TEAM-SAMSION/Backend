@@ -68,7 +68,7 @@ class TodoTeamControllerTest extends BaseRestDocsTest {
     void getTodoTeams() throws Exception {
         //given
         final PageRequest pageRequest = PageRequest.of(0, 10);
-        final List<TodoTeamInfoResponse> myPageTodoTeamRespons = FixtureMonkeyUtils.getConstructBasedFixtureMonkey()
+        final List<TodoTeamInfoResponse> myPageTodoTeamRespons = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey()
             .giveMeBuilder(TodoTeamInfoResponse.class)
             .sampleList(pageRequest.getPageSize());
         myPageTodoTeamRespons.sort(((o1, o2) -> (int) (o2.getTeamId() - o1.getTeamId())));
