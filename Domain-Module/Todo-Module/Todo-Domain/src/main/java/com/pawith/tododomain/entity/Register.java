@@ -56,4 +56,13 @@ public class Register extends BaseEntity {
     public void unregister(){
         this.isRegistered = Boolean.FALSE;
     }
+
+    public Boolean isRegistered(){
+        return this.isRegistered;
+    }
+
+    public Boolean isPresident(){
+        return this.authority.equals(Authority.PRESIDENT);
+    }
+
 }

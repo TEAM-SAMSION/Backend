@@ -23,9 +23,6 @@ public class RegistersGetUseCase {
     private final RegisterQueryService registerQueryService;
     private final UserQueryService userQueryService;
 
-    /**
-     * TODO : 성능 최적화 방안으로 캐시 고민
-     */
     public RegisterInfoListResponse getRegisters(final Long teamId) {
         final List<Register> allRegisters = registerQueryService.findAllRegistersByTodoTeamId(teamId);
         final Map<Long, User> registerUserMap = getRegisterUserMap(allRegisters);
