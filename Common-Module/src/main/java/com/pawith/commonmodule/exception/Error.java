@@ -26,6 +26,7 @@ public enum Error {
     TODO_NOT_FOUND("Todo를 찾을 수 없습니다.", 3004),
     WRONG_SCHEDULED_DATE("예정일이 잘못되었습니다.", 3005),
     CATEGORY_NOT_FOUND("카테고리를 찾을 수 없습니다.", 3006),
+    CANNOT_PRESIDENT_UNREGISTRABLE("팀장 탈퇴시 탈퇴 후 1명 이상 있어야 합니다.", 3007),
 
     // Image
     FILE_EXTENTION_ERROR("잘못된 형식의 파일입니다.", 4001),
