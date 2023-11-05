@@ -6,6 +6,9 @@
 :toclevels: 2
 :sectlinks:
 
+
+include::Error.adoc[]
+
 include::../../../../Domain-Module/Auth-Module/Auth-Presentation/src/docs/asciidoc/Auth-API.adoc[]
 
 include::../../../../Domain-Module/User-Module/User-Presentation/src/docs/asciidoc/User-API.adoc[]
