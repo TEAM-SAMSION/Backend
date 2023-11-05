@@ -56,14 +56,14 @@ public class RegisterQueryService {
         return registerRepository.findAllByCategoryId(categoryId);
     }
 
+    public List<Register> findAllRegistersByUserId(Long userId){
+        return findRegisterList(() -> registerRepository.findAllByUserId(userId));
+    }
+
     public List<Long> findUserIdsByCategoryId(Long categoryId){
         return findRegisterList(() -> registerRepository.findAllByCategoryId(categoryId)).stream()
             .map(Register::getUserId)
             .collect(Collectors.toList());
-    }
-
-    public List<Long> findRegisterIdsByUserId(Long userId){
-        return registerRepository.findIdsByUserId(userId);
     }
 
     public Integer countRegisterByTodoTeamId(Long todoTeamId){
@@ -90,12 +90,12 @@ public class RegisterQueryService {
 
     private Optional<Register> filterUnregister(Supplier<Optional<Register>> registerOptional) {
         return registerOptional.get()
-            .filter(Register::getIsRegistered);
+            .filter(Register::isRegistered);
     }
 
     private List<Register> filterUnregister(List<Register> registers) {
         return registers.stream()
-            .filter(Register::getIsRegistered)
+            .filter(Register::isRegistered)
             .collect(Collectors.toList());
     }
 }

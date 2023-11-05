@@ -28,8 +28,7 @@ public interface RegisterRepository extends JpaRepository<Register, Long> {
     @Query("select r from Register r join Category c on c.id = :categoryId where c.todoTeam.id= r.todoTeam.id")
     List<Register> findAllByCategoryId(Long categoryId);
 
-    @Query("select r.id from Register r where r.userId = :userId")
-    List<Long> findIdsByUserId(Long userId);
+    List<Register> findAllByUserId(Long userId);
 
     Optional<Register> findByTodoTeamIdAndUserId(Long todoTeamId, Long userId);
 
@@ -37,6 +36,12 @@ public interface RegisterRepository extends JpaRepository<Register, Long> {
 
     @Query("select count(r) from Register r where r.todoTeam.id = :todoTeamId and r.isRegistered = true")
     Integer countByTodoTeamId(Long todoTeamId);
+
+    @Query("select count(r) from Register r where r.todoTeam.id = :todoTeamId and r.authority = :authority and r.isRegistered = true")
+    Integer countByTodoTeamIdAndAuthority(Long todoTeamId, Authority authority);
+
+    @Query("select count(r) from Register r where r.authority=:authority and r.todoTeam.id in :todoTeamIds and r.isRegistered = true")
+    List<Integer> countAllByTodoTeamIdsInAndAuthority(List<Long> todoTeamIds, Authority authority);
 
     Boolean existsByTodoTeamIdAndUserIdAndIsRegistered(Long todoTeamId, Long userId, boolean isRegistered);
 
