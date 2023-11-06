@@ -54,7 +54,7 @@ public class TodoTeamGetUseCaseTest {
         // given
         final Pageable mockPageable = PageRequest.of(0,10);
         final User mockUser = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeOne(User.class);
-        final List<TodoTeamInfoResponse> todoTeamInfoResponseList = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMe(TodoTeamInfoResponse.class, mockPageable.getPageSize());
+        final List<TodoTeamInfoResponse> todoTeamInfoResponseList = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMe(TodoTeamInfoResponse.class, mockPageable.getPageSize());
         final List<Register> registerList = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMe(Register.class, mockPageable.getPageSize());
         final Slice<Register> registers = new SliceImpl<>(registerList, mockPageable, true);
         given(userUtils.getAccessUser()).willReturn(mockUser);

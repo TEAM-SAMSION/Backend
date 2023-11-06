@@ -34,8 +34,8 @@ class GoogleOAuthHandlerTest {
     @DisplayName("isAccessible 테스트")
     void isAccessible() {
         // given
-        OAuthRequest mockRequest = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeBuilder(OAuthRequest.class)
-            .set("Provider", Provider.GOOGLE)
+        OAuthRequest mockRequest = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeBuilder(OAuthRequest.class)
+            .set("provider", Provider.GOOGLE)
             .sample();
         // when
         final boolean result = googleOAuthHandler.isAccessible(mockRequest);

@@ -3,15 +3,14 @@ package com.pawith.todopresentation;
 import com.pawith.commonmodule.BaseRestDocsTest;
 import com.pawith.commonmodule.slice.SliceResponse;
 import com.pawith.commonmodule.utils.FixtureMonkeyUtils;
+import com.pawith.todoapplication.dto.response.TodoTeamInfoResponse;
 import com.pawith.todoapplication.dto.response.TodoTeamNameResponse;
 import com.pawith.todoapplication.dto.response.TodoTeamRandomCodeResponse;
 import com.pawith.todoapplication.dto.response.TodoTeamSearchInfoResponse;
-import com.pawith.todoapplication.dto.response.TodoTeamInfoResponse;
 import com.pawith.todoapplication.service.TodoTeamCreateUseCase;
 import com.pawith.todoapplication.service.TodoTeamGetUseCase;
 import com.pawith.todoapplication.service.TodoTeamRandomCodeGetUseCase;
 import lombok.extern.slf4j.Slf4j;
-import net.jqwik.api.Arbitraries;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -69,11 +68,8 @@ class TodoTeamControllerTest extends BaseRestDocsTest {
     void getTodoTeams() throws Exception {
         //given
         final PageRequest pageRequest = PageRequest.of(0, 10);
-        final List<TodoTeamInfoResponse> myPageTodoTeamRespons = FixtureMonkeyUtils.getConstructBasedFixtureMonkey()
+        final List<TodoTeamInfoResponse> myPageTodoTeamRespons = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey()
             .giveMeBuilder(TodoTeamInfoResponse.class)
-            .set("teamId", Arbitraries.longs().greaterOrEqual(1L))
-            .set("registerPeriod", Arbitraries.integers().greaterOrEqual(1))
-            .set("teamName", Arbitraries.strings().withCharRange('a', 'z').ofMinLength(5).ofMaxLength(10))
             .sampleList(pageRequest.getPageSize());
         myPageTodoTeamRespons.sort(((o1, o2) -> (int) (o2.getTeamId() - o1.getTeamId())));
         final SliceImpl<TodoTeamInfoResponse> slice = new SliceImpl(myPageTodoTeamRespons, pageRequest, true);

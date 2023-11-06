@@ -5,7 +5,8 @@ import lombok.*;
 
 @Getter
 @Builder
-@AllArgsConstructor(access = AccessLevel.PUBLIC)
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class TodoTeamInfoResponse {
     private Long teamId;
     private String teamProfileImageUrl;

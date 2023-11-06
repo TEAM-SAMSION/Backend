@@ -34,8 +34,8 @@ class NaverOAuthHandlerTest {
     @DisplayName("isAccessible 테스트")
     void isAccessible() {
         // given
-        OAuthRequest mockRequest = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeBuilder(OAuthRequest.class)
-            .set("Provider", Provider.NAVER)
+        OAuthRequest mockRequest = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeBuilder(OAuthRequest.class)
+            .set("provider", Provider.NAVER)
             .sample();
         // when
         final boolean result = naverOAuthHandler.isAccessible(mockRequest);

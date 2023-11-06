@@ -38,7 +38,7 @@ class TodoRateGetUseCaseTest {
         // given
         final User mockUser = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey()
             .giveMeOne(User.class);
-        final Long todoTeamId = FixtureMonkey.create().giveMeOne(Long.class);
+        final Long todoTeamId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
         final Integer todoCompleteRate = (int) (Math.random() * 100);
         given(userUtils.getAccessUser()).willReturn(mockUser);
         given(todoQueryService.findTodoCompleteRate(mockUser.getId(), todoTeamId)).willReturn(todoCompleteRate);
@@ -53,8 +53,7 @@ class TodoRateGetUseCaseTest {
     @DisplayName("이번주 할당된 TODO 완료율과 지난주 할당된 TODO 완료율 비교 테스트")
     void getWeekProgressCompare() {
         // given
-        final User mockUser = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey()
-            .giveMeOne(User.class);
+        final User mockUser = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeOne(User.class);
         final Long todoTeamId = FixtureMonkey.create().giveMeOne(Long.class);
         final Integer thisWeekTodoCompleteRate = (int) (Math.random() * 50) + 50;
         final Integer lastWeekTodoCompleteRate = (int) (Math.random() * 50);

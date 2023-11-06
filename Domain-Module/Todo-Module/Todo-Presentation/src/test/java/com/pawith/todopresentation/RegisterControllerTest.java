@@ -180,10 +180,11 @@ class RegisterControllerTest extends BaseRestDocsTest {
     @DisplayName("팀 가입 기간 조회 API 테스트")
     void getRegisterTerm() throws Exception {
         //given
-        final Long testTeamId = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(Long.class);
-        final RegisterTermResponse registerTermResponse = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(RegisterTermResponse.class);
-        given(registersGetUseCase.getRegisterTerm(testTeamId)).willReturn(registerTermResponse);
-        MockHttpServletRequestBuilder request = get(REGISTER_REQUEST_URL + "/{todoTeamId}/registers/term", testTeamId)
+        final Long todoTeamId = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(Long.class);
+        final Integer registerTerm = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Integer.class);
+        final RegisterTermResponse registerTermResponse = new RegisterTermResponse(registerTerm);
+        given(registersGetUseCase.getRegisterTerm(todoTeamId)).willReturn(registerTermResponse);
+        MockHttpServletRequestBuilder request = get(REGISTER_REQUEST_URL + "/{todoTeamId}/registers/term", todoTeamId)
             .header("Authorization", "Bearer accessToken");
         //when
         ResultActions result = mvc.perform(request);

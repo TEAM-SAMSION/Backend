@@ -9,6 +9,7 @@ import com.pawith.authdomain.jwt.exception.InvalidTokenException;
 import com.pawith.commonmodule.UnitTestConfig;
 import com.pawith.commonmodule.enums.Provider;
 import com.pawith.commonmodule.utils.FixtureMonkeyUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -22,6 +23,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.BDDMockito.given;
 
+@Slf4j
 @UnitTestConfig
 @DisplayName("KakaoOAuthHandler 테스트")
 public class KakaoOAuthHandlerTest {
@@ -41,9 +43,10 @@ public class KakaoOAuthHandlerTest {
     @DisplayName("isAccessible 테스트")
     void isAccessible() {
         // given
-        OAuthRequest mockRequest = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeBuilder(OAuthRequest.class)
-                .set("Provider", Provider.KAKAO)
+        OAuthRequest mockRequest = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeBuilder(OAuthRequest.class)
+                .set("provider", Provider.KAKAO)
                 .sample();
+        log.info("mockRequest: {}", mockRequest.getProvider());
         // when
         final boolean result = kakaoOAuthHandler.isAccessible(mockRequest);
         // then
@@ -55,7 +58,7 @@ public class KakaoOAuthHandlerTest {
     void handle() {
         // given
         OAuthRequest mockRequest = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(OAuthRequest.class);
-        TokenInfo mockTokenInfo = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeBuilder(TokenInfo.class)
+        TokenInfo mockTokenInfo = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeBuilder(TokenInfo.class)
                 .set("appId", "testAppId")
                 .sample();
         KakaoUserInfo mockKakaoUserInfo = getKakaoUserInfo();
@@ -74,7 +77,7 @@ public class KakaoOAuthHandlerTest {
     void handleWhenAppIdIsDifferent() {
         // given
         OAuthRequest mockRequest = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(OAuthRequest.class);
-        TokenInfo mockTokenInfo = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeBuilder(TokenInfo.class)
+        TokenInfo mockTokenInfo = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeBuilder(TokenInfo.class)
                 .set("appId", "anotherTestAppId")
                 .sample();
         given(kakaoOAuthFeignClient.getKakaoTokenInfo("Bearer " + mockRequest.getAccessToken())).willReturn(mockTokenInfo);

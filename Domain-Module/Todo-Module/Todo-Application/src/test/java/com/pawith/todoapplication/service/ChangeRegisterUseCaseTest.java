@@ -33,7 +33,7 @@ public class ChangeRegisterUseCaseTest {
         // given
         final Register mockRegister = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeOne(Register.class);
         final Long registerId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
-        final AuthorityChangeRequest authorityChangeRequest = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeBuilder(AuthorityChangeRequest.class)
+        final AuthorityChangeRequest authorityChangeRequest = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeBuilder(AuthorityChangeRequest.class)
             .set("authority", "EXECUTIVE")
             .sample();
         given(registerQueryService.findRegisterById(registerId)).willReturn(mockRegister);

@@ -1,21 +1,22 @@
 package com.pawith.todoapplication.service;
 
-import static org.mockito.BDDMockito.given;
-
 import com.pawith.commonmodule.UnitTestConfig;
 import com.pawith.commonmodule.utils.FixtureMonkeyUtils;
 import com.pawith.todoapplication.dto.request.ScheduledDateChangeRequest;
 import com.pawith.todoapplication.dto.request.TodoDescriptionChangeRequest;
 import com.pawith.tododomain.entity.Todo;
 import com.pawith.tododomain.service.TodoQueryService;
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+
+import static org.mockito.BDDMockito.given;
 
 @Slf4j
 @UnitTestConfig
@@ -39,7 +40,7 @@ public class TodoChangeUseCaseTest {
         Long todoId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
         LocalDate currentDate = LocalDate.now();
         LocalDate nextDay = currentDate.plus(1, ChronoUnit.DAYS);
-        ScheduledDateChangeRequest request = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeBuilder(ScheduledDateChangeRequest.class)
+        ScheduledDateChangeRequest request = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeBuilder(ScheduledDateChangeRequest.class)
             .set("scheduledDate", nextDay)
             .sample();
         Todo mockTodo = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeOne(Todo.class);
@@ -57,7 +58,7 @@ public class TodoChangeUseCaseTest {
         Long todoId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
         LocalDate currentDate = LocalDate.now();
         LocalDate nextDay = currentDate.minus(1, ChronoUnit.DAYS);
-        ScheduledDateChangeRequest request = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeBuilder(ScheduledDateChangeRequest.class)
+        ScheduledDateChangeRequest request = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeBuilder(ScheduledDateChangeRequest.class)
                 .set("scheduledDate", nextDay)
                 .sample();
         //when
@@ -71,7 +72,7 @@ public class TodoChangeUseCaseTest {
     void changeTodoName() {
         //given
         Long todoId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
-        TodoDescriptionChangeRequest request = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(TodoDescriptionChangeRequest.class);
+        TodoDescriptionChangeRequest request = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeOne(TodoDescriptionChangeRequest.class);
         Todo mockTodo = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeOne(Todo.class);
         given(todoQueryService.findTodoByTodoId(todoId)).willReturn(mockTodo);
         //when

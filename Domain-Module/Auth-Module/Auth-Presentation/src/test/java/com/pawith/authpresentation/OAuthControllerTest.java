@@ -73,7 +73,6 @@ class OAuthControllerTest extends BaseRestDocsTest {
                     fieldWithPath("refreshToken").description("refresh 토큰")
                 )
             ));
-
     }
 
     @Test
