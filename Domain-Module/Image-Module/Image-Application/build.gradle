@@ -1,4 +1,0 @@
-dependencies {
-    implementation project(":Domain-Module:Image-Module:Image-Domain")
-    implementation project(":Domain-Module:Image-Module:Image-Infrastructure")
-}
