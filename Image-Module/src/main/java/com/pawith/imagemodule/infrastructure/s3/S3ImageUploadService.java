@@ -1,4 +1,4 @@
-package com.pawith.imageinfrastructure.service;
+package com.pawith.imagemodule.infrastructure.s3;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
@@ -6,11 +6,10 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.pawith.commonmodule.annotation.ApplicationService;
 import com.pawith.commonmodule.exception.Error;
-import com.pawith.imageapplication.exception.FileExtentionException;
-import com.pawith.imageapplication.exception.FileUploadException;
-import com.pawith.imagedomain.service.ImageUploadService;
+import com.pawith.imagemodule.exception.FileExtentionException;
+import com.pawith.imagemodule.exception.FileUploadException;
+import com.pawith.imagemodule.service.ImageUploadService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,8 +25,7 @@ import java.util.concurrent.CompletableFuture;
 
 @ApplicationService
 @RequiredArgsConstructor
-@Slf4j
-public class S3ImageUploadServiceImpl implements ImageUploadService {
+public class S3ImageUploadService implements ImageUploadService {
     private final AmazonS3 amazonS3;
 
     @Value("${cloud.aws.s3.bucket}")

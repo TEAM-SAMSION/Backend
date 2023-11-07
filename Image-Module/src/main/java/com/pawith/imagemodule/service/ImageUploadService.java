@@ -1,4 +1,4 @@
-package com.pawith.imagedomain.service;
+package com.pawith.imagemodule.service;
 
 import org.springframework.web.multipart.MultipartFile;
 

@@ -1,11 +1,11 @@
-package com.pawith.imageinfrastructure.service;
+package com.pawith.imagemodule.infrastructure.s3;
 
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.pawith.commonmodule.annotation.ApplicationService;
 import com.pawith.commonmodule.exception.Error;
-import com.pawith.imageapplication.exception.FileDeleteException;
-import com.pawith.imagedomain.service.ImageDeleteService;
+import com.pawith.imagemodule.exception.FileDeleteException;
+import com.pawith.imagemodule.service.ImageDeleteService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

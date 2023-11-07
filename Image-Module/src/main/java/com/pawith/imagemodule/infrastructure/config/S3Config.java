@@ -1,4 +1,4 @@
-package com.pawith.imageinfrastructure.config;
+package com.pawith.imagemodule.infrastructure.config;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
