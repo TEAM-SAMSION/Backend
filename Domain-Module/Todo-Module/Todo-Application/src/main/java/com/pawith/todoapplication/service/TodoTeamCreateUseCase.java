@@ -1,7 +1,7 @@
 package com.pawith.todoapplication.service;
 
 import com.pawith.commonmodule.annotation.ApplicationService;
-import com.pawith.imagedomain.service.ImageUploadService;
+import com.pawith.imagemodule.service.ImageUploadService;
 import com.pawith.todoapplication.dto.request.TodoTeamCreateRequest;
 import com.pawith.todoapplication.mapper.PetMapper;
 import com.pawith.todoapplication.mapper.TodoTeamMapper;

@@ -1,5 +1,5 @@
 dependencies {
     implementation project(":Domain-Module:Todo-Module:Todo-Domain")
     implementation project(":Domain-Module:User-Module:User-Domain")
-    implementation project(':Domain-Module:Image-Module:Image-Domain')
+    implementation project(":Image-Module")
 }

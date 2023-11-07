@@ -3,7 +3,7 @@ package com.pawith.userapplication.service;
 import com.navercorp.fixturemonkey.FixtureMonkey;
 import com.pawith.commonmodule.UnitTestConfig;
 import com.pawith.commonmodule.utils.FixtureMonkeyUtils;
-import com.pawith.imagedomain.service.ImageUploadService;
+import com.pawith.imagemodule.service.ImageUploadService;
 import com.pawith.userdomain.entity.User;
 import com.pawith.userdomain.utils.UserUtils;
 import lombok.extern.slf4j.Slf4j;
