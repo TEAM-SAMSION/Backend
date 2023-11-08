@@ -3,6 +3,7 @@ package com.pawith.todoapplication.mapper;
 import com.pawith.todoapplication.dto.request.PetRegisterRequest;
 import com.pawith.tododomain.entity.Pet;
 import com.pawith.tododomain.entity.TodoTeam;
+import com.pawith.tododomain.entity.vo.PetSpecies;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -16,6 +17,10 @@ public class PetMapper {
             .description(petRegister.getDescription())
             .age(petRegister.getAge())
             .imageUrl(imageUrl)
+            .petSpecies(PetSpecies.builder()
+                .genus(petRegister.getPetGenus())
+                .species(petRegister.getPetSpecies())
+                .build())
             .build();
     }
 }

@@ -1,6 +1,7 @@
 package com.pawith.tododomain.entity;
 
 import com.pawith.commonmodule.domain.BaseEntity;
+import com.pawith.tododomain.entity.vo.PetSpecies;
 import lombok.*;
 
 import javax.persistence.*;
@@ -19,16 +20,20 @@ public class Pet extends BaseEntity {
     private String description;
     private String imageUrl;
 
+    @Embedded
+    private PetSpecies petSpecies;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "team_id")
     private TodoTeam todoTeam;
 
     @Builder
-    public Pet(String name, Integer age, String description, String imageUrl, TodoTeam todoTeam) {
+    public Pet(String name, Integer age, String description, String imageUrl, PetSpecies petSpecies, TodoTeam todoTeam) {
         this.name = name;
         this.age = age;
         this.description = description;
         this.imageUrl = imageUrl;
+        this.petSpecies = petSpecies;
         this.todoTeam = todoTeam;
     }
 }

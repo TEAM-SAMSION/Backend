@@ -18,11 +18,13 @@ public class TodoTeam extends BaseEntity {
     private String teamCode;
     private String teamName;
     private String imageUrl;
+    private String description;
 
     @Builder
-    public TodoTeam(String teamCode, String teamName, String imageUrl) {
+    public TodoTeam(String teamCode, String teamName, String imageUrl, String description) {
         this.teamCode = teamCode;
         this.teamName = teamName;
         this.imageUrl = imageUrl;
+        this.description = description;
     }
 }

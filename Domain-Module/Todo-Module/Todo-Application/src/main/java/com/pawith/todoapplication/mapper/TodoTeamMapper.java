@@ -21,6 +21,7 @@ public class TodoTeamMapper {
             .teamCode(request.getRandomCode())
             .teamName(request.getTeamName())
             .imageUrl(imageUrl)
+            .description(request.getDescription())
             .build();
     }
 

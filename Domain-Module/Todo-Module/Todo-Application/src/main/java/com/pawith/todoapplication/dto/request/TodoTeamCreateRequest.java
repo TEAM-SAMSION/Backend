@@ -10,6 +10,7 @@ import java.util.List;
 public class TodoTeamCreateRequest{
     private String teamName;
     private String randomCode;
+    private String description;
     private List<PetRegisterRequest> petRegisters;
 }
 
