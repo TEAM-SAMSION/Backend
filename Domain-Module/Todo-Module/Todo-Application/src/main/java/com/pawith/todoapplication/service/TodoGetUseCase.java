@@ -74,8 +74,8 @@ public class TodoGetUseCase {
 
     private Map<Todo, List<Assign>> getTodoMap(Long categoryId, LocalDate moveDate) {
         return assignQueryService.findAllAssignByCategoryIdAndScheduledDate(categoryId, moveDate)
-            .stream()
-            .collect(Collectors.groupingBy(Assign::getTodo));
+                .stream()
+                .collect(Collectors.groupingBy(Assign::getTodo, LinkedHashMap::new,Collectors.mapping(Function.identity(), Collectors.toList())));
     }
 
     private static <T, K> Map<K, T> listToMap(List<T> list, Function<T, K> keyExtractor) {
