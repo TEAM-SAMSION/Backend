@@ -42,16 +42,21 @@ class TodoTeamControllerTest extends BaseRestDocsTest {
     private static final String TODO_TEAM_REQUEST_URL = "/teams";
     private static final String TODO_TEAM_CREATE_INFO = "{\n" +
         "    \"teamName\" : \"test\",\n" +
+        "    \"description\" : \"test\",\n" +
         "    \"randomCode\" : \"randomCode\",\n" +
         "    \"petRegisters\" : [ {\n" +
         "        \"name\" : \"이름이 뭐에요~\",\n" +
         "        \"age\" : 2,\n" +
-        "        \"description\" : \"귀엽습니다\"\n" +
+        "        \"description\" : \"귀엽습니다\",\n" +
+        "        \"genus\" : \"과\",\n" +
+        "        \"species\" : \"종\"\n" +
         "    },\n" +
         "    {\n" +
         "        \"name\" : \"이름이 뭐에요~\",\n" +
         "        \"age\" : 2,\n" +
-        "        \"description\" : \"귀엽습니다\"\n" +
+        "        \"description\" : \"귀엽습니다\",\n" +
+        "        \"genus\" : \"과\",\n" +
+        "        \"species\" : \"종\"\n" +
         "    }\n" +
         "\n" +
         "    ]\n" +
@@ -175,9 +180,12 @@ class TodoTeamControllerTest extends BaseRestDocsTest {
                 requestPartFields("todoTeamCreateInfo",
                     fieldWithPath("teamName").description("TodoTeam 이름"),
                     fieldWithPath("randomCode").description("TodoTeam 랜덤 코드"),
+                    fieldWithPath("description").description("TodoTeam 한줄설명"),
                     fieldWithPath("petRegisters[].name").description("Pet 이름"),
                     fieldWithPath("petRegisters[].age").description("Pet 나이"),
-                    fieldWithPath("petRegisters[].description").description("Pet 설명")
+                    fieldWithPath("petRegisters[].description").description("Pet 설명"),
+                    fieldWithPath("petRegisters[].genus").description("Pet 종"),
+                    fieldWithPath("petRegisters[].species").description("Pet 품종")
                 )
             ));
     }
