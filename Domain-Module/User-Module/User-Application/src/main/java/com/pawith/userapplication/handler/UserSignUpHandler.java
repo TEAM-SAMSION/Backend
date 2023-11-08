@@ -17,6 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class UserSignUpHandler {
 
+    private static final String DEFAULT_PROFILE_IMAGE_URL = "https://pawith.s3.ap-northeast-2.amazonaws.com/base-image/profileDefault.png";
+
     private final UserSaveService userSaveService;
     private final UserQueryService userQueryService;
     private final UserAuthoritySaveService userAuthoritySaveService;
@@ -25,7 +27,7 @@ public class UserSignUpHandler {
     @EventListener
     public void signUp(final UserSignUpEvent userSignUpEvent){
         if(!userQueryService.checkEmailAlreadyExist(userSignUpEvent.getEmail())) {
-            final User user = UserMapper.toUserEntity(userSignUpEvent);
+            final User user = UserMapper.toUserEntity(userSignUpEvent,DEFAULT_PROFILE_IMAGE_URL);
             userSaveService.saveUser(user);
             userAuthoritySaveService.saveUserAuthority(userSignUpEvent.getEmail());
         }
