@@ -1,4 +1,4 @@
-package com.pawith.commonmodule.slice;
+package com.pawith.commonmodule.response;
 
 import lombok.Builder;
 import lombok.Getter;
