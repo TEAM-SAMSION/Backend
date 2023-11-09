@@ -2,11 +2,11 @@ package com.pawith.todoapplication.service;
 
 import com.pawith.commonmodule.annotation.ApplicationService;
 import com.pawith.commonmodule.response.ListResponse;
+import com.pawith.commonmodule.response.SliceResponse;
 import com.pawith.todoapplication.dto.response.AssignUserInfoResponse;
 import com.pawith.todoapplication.dto.response.TodoCompletionResponse;
 import com.pawith.todoapplication.dto.response.TodoInfoResponse;
 import com.pawith.todoapplication.dto.response.CategorySubTodoResponse;
-import com.pawith.todoapplication.dto.response.CategorySubTodoListResponse;
 import com.pawith.tododomain.entity.Assign;
 import com.pawith.tododomain.entity.Register;
 import com.pawith.tododomain.entity.Todo;
@@ -24,7 +24,6 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.transaction.annotation.Transactional;
 
