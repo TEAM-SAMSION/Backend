@@ -82,14 +82,13 @@ public class TodoControllerTest extends BaseRestDocsTest {
         //given
         final PageRequest pageRequest = PageRequest.of(0, 6);
         final Long testTeamId = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(Long.class);
-        final List<TodoInfoResponse> todoRespons = FixtureMonkeyUtils.getConstructBasedFixtureMonkey()
+        final List<TodoInfoResponse> todoResponse = FixtureMonkeyUtils.getConstructBasedFixtureMonkey()
                 .giveMeBuilder(TodoInfoResponse.class)
                 .set("todoId", Arbitraries.longs().greaterOrEqual(1L))
                 .set("task", Arbitraries.strings().withCharRange('a', 'z').ofMinLength(5).ofMaxLength(10))
                 .set("status", FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeBuilder("COMPLETE"))
                 .sampleList(pageRequest.getPageSize());
-        final SliceImpl<TodoInfoResponse> slice = new SliceImpl(todoRespons, pageRequest, true);
-        given(todoGetUseCase.getTodoListByTodoTeamId(any(), any())).willReturn(SliceResponse.from(slice));
+        given(todoGetUseCase.getTodoListByTodoTeamId(any())).willReturn(ListResponse.from(todoResponse));
         MockHttpServletRequestBuilder request = get(TODO_REQUEST_URL + "/{todoTeamId}/todos", testTeamId)
                 .queryParam("page", String.valueOf(pageRequest.getPageNumber()))
                 .queryParam("size", String.valueOf(pageRequest.getPageSize()))
@@ -111,11 +110,9 @@ public class TodoControllerTest extends BaseRestDocsTest {
                         ),
                         responseFields(
                                 fieldWithPath("content[].todoId").description("투두 항목 Id"),
+                                fieldWithPath("content[].categoryName").description("투두 항목 카테고리 이름"),
                                 fieldWithPath("content[].task").description("투두 항목 이름"),
-                                fieldWithPath("content[].status").description("투두 항목 상태(완료, 미완료)"),
-                                fieldWithPath("page").description("요청 페이지"),
-                                fieldWithPath("size").description("요청 사이즈"),
-                                fieldWithPath("hasNext").description("다음 데이터 존재 여부")
+                                fieldWithPath("content[].completionStatus").description("투두 항목 상태(완료, 미완료)")
                         )
                 ));
     }

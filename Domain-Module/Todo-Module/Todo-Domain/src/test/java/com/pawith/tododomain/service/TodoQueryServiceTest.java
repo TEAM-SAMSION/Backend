@@ -79,19 +79,17 @@ class TodoQueryServiceTest {
 
     @Test
     @DisplayName("오늘 할당받은 Todo를 조회한다.")
-    void findTodayTodoSlice() {
+    void findTodayTodoList() {
         //given
         final Long userId = FixtureMonkey.create().giveMeOne(Long.class);
         final Long todoTeamId = FixtureMonkey.create().giveMeOne(Long.class);
-        final PageRequest pageRequest = PageRequest.of(0, 10);
         final LocalDate now = LocalDate.now();
         final List<Todo> mockTodoList = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMe(Todo.class, 10);
-        SliceImpl<Todo> mockSlice = new SliceImpl<>(mockTodoList, pageRequest, true);
-        given(todoRepository.findTodoByDate(userId, todoTeamId, now, pageRequest)).willReturn(mockSlice);
+        given(todoRepository.findTodoByDate(userId, todoTeamId, now)).willReturn(mockTodoList);
         //when
-        Slice<Todo> result = todoQueryService.findTodayTodoSlice(userId, todoTeamId, pageRequest);
+        List<Todo> result = todoQueryService.findTodayTodoList(userId, todoTeamId);
         //then
-        Assertions.assertThat(result).usingRecursiveComparison().isEqualTo(mockSlice);
+        Assertions.assertThat(result).usingRecursiveComparison().isEqualTo(mockTodoList);
     }
 
     @Test
