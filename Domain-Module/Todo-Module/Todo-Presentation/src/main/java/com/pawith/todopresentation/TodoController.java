@@ -1,6 +1,6 @@
 package com.pawith.todopresentation;
 
-import com.pawith.commonmodule.slice.SliceResponse;
+import com.pawith.commonmodule.response.ListResponse;
 import com.pawith.todoapplication.dto.request.ScheduledDateChangeRequest;
 import com.pawith.todoapplication.dto.request.TodoCreateRequest;
 import com.pawith.todoapplication.dto.request.TodoDescriptionChangeRequest;
@@ -41,7 +41,7 @@ public class TodoController {
     }
 
     @GetMapping("/category/{categoryId}/todos")
-    public CategorySubTodoListResponse getTodosAboutCategorySubTodo(@PathVariable Long categoryId, @RequestParam("moveDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)  LocalDate moveDate){
+    public ListResponse<CategorySubTodoResponse> getTodosAboutCategorySubTodo(@PathVariable Long categoryId, @RequestParam("moveDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)  LocalDate moveDate){
         return todoGetUseCase.getTodoListByCategoryId(categoryId, moveDate);
     }
 

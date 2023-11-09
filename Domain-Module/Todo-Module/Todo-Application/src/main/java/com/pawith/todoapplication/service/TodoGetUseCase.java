@@ -1,7 +1,7 @@
 package com.pawith.todoapplication.service;
 
 import com.pawith.commonmodule.annotation.ApplicationService;
-import com.pawith.commonmodule.slice.SliceResponse;
+import com.pawith.commonmodule.response.ListResponse;
 import com.pawith.todoapplication.dto.response.AssignUserInfoResponse;
 import com.pawith.todoapplication.dto.response.TodoCompletionResponse;
 import com.pawith.todoapplication.dto.response.TodoInfoResponse;
@@ -47,7 +47,7 @@ public class TodoGetUseCase {
     }
 
 
-    public CategorySubTodoListResponse getTodoListByCategoryId(Long categoryId, LocalDate moveDate) {
+    public ListResponse<CategorySubTodoResponse> getTodoListByCategoryId(Long categoryId, LocalDate moveDate) {
         final List<Register> registers = registerQueryService.findAllRegistersByCategoryId(categoryId);
         Map<Long, Register> registerMap = listToMap(registers, Register::getId);
         List<Long> userIds = listToList(registers, Register::getUserId);
@@ -64,7 +64,7 @@ public class TodoGetUseCase {
             }
             todoMainResponses.add(new CategorySubTodoResponse(todo.getId(), todo.getDescription(), todo.getCompletionStatus(), assignUserInfoResponses));
         }
-        return new CategorySubTodoListResponse(todoMainResponses);
+        return ListResponse.from(todoMainResponses);
     }
 
     public TodoCompletionResponse getTodoCompletion(Long todoId) {
