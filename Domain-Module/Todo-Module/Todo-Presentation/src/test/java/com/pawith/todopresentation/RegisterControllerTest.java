@@ -2,6 +2,7 @@ package com.pawith.todopresentation;
 
 import com.navercorp.fixturemonkey.FixtureMonkey;
 import com.pawith.commonmodule.BaseRestDocsTest;
+import com.pawith.commonmodule.response.ListResponse;
 import com.pawith.commonmodule.utils.FixtureMonkeyUtils;
 import com.pawith.todoapplication.dto.request.AuthorityChangeRequest;
 import com.pawith.todoapplication.dto.response.*;
@@ -92,9 +93,8 @@ class RegisterControllerTest extends BaseRestDocsTest {
     void getRegisters() throws Exception {
         //given
         final Long todoTeamId = FixtureMonkey.create().giveMeOne(Long.class);
-        final List<RegisterInfoResponse> registerInfoRespons = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMe(RegisterInfoResponse.class, 10);
-        final RegisterInfoListResponse registerInfoListResponse = new RegisterInfoListResponse(registerInfoRespons);
-        given(registersGetUseCase.getRegisters(todoTeamId)).willReturn(registerInfoListResponse);
+        final List<RegisterInfoResponse> registerInfoResponses = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMe(RegisterInfoResponse.class, 10);
+        given(registersGetUseCase.getRegisters(todoTeamId)).willReturn(ListResponse.from(registerInfoResponses));
         MockHttpServletRequestBuilder request = get(REGISTER_REQUEST_URL + "/{todoTeamId}/registers",todoTeamId)
             .header("Authorization", "Bearer accessToken");
         //when
@@ -109,8 +109,8 @@ class RegisterControllerTest extends BaseRestDocsTest {
                     parameterWithName("todoTeamId").description("조회하는 TodoTeamId")
                 ),
                 responseFields(
-                    fieldWithPath("registers[].registerId").description("TodoTeam에 등록된 사용자 registerId"),
-                    fieldWithPath("registers[].registerName").description("TodoTeam에 등록된 사용자 이메일")
+                    fieldWithPath("content[].registerId").description("TodoTeam에 등록된 사용자 registerId"),
+                    fieldWithPath("content[].registerName").description("TodoTeam에 등록된 사용자 이메일")
                 )
             ));
 
@@ -122,9 +122,8 @@ class RegisterControllerTest extends BaseRestDocsTest {
     void getManageRegisters() throws Exception {
         //given
         final Long todoTeamId = FixtureMonkey.create().giveMeOne(Long.class);
-        final List<RegisterManageInfoResponse> registerManageInfoRespons = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMe(RegisterManageInfoResponse.class, 10);
-        final RegisterManageListResponse registerManageListResponse = new RegisterManageListResponse(registerManageInfoRespons);
-        given(registersGetUseCase.getManageRegisters(todoTeamId)).willReturn(registerManageListResponse);
+        final List<RegisterManageInfoResponse> registerManageInfoResponses = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMe(RegisterManageInfoResponse.class, 10);
+        given(registersGetUseCase.getManageRegisters(todoTeamId)).willReturn(ListResponse.from(registerManageInfoResponses));
         MockHttpServletRequestBuilder request = get(REGISTER_REQUEST_URL + "/{todoTeamId}/registers/manage",todoTeamId)
                 .header("Authorization", "Bearer accessToken");
         //when
@@ -139,10 +138,10 @@ class RegisterControllerTest extends BaseRestDocsTest {
                                 parameterWithName("todoTeamId").description("조회하는 TodoTeamId")
                         ),
                         responseFields(
-                                fieldWithPath("registers[].registerId").description("TodoTeam에 등록된 사용자 registerId"),
-                                fieldWithPath("registers[].authority").description("TodoTeam에 등록된 사용자 권한"),
-                                fieldWithPath("registers[].registerName").description("TodoTeam에 등록된 사용자 이름"),
-                                fieldWithPath("registers[].registerEmail").description("TodoTeam에 등록된 사용자 이메일")
+                                fieldWithPath("content[].registerId").description("TodoTeam에 등록된 사용자 registerId"),
+                                fieldWithPath("content[].authority").description("TodoTeam에 등록된 사용자 권한"),
+                                fieldWithPath("content[].registerName").description("TodoTeam에 등록된 사용자 이름"),
+                                fieldWithPath("content[].registerEmail").description("TodoTeam에 등록된 사용자 이메일")
                         )
                 ));
 
