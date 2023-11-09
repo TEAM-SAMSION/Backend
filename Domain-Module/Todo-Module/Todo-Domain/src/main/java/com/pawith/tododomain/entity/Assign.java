@@ -38,6 +38,7 @@ public class Assign extends BaseEntity {
     public Assign(Todo todo, Register register) {
         this.todo = todo;
         this.register = register;
+        this.completionStatus = CompletionStatus.INCOMPLETE;
     }
 
     public void updateCompletionStatus() {
