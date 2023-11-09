@@ -47,7 +47,7 @@ public interface TodoRepository extends JpaRepository<Todo, Long> {
             "join Register r on r.userId=:userId and r.todoTeam.id=:todoTeamId " +
             "join Assign  a on a.register.id=r.id and t.scheduledDate = :scheduledDate " +
             "where a.todo.id = t.id")
-    Slice<Todo> findTodoByDate(@Param("userId") Long userId, @Param("todoTeamId") Long todoTeamId, @Param("scheduledDate") LocalDate scheduledDate, Pageable pageable);
+    List<Todo> findTodoByDate(@Param("userId") Long userId, @Param("todoTeamId") Long todoTeamId, @Param("scheduledDate") LocalDate scheduledDate);
 
     @Query("select t from Todo t " +
             "join Category c on c.id=:categoryId " +

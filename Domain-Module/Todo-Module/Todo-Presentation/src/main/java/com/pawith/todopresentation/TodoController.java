@@ -8,7 +8,6 @@ import com.pawith.todoapplication.dto.response.*;
 import com.pawith.todoapplication.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,8 +30,8 @@ public class TodoController {
     }
 
     @GetMapping("/{todoTeamId}/todos")
-    public SliceResponse<TodoInfoResponse> getTodos(@PathVariable Long todoTeamId, Pageable pageable) {
-        return todoGetUseCase.getTodoListByTodoTeamId(todoTeamId, pageable);
+    public ListResponse<TodoInfoResponse> getTodos(@PathVariable Long todoTeamId) {
+        return todoGetUseCase.getTodoListByTodoTeamId(todoTeamId);
     }
 
     @PostMapping("/todos")

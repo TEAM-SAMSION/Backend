@@ -38,11 +38,14 @@ public class TodoGetUseCase {
     private final RegisterQueryService registerQueryService;
     private final AssignQueryService assignQueryService;
 
-    public SliceResponse<TodoInfoResponse> getTodoListByTodoTeamId(final Long todoTeamId, final Pageable pageable) {
+    public ListResponse<TodoInfoResponse> getTodoListByTodoTeamId(final Long todoTeamId) {
         final User user = userUtils.getAccessUser();
-        final Slice<Todo> todoList = todoQueryService.findTodayTodoSlice(user.getId(), todoTeamId, pageable);
-        Slice<TodoInfoResponse> todoHomeResponseSlice = todoList.map(todo -> new TodoInfoResponse(todo.getId(), todo.getDescription(), todo.getCompletionStatus().name()));
-        return SliceResponse.from(todoHomeResponseSlice);
+        final List<Todo> todoList = todoQueryService.findTodayTodoList(user.getId(), todoTeamId);
+        final Map<Todo, Assign> todoAssignMap = getTodoAssignMap(user.getId(), todoTeamId);
+        List<TodoInfoResponse> todoInfoResponseList = todoList.stream()
+                .map(todo -> new TodoInfoResponse(todo.getId(), todo.getCategory().getName(), todo.getDescription(), todoAssignMap.get(todo).getCompletionStatus()))
+                .collect(Collectors.toList());
+        return ListResponse.from(todoInfoResponseList);
     }
 
 
@@ -75,6 +78,12 @@ public class TodoGetUseCase {
         return assignQueryService.findAllAssignByCategoryIdAndScheduledDate(categoryId, moveDate)
                 .stream()
                 .collect(Collectors.groupingBy(Assign::getTodo, LinkedHashMap::new,Collectors.mapping(Function.identity(), Collectors.toList())));
+    }
+
+    private Map<Todo, Assign> getTodoAssignMap(Long userId, Long todoTeamId) {
+        return assignQueryService.findAllByUserIdAndTodoTeamIdAndScheduledDate(userId, todoTeamId)
+                .stream()
+                .collect(Collectors.toMap(Assign::getTodo, Function.identity()));
     }
 
     private static <T, K> Map<K, T> listToMap(List<T> list, Function<T, K> keyExtractor) {

@@ -20,6 +20,12 @@ public class AssignQueryService {
         return assignRepository.findAllByCategoryIdAndScheduledDate(categoryId, scheduledDate);
     }
 
+    public List<Assign> findAllByUserIdAndTodoTeamIdAndScheduledDate(Long userId, Long todoTeamId) {
+        final LocalDate now = LocalDate.now();
+        return assignRepository.findAllByUserIdAndTodoTeamIdAndScheduledDate(userId, todoTeamId, now);
+    }
+
+
     public Assign findAssignByTodoIdAndUserId(Long todoId, Long userId) {
         return assignRepository.findByTodoIdAndUserId(todoId, userId);
     }
