@@ -1,7 +1,7 @@
 package com.pawith.todopresentation;
 
 import com.pawith.commonmodule.BaseRestDocsTest;
-import com.pawith.commonmodule.slice.SliceResponse;
+import com.pawith.commonmodule.response.ListResponse;
 import com.pawith.commonmodule.utils.FixtureMonkeyUtils;
 import com.pawith.todoapplication.dto.request.ScheduledDateChangeRequest;
 import com.pawith.todoapplication.dto.request.TodoCreateRequest;
@@ -159,8 +159,8 @@ public class TodoControllerTest extends BaseRestDocsTest {
             .set("status", FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeBuilder("COMPLETE"))
             .set("assignNames", assignUserInfoResponses)
             .sampleList(2);
-        final CategorySubTodoListResponse categorySubTodoListResponse = new CategorySubTodoListResponse(categorySubTodoResponses);
-        given(todoGetUseCase.getTodoListByCategoryId(any(), any())).willReturn(categorySubTodoListResponse);
+
+        given(todoGetUseCase.getTodoListByCategoryId(any(), any())).willReturn(ListResponse.from(categorySubTodoResponses));
         MockHttpServletRequestBuilder request = get(TODO_REQUEST_URL + "/category/{categoryId}/todos", testCategoryId)
                 .queryParam("moveDate", testMoveDate.toString())
                 .header("Authorization", "Bearer accessToken");
@@ -179,12 +179,12 @@ public class TodoControllerTest extends BaseRestDocsTest {
                                 parameterWithName("moveDate").description("달력에서 이동하는 날짜(LocalDate)")
                         ),
                         responseFields(
-                                fieldWithPath("todos[].todoId").description("투두 항목 Id"),
-                                fieldWithPath("todos[].task").description("투두 항목 이름"),
-                                fieldWithPath("todos[].completionStatus").description("투두 항목 상태(완료, 미완료)"),
-                                fieldWithPath("todos[].assignNames[].assigneeId").description("할당받은 사용자의 ID"),
-                                fieldWithPath("todos[].assignNames[].assigneeName").description("할당받은 사용자의 이름"),
-                                fieldWithPath("todos[].assignNames[].completionStatus").description("할당받은 사용자의 완료 상태(완료, 미완료)")
+                                fieldWithPath("content[].todoId").description("투두 항목 Id"),
+                                fieldWithPath("content[].task").description("투두 항목 이름"),
+                                fieldWithPath("content[].completionStatus").description("투두 항목 상태(완료, 미완료)"),
+                                fieldWithPath("content[].assignNames[].assigneeId").description("할당받은 사용자의 ID"),
+                                fieldWithPath("content[].assignNames[].assigneeName").description("할당받은 사용자의 이름"),
+                                fieldWithPath("content[].assignNames[].completionStatus").description("할당받은 사용자의 완료 상태(완료, 미완료)")
                         )
                 ));
     }
