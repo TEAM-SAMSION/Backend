@@ -1,7 +1,8 @@
 package com.pawith.todoapplication.service;
 
 import com.pawith.commonmodule.UnitTestConfig;
-import com.pawith.commonmodule.slice.SliceResponse;
+import com.pawith.commonmodule.response.ListResponse;
+import com.pawith.commonmodule.response.SliceResponse;
 import com.pawith.commonmodule.utils.FixtureMonkeyUtils;
 import com.pawith.todoapplication.dto.response.TodoTeamNameResponse;
 import com.pawith.todoapplication.dto.response.TodoTeamRandomCodeResponse;
@@ -76,10 +77,10 @@ public class TodoTeamGetUseCaseTest {
         given(userUtils.getAccessUser()).willReturn(mockUser);
         given(todoTeamQueryService.findAllTodoTeamByUserId(mockUser.getId())).willReturn(todoTeamList);
         // when
-        List<TodoTeamNameResponse> result = todoTeamGetUseCase.getTodoTeamName();
+        ListResponse<TodoTeamNameResponse> result = todoTeamGetUseCase.getTodoTeamName();
         // then
         Assertions.assertThat(result).isNotNull();
-        Assertions.assertThat(result.size()).isEqualTo(todoTeamList.size());
+        Assertions.assertThat(result.getContent().size()).isEqualTo(todoTeamList.size());
     }
 
     @Test
