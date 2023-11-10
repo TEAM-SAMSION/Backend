@@ -78,21 +78,6 @@ class TodoQueryServiceTest {
     }
 
     @Test
-    @DisplayName("오늘 할당받은 Todo를 조회한다.")
-    void findTodayTodoList() {
-        //given
-        final Long userId = FixtureMonkey.create().giveMeOne(Long.class);
-        final Long todoTeamId = FixtureMonkey.create().giveMeOne(Long.class);
-        final LocalDate now = LocalDate.now();
-        final List<Todo> mockTodoList = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMe(Todo.class, 10);
-        given(todoRepository.findTodoByDate(userId, todoTeamId, now)).willReturn(mockTodoList);
-        //when
-        List<Todo> result = todoQueryService.findTodayTodoList(userId, todoTeamId);
-        //then
-        Assertions.assertThat(result).usingRecursiveComparison().isEqualTo(mockTodoList);
-    }
-
-    @Test
     @DisplayName("categoryId와 moveDate로 Todo를 조회한다.")
     void findTodoListByCategoryIdAndscheduledDate() {
         //given
