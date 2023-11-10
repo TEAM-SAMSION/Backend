@@ -40,11 +40,13 @@ public class TodoGetUseCase {
 
     public ListResponse<TodoInfoResponse> getTodoListByTodoTeamId(final Long todoTeamId) {
         final User user = userUtils.getAccessUser();
-        final List<Todo> todoList = todoQueryService.findTodayTodoList(user.getId(), todoTeamId);
         final Map<Todo, Assign> todoAssignMap = getTodoAssignMap(user.getId(), todoTeamId);
-        List<TodoInfoResponse> todoInfoResponseList = todoList.stream()
-                .map(todo -> new TodoInfoResponse(todo.getId(), todo.getCategory().getName(), todo.getDescription(), todoAssignMap.get(todo).getCompletionStatus()))
-                .collect(Collectors.toList());
+        List<TodoInfoResponse> todoInfoResponseList = new ArrayList<>();
+        for (Todo todo : todoAssignMap.keySet()) {
+            Assign assign = todoAssignMap.get(todo);
+            TodoInfoResponse todoInfoResponse = new TodoInfoResponse(todo.getId(), todo.getCategory().getName(), todo.getDescription(), assign.getCompletionStatus());
+            todoInfoResponseList.add(todoInfoResponse);
+        }
         return ListResponse.from(todoInfoResponseList);
     }
 
@@ -80,10 +82,11 @@ public class TodoGetUseCase {
                 .collect(Collectors.groupingBy(Assign::getTodo, LinkedHashMap::new,Collectors.mapping(Function.identity(), Collectors.toList())));
     }
 
-    private Map<Todo, Assign> getTodoAssignMap(Long userId, Long todoTeamId) {
+    private LinkedHashMap<Todo, Assign> getTodoAssignMap(Long userId, Long todoTeamId) {
         return assignQueryService.findAllByUserIdAndTodoTeamIdAndScheduledDate(userId, todoTeamId)
                 .stream()
-                .collect(Collectors.toMap(Assign::getTodo, Function.identity()));
+                .collect(Collectors.toMap(Assign::getTodo, Function.identity(),
+                        (existing, replacement) -> existing, LinkedHashMap::new));
     }
 
     private static <T, K> Map<K, T> listToMap(List<T> list, Function<T, K> keyExtractor) {
