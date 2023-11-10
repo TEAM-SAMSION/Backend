@@ -1,6 +1,6 @@
 package com.pawith.todopresentation;
 
-import com.pawith.commonmodule.slice.SliceResponse;
+import com.pawith.commonmodule.response.ListResponse;
 import com.pawith.todoapplication.dto.request.ScheduledDateChangeRequest;
 import com.pawith.todoapplication.dto.request.TodoCreateRequest;
 import com.pawith.todoapplication.dto.request.TodoDescriptionChangeRequest;
@@ -8,7 +8,6 @@ import com.pawith.todoapplication.dto.response.*;
 import com.pawith.todoapplication.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,8 +30,8 @@ public class TodoController {
     }
 
     @GetMapping("/{todoTeamId}/todos")
-    public SliceResponse<TodoInfoResponse> getTodos(@PathVariable Long todoTeamId, Pageable pageable) {
-        return todoGetUseCase.getTodoListByTodoTeamId(todoTeamId, pageable);
+    public ListResponse<TodoInfoResponse> getTodos(@PathVariable Long todoTeamId) {
+        return todoGetUseCase.getTodoListByTodoTeamId(todoTeamId);
     }
 
     @PostMapping("/todos")
@@ -41,7 +40,7 @@ public class TodoController {
     }
 
     @GetMapping("/category/{categoryId}/todos")
-    public CategorySubTodoListResponse getTodosAboutCategorySubTodo(@PathVariable Long categoryId, @RequestParam("moveDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)  LocalDate moveDate){
+    public ListResponse<CategorySubTodoResponse> getTodosAboutCategorySubTodo(@PathVariable Long categoryId, @RequestParam("moveDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)  LocalDate moveDate){
         return todoGetUseCase.getTodoListByCategoryId(categoryId, moveDate);
     }
 

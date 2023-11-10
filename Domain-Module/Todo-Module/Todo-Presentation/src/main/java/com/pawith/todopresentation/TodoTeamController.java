@@ -1,6 +1,7 @@
 package com.pawith.todopresentation;
 
-import com.pawith.commonmodule.slice.SliceResponse;
+import com.pawith.commonmodule.response.ListResponse;
+import com.pawith.commonmodule.response.SliceResponse;
 import com.pawith.todoapplication.dto.request.TodoTeamCreateRequest;
 import com.pawith.todoapplication.dto.response.TodoTeamNameResponse;
 import com.pawith.todoapplication.dto.response.TodoTeamRandomCodeResponse;
@@ -52,7 +53,7 @@ public class TodoTeamController {
     }
 
     @GetMapping("/name")
-    public List<TodoTeamNameResponse> getTodoTeamName() {
+    public ListResponse<TodoTeamNameResponse> getTodoTeamName() {
         return todoTeamGetUseCase.getTodoTeamName();
     }
 

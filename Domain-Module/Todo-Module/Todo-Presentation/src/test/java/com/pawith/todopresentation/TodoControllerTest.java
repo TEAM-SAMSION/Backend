@@ -1,7 +1,8 @@
 package com.pawith.todopresentation;
 
 import com.pawith.commonmodule.BaseRestDocsTest;
-import com.pawith.commonmodule.slice.SliceResponse;
+import com.pawith.commonmodule.response.ListResponse;
+import com.pawith.commonmodule.response.SliceResponse;
 import com.pawith.commonmodule.utils.FixtureMonkeyUtils;
 import com.pawith.todoapplication.dto.request.ScheduledDateChangeRequest;
 import com.pawith.todoapplication.dto.request.TodoCreateRequest;
@@ -81,14 +82,13 @@ public class TodoControllerTest extends BaseRestDocsTest {
         //given
         final PageRequest pageRequest = PageRequest.of(0, 6);
         final Long testTeamId = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(Long.class);
-        final List<TodoInfoResponse> todoRespons = FixtureMonkeyUtils.getConstructBasedFixtureMonkey()
+        final List<TodoInfoResponse> todoResponse = FixtureMonkeyUtils.getConstructBasedFixtureMonkey()
                 .giveMeBuilder(TodoInfoResponse.class)
                 .set("todoId", Arbitraries.longs().greaterOrEqual(1L))
                 .set("task", Arbitraries.strings().withCharRange('a', 'z').ofMinLength(5).ofMaxLength(10))
                 .set("status", FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeBuilder("COMPLETE"))
                 .sampleList(pageRequest.getPageSize());
-        final SliceImpl<TodoInfoResponse> slice = new SliceImpl(todoRespons, pageRequest, true);
-        given(todoGetUseCase.getTodoListByTodoTeamId(any(), any())).willReturn(SliceResponse.from(slice));
+        given(todoGetUseCase.getTodoListByTodoTeamId(any())).willReturn(ListResponse.from(todoResponse));
         MockHttpServletRequestBuilder request = get(TODO_REQUEST_URL + "/{todoTeamId}/todos", testTeamId)
                 .queryParam("page", String.valueOf(pageRequest.getPageNumber()))
                 .queryParam("size", String.valueOf(pageRequest.getPageSize()))
@@ -110,11 +110,9 @@ public class TodoControllerTest extends BaseRestDocsTest {
                         ),
                         responseFields(
                                 fieldWithPath("content[].todoId").description("투두 항목 Id"),
+                                fieldWithPath("content[].categoryName").description("투두 항목 카테고리 이름"),
                                 fieldWithPath("content[].task").description("투두 항목 이름"),
-                                fieldWithPath("content[].status").description("투두 항목 상태(완료, 미완료)"),
-                                fieldWithPath("page").description("요청 페이지"),
-                                fieldWithPath("size").description("요청 사이즈"),
-                                fieldWithPath("hasNext").description("다음 데이터 존재 여부")
+                                fieldWithPath("content[].completionStatus").description("투두 항목 상태(완료, 미완료)")
                         )
                 ));
     }
@@ -159,8 +157,8 @@ public class TodoControllerTest extends BaseRestDocsTest {
             .set("status", FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeBuilder("COMPLETE"))
             .set("assignNames", assignUserInfoResponses)
             .sampleList(2);
-        final CategorySubTodoListResponse categorySubTodoListResponse = new CategorySubTodoListResponse(categorySubTodoResponses);
-        given(todoGetUseCase.getTodoListByCategoryId(any(), any())).willReturn(categorySubTodoListResponse);
+
+        given(todoGetUseCase.getTodoListByCategoryId(any(), any())).willReturn(ListResponse.from(categorySubTodoResponses));
         MockHttpServletRequestBuilder request = get(TODO_REQUEST_URL + "/category/{categoryId}/todos", testCategoryId)
                 .queryParam("moveDate", testMoveDate.toString())
                 .header("Authorization", "Bearer accessToken");
@@ -179,12 +177,12 @@ public class TodoControllerTest extends BaseRestDocsTest {
                                 parameterWithName("moveDate").description("달력에서 이동하는 날짜(LocalDate)")
                         ),
                         responseFields(
-                                fieldWithPath("todos[].todoId").description("투두 항목 Id"),
-                                fieldWithPath("todos[].task").description("투두 항목 이름"),
-                                fieldWithPath("todos[].completionStatus").description("투두 항목 상태(완료, 미완료)"),
-                                fieldWithPath("todos[].assignNames[].assigneeId").description("할당받은 사용자의 ID"),
-                                fieldWithPath("todos[].assignNames[].assigneeName").description("할당받은 사용자의 이름"),
-                                fieldWithPath("todos[].assignNames[].completionStatus").description("할당받은 사용자의 완료 상태(완료, 미완료)")
+                                fieldWithPath("content[].todoId").description("투두 항목 Id"),
+                                fieldWithPath("content[].task").description("투두 항목 이름"),
+                                fieldWithPath("content[].completionStatus").description("투두 항목 상태(완료, 미완료)"),
+                                fieldWithPath("content[].assignNames[].assigneeId").description("할당받은 사용자의 ID"),
+                                fieldWithPath("content[].assignNames[].assigneeName").description("할당받은 사용자의 이름"),
+                                fieldWithPath("content[].assignNames[].completionStatus").description("할당받은 사용자의 완료 상태(완료, 미완료)")
                         )
                 ));
     }

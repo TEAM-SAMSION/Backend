@@ -2,8 +2,9 @@ package com.pawith.todoapplication.service;
 
 import com.navercorp.fixturemonkey.FixtureMonkey;
 import com.pawith.commonmodule.UnitTestConfig;
+import com.pawith.commonmodule.response.ListResponse;
 import com.pawith.commonmodule.utils.FixtureMonkeyUtils;
-import com.pawith.todoapplication.dto.response.CategoryInfoListResponse;
+import com.pawith.todoapplication.dto.response.CategoryInfoResponse;
 import com.pawith.tododomain.entity.Category;
 import com.pawith.tododomain.service.CategoryQueryService;
 import org.assertj.core.api.Assertions;
@@ -38,9 +39,9 @@ public class CategoryGetUseCaseTest {
             .giveMe(Category.class, 5);
         given(categoryQueryService.findCategoryListByTodoTeamIdAndStatus(TodoTeamId)).willReturn(categoryList);
         // when
-        final CategoryInfoListResponse result = categoryGetUseCase.getCategoryList(TodoTeamId);
+        final ListResponse<CategoryInfoResponse> response = categoryGetUseCase.getCategoryList(TodoTeamId);
         // then
-        Assertions.assertThat(result.getCategories().size()).isEqualTo(categoryList.size());
+        Assertions.assertThat(response.getContent().size()).isEqualTo(categoryList.size());
     }
 
 

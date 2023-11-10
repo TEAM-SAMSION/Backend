@@ -33,11 +33,6 @@ public class TodoQueryService {
         return (int) ((countCompleteTodayTodo / (double) countTodayTodo) * 100);
     }
 
-    public Slice<Todo> findTodayTodoSlice(Long userId, Long todoTeamId, Pageable pageable) {
-        final LocalDate now = LocalDate.now();
-        return todoRepository.findTodoByDate(userId, todoTeamId, now, pageable);
-    }
-
     public List<Todo> findTodoListByCategoryIdAndscheduledDate(Long categoryId, LocalDate moveDate){
         return todoRepository.findTodoListByCategoryIdAndscheduledDate(categoryId, moveDate);
     }

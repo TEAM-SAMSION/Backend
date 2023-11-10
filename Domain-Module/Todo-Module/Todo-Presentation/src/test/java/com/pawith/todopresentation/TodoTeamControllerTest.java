@@ -1,7 +1,8 @@
 package com.pawith.todopresentation;
 
 import com.pawith.commonmodule.BaseRestDocsTest;
-import com.pawith.commonmodule.slice.SliceResponse;
+import com.pawith.commonmodule.response.ListResponse;
+import com.pawith.commonmodule.response.SliceResponse;
 import com.pawith.commonmodule.utils.FixtureMonkeyUtils;
 import com.pawith.todoapplication.dto.response.TodoTeamInfoResponse;
 import com.pawith.todoapplication.dto.response.TodoTeamNameResponse;
@@ -194,8 +195,8 @@ class TodoTeamControllerTest extends BaseRestDocsTest {
     @DisplayName("가입한 팀 조회 API 테스트")
     void getTodoTeamName() throws Exception {
         //given
-        final List<TodoTeamNameResponse> todoTeamNameRespons = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMe(TodoTeamNameResponse.class, 5);
-        given(todoTeamGetUseCase.getTodoTeamName()).willReturn(todoTeamNameRespons);
+        final List<TodoTeamNameResponse> todoTeamNameResponses = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMe(TodoTeamNameResponse.class, 5);
+        given(todoTeamGetUseCase.getTodoTeamName()).willReturn(ListResponse.from(todoTeamNameResponses));
         MockHttpServletRequestBuilder request = get(TODO_TEAM_REQUEST_URL + "/name")
             .header("Authorization", "Bearer accessToken");
         //when
@@ -207,8 +208,8 @@ class TodoTeamControllerTest extends BaseRestDocsTest {
                     headerWithName("Authorization").description("access 토큰")
                 ),
                 responseFields(
-                    fieldWithPath("[].teamId").description("TodoTeam의 Id"),
-                    fieldWithPath("[].teamName").description("TodoTeam의 이름")
+                    fieldWithPath("content[].teamId").description("TodoTeam의 Id"),
+                    fieldWithPath("content[].teamName").description("TodoTeam의 이름")
                 )
             ));
     }

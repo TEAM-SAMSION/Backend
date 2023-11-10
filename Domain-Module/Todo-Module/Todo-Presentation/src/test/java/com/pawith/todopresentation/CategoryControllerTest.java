@@ -1,11 +1,11 @@
 package com.pawith.todopresentation;
 
 import com.pawith.commonmodule.BaseRestDocsTest;
+import com.pawith.commonmodule.response.ListResponse;
 import com.pawith.commonmodule.utils.FixtureMonkeyUtils;
 import com.pawith.todoapplication.dto.request.CategoryCreateRequest;
 import com.pawith.todoapplication.dto.request.CategoryNameChageRequest;
 import com.pawith.todoapplication.dto.response.CategoryInfoResponse;
-import com.pawith.todoapplication.dto.response.CategoryInfoListResponse;
 import com.pawith.todoapplication.service.CategoryChangeUseCase;
 import com.pawith.todoapplication.service.CategoryCreateUseCase;
 import com.pawith.todoapplication.service.CategoryDeleteUseCase;
@@ -57,8 +57,7 @@ public class CategoryControllerTest extends BaseRestDocsTest {
         // given
         final Long testTeamId = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(Long.class);
         final List<CategoryInfoResponse> categoryListResponses = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMe(CategoryInfoResponse.class, 2);
-        final CategoryInfoListResponse categoryInfoListResponse = new CategoryInfoListResponse(categoryListResponses);
-        given(categoryGetUseCase.getCategoryList(testTeamId)).willReturn(categoryInfoListResponse);
+        given(categoryGetUseCase.getCategoryList(testTeamId)).willReturn(ListResponse.from(categoryListResponses));
         MockHttpServletRequestBuilder request = get(CATEGORY_REQUEST_URL + "/{teamId}/category", testTeamId)
                 .header("Authorization", "Bearer accessToken");
         // when
@@ -73,8 +72,8 @@ public class CategoryControllerTest extends BaseRestDocsTest {
                                 parameterWithName("teamId").description("TodoTeam의 Id")
                         ),
                         responseFields(
-                                fieldWithPath("categories[].categoryId").description("Category의 Id"),
-                                fieldWithPath("categories[].categoryName").description("Category의 이름")
+                                fieldWithPath("content[].categoryId").description("Category의 Id"),
+                                fieldWithPath("content[].categoryName").description("Category의 이름")
                         )
                 ));
     }

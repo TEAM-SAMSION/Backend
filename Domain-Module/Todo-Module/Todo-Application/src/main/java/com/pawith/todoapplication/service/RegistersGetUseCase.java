@@ -1,6 +1,7 @@
 package com.pawith.todoapplication.service;
 
 import com.pawith.commonmodule.annotation.ApplicationService;
+import com.pawith.commonmodule.response.ListResponse;
 import com.pawith.todoapplication.dto.response.*;
 import com.pawith.tododomain.entity.Register;
 import com.pawith.tododomain.service.RegisterQueryService;
@@ -23,7 +24,7 @@ public class RegistersGetUseCase {
     private final RegisterQueryService registerQueryService;
     private final UserQueryService userQueryService;
 
-    public RegisterInfoListResponse getRegisters(final Long teamId) {
+    public ListResponse<RegisterInfoResponse> getRegisters(final Long teamId) {
         final List<Register> allRegisters = registerQueryService.findAllRegistersByTodoTeamId(teamId);
         final Map<Long, User> registerUserMap = getRegisterUserMap(allRegisters);
         final List<RegisterInfoResponse> registerSimpleInfoResponses = allRegisters.stream()
@@ -32,10 +33,10 @@ public class RegistersGetUseCase {
                 return new RegisterInfoResponse(register.getId(), registerUser.getNickname());
             })
             .collect(Collectors.toList());
-        return new RegisterInfoListResponse(registerSimpleInfoResponses);
+        return ListResponse.from(registerSimpleInfoResponses);
     }
 
-    public RegisterManageListResponse getManageRegisters(final Long teamId) {
+    public ListResponse<RegisterManageInfoResponse> getManageRegisters(final Long teamId) {
         final List<Register> allRegisters = registerQueryService.findAllRegistersByTodoTeamId(teamId);
         final Map<Long, User> registerUserMap = getRegisterUserMap(allRegisters);
         final List<RegisterManageInfoResponse> manageRegisterInfoResponses = allRegisters.stream()
@@ -44,7 +45,7 @@ public class RegistersGetUseCase {
                     return new RegisterManageInfoResponse(register.getId(), register.getAuthority().toString(), registerUser.getNickname(), registerUser.getEmail());
                 })
                 .collect(Collectors.toList());
-        return new RegisterManageListResponse(manageRegisterInfoResponses);
+        return ListResponse.from(manageRegisterInfoResponses);
     }
 
     public RegisterTermResponse getRegisterTerm(final Long teamId) {

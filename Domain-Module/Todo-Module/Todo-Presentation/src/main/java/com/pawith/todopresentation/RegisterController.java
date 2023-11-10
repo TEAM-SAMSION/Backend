@@ -1,8 +1,9 @@
 package com.pawith.todopresentation;
 
+import com.pawith.commonmodule.response.ListResponse;
 import com.pawith.todoapplication.dto.request.AuthorityChangeRequest;
-import com.pawith.todoapplication.dto.response.RegisterManageListResponse;
-import com.pawith.todoapplication.dto.response.RegisterInfoListResponse;
+import com.pawith.todoapplication.dto.response.RegisterInfoResponse;
+import com.pawith.todoapplication.dto.response.RegisterManageInfoResponse;
 import com.pawith.todoapplication.dto.response.RegisterTermResponse;
 import com.pawith.todoapplication.service.ChangeRegisterUseCase;
 import com.pawith.todoapplication.service.RegistersGetUseCase;
@@ -32,12 +33,12 @@ public class RegisterController {
     }
 
     @GetMapping("/{todoTeamId}/registers")
-    public RegisterInfoListResponse getRegisters(@PathVariable Long todoTeamId){
+    public ListResponse<RegisterInfoResponse> getRegisters(@PathVariable Long todoTeamId){
         return registersGetUseCase.getRegisters(todoTeamId);
     }
 
     @GetMapping("/{todoTeamId}/registers/manage")
-    public RegisterManageListResponse getRegistersForManage(@PathVariable Long todoTeamId){
+    public ListResponse<RegisterManageInfoResponse> getRegistersForManage(@PathVariable Long todoTeamId){
         return registersGetUseCase.getManageRegisters(todoTeamId);
     }
 

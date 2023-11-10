@@ -1,7 +1,8 @@
 package com.pawith.todoapplication.service;
 
 import com.pawith.commonmodule.annotation.ApplicationService;
-import com.pawith.commonmodule.slice.SliceResponse;
+import com.pawith.commonmodule.response.ListResponse;
+import com.pawith.commonmodule.response.SliceResponse;
 import com.pawith.todoapplication.dto.response.TodoTeamNameResponse;
 import com.pawith.todoapplication.dto.response.TodoTeamRandomCodeResponse;
 import com.pawith.todoapplication.dto.response.TodoTeamInfoResponse;
@@ -41,12 +42,14 @@ public class TodoTeamGetUseCase {
         return SliceResponse.from(todoTeamSimpleResponses);
     }
 
-    public List<TodoTeamNameResponse> getTodoTeamName() {
+    public ListResponse<TodoTeamNameResponse> getTodoTeamName() {
         final User requestUser = userUtils.getAccessUser();
-        return todoTeamQueryService.findAllTodoTeamByUserId(requestUser.getId())
-            .stream()
-            .map(todoTeam -> new TodoTeamNameResponse(todoTeam.getId(), todoTeam.getTeamName()))
-            .collect(Collectors.toList());
+        return ListResponse.from(
+                todoTeamQueryService.findAllTodoTeamByUserId(requestUser.getId())
+                .stream()
+                .map(todoTeam -> new TodoTeamNameResponse(todoTeam.getId(), todoTeam.getTeamName()))
+                .collect(Collectors.toList())
+        );
     }
 
     public TodoTeamSearchInfoResponse searchTodoTeamByCode(final String code) {

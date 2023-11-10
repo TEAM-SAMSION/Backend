@@ -17,6 +17,15 @@ public interface AssignRepository extends JpaRepository<Assign, Long> {
         "where t.category.id=:categoryId and t.scheduledDate=:scheduledDate")
     List<Assign> findAllByCategoryIdAndScheduledDate(Long categoryId, LocalDate scheduledDate);
 
+
+    @Query("select a " +
+            "from Assign a " +
+            "join a.register r " +
+            "join fetch a.todo t " +
+            "join fetch t.category " +
+            "where r.userId=:userId and r.todoTeam.id=:todoTeamId and t.scheduledDate=:scheduledDate")
+    List<Assign> findAllByUserIdAndTodoTeamIdAndScheduledDate(Long userId, Long todoTeamId, LocalDate scheduledDate);
+
     @Modifying
     @Query("update Assign a set a.isDeleted = true where a.register.id in (:registerIds)")
     void deleteByRegisterIds(final List<Long> registerIds);

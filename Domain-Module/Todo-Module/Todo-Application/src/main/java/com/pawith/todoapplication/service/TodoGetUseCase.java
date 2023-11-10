@@ -1,12 +1,11 @@
 package com.pawith.todoapplication.service;
 
 import com.pawith.commonmodule.annotation.ApplicationService;
-import com.pawith.commonmodule.slice.SliceResponse;
+import com.pawith.commonmodule.response.ListResponse;
 import com.pawith.todoapplication.dto.response.AssignUserInfoResponse;
 import com.pawith.todoapplication.dto.response.TodoCompletionResponse;
 import com.pawith.todoapplication.dto.response.TodoInfoResponse;
 import com.pawith.todoapplication.dto.response.CategorySubTodoResponse;
-import com.pawith.todoapplication.dto.response.CategorySubTodoListResponse;
 import com.pawith.tododomain.entity.Assign;
 import com.pawith.tododomain.entity.Register;
 import com.pawith.tododomain.entity.Todo;
@@ -24,8 +23,6 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
 import org.springframework.transaction.annotation.Transactional;
 
 @ApplicationService
@@ -39,15 +36,20 @@ public class TodoGetUseCase {
     private final RegisterQueryService registerQueryService;
     private final AssignQueryService assignQueryService;
 
-    public SliceResponse<TodoInfoResponse> getTodoListByTodoTeamId(final Long todoTeamId, final Pageable pageable) {
+    public ListResponse<TodoInfoResponse> getTodoListByTodoTeamId(final Long todoTeamId) {
         final User user = userUtils.getAccessUser();
-        final Slice<Todo> todoList = todoQueryService.findTodayTodoSlice(user.getId(), todoTeamId, pageable);
-        Slice<TodoInfoResponse> todoHomeResponseSlice = todoList.map(todo -> new TodoInfoResponse(todo.getId(), todo.getDescription(), todo.getCompletionStatus().name()));
-        return SliceResponse.from(todoHomeResponseSlice);
+        final Map<Todo, Assign> todoAssignMap = getTodoAssignMap(user.getId(), todoTeamId);
+        List<TodoInfoResponse> todoInfoResponseList = new ArrayList<>();
+        for (Todo todo : todoAssignMap.keySet()) {
+            Assign assign = todoAssignMap.get(todo);
+            TodoInfoResponse todoInfoResponse = new TodoInfoResponse(todo.getId(), todo.getCategory().getName(), todo.getDescription(), assign.getCompletionStatus());
+            todoInfoResponseList.add(todoInfoResponse);
+        }
+        return ListResponse.from(todoInfoResponseList);
     }
 
 
-    public CategorySubTodoListResponse getTodoListByCategoryId(Long categoryId, LocalDate moveDate) {
+    public ListResponse<CategorySubTodoResponse> getTodoListByCategoryId(Long categoryId, LocalDate moveDate) {
         final List<Register> registers = registerQueryService.findAllRegistersByCategoryId(categoryId);
         Map<Long, Register> registerMap = listToMap(registers, Register::getId);
         List<Long> userIds = listToList(registers, Register::getUserId);
@@ -64,7 +66,7 @@ public class TodoGetUseCase {
             }
             todoMainResponses.add(new CategorySubTodoResponse(todo.getId(), todo.getDescription(), todo.getCompletionStatus(), assignUserInfoResponses));
         }
-        return new CategorySubTodoListResponse(todoMainResponses);
+        return ListResponse.from(todoMainResponses);
     }
 
     public TodoCompletionResponse getTodoCompletion(Long todoId) {
@@ -76,6 +78,13 @@ public class TodoGetUseCase {
         return assignQueryService.findAllAssignByCategoryIdAndScheduledDate(categoryId, moveDate)
                 .stream()
                 .collect(Collectors.groupingBy(Assign::getTodo, LinkedHashMap::new,Collectors.mapping(Function.identity(), Collectors.toList())));
+    }
+
+    private LinkedHashMap<Todo, Assign> getTodoAssignMap(Long userId, Long todoTeamId) {
+        return assignQueryService.findAllByUserIdAndTodoTeamIdAndScheduledDate(userId, todoTeamId)
+                .stream()
+                .collect(Collectors.toMap(Assign::getTodo, Function.identity(),
+                        (existing, replacement) -> existing, LinkedHashMap::new));
     }
 
     private static <T, K> Map<K, T> listToMap(List<T> list, Function<T, K> keyExtractor) {
