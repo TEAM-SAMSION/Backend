@@ -2,7 +2,6 @@ package com.pawith.todoapplication.service;
 
 import com.pawith.commonmodule.annotation.ApplicationService;
 import com.pawith.commonmodule.response.ListResponse;
-import com.pawith.commonmodule.response.SliceResponse;
 import com.pawith.todoapplication.dto.response.AssignUserInfoResponse;
 import com.pawith.todoapplication.dto.response.TodoCompletionResponse;
 import com.pawith.todoapplication.dto.response.TodoInfoResponse;
@@ -24,7 +23,6 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Slice;
 import org.springframework.transaction.annotation.Transactional;
 
 @ApplicationService
