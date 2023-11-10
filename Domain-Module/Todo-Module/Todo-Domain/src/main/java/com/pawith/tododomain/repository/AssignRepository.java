@@ -20,9 +20,10 @@ public interface AssignRepository extends JpaRepository<Assign, Long> {
 
     @Query("select a " +
             "from Assign a " +
-            "join fetch a.register " +
+            "join a.register r " +
             "join fetch a.todo t " +
-            "where a.register.userId=:userId and a.register.todoTeam.id=:todoTeamId and t.scheduledDate=:scheduledDate")
+            "join fetch t.category " +
+            "where r.userId=:userId and r.todoTeam.id=:todoTeamId and t.scheduledDate=:scheduledDate")
     List<Assign> findAllByUserIdAndTodoTeamIdAndScheduledDate(Long userId, Long todoTeamId, LocalDate scheduledDate);
 
     @Modifying
