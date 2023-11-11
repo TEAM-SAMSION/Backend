@@ -12,6 +12,15 @@ services:
       - "8079:8079"
     environment:
       - TZ=Asia/Seoul
+      - DB_URL=${DB_URL}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - JWT_SECRET=${JWT_SECRET}
+      - KAKAO_APP_ID=${KAKAO_APP_ID}
+      - APPLE_APP_ID=${APPLE_APP_ID}
+      - S3_BUCKET=${S3_BUCKET}
+      - AWS_ACCESS_KEY=${AWS_ACCESS_KEY}
+      - AWS_SECRET_KEY=${AWS_SECRET_KEY}
     networks:
       - backend_network
 
