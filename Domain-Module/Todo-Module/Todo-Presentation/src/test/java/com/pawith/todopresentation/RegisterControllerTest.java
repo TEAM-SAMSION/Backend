@@ -152,8 +152,9 @@ class RegisterControllerTest extends BaseRestDocsTest {
     void putAuthority() throws Exception {
         //given
         final Long registerId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
+        final Long todoTeamId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
         final AuthorityChangeRequest authorityChangeRequest = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(AuthorityChangeRequest.class);
-        MockHttpServletRequestBuilder request = put(REGISTER_REQUEST_URL + "/registers/{registerId}", registerId)
+        MockHttpServletRequestBuilder request = put(REGISTER_REQUEST_URL + "/{todoTeamId}/registers/{registerId}", todoTeamId, registerId)
             .contentType("application/json")
             .header("Authorization", "Bearer accessToken")
             .content(objectMapper.writeValueAsString(authorityChangeRequest));
@@ -166,6 +167,7 @@ class RegisterControllerTest extends BaseRestDocsTest {
                     headerWithName("Authorization").description("access 토큰")
                 ),
                 pathParameters(
+                    parameterWithName("todoTeamId").description("변경할 TodoTeam의 Id"),
                     parameterWithName("registerId").description("변경할 register의 Id")
                 ),
                 requestFields(
