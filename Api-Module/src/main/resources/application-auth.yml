@@ -1,0 +1,9 @@
+jwt:
+  secret: ${JWT_SECRET} # 환경 변수
+  access-token-expiration-time: 86400000 #  24*60*60*1000 = 1일
+  refresh-token-expiration-time: 604800000 # 7*24*60*60*1000 = 7일
+
+# App id
+app-id:
+  kakao: ${KAKAO_APP_ID} # 환경 변수
+  apple: ${APPLE_APP_ID} # 환경 변수

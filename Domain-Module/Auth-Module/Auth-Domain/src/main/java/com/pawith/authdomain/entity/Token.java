@@ -13,8 +13,8 @@ import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@SQLDelete(sql = "UPDATE token SET deleted = true WHERE token_id = ?")
-@Where(clause = "deleted = false")
+@SQLDelete(sql = "UPDATE token SET is_deleted = true WHERE token_id = ?")
+@Where(clause = "is_deleted = false")
 @Getter
 public class Token extends BaseEntity {
     @Id@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,7 +26,7 @@ public class Token extends BaseEntity {
 
     private String email;
     private String value;
-    private Boolean deleted = Boolean.FALSE;
+    private Boolean isDeleted = Boolean.FALSE;
 
     @Builder
     public Token(TokenType tokenType, String email, String value) {

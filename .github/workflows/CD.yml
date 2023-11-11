@@ -56,6 +56,15 @@ jobs:
             touch ./.env
             echo "DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }}" >> ./.env
             echo "DOCKER_REPOSITORY=${{ secrets.DOCKER_REPOSITORY }}" >> ./.env
+            echo "DB_URL=${{ secrets.DEV_DB_URL }}" >> ./.env
+            echo "DB_USERNAME=${{ secrets.DEV_DB_USERNAME }}" >> ./.env
+            echo "DB_PASSWORD=${{ secrets.DEV_DB_PASSWORD }}" >> ./.env
+            echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> ./.env
+            echo "KAKAO_APP_ID=${{ secrets.KAKAO_APP_ID }}" >> ./.env
+            echo "APPLE_APP_ID=${{ secrets.APPLE_APP_ID }}" >> ./.env
+            echo "S3_BUCKET=${{ secrets.S3_BUCKET }}" >> ./.env
+            echo "AWS_ACCESS_KEY=${{ secrets.AWS_ACCESS_KEY }}" >> ./.env
+            echo "AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }}" >> ./.env
 
       - name: Grant Execute Permission For Gradlew
         run: chmod +x gradlew
