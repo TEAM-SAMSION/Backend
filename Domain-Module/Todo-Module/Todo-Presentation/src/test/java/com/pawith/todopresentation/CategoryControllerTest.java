@@ -6,6 +6,7 @@ import com.pawith.commonmodule.utils.FixtureMonkeyUtils;
 import com.pawith.todoapplication.dto.request.CategoryCreateRequest;
 import com.pawith.todoapplication.dto.request.CategoryNameChageRequest;
 import com.pawith.todoapplication.dto.response.CategoryInfoResponse;
+import com.pawith.todoapplication.dto.response.CategoryManageInfoResponse;
 import com.pawith.todoapplication.service.CategoryChangeUseCase;
 import com.pawith.todoapplication.service.CategoryCreateUseCase;
 import com.pawith.todoapplication.service.CategoryDeleteUseCase;
@@ -170,6 +171,35 @@ public class CategoryControllerTest extends BaseRestDocsTest {
                         ),
                         requestFields(
                                 fieldWithPath("categoryName").description("변경할 Category의 이름")
+                        )
+                ));
+    }
+
+    @Test
+    @DisplayName("카테고리 조회 테스트(관리자 페이지)")
+    public void getCategoryListForManage() throws Exception {
+        // given
+        final Long testTeamId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
+        final List<CategoryManageInfoResponse> categoryListResponses = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMe(CategoryManageInfoResponse.class, 2);
+        given(categoryGetUseCase.getManageCategoryList(testTeamId)).willReturn(ListResponse.from(categoryListResponses));
+        MockHttpServletRequestBuilder request = get(CATEGORY_REQUEST_URL + "/{teamId}/category/manage", testTeamId)
+                .header("Authorization", "Bearer accessToken");
+        // when
+        ResultActions result = mvc.perform(request);
+        // then
+        result.andExpect(status().isOk())
+                .andDo(resultHandler.document(
+                        requestHeaders(
+                                headerWithName("Authorization").description("access 토큰")
+                        ),
+                        pathParameters(
+                                parameterWithName("teamId").description("TodoTeam의 Id")
+                        ),
+                        responseFields(
+                                fieldWithPath("content[].categoryId").description("Category의 Id"),
+                                fieldWithPath("content[].categoryName").description("Category의 이름"),
+                                fieldWithPath("content[].categoryStatus").description("Category의 상태"),
+                                fieldWithPath("content[].categoryStatus").description("Category의 상태(ON, OFF)")
                         )
                 ));
     }
