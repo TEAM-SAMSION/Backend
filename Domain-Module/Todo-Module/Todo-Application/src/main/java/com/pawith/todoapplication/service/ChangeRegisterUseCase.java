@@ -28,7 +28,7 @@ public class ChangeRegisterUseCase {
         final User user = userUtils.getAccessUser();
         Register userRegister = registerQueryService.findRegisterByTodoTeamIdAndUserId(todoTeamId, user.getId());
         Register register = registerQueryService.findRegisterById(registerId);
-        Authority authority = Authority.valueOf(request.getAuthority());
+        Authority authority = request.getAuthority();
         if (userRegister.isPresident() && authority.equals(Authority.PRESIDENT)) {
             userRegister.updateAuthority(Authority.MEMBER);
         } else {
