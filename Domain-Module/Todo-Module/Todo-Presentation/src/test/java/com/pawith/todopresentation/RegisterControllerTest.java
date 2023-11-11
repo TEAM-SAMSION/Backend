@@ -141,7 +141,8 @@ class RegisterControllerTest extends BaseRestDocsTest {
                                 fieldWithPath("content[].registerId").description("TodoTeam에 등록된 사용자 registerId"),
                                 fieldWithPath("content[].authority").description("TodoTeam에 등록된 사용자 권한"),
                                 fieldWithPath("content[].registerName").description("TodoTeam에 등록된 사용자 이름"),
-                                fieldWithPath("content[].registerEmail").description("TodoTeam에 등록된 사용자 이메일")
+                                fieldWithPath("content[].registerEmail").description("TodoTeam에 등록된 사용자 이메일"),
+                                fieldWithPath("content[].profileImage").description("TodoTeam에 등록된 사용자 프로필 이미지")
                         )
                 ));
 
