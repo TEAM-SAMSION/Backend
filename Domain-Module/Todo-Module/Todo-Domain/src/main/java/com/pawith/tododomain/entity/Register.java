@@ -1,6 +1,7 @@
 package com.pawith.tododomain.entity;
 
 import com.pawith.commonmodule.domain.BaseEntity;
+import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -42,15 +43,10 @@ public class Register extends BaseEntity {
         this.userId = userId;
     }
 
-    public void updateAuthority(String authority) {
-        if(!this.authority.toString().equals(authority) && authority != null && isValidAuthority(authority)) {
-            this.authority = Authority.valueOf(authority);
-        }
-    }
-
-    private boolean isValidAuthority(String authority) {
-        return Arrays.stream(Authority.values())
-                .anyMatch(enumValue -> enumValue.name().equals(authority));
+    public void updateAuthority(Authority authority) {
+        if(this.authority.equals(authority))
+            return;
+        this.authority = Objects.requireNonNull(authority, "authority must be not null");
     }
 
     public void unregister(){

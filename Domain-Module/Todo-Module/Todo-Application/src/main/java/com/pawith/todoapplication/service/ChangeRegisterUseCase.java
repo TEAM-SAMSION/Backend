@@ -28,14 +28,14 @@ public class ChangeRegisterUseCase {
         final User user = userUtils.getAccessUser();
         Register userRegister = registerQueryService.findRegisterByTodoTeamIdAndUserId(todoTeamId, user.getId());
         Register register = registerQueryService.findRegisterById(registerId);
-
-        if (userRegister.isPresident() && Authority.PRESIDENT.name().equals(request.getAuthority())) {
-            userRegister.updateAuthority(Authority.MEMBER.name());
+        Authority authority = request.getAuthority();
+        if (userRegister.isPresident() && authority.equals(Authority.PRESIDENT)) {
+            userRegister.updateAuthority(Authority.MEMBER);
         } else {
-            registerValidateService.validateAuthorityChangeable(userRegister, request.getAuthority());
+            registerValidateService.validateAuthorityChangeable(userRegister, authority);
         }
 
-        register.updateAuthority(request.getAuthority());
+        register.updateAuthority(authority);
     }
 
 }
