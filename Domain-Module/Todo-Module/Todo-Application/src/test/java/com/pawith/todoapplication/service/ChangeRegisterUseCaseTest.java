@@ -50,7 +50,7 @@ public class ChangeRegisterUseCaseTest {
         final Long registerId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
         final Long todoTeamId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
         final AuthorityChangeRequest authorityChangeRequest = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeBuilder(AuthorityChangeRequest.class)
-            .set("authority", "PRESIDENT")
+            .set("Authority", "PRESIDENT")
             .sample();
 
         given(userUtils.getAccessUser()).willReturn(mockUser);
@@ -59,7 +59,7 @@ public class ChangeRegisterUseCaseTest {
         // when
         changeRegisterUseCase.changeAuthority(todoTeamId, registerId, authorityChangeRequest);
         // then
-        Assertions.assertThat(mockRegister.getAuthority()).isEqualTo(Authority.valueOf(authorityChangeRequest.getAuthority()));
+        Assertions.assertThat(mockRegister.getAuthority()).isEqualTo(authorityChangeRequest.getAuthority());
         Assertions.assertThat(mockUserRegister.getAuthority()).isEqualTo(Authority.MEMBER);
     }
 
@@ -78,7 +78,7 @@ public class ChangeRegisterUseCaseTest {
         final Long registerId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
         final Long todoTeamId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
         final AuthorityChangeRequest authorityChangeRequest = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeBuilder(AuthorityChangeRequest.class)
-            .set("authority", "EXECUTIVE")
+            .set("Authority", "EXECUTIVE")
             .sample();
 
         given(userUtils.getAccessUser()).willReturn(mockUser);
@@ -87,6 +87,6 @@ public class ChangeRegisterUseCaseTest {
         // when
         changeRegisterUseCase.changeAuthority(todoTeamId, registerId, authorityChangeRequest);
         // then
-        Assertions.assertThat(mockRegister.getAuthority()).isEqualTo(Authority.valueOf(authorityChangeRequest.getAuthority()));
+        Assertions.assertThat(mockRegister.getAuthority()).isEqualTo(authorityChangeRequest.getAuthority());
     }
 }
