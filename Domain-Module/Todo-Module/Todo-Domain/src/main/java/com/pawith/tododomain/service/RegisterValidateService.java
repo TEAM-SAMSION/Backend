@@ -43,8 +43,8 @@ public class RegisterValidateService {
         }
     }
 
-    public void validateAuthorityChangeable(final Register userRegister, final String authority) {
-        if (!userRegister.isPresident() && Authority.PRESIDENT.name().equals(authority)) {
+    public void validateAuthorityChangeable(final Register userRegister, final Authority authority) {
+        if (!userRegister.isPresident() && authority.equals(Authority.PRESIDENT)) {
             throw new UnchangeableException(Error.CANNOT_CHANGE_AUTHORITY);
         }
     }
