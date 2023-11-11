@@ -42,7 +42,7 @@ public class RegistersGetUseCase {
         final List<RegisterManageInfoResponse> manageRegisterInfoResponses = allRegisters.stream()
                 .map(register -> {
                     final User registerUser = registerUserMap.get(register.getUserId());
-                    return new RegisterManageInfoResponse(register.getId(), register.getAuthority().toString(), registerUser.getNickname(), registerUser.getEmail());
+                    return new RegisterManageInfoResponse(register.getId(), register.getAuthority().toString(), registerUser.getNickname(), registerUser.getEmail(), registerUser.getImageUrl());
                 })
                 .collect(Collectors.toList());
         return ListResponse.from(manageRegisterInfoResponses);

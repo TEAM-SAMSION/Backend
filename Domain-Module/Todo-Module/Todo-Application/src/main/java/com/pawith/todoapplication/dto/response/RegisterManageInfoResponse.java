@@ -10,4 +10,5 @@ public class RegisterManageInfoResponse {
     private final String authority;
     private final String registerName;
     private final String registerEmail;
+    private final String profileImage;
 }
