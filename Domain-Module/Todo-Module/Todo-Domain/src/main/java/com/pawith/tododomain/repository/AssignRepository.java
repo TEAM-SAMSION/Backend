@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public interface AssignRepository extends JpaRepository<Assign, Long> {
 
@@ -31,11 +32,10 @@ public interface AssignRepository extends JpaRepository<Assign, Long> {
     void deleteByRegisterIds(final List<Long> registerIds);
 
     @Query("select a " +
-            "from Assign a " +
-            "join fetch a.register " +
-            "join fetch a.todo t " +
-            "where t.id=:todoId and a.register.userId=:userId")
-    Assign findByTodoIdAndUserId(Long todoId, Long userId);
+        "from Assign a " +
+        "join Register r on r.id = a.register.id and r.userId=:userId " +
+        "join Todo t on t.id = a.todo.id and t.id = :todoId")
+    Optional<Assign> findByTodoIdAndUserId(Long todoId, Long userId);
 
     @Query("select a " +
             "from Assign a " +
