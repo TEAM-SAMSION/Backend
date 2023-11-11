@@ -47,9 +47,9 @@ public class RegisterController {
         return registersGetUseCase.getRegisterTerm(todoTeamId);
     }
 
-    @PutMapping("/registers/{registerId}")
-    public void putAuthority(@PathVariable Long registerId, @RequestBody AuthorityChangeRequest authorityChangeRequest) {
-        changeRegisterUseCase.changeAuthority(registerId, authorityChangeRequest);
+    @PutMapping("/{todoTeamId}/registers/{registerId}")
+    public void putAuthority(@PathVariable Long todoTeamId, @PathVariable Long registerId, @RequestBody AuthorityChangeRequest authorityChangeRequest) {
+        changeRegisterUseCase.changeAuthority(todoTeamId, registerId, authorityChangeRequest);
     }
 
 

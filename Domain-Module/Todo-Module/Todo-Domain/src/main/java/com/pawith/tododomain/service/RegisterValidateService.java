@@ -5,6 +5,7 @@ import com.pawith.commonmodule.exception.Error;
 import com.pawith.tododomain.entity.Authority;
 import com.pawith.tododomain.entity.Register;
 import com.pawith.tododomain.entity.TodoTeam;
+import com.pawith.tododomain.exception.UnchangeableException;
 import com.pawith.tododomain.exception.UnregistrableException;
 import com.pawith.tododomain.repository.RegisterRepository;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +40,12 @@ public class RegisterValidateService {
             .anyMatch(presidentRegisterCount -> presidentRegisterCount <= 1);
         if (isNotUnregistrable) {
             throw new UnregistrableException(Error.CANNOT_PRESIDENT_UNREGISTRABLE);
+        }
+    }
+
+    public void validateAuthorityChangeable(final Register userRegister, final String authority) {
+        if (!userRegister.isPresident() && Authority.PRESIDENT.name().equals(authority)) {
+            throw new UnchangeableException(Error.CANNOT_CHANGE_AUTHORITY);
         }
     }
 }
