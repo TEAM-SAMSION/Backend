@@ -4,6 +4,7 @@ import com.pawith.commonmodule.response.ListResponse;
 import com.pawith.todoapplication.dto.request.CategoryCreateRequest;
 import com.pawith.todoapplication.dto.request.CategoryNameChageRequest;
 import com.pawith.todoapplication.dto.response.CategoryInfoResponse;
+import com.pawith.todoapplication.dto.response.CategoryManageInfoResponse;
 import com.pawith.todoapplication.service.CategoryChangeUseCase;
 import com.pawith.todoapplication.service.CategoryCreateUseCase;
 import com.pawith.todoapplication.service.CategoryDeleteUseCase;
@@ -29,6 +30,11 @@ public class CategoryController {
     @GetMapping("/teams/{todoTeamId}/category")
     public ListResponse<CategoryInfoResponse> getCategoryList(@PathVariable Long todoTeamId){
         return categoryGetUseCase.getCategoryList(todoTeamId);
+    }
+
+    @GetMapping("/teams/{todoTeamId}/category/manage")
+    public ListResponse<CategoryManageInfoResponse> getCategoryListForManage(@PathVariable Long todoTeamId){
+        return categoryGetUseCase.getManageCategoryList(todoTeamId);
     }
 
     @PutMapping("/teams/category/{categoryId}")

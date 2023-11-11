@@ -20,6 +20,11 @@ public class CategoryQueryService {
     public List<Category> findCategoryListByTodoTeamIdAndStatus(Long todoTeamId) {
         return categoryRepository.findAllByTodoTeamIdAndCategoryStatus(todoTeamId);
     }
+
+    public List<Category> findCategoryListByTodoTeamId(Long todoTeamId) {
+        return categoryRepository.findAllByTodoTeamId(todoTeamId);
+    }
+
     public Category findCategoryByCategoryId(Long categoryId) {
         return categoryRepository.findById(categoryId).orElseThrow(() -> new CategoryNotFoundException(Error.CATEGORY_NOT_FOUND));
     }

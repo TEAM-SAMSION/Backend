@@ -9,4 +9,7 @@ import java.util.List;
 public interface CategoryRepository extends JpaRepository<Category, Long> {
     @Query("select c from Category c where c.todoTeam.id = :todoTeamId and c.categoryStatus = 'ON'")
     List<Category> findAllByTodoTeamIdAndCategoryStatus(Long todoTeamId);
+
+    @Query("select c from Category c where c.todoTeam.id = :todoTeamId")
+    List<Category> findAllByTodoTeamId(Long todoTeamId);
 }
