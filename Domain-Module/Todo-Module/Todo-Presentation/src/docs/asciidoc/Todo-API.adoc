@@ -92,6 +92,12 @@ operation::todo-controller-test/get-todo-completion[snippets='http-request,path-
 
 operation::category-controller-test/get-category-list[snippets='http-request,path-parameters,request-headers,http-response,response-fields']
 
+[[todo-team-id로-카테고리-조회-관리자-페이지]]
+=== Todo Team Id로 카테고리 조회(관리자 페이지에서 사용)
+
+operation::category-controller-test/get-category-list-for-manage[snippets='http-request,path-parameters,request-headers,http-response,response-fields']
+
+
 [[Category-활성-비활성]]
 === Category 활성/비활성
 operation::category-controller-test/put-category-status[snippets='http-request,path-parameters,request-headers,http-response']

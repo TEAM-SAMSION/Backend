@@ -3,6 +3,7 @@ package com.pawith.todoapplication.service;
 import com.pawith.commonmodule.annotation.ApplicationService;
 import com.pawith.commonmodule.response.ListResponse;
 import com.pawith.todoapplication.dto.response.CategoryInfoResponse;
+import com.pawith.todoapplication.dto.response.CategoryManageInfoResponse;
 import com.pawith.tododomain.entity.Category;
 import com.pawith.tododomain.service.CategoryQueryService;
 import lombok.RequiredArgsConstructor;
@@ -24,5 +25,13 @@ public class CategoryGetUseCase {
             .map(category -> new CategoryInfoResponse(category.getId(), category.getName()))
             .collect(Collectors.toList());
         return ListResponse.from(categorySimpleResponses);
+    }
+
+    public ListResponse<CategoryManageInfoResponse> getManageCategoryList(final Long todoTeamId) {
+        List<Category> categoryList = categoryQueryService.findCategoryListByTodoTeamId(todoTeamId);
+        List<CategoryManageInfoResponse> categoryManageInfoResponses = categoryList.stream()
+                .map(category -> new CategoryManageInfoResponse(category.getId(), category.getName(), category.getCategoryStatus()))
+                .collect(Collectors.toList());
+        return ListResponse.from(categoryManageInfoResponses);
     }
 }
