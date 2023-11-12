@@ -23,6 +23,7 @@ public class TodoController {
     private final TodoCreateUseCase todoCreateUseCase;
     private final TodoChangeUseCase todoChangeUseCase;
     private final AssignChangeUseCase assignChangeUseCase;
+    private final TodoDeleteUseCase todoDeleteUseCase;
 
     @GetMapping("/{todoTeamId}/todos/progress")
     public TodoProgressResponse getTodoProgress(@PathVariable Long todoTeamId) {
@@ -68,6 +69,11 @@ public class TodoController {
     @GetMapping("/todos/{todoId}/completion")
     public TodoCompletionResponse getTodoCompletion(@PathVariable Long todoId){
         return todoGetUseCase.getTodoCompletion(todoId);
+    }
+
+    @DeleteMapping("/todos/{todoId}")
+    public void deleteTodoById(@PathVariable Long todoId){
+        todoDeleteUseCase.deleteTodoByTodoId(todoId);
     }
 
 }
