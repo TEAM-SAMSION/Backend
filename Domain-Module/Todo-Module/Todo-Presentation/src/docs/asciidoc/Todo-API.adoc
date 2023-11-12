@@ -137,6 +137,11 @@ operation::register-controller-test/get-manage-registers[snippets='http-request,
 
 operation::register-controller-test/put-authority[snippets='http-request,path-parameters,request-headers,request-fields,http-response']
 
+[[Todo-Teamd에-가입된-사용자-검색]]
+=== Todo Team에 가입된 사용자 검색
+
+operation::register-controller-test/get-register-by-nickname[snippets='http-request,path-parameters,request-headers,request-parameters,http-response,response-fields']
+
 [[Todo-Team-탈퇴]]
 === Todo Team 탈퇴
 
