@@ -50,4 +50,8 @@ public class UserQueryService {
     public boolean checkEmailAlreadyExist(String email) {
         return userRepository.existsByEmail(email);
     }
+
+    public List<User> findAllByNicknameAndIds(String nickname, List<Long> userIds) {
+        return userRepository.findAllByNicknameAndIds(nickname, userIds);
+    }
 }

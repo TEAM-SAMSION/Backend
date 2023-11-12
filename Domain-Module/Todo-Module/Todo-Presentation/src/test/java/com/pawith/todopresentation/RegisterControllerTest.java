@@ -204,4 +204,39 @@ class RegisterControllerTest extends BaseRestDocsTest {
                 )
             ));
     }
+
+    @Test
+    @DisplayName("닉네임으로 Register를 검색하는 테스트")
+    void getRegisterByNickname() throws Exception {
+        //given
+        final Long todoTeamId = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(Long.class);
+        final String nickname = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(String.class);
+        final List<RegisterSearchInfoResponse> registerSearchInfoResponses = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMe(RegisterSearchInfoResponse.class, 2);
+        given(registersGetUseCase.searchRegisterByNickname(todoTeamId, nickname)).willReturn(ListResponse.from(registerSearchInfoResponses));
+        MockHttpServletRequestBuilder request = get(REGISTER_REQUEST_URL + "/{todoTeamId}/registers/search", todoTeamId)
+            .queryParam("nickname", nickname)
+            .header("Authorization", "Bearer accessToken");
+        //when
+        ResultActions result = mvc.perform(request);
+        //then
+        result.andExpect(status().isOk())
+            .andDo(resultHandler.document(
+                requestHeaders(
+                    headerWithName("Authorization").description("access 토큰")
+                ),
+                pathParameters(
+                    parameterWithName("todoTeamId").description("TodoTeam의 Id")
+                ),
+                requestParameters(
+                    parameterWithName("nickname").description("검색할 Register의 nickname")
+                ),
+                responseFields(
+                    fieldWithPath("content[].registerId").description("Register의 Id"),
+                    fieldWithPath("content[].authority").description("Register의 권한"),
+                    fieldWithPath("content[].registerName").description("Register의 이름"),
+                    fieldWithPath("content[].registerEmail").description("Register의 이메일"),
+                    fieldWithPath("content[].profileImage").description("Register의 프로필 이미지")
+                )
+            ));
+    }
 }
