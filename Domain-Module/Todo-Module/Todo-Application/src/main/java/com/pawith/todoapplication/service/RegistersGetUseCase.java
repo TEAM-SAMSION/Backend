@@ -3,11 +3,14 @@ package com.pawith.todoapplication.service;
 import com.pawith.commonmodule.annotation.ApplicationService;
 import com.pawith.commonmodule.response.ListResponse;
 import com.pawith.todoapplication.dto.response.*;
+import com.pawith.tododomain.entity.Authority;
 import com.pawith.tododomain.entity.Register;
 import com.pawith.tododomain.service.RegisterQueryService;
 import com.pawith.userdomain.entity.User;
 import com.pawith.userdomain.service.UserQueryService;
 import com.pawith.userdomain.utils.UserUtils;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,10 +42,12 @@ public class RegistersGetUseCase {
     public ListResponse<RegisterManageInfoResponse> getManageRegisters(final Long teamId) {
         final List<Register> allRegisters = registerQueryService.findAllRegistersByTodoTeamId(teamId);
         final Map<Long, User> registerUserMap = getRegisterUserMap(allRegisters);
+        Comparator<Authority> authorityComparator = Comparator.comparing(Enum::ordinal);
         final List<RegisterManageInfoResponse> manageRegisterInfoResponses = allRegisters.stream()
+                .sorted(Comparator.comparing(register -> register.getAuthority(), authorityComparator))
                 .map(register -> {
                     final User registerUser = registerUserMap.get(register.getUserId());
-                    return new RegisterManageInfoResponse(register.getId(), register.getAuthority().toString(), registerUser.getNickname(), registerUser.getEmail(), registerUser.getImageUrl());
+                    return new RegisterManageInfoResponse(register.getId(), register.getAuthority(), registerUser.getNickname(), registerUser.getEmail(), registerUser.getImageUrl());
                 })
                 .collect(Collectors.toList());
         return ListResponse.from(manageRegisterInfoResponses);
