@@ -4,6 +4,7 @@ import com.pawith.commonmodule.response.ListResponse;
 import com.pawith.todoapplication.dto.request.AuthorityChangeRequest;
 import com.pawith.todoapplication.dto.response.RegisterInfoResponse;
 import com.pawith.todoapplication.dto.response.RegisterManageInfoResponse;
+import com.pawith.todoapplication.dto.response.RegisterSearchInfoResponse;
 import com.pawith.todoapplication.dto.response.RegisterTermResponse;
 import com.pawith.todoapplication.service.ChangeRegisterUseCase;
 import com.pawith.todoapplication.service.RegistersGetUseCase;
@@ -50,6 +51,11 @@ public class RegisterController {
     @PutMapping("/{todoTeamId}/registers/{registerId}")
     public void putAuthority(@PathVariable Long todoTeamId, @PathVariable Long registerId, @RequestBody AuthorityChangeRequest authorityChangeRequest) {
         changeRegisterUseCase.changeAuthority(todoTeamId, registerId, authorityChangeRequest);
+    }
+
+    @GetMapping("/{todoTeamId}/registers/search")
+    public ListResponse<RegisterSearchInfoResponse> getRegisterByNickname(@PathVariable Long todoTeamId, @RequestParam("nickname") String nickname) {
+        return registersGetUseCase.searchRegisterByNickname(todoTeamId, nickname);
     }
 
 
