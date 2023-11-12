@@ -1,5 +1,5 @@
 [[Alarm-API]]
-=== Alarm API
+== Alarm API
 
 [[알림-존재-여부-조회]]
 === 알림 존재 여부 조회
