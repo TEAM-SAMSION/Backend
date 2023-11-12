@@ -31,6 +31,10 @@ public interface AssignRepository extends JpaRepository<Assign, Long> {
     @Query("update Assign a set a.isDeleted = true where a.register.id in (:registerIds)")
     void deleteByRegisterIds(final List<Long> registerIds);
 
+    @Modifying
+    @Query("update Assign a set a.isDeleted = true where a.todo.id=:todoId")
+    void deleteAllByTodoId(final Long todoId);
+
     @Query("select a " +
         "from Assign a " +
         "join Register r on r.id = a.register.id and r.userId=:userId " +

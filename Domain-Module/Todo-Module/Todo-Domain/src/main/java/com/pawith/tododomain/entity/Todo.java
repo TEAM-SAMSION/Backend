@@ -17,10 +17,14 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SQLDelete(sql = "UPDATE todo SET is_deleted = true WHERE todo_id=?")
+@Where(clause = "is_deleted=false")
 public class Todo extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,6 +36,8 @@ public class Todo extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private CompletionStatus completionStatus;
+
+    private Boolean isDeleted = Boolean.FALSE;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")

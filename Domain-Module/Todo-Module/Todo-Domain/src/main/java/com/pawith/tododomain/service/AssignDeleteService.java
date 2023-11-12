@@ -16,4 +16,8 @@ public class AssignDeleteService {
     public void deleteAssignByRegisterId(final List<Long> registerId){
         assignRepository.deleteByRegisterIds(registerId);
     }
+
+    public void deleteAllByTodoId(final Long todoId){
+        assignRepository.deleteAllByTodoId(todoId);
+    }
 }

@@ -47,4 +47,6 @@ public interface TodoRepository extends JpaRepository<Todo, Long> {
             "join Category c on c.id=:categoryId " +
             "where t.category.id = c.id and t.scheduledDate = :moveDate")
     List<Todo> findTodoListByCategoryIdAndscheduledDate(Long categoryId, LocalDate moveDate);
+
+    void deleteById(Long todoId);
 }

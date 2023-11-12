@@ -84,6 +84,11 @@ operation::todo-controller-test/put-assign-status[snippets='http-request,path-pa
 
 operation::todo-controller-test/get-todo-completion[snippets='http-request,path-parameters,request-headers,http-response,response-fields']
 
+[[Todo-삭제]]
+=== Todo 삭제
+
+operation::todo-controller-test/delete-todo[snippets='http-request,path-parameters,request-headers,http-response']
+
 [[Category-API]]
 == Category API
 

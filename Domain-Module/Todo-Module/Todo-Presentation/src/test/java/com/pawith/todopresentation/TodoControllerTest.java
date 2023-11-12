@@ -47,6 +47,8 @@ public class TodoControllerTest extends BaseRestDocsTest {
     private TodoChangeUseCase todoChangeUseCase;
     @MockBean
     private AssignChangeUseCase assignChangeUseCase;
+    @MockBean
+    private TodoDeleteUseCase todoDeleteUseCase;
 
     private static final String TODO_REQUEST_URL = "/teams";
 
@@ -310,6 +312,27 @@ public class TodoControllerTest extends BaseRestDocsTest {
                         ),
                         responseFields(
                                 fieldWithPath("completionStatus").description("투두 완료 여부")
+                        )
+                ));
+    }
+
+    @Test
+    @DisplayName("투두 삭제 API 테스트")
+    void deleteTodo() throws Exception {
+        //given
+        final Long testTodoId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
+        MockHttpServletRequestBuilder request = delete(TODO_REQUEST_URL + "/todos/{todoId}", testTodoId)
+                .header("Authorization", "Bearer accessToken");
+        //when
+        ResultActions result = mvc.perform(request);
+        //then
+        result.andExpect(status().isOk())
+                .andDo(resultHandler.document(
+                        requestHeaders(
+                                headerWithName("Authorization").description("access 토큰")
+                        ),
+                        pathParameters(
+                                parameterWithName("todoId").description("투두 항목 Id")
                         )
                 ));
     }
