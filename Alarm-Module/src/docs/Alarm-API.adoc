@@ -1,0 +1,17 @@
+[[Alarm-API]]
+== Alarm API
+
+[[알림-존재-여부-조회]]
+=== 알림 존재 여부 조회
+
+operation::alarm-controller-test/get-alarms-exist[snippets='http-request,request-headers,http-response,response-fields']
+
+[[알림-조회]]
+=== 알림 조회
+
+operation::alarm-controller-test/get-alarms[snippets='http-request,request-headers,request-parameters,http-response,response-fields']
+
+[[device-token-저장]]
+=== 디바이스 토큰 저장
+
+operation::alarm-user-controller-test/post-device-token[snippets='http-request,request-headers,request-fields,http-response']

@@ -26,4 +26,4 @@ include 'Domain-Module:Auth-Module:Auth-Domain'
 include 'Common-Module'
 
 include 'Image-Module'
-//include 'Alarm-Module'
+include 'Alarm-Module'

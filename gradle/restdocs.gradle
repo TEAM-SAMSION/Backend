@@ -17,7 +17,7 @@ subprojects {
     }
 
     tasks.register("copySnippets", Copy) {
-        if (name != 'Api-Module') {
+        if (project.name != 'Api-Module') {
             dependsOn test
             from snippetsDir
             into rootProject.file("Api-Module/build/generated-snippets")

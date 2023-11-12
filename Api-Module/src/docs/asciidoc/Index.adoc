@@ -15,4 +15,4 @@ include::../../../../Domain-Module/User-Module/User-Presentation/src/docs/asciid
 
 include::../../../../Domain-Module/Todo-Module/Todo-Presentation/src/docs/asciidoc/Todo-API.adoc[]
 
-include::../../../../Domain-Module/Image-Module/Image-Presentation/src/docs/asciidoc/Image-API.adoc[]
+include::../../../../Alarm-Module/src/docs/Alarm-API.adoc[]
