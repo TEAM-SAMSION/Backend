@@ -1,5 +1,6 @@
 package com.pawith.todoapplication.dto.response;
 
+import com.pawith.tododomain.entity.Authority;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -7,7 +8,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public class RegisterManageInfoResponse {
     private final Long registerId;
-    private final String authority;
+    private final Authority authority;
     private final String registerName;
     private final String registerEmail;
     private final String profileImage;
