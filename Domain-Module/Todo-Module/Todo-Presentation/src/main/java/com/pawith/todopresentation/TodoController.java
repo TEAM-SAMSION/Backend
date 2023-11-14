@@ -12,6 +12,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Slf4j
 @RestController
@@ -24,6 +25,7 @@ public class TodoController {
     private final TodoChangeUseCase todoChangeUseCase;
     private final AssignChangeUseCase assignChangeUseCase;
     private final TodoDeleteUseCase todoDeleteUseCase;
+    private final TodoNotificationCreateUseCase todoNotificationCreateUseCase;
 
     @GetMapping("/{todoTeamId}/todos/progress")
     public TodoProgressResponse getTodoProgress(@PathVariable Long todoTeamId) {
@@ -74,6 +76,11 @@ public class TodoController {
     @DeleteMapping("/todos/{todoId}")
     public void deleteTodoById(@PathVariable Long todoId){
         todoDeleteUseCase.deleteTodoByTodoId(todoId);
+    }
+
+    @PostMapping("/todos/{todoId}/assign/notification")
+    public void postTodoAssignAlarm(@PathVariable Long todoId, @RequestParam("notificationTime") @DateTimeFormat(iso = DateTimeFormat.ISO.TIME) LocalTime notificationTime){
+        todoNotificationCreateUseCase.createNotification(todoId, notificationTime);
     }
 
 }
