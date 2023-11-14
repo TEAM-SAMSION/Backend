@@ -36,6 +36,11 @@ operation::todo-team-controller-test/get-todo-team-code[snippets='http-request,p
 
 operation::todo-team-controller-test/get-todo-team-by-code[snippets='http-request,path-parameters,request-headers,http-response,response-fields']
 
+[[서비스-탈퇴시-가입된-Todo-Team-조회]]
+=== 서비스 탈퇴시 가입된 Todo Team 조회
+
+operation::todo-team-controller-test/get-withdraw-todo-team[snippets='http-request,request-headers,http-response,response-fields']
+
 [[Todo-API]]
 == Todo API
 
