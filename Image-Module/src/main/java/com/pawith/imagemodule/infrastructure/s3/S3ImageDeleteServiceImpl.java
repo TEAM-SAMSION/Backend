@@ -3,8 +3,8 @@ package com.pawith.imagemodule.infrastructure.s3;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.pawith.commonmodule.annotation.ApplicationService;
-import com.pawith.commonmodule.exception.Error;
 import com.pawith.imagemodule.exception.FileDeleteException;
+import com.pawith.imagemodule.exception.FileError;
 import com.pawith.imagemodule.service.ImageDeleteService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,7 +39,7 @@ public class S3ImageDeleteServiceImpl<T> implements ImageDeleteService<T> {
         try {
             amazonS3.deleteObject(bucket, originImgUrl.split("/")[3]);
         } catch (AmazonServiceException e) {
-            throw new FileDeleteException(Error.FILE_DELETE_ERROR);
+            throw new FileDeleteException(FileError.FILE_DELETE_ERROR);
         }
     }
 }
