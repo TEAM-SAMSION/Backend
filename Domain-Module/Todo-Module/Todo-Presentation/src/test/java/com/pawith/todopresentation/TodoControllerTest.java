@@ -2,6 +2,7 @@ package com.pawith.todopresentation;
 
 import com.pawith.commonmodule.BaseRestDocsTest;
 import com.pawith.commonmodule.response.ListResponse;
+import com.pawith.commonmodule.response.SliceResponse;
 import com.pawith.commonmodule.utils.FixtureMonkeyUtils;
 import com.pawith.todoapplication.dto.request.ScheduledDateChangeRequest;
 import com.pawith.todoapplication.dto.request.TodoCreateRequest;
@@ -15,6 +16,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.SliceImpl;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
@@ -363,4 +365,46 @@ public class TodoControllerTest extends BaseRestDocsTest {
                 )
             ));
     }
+
+    @Test
+    @DisplayName("투두 팀 탈퇴 시 담당했던 투두들 조회 API 테스트")
+    void getWithdrawTodoList() throws Exception {
+        //given
+        final PageRequest pageRequest = PageRequest.of(0, 6);
+        final Long testTeamId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
+        final List<WithdrawTodoResponse> withdrawTodoResponses = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey()
+                .giveMeBuilder(WithdrawTodoResponse.class)
+                .sampleList(pageRequest.getPageSize());
+        final SliceImpl<WithdrawTodoResponse> slice = new SliceImpl(withdrawTodoResponses, pageRequest, true);
+
+        given(todoGetUseCase.getWithdrawTeamTodoList(any(), any())).willReturn(SliceResponse.from(slice));
+        MockHttpServletRequestBuilder request = get(TODO_REQUEST_URL + "/{todoTeamId}/todos/withdraw", testTeamId)
+                .queryParam("page", String.valueOf(pageRequest.getPageNumber()))
+                .queryParam("size", String.valueOf(pageRequest.getPageSize()))
+                .header("Authorization", "Bearer accessToken");
+        //when
+        ResultActions result = mvc.perform(request);
+        //then
+        result.andExpect(status().isOk())
+                .andDo(resultHandler.document(
+                        requestHeaders(
+                                headerWithName("Authorization").description("access 토큰")
+                        ),
+                        pathParameters(
+                                parameterWithName("todoTeamId").description("투두 팀 Id")
+                        ),
+                        requestParameters(
+                                parameterWithName("page").description("요청 페이지"),
+                                parameterWithName("size").description("요청 사이즈")
+                        ),
+                        responseFields(
+                                fieldWithPath("content[].categoryName").description("투두 항목 카테고리 이름"),
+                                fieldWithPath("content[].task").description("투두 항목 이름"),
+                                fieldWithPath("page").description("요청 페이지"),
+                                fieldWithPath("size").description("요청 사이즈"),
+                                fieldWithPath("hasNext").description("다음 데이터 존재 여부")
+                        )
+                ));
+    }
+
 }
