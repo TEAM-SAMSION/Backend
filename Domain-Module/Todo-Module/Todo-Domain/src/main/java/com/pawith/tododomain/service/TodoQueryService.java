@@ -54,4 +54,20 @@ public class TodoQueryService {
         final Long countCompleteWeekTodo = todoRepository.countCompleteTodoByBetweenDate(userId, todoTeamId, now, firstDayOfWeek);
         return (int) ((countCompleteWeekTodo / (double) countWeekTodo) * 100);
     }
+
+    public Slice<Todo> findAllTodoListByTodoTeamId(Long userId, Long todoTeamId, Pageable pageable) {
+        return todoRepository.findTodoSliceByUserIdAndTodoTeamId(userId, todoTeamId, pageable);
+    }
+
+    public Slice<Todo> findAllTodoListByUserId(Long userId, Pageable pageable) {
+        return todoRepository.findTodoSliceByUserId(userId, pageable);
+    }
+
+    public Integer countTodoByTodoTeamId(Long userId, Long todoTeamId) {
+        return todoRepository.countTodoByUserIdAndTodoTeamId(userId, todoTeamId);
+    }
+
+    public Integer countTodoByUserId(Long userId) {
+        return todoRepository.countTodoByUserId(userId);
+    }
 }

@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class RegisterTermResponse {
-    private Integer registerTerm;
+public class WithdrawTodoResponse {
+    private String categoryName;
+    private String task;
 }

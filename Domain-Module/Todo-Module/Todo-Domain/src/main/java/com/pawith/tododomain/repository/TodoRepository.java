@@ -4,6 +4,7 @@ import com.pawith.tododomain.entity.Todo;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -48,5 +49,36 @@ public interface TodoRepository extends JpaRepository<Todo, Long> {
             "where t.category.id = c.id and t.scheduledDate = :moveDate")
     List<Todo> findTodoListByCategoryIdAndscheduledDate(Long categoryId, LocalDate moveDate);
 
+    @Modifying
+    @Query("update Todo t set t.isDeleted = true where t.category.id=:categoryId")
+    void deleteAllByCategoryId(@Param("categoryId") Long categoryId);
+
     void deleteById(Long todoId);
+
+    @Query("select t from Todo t " +
+            "join fetch t.category " +
+            "join Register r on r.userId=:userId and r.todoTeam.id=:todoTeamId " +
+            "join Assign  a on a.register.id=r.id " +
+            "where a.todo.id=t.id")
+    Slice<Todo> findTodoSliceByUserIdAndTodoTeamId(Long userId, Long todoTeamId, Pageable pageable);
+
+    @Query("select t from Todo t " +
+            "join fetch t.category c " +
+            "join fetch c.todoTeam " +
+            "join Register r on r.userId=:userId " +
+            "join Assign a on a.register.id=r.id " +
+            "where a.todo.id=t.id")
+    Slice<Todo> findTodoSliceByUserId(Long userId, Pageable pageable);
+
+    @Query("select count(t) from Todo t " +
+            "join Register r on r.userId=:userId and r.todoTeam.id=:todoTeamId " +
+            "join Assign  a on a.register.id=r.id " +
+            "where a.todo.id=t.id")
+    Integer countTodoByUserIdAndTodoTeamId(Long userId, Long todoTeamId);
+
+    @Query("select count(t) from Todo t " +
+            "join Register r on r.userId=:userId " +
+            "join Assign  a on a.register.id=r.id " +
+            "where a.todo.id=t.id")
+    Integer countTodoByUserId(Long userId);
 }

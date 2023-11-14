@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class RegisterTermResponse {
-    private Integer registerTerm;
+public class TodoCountResponse {
+    private int todoCount;
 }

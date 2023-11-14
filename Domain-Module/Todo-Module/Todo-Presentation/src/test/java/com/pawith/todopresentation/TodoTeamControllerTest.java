@@ -8,6 +8,7 @@ import com.pawith.todoapplication.dto.response.TodoTeamInfoResponse;
 import com.pawith.todoapplication.dto.response.TodoTeamNameResponse;
 import com.pawith.todoapplication.dto.response.TodoTeamRandomCodeResponse;
 import com.pawith.todoapplication.dto.response.TodoTeamSearchInfoResponse;
+import com.pawith.todoapplication.dto.response.WithdrawTodoTeamResponse;
 import com.pawith.todoapplication.service.TodoTeamCreateUseCase;
 import com.pawith.todoapplication.service.TodoTeamGetUseCase;
 import com.pawith.todoapplication.service.TodoTeamRandomCodeGetUseCase;
@@ -247,5 +248,28 @@ class TodoTeamControllerTest extends BaseRestDocsTest {
                     fieldWithPath("teamImageUrl").description("TodoTeam의 이미지")
                 )
             ));
+    }
+
+    @Test
+    @DisplayName("서비스 탈퇴 시 가입한 팀 조회 API 테스트")
+    void getWithdrawTodoTeam() throws Exception {
+        //given
+        final List<WithdrawTodoTeamResponse> withdrawTodoTeamResponses = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMe(WithdrawTodoTeamResponse.class, 5);
+        given(todoTeamGetUseCase.getWithdrawTodoTeam()).willReturn(ListResponse.from(withdrawTodoTeamResponses));
+        MockHttpServletRequestBuilder request = get(TODO_TEAM_REQUEST_URL + "/withdraw")
+                .header("Authorization", "Bearer accessToken");
+        //when
+        ResultActions result = mvc.perform(request);
+        //then
+        result.andExpect(status().isOk())
+                .andDo(resultHandler.document(
+                        requestHeaders(
+                                headerWithName("Authorization").description("access 토큰")
+                        ),
+                        responseFields(
+                                fieldWithPath("content[].teamProfileImage").description("TodoTeam의 이미지"),
+                                fieldWithPath("content[].teamName").description("TodoTeam의 이름")
+                        )
+                ));
     }
 }
