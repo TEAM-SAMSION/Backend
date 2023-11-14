@@ -5,7 +5,6 @@ import com.pawith.commonmodule.utils.FixtureMonkeyUtils;
 import com.pawith.todoapplication.dto.request.AuthorityChangeRequest;
 import com.pawith.tododomain.entity.Authority;
 import com.pawith.tododomain.entity.Register;
-import com.pawith.tododomain.exception.UnchangeableException;
 import com.pawith.tododomain.service.RegisterQueryService;
 import com.pawith.tododomain.service.RegisterValidateService;
 import com.pawith.userdomain.entity.User;
@@ -41,16 +40,16 @@ public class ChangeRegisterUseCaseTest {
         // given
         final User mockUser = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeOne(User.class);
         final Register mockUserRegister = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeBuilder(Register.class)
-            .set("Authority", "PRESIDENT")
+            .set("Authority", Authority.PRESIDENT)
             .sample();
         final Register mockRegister = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeBuilder(Register.class)
-            .set("Authority", "MEMBER")
+            .set("Authority", Authority.MEMBER)
             .sample();
 
         final Long registerId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
         final Long todoTeamId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
         final AuthorityChangeRequest authorityChangeRequest = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeBuilder(AuthorityChangeRequest.class)
-            .set("Authority", "PRESIDENT")
+            .set("Authority", Authority.PRESIDENT)
             .sample();
 
         given(userUtils.getAccessUser()).willReturn(mockUser);
@@ -69,16 +68,16 @@ public class ChangeRegisterUseCaseTest {
         // given
         final User mockUser = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeOne(User.class);
         final Register mockUserRegister = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeBuilder(Register.class)
-            .set("Authority", "PRESIDENT")
+            .set("Authority", Authority.PRESIDENT)
             .sample();
         final Register mockRegister = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeBuilder(Register.class)
-            .set("Authority", "MEMBER")
+            .set("Authority", Authority.MEMBER)
             .sample();
 
         final Long registerId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
         final Long todoTeamId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
         final AuthorityChangeRequest authorityChangeRequest = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeBuilder(AuthorityChangeRequest.class)
-            .set("Authority", "EXECUTIVE")
+            .set("Authority", Authority.EXECUTIVE)
             .sample();
 
         given(userUtils.getAccessUser()).willReturn(mockUser);
