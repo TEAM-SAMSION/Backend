@@ -1,6 +1,7 @@
 package com.pawith.todopresentation;
 
 import com.pawith.commonmodule.response.ListResponse;
+import com.pawith.commonmodule.response.SliceResponse;
 import com.pawith.todoapplication.dto.request.ScheduledDateChangeRequest;
 import com.pawith.todoapplication.dto.request.TodoCreateRequest;
 import com.pawith.todoapplication.dto.request.TodoDescriptionChangeRequest;
@@ -8,6 +9,7 @@ import com.pawith.todoapplication.dto.response.*;
 import com.pawith.todoapplication.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
@@ -81,6 +83,11 @@ public class TodoController {
     @PostMapping("/todos/{todoId}/assign/notification")
     public void postTodoAssignAlarm(@PathVariable Long todoId, @RequestParam("notificationTime") @DateTimeFormat(iso = DateTimeFormat.ISO.TIME) LocalTime notificationTime){
         todoNotificationCreateUseCase.createNotification(todoId, notificationTime);
+    }
+
+    @GetMapping("/{todoTeamId}/todos/withdraw")
+    public SliceResponse<WithdrawTodoResponse> getWithdrawTeamTodoList(@PathVariable Long todoTeamId, Pageable pageable){
+        return todoGetUseCase.getWithdrawTeamTodoList(todoTeamId, pageable);
     }
 
 }

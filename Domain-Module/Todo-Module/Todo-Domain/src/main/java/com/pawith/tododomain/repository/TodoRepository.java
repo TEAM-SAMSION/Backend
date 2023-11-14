@@ -49,4 +49,10 @@ public interface TodoRepository extends JpaRepository<Todo, Long> {
     List<Todo> findTodoListByCategoryIdAndscheduledDate(Long categoryId, LocalDate moveDate);
 
     void deleteById(Long todoId);
+
+    @Query("select t from Todo t " +
+            "join Register r on r.userId=:userId and r.todoTeam.id=:todoTeamId " +
+            "join Assign  a on a.register.id=r.id " +
+            "where a.todo.id=t.id")
+    Slice<Todo> findTodoSliceByUserIdAndTodoTeamId(Long userId, Long todoTeamId, Pageable pageable);
 }
