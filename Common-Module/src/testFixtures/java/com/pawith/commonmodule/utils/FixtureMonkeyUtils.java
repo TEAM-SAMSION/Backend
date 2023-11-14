@@ -6,6 +6,8 @@ import com.navercorp.fixturemonkey.api.introspector.ConstructorPropertiesArbitra
 import com.navercorp.fixturemonkey.api.introspector.FieldReflectionArbitraryIntrospector;
 import com.navercorp.fixturemonkey.api.introspector.JavaTypeArbitraryGenerator;
 import net.jqwik.api.Arbitraries;
+import net.jqwik.api.arbitraries.IntegerArbitrary;
+import net.jqwik.api.arbitraries.LongArbitrary;
 import net.jqwik.api.arbitraries.StringArbitrary;
 
 public class FixtureMonkeyUtils {
@@ -54,6 +56,16 @@ public class FixtureMonkeyUtils {
                 @Override
                 public StringArbitrary strings() {
                     return Arbitraries.strings().alpha().numeric().ofMinLength(1).ofMaxLength(10);
+                }
+
+                @Override
+                public LongArbitrary longs() {
+                    return Arbitraries.longs().greaterOrEqual(1L);
+                }
+
+                @Override
+                public IntegerArbitrary integers() {
+                    return Arbitraries.integers().greaterOrEqual(1);
                 }
             });
     }
