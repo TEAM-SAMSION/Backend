@@ -89,6 +89,13 @@ operation::todo-controller-test/get-todo-completion[snippets='http-request,path-
 
 operation::todo-controller-test/delete-todo[snippets='http-request,path-parameters,request-headers,http-response']
 
+[[Todo-알림-설정]]
+=== Todo 알림 설정
+
+operation::todo-controller-test/post-notification[snippets='http-request,request-headers,path-parameters,request-parameters,http-response']
+
+[[Todo-알림-설정-조회]]
+
 [[Category-API]]
 == Category API
 
