@@ -1,10 +1,10 @@
 package com.pawith.tododomain.service;
 
 import com.pawith.commonmodule.annotation.DomainService;
-import com.pawith.commonmodule.exception.Error;
 import com.pawith.tododomain.entity.Authority;
 import com.pawith.tododomain.entity.Register;
 import com.pawith.tododomain.exception.NotRegisterUserException;
+import com.pawith.tododomain.exception.TodoError;
 import com.pawith.tododomain.repository.RegisterRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -85,7 +85,7 @@ public class RegisterQueryService {
 
     private Register registerOptionalHandle(Supplier<Optional<Register>> method){
         return filterUnregister(method)
-            .orElseThrow(() -> new NotRegisterUserException(Error.NOT_REGISTER_USER));
+            .orElseThrow(() -> new NotRegisterUserException(TodoError.NOT_REGISTER_USER));
     }
 
     private Optional<Register> filterUnregister(Supplier<Optional<Register>> registerOptional) {

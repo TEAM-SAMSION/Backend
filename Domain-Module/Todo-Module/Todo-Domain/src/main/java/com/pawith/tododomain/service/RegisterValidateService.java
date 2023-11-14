@@ -1,10 +1,10 @@
 package com.pawith.tododomain.service;
 
 import com.pawith.commonmodule.annotation.DomainService;
-import com.pawith.commonmodule.exception.Error;
 import com.pawith.tododomain.entity.Authority;
 import com.pawith.tododomain.entity.Register;
 import com.pawith.tododomain.entity.TodoTeam;
+import com.pawith.tododomain.exception.TodoError;
 import com.pawith.tododomain.exception.UnchangeableException;
 import com.pawith.tododomain.exception.UnregistrableException;
 import com.pawith.tododomain.repository.RegisterRepository;
@@ -26,7 +26,7 @@ public class RegisterValidateService {
             final TodoTeam todoTeam = register.getTodoTeam();
             final Integer presidentRegisterCount = registerRepository.countByTodoTeamIdAndAuthority(todoTeam.getId(), Authority.PRESIDENT);
             if (presidentRegisterCount <= 1) {
-                throw new UnregistrableException(Error.CANNOT_PRESIDENT_UNREGISTRABLE);
+                throw new UnregistrableException(TodoError.CANNOT_PRESIDENT_UNREGISTRABLE);
             }
         }
     }
@@ -39,13 +39,13 @@ public class RegisterValidateService {
         final boolean isNotUnregistrable = presidentRegisterCountList.stream()
             .anyMatch(presidentRegisterCount -> presidentRegisterCount <= 1);
         if (isNotUnregistrable) {
-            throw new UnregistrableException(Error.CANNOT_PRESIDENT_UNREGISTRABLE);
+            throw new UnregistrableException(TodoError.CANNOT_PRESIDENT_UNREGISTRABLE);
         }
     }
 
     public void validateAuthorityChangeable(final Register userRegister, final Authority authority) {
         if (!userRegister.isPresident() && authority.equals(Authority.PRESIDENT)) {
-            throw new UnchangeableException(Error.CANNOT_CHANGE_AUTHORITY);
+            throw new UnchangeableException(TodoError.CANNOT_CHANGE_AUTHORITY);
         }
     }
 }

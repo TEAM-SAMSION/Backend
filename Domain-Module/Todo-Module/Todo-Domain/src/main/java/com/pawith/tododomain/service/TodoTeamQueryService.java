@@ -1,8 +1,8 @@
 package com.pawith.tododomain.service;
 
 import com.pawith.commonmodule.annotation.DomainService;
-import com.pawith.commonmodule.exception.Error;
 import com.pawith.tododomain.entity.TodoTeam;
+import com.pawith.tododomain.exception.TodoError;
 import com.pawith.tododomain.exception.TodoTeamNotFoundException;
 import com.pawith.tododomain.repository.TodoTeamRepository;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +33,6 @@ public class TodoTeamQueryService {
 
      private <T> TodoTeam findTodo(Function<T, Optional<TodoTeam>> findMethod, T specificationData){
         return findMethod.apply(specificationData)
-            .orElseThrow(() -> new TodoTeamNotFoundException(Error.TODO_TEAM_NOT_FOUND));
+            .orElseThrow(() -> new TodoTeamNotFoundException(TodoError.TODO_TEAM_NOT_FOUND));
      }
 }

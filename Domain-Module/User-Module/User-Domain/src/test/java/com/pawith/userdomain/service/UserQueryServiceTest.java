@@ -72,7 +72,6 @@ public class UserQueryServiceTest {
         //given
         final User mockUser = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey()
             .giveMeBuilder(User.class)
-            .set("id",1L)
             .set("provider", Provider.NAVER)
             .sample();
         given(userRepository.findByEmail(mockUser.getEmail())).willReturn(Optional.of(mockUser));

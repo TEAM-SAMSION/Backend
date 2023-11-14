@@ -4,7 +4,8 @@ import com.navercorp.fixturemonkey.FixtureMonkey;
 import com.navercorp.fixturemonkey.FixtureMonkeyBuilder;
 import com.navercorp.fixturemonkey.api.introspector.ConstructorPropertiesArbitraryIntrospector;
 import com.navercorp.fixturemonkey.api.introspector.FieldReflectionArbitraryIntrospector;
-import com.navercorp.fixturemonkey.api.introspector.JavaTypeArbitraryGenerator;
+import com.navercorp.fixturemonkey.api.jqwik.JavaTypeArbitraryGenerator;
+import com.navercorp.fixturemonkey.api.jqwik.JqwikPlugin;
 import net.jqwik.api.Arbitraries;
 import net.jqwik.api.arbitraries.IntegerArbitrary;
 import net.jqwik.api.arbitraries.LongArbitrary;
@@ -52,21 +53,23 @@ public class FixtureMonkeyUtils {
 
     private static FixtureMonkeyBuilder setupJavaType(FixtureMonkeyBuilder builder){
         return builder
-            .javaTypeArbitraryGenerator(new JavaTypeArbitraryGenerator() {
-                @Override
-                public StringArbitrary strings() {
-                    return Arbitraries.strings().alpha().numeric().ofMinLength(1).ofMaxLength(10);
-                }
+            .plugin(new JqwikPlugin()
+                .javaTypeArbitraryGenerator(new JavaTypeArbitraryGenerator() {
+                    @Override
+                    public StringArbitrary strings() {
+                        return Arbitraries.strings().alpha().numeric().ofMinLength(1).ofMaxLength(10);
+                    }
 
-                @Override
-                public LongArbitrary longs() {
-                    return Arbitraries.longs().greaterOrEqual(1L);
-                }
+                    @Override
+                    public LongArbitrary longs() {
+                        return Arbitraries.longs().greaterOrEqual(1L);
+                    }
 
-                @Override
-                public IntegerArbitrary integers() {
-                    return Arbitraries.integers().greaterOrEqual(1);
-                }
-            });
+                    @Override
+                    public IntegerArbitrary integers() {
+                        return Arbitraries.integers().greaterOrEqual(1);
+                    }
+                })
+            );
     }
 }

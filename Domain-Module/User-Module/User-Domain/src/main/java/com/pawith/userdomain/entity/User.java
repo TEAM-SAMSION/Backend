@@ -48,4 +48,8 @@ public class User extends BaseEntity {
             return;
         this.imageUrl = Objects.requireNonNull(imageUrl, "imageUrl must be not null");
     }
+
+    public Boolean isNotMatchingProvider(Provider provider) {
+        return !this.provider.equals(provider);
+    }
 }

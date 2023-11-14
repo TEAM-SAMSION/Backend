@@ -1,9 +1,8 @@
 package com.pawith.userapplication.handler;
 
 import com.pawith.commonmodule.UnitTestConfig;
-import com.pawith.commonmodule.exception.Error;
-import com.pawith.commonmodule.utils.FixtureMonkeyUtils;
 import com.pawith.commonmodule.event.UserSignUpEvent;
+import com.pawith.commonmodule.utils.FixtureMonkeyUtils;
 import com.pawith.userdomain.exception.AccountAlreadyExistException;
 import com.pawith.userdomain.service.UserAuthoritySaveService;
 import com.pawith.userdomain.service.UserQueryService;
@@ -57,7 +56,7 @@ public class UserSignUpHandlerTest {
         //given
         final UserSignUpEvent mockUserSignUpEvent = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(UserSignUpEvent.class);
         given(userQueryService.checkEmailAlreadyExist(mockUserSignUpEvent.getEmail())).willReturn(true);
-        doThrow(new AccountAlreadyExistException(Error.ACCOUNT_ALREADY_EXIST))
+        doThrow(AccountAlreadyExistException.class)
                 .when(userQueryService)
                 .checkAccountAlreadyExist((mockUserSignUpEvent.getEmail()), (mockUserSignUpEvent.getProvider()));
         //when

@@ -1,9 +1,9 @@
 package com.pawith.tododomain.service;
 
 import com.pawith.commonmodule.annotation.DomainService;
-import com.pawith.commonmodule.exception.Error;
 import com.pawith.tododomain.entity.Assign;
 import com.pawith.tododomain.exception.AssignNotFoundException;
+import com.pawith.tododomain.exception.TodoError;
 import com.pawith.tododomain.repository.AssignRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,7 +30,7 @@ public class AssignQueryService {
 
     public Assign findAssignByTodoIdAndUserId(Long todoId, Long userId) {
         return assignRepository.findByTodoIdAndUserId(todoId, userId)
-            .orElseThrow(() -> new AssignNotFoundException(Error.ASSIGN_NOT_FOUND));
+            .orElseThrow(() -> new AssignNotFoundException(TodoError.ASSIGN_NOT_FOUND));
     }
 
     public List<Assign> findAllAssignByTodoId(Long todoId) {

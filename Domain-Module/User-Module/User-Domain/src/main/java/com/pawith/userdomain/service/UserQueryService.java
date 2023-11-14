@@ -2,9 +2,9 @@ package com.pawith.userdomain.service;
 
 import com.pawith.commonmodule.annotation.DomainService;
 import com.pawith.commonmodule.enums.Provider;
-import com.pawith.commonmodule.exception.Error;
 import com.pawith.userdomain.entity.User;
 import com.pawith.userdomain.exception.AccountAlreadyExistException;
+import com.pawith.userdomain.exception.UserError;
 import com.pawith.userdomain.exception.UserNotFoundException;
 import com.pawith.userdomain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 @DomainService
@@ -24,16 +25,16 @@ public class UserQueryService {
 
     public void checkAccountAlreadyExist(String email, Provider provider){
         User user = findByEmail(email);
-        if(!user.getProvider().equals(provider))
-            throw new AccountAlreadyExistException(Error.ACCOUNT_ALREADY_EXIST);
+        if(user.isNotMatchingProvider(provider))
+            throw new AccountAlreadyExistException(UserError.ACCOUNT_ALREADY_EXIST);
     }
 
     public User findByEmail(String email) {
-        return findUser(userRepository::findByEmail, email);
+        return findUser(() -> userRepository.findByEmail(email));
     }
 
     public User findById(Long userId){
-        return findUser(userRepository::findById, userId);
+        return findUser(() -> userRepository.findById(userId));
     }
 
     public <T> Map<Long,User> findUserMapByIds(List<Long> userIds){
@@ -42,9 +43,9 @@ public class UserQueryService {
             .collect(Collectors.toMap(User::getId, Function.identity()));
     }
 
-    private <T> User findUser(Function<T, Optional<User>> method, T specificationData){
-        return method.apply(specificationData)
-                .orElseThrow(() -> new UserNotFoundException(Error.USER_NOT_FOUND));
+    private <T> User findUser(Supplier<Optional<User>> method){
+        return method.get()
+                .orElseThrow(() -> new UserNotFoundException(UserError.USER_NOT_FOUND));
     }
 
     public boolean checkEmailAlreadyExist(String email) {

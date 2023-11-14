@@ -1,9 +1,9 @@
 package com.pawith.userdomain.service;
 
 import com.pawith.commonmodule.annotation.DomainService;
-import com.pawith.commonmodule.exception.Error;
 import com.pawith.userdomain.entity.UserAuthority;
 import com.pawith.userdomain.exception.UserAuthorityNotFoundException;
+import com.pawith.userdomain.exception.UserError;
 import com.pawith.userdomain.repository.UserAuthorityRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -14,7 +14,7 @@ public class UserAuthorityQueryService {
 
     public UserAuthority findByEmail(final String email) {
         final UserAuthority userAuthority = userAuthorityRepository.findByEmail(email)
-            .orElseThrow(() -> new UserAuthorityNotFoundException(Error.USER_AUTHORITY_NOT_FOUND));
+            .orElseThrow(() -> new UserAuthorityNotFoundException(UserError.USER_AUTHORITY_NOT_FOUND));
         return userAuthority;
     }
 }

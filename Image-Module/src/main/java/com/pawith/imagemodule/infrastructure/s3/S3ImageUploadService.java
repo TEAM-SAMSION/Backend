@@ -5,7 +5,7 @@ import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.pawith.commonmodule.annotation.ApplicationService;
-import com.pawith.commonmodule.exception.Error;
+import com.pawith.imagemodule.exception.FileError;
 import com.pawith.imagemodule.exception.FileExtentionException;
 import com.pawith.imagemodule.exception.FileUploadException;
 import com.pawith.imagemodule.service.ImageUploadService;
@@ -67,7 +67,7 @@ public class S3ImageUploadService implements ImageUploadService {
             amazonS3.putObject(new PutObjectRequest(bucket, fileName, inputStream, objectMetadata)
                     .withCannedAcl(CannedAccessControlList.PublicRead));
         } catch (IOException e) {
-            throw new FileUploadException(Error.FILE_UPLOAD_ERROR);
+            throw new FileUploadException(FileError.FILE_UPLOAD_ERROR);
         }
         return amazonS3.getUrl(bucket, fileName).toString();
     }
@@ -81,7 +81,7 @@ public class S3ImageUploadService implements ImageUploadService {
     private String getFileExtension(String fileName) {
         String ext = fileName.substring(fileName.lastIndexOf('.'));
         if (!ext.equals(".jpg") && !ext.equals(".png") && !ext.equals(".jpeg") && !ext.equals(".svg+xml") && !ext.equals(".svg")) {
-            throw new FileExtentionException(Error.FILE_EXTENTION_ERROR);
+            throw new FileExtentionException(FileError.FILE_EXTENTION_ERROR);
         }
         return ext;
     }

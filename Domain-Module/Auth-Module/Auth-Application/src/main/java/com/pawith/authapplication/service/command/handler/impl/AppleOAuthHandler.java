@@ -1,13 +1,13 @@
 package com.pawith.authapplication.service.command.handler.impl;
 
+import com.pawith.authapplication.dto.OAuthRequest;
+import com.pawith.authapplication.dto.OAuthUserInfo;
 import com.pawith.authapplication.service.command.feign.AppleFeignClient;
 import com.pawith.authapplication.service.command.feign.response.Keys;
 import com.pawith.authapplication.service.command.handler.AuthHandler;
-import com.pawith.authapplication.dto.OAuthRequest;
-import com.pawith.authapplication.dto.OAuthUserInfo;
-import com.pawith.commonmodule.enums.Provider;
-import com.pawith.commonmodule.exception.Error;
+import com.pawith.authdomain.exception.AuthError;
 import com.pawith.authdomain.jwt.exception.InvalidTokenException;
+import com.pawith.commonmodule.enums.Provider;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -70,10 +70,8 @@ public class AppleOAuthHandler implements AuthHandler {
                 .setSigningKey(getRSAPublicKey(modulus, exponent))
                 .build()
                 .parseClaimsJws(token);
-        } catch (InvalidKeySpecException e) {
-            throw new InvalidTokenException(Error.INVALID_TOKEN);
-        } catch (NoSuchAlgorithmException e) {
-            throw new InvalidTokenException(Error.INVALID_TOKEN);
+        } catch (InvalidKeySpecException | NoSuchAlgorithmException e) {
+            throw new InvalidTokenException(AuthError.INVALID_TOKEN);
         }
     }
 
@@ -101,13 +99,13 @@ public class AppleOAuthHandler implements AuthHandler {
                 .build()
                 .parseClaimsJwt(getUnsignedToken(token));
         } catch (InvalidTokenException e) {
-            throw new InvalidTokenException(Error.INVALID_TOKEN);
+            throw new InvalidTokenException(AuthError.INVALID_TOKEN);
         }
     }
 
     private String getUnsignedToken(String token) {
         String[] splitToken = token.split("\\.");
-        if (splitToken.length != 3) throw new InvalidTokenException(Error.INVALID_TOKEN);
+        if (splitToken.length != 3) throw new InvalidTokenException(AuthError.INVALID_TOKEN);
         return splitToken[0] + "." + splitToken[1] + ".";
     }
 }

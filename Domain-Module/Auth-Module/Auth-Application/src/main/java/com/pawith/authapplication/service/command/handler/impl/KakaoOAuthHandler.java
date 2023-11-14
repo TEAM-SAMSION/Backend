@@ -6,9 +6,9 @@ import com.pawith.authapplication.service.command.feign.KakaoOAuthFeignClient;
 import com.pawith.authapplication.service.command.feign.response.KakaoUserInfo;
 import com.pawith.authapplication.service.command.feign.response.TokenInfo;
 import com.pawith.authapplication.service.command.handler.AuthHandler;
+import com.pawith.authdomain.exception.AuthError;
 import com.pawith.authdomain.jwt.exception.InvalidTokenException;
 import com.pawith.commonmodule.enums.Provider;
-import com.pawith.commonmodule.exception.Error;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -26,7 +26,7 @@ public class KakaoOAuthHandler implements AuthHandler {
     public OAuthUserInfo handle(OAuthRequest authenticationInfo) {
         // Access Token 검증
         final TokenInfo tokenInfo = getKakaoTokenInfo(authenticationInfo.getAccessToken());
-        if (!tokenInfo.getAppId().equals(appId)) throw new InvalidTokenException(Error.INVALID_TOKEN);
+        if (!tokenInfo.getAppId().equals(appId)) throw new InvalidTokenException(AuthError.INVALID_TOKEN);
 
         final KakaoUserInfo kakaoUserInfo = getKaKaoUserInfo(authenticationInfo.getAccessToken());
         return new OAuthUserInfo(kakaoUserInfo.getNickname(), kakaoUserInfo.getEmail());

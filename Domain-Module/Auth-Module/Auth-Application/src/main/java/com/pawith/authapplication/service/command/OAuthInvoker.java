@@ -7,9 +7,9 @@ import com.pawith.authapplication.dto.OAuthUserInfo;
 import com.pawith.authapplication.exception.AuthException;
 import com.pawith.authapplication.handler.request.UnusedTokenExpireEvent;
 import com.pawith.authapplication.service.command.handler.AuthHandler;
+import com.pawith.authdomain.exception.AuthError;
 import com.pawith.authdomain.jwt.JWTProvider;
 import com.pawith.authdomain.jwt.TokenType;
-import com.pawith.commonmodule.exception.Error;
 import com.pawith.commonmodule.event.UserSignUpEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
@@ -41,7 +41,7 @@ public class OAuthInvoker {
                 return authHandler.handle(request);
             }
         }
-        throw new AuthException(Error.OAUTH_FAIL);
+        throw new AuthException(AuthError.OAUTH_FAIL);
     }
 
     private OAuthResponse generateServerAuthenticationTokens(OAuthUserInfo oAuthUserInfo) {
