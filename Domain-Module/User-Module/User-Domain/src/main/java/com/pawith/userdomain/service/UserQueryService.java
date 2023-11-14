@@ -25,7 +25,7 @@ public class UserQueryService {
 
     public void checkAccountAlreadyExist(String email, Provider provider){
         User user = findByEmail(email);
-        if(user.isMatchingProvider(provider))
+        if(user.isNotMatchingProvider(provider))
             throw new AccountAlreadyExistException(UserError.ACCOUNT_ALREADY_EXIST);
     }
 
