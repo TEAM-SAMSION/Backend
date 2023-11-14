@@ -5,6 +5,7 @@ import com.pawith.authapplication.service.command.feign.response.Keys;
 import com.pawith.authapplication.service.command.handler.AuthHandler;
 import com.pawith.authapplication.dto.OAuthRequest;
 import com.pawith.authapplication.dto.OAuthUserInfo;
+import com.pawith.authdomain.exception.AuthError;
 import com.pawith.commonmodule.enums.Provider;
 import com.pawith.commonmodule.exception.Error;
 import com.pawith.authdomain.jwt.exception.InvalidTokenException;
@@ -70,10 +71,8 @@ public class AppleOAuthHandler implements AuthHandler {
                 .setSigningKey(getRSAPublicKey(modulus, exponent))
                 .build()
                 .parseClaimsJws(token);
-        } catch (InvalidKeySpecException e) {
-            throw new InvalidTokenException(Error.INVALID_TOKEN);
-        } catch (NoSuchAlgorithmException e) {
-            throw new InvalidTokenException(Error.INVALID_TOKEN);
+        } catch (InvalidKeySpecException | NoSuchAlgorithmException e) {
+            throw new InvalidTokenException(AuthError.INVALID_TOKEN);
         }
     }
 
