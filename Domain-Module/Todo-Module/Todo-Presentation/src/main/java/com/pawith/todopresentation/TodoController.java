@@ -90,4 +90,9 @@ public class TodoController {
         return todoGetUseCase.getWithdrawTeamTodoList(todoTeamId, pageable);
     }
 
+    @GetMapping("/todos/withdraw")
+    public SliceResponse<WithdrawAllTodoResponse> getWithdrawTodoList(Pageable pageable){
+        return todoGetUseCase.getWithdrawTodoList(pageable);
+    }
+
 }
