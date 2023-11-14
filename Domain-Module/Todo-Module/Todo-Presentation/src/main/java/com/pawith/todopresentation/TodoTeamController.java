@@ -7,6 +7,7 @@ import com.pawith.todoapplication.dto.response.TodoTeamNameResponse;
 import com.pawith.todoapplication.dto.response.TodoTeamRandomCodeResponse;
 import com.pawith.todoapplication.dto.response.TodoTeamSearchInfoResponse;
 import com.pawith.todoapplication.dto.response.TodoTeamInfoResponse;
+import com.pawith.todoapplication.dto.response.WithdrawTodoTeamResponse;
 import com.pawith.todoapplication.service.TodoTeamCreateUseCase;
 import com.pawith.todoapplication.service.TodoTeamGetUseCase;
 import com.pawith.todoapplication.service.TodoTeamRandomCodeGetUseCase;
@@ -60,5 +61,10 @@ public class TodoTeamController {
     @GetMapping("/{todoTeamId}/codes")
     public TodoTeamRandomCodeResponse getTodoTeamCode(@PathVariable Long todoTeamId){
         return todoTeamGetUseCase.getTodoTeamCode(todoTeamId);
+    }
+
+    @GetMapping("/withdraw")
+    public ListResponse<WithdrawTodoTeamResponse> getWithdrawTodoTeamList() {
+        return todoTeamGetUseCase.getWithdrawTodoTeam();
     }
 }

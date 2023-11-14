@@ -7,6 +7,7 @@ import com.pawith.todoapplication.dto.response.TodoTeamNameResponse;
 import com.pawith.todoapplication.dto.response.TodoTeamRandomCodeResponse;
 import com.pawith.todoapplication.dto.response.TodoTeamInfoResponse;
 import com.pawith.todoapplication.dto.response.TodoTeamSearchInfoResponse;
+import com.pawith.todoapplication.dto.response.WithdrawTodoTeamResponse;
 import com.pawith.todoapplication.mapper.TodoTeamMapper;
 import com.pawith.tododomain.entity.Register;
 import com.pawith.tododomain.entity.TodoTeam;
@@ -63,5 +64,15 @@ public class TodoTeamGetUseCase {
     public TodoTeamRandomCodeResponse getTodoTeamCode(Long teamId) {
         TodoTeam todoTeam = todoTeamQueryService.findTodoTeamById(teamId);
         return TodoTeamMapper.mapToTodoTeamRandomCodeResponse(todoTeam);
+    }
+
+    public ListResponse<WithdrawTodoTeamResponse> getWithdrawTodoTeam() {
+        User requestUser = userUtils.getAccessUser();
+        List<TodoTeam> todoTeamList = todoTeamQueryService.findAllTodoTeamByUserId(requestUser.getId());
+        return ListResponse.from(
+                todoTeamList.stream()
+                        .map(todoTeam -> new WithdrawTodoTeamResponse(todoTeam.getImageUrl(), todoTeam.getTeamName()))
+                        .collect(Collectors.toList())
+        );
     }
 }
