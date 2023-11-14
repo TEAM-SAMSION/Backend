@@ -200,7 +200,7 @@ class RegisterControllerTest extends BaseRestDocsTest {
                     parameterWithName("todoTeamId").description("TodoTeam의 Id")
                 ),
                 responseFields(
-                    fieldWithPath("registerTerm").description("팀 가입 한 기간. FIRST_WEEK : 1주, SECOND_WEEK : 2주, AFTER_SECOND_WEEK : 2주 이상")
+                    fieldWithPath("registerTerm").description("팀 가입한 기간")
                 )
             ));
     }

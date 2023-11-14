@@ -1,26 +1,15 @@
 package com.pawith.todoapplication.dto.response;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@Builder
 @AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RegisterTermResponse {
-    private RegisterTerm registerTerm;
-
-    public enum RegisterTerm {
-        FIRST_WEEK,
-        SECOND_WEEK,
-        AFTER_SECOND_WEEK
-    }
-
-    public RegisterTermResponse(Integer registerTerm) {
-        if (registerTerm >= 0 && registerTerm <= 6) {
-            this.registerTerm = RegisterTerm.FIRST_WEEK;
-        } else if (registerTerm > 6 && registerTerm <= 13) {
-            this.registerTerm = RegisterTerm.SECOND_WEEK;
-        } else {
-            this.registerTerm = RegisterTerm.AFTER_SECOND_WEEK;
-        }
-    }
+    private Integer registerTerm;
 }
