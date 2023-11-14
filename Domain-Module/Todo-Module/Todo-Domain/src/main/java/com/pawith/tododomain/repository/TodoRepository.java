@@ -56,14 +56,17 @@ public interface TodoRepository extends JpaRepository<Todo, Long> {
     void deleteById(Long todoId);
 
     @Query("select t from Todo t " +
+            "join fetch t.category " +
             "join Register r on r.userId=:userId and r.todoTeam.id=:todoTeamId " +
             "join Assign  a on a.register.id=r.id " +
             "where a.todo.id=t.id")
     Slice<Todo> findTodoSliceByUserIdAndTodoTeamId(Long userId, Long todoTeamId, Pageable pageable);
 
     @Query("select t from Todo t " +
+            "join fetch t.category c " +
+            "join fetch c.todoTeam " +
             "join Register r on r.userId=:userId " +
-            "join Assign  a on a.register.id=r.id " +
+            "join Assign a on a.register.id=r.id " +
             "where a.todo.id=t.id")
     Slice<Todo> findTodoSliceByUserId(Long userId, Pageable pageable);
 
