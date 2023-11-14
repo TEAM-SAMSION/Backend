@@ -407,4 +407,42 @@ public class TodoControllerTest extends BaseRestDocsTest {
                 ));
     }
 
+    @Test
+    @DisplayName("서비스 탈퇴 시 담당했던 투두들 조회 API 테스트")
+    void getAllWithdrawTodoList() throws Exception {
+        //given
+        final PageRequest pageRequest = PageRequest.of(0, 6);
+        final List<WithdrawAllTodoResponse> withdrawAllTodoResponses = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey()
+                .giveMeBuilder(WithdrawAllTodoResponse.class)
+                .sampleList(pageRequest.getPageSize());
+        final SliceImpl<WithdrawAllTodoResponse> slice = new SliceImpl(withdrawAllTodoResponses, pageRequest, true);
+
+        given(todoGetUseCase.getWithdrawTodoList(any())).willReturn(SliceResponse.from(slice));
+        MockHttpServletRequestBuilder request = get(TODO_REQUEST_URL + "/todos/withdraw")
+                .queryParam("page", String.valueOf(pageRequest.getPageNumber()))
+                .queryParam("size", String.valueOf(pageRequest.getPageSize()))
+                .header("Authorization", "Bearer accessToken");
+        //when
+        ResultActions result = mvc.perform(request);
+        //then
+        result.andExpect(status().isOk())
+                .andDo(resultHandler.document(
+                        requestHeaders(
+                                headerWithName("Authorization").description("access 토큰")
+                        ),
+                        requestParameters(
+                                parameterWithName("page").description("요청 페이지"),
+                                parameterWithName("size").description("요청 사이즈")
+                        ),
+                        responseFields(
+                                fieldWithPath("content[].teamProfileImage").description("팀 프로필 이미지"),
+                                fieldWithPath("content[].categoryName").description("투두 항목 카테고리 이름"),
+                                fieldWithPath("content[].task").description("투두 항목 이름"),
+                                fieldWithPath("page").description("요청 페이지"),
+                                fieldWithPath("size").description("요청 사이즈"),
+                                fieldWithPath("hasNext").description("다음 데이터 존재 여부")
+                        )
+                ));
+    }
+
 }

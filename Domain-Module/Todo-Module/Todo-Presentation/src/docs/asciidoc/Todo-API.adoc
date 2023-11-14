@@ -100,6 +100,11 @@ operation::todo-controller-test/post-notification[snippets='http-request,request
 === TodoTeam 탈퇴시 담당했던 Todo 조회
 
 operation::todo-controller-test/get-withdraw-todo-list[snippets='http-request,path-parameters,request-headers,request-parameters,http-response,response-fields']
+
+[[서비스-탈퇴시-담당했던-Todo-조회]]
+=== 서비스 탈퇴시 담당했던 Todo 조회
+
+operation::todo-controller-test/get-all-withdraw-todo-list[snippets='http-request,request-headers,request-parameters,http-response,response-fields']
 [[Category-API]]
 == Category API
 
