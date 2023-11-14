@@ -1,8 +1,8 @@
 package com.pawith.tododomain.service;
 
 import com.pawith.commonmodule.annotation.DomainService;
-import com.pawith.commonmodule.exception.Error;
 import com.pawith.tododomain.entity.Todo;
+import com.pawith.tododomain.exception.TodoError;
 import com.pawith.tododomain.exception.TodoNotFoundException;
 import com.pawith.tododomain.repository.TodoRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,7 @@ public class TodoQueryService {
 
     public Todo findTodoByTodoId(Long todoId) {
         return todoRepository.findById(todoId)
-            .orElseThrow(() -> new TodoNotFoundException(Error.TODO_NOT_FOUND));
+            .orElseThrow(() -> new TodoNotFoundException(TodoError.TODO_NOT_FOUND));
     }
 
     public Integer findTodoCompleteRate(Long userId, Long todoTeamId) {
