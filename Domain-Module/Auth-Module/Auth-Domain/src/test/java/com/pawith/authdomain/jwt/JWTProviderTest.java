@@ -1,12 +1,12 @@
 package com.pawith.authdomain.jwt;
 
-import com.navercorp.fixturemonkey.FixtureMonkey;
-import com.pawith.commonmodule.UnitTestConfig;
 import com.pawith.authdomain.exception.NotExistTokenException;
-import com.pawith.authdomain.service.TokenQueryService;
-import com.pawith.authdomain.service.TokenSaveService;
 import com.pawith.authdomain.jwt.exception.ExpiredTokenException;
 import com.pawith.authdomain.jwt.exception.InvalidTokenException;
+import com.pawith.authdomain.service.TokenQueryService;
+import com.pawith.authdomain.service.TokenSaveService;
+import com.pawith.commonmodule.UnitTestConfig;
+import com.pawith.commonmodule.utils.FixtureMonkeyUtils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
@@ -41,7 +41,7 @@ public class JWTProviderTest {
     @DisplayName("사용자 email이 입력으로 들어오면 accessToken을 발급하여 반환한다.")
     void generateAccessTokenByEmail(){
         //given
-        final String randomEmail = FixtureMonkey.create().giveMe(String.class).findFirst().get();
+        final String randomEmail = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(String.class);
         final String accessToken = jwtProvider.generateAccessToken(randomEmail);
         //when
         final Claims body = extractClaimsFromToken(accessToken);
@@ -54,7 +54,7 @@ public class JWTProviderTest {
     @DisplayName("사용자 email이 입력으로 들어오면 refreshToken을 발급하여 반환한다.")
     void generateRefreshTokenByEmail(){
         //given
-        final String randomEmail = FixtureMonkey.create().giveMe(String.class).findFirst().get();
+        final String randomEmail = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(String.class);
         final String refreshToken = jwtProvider.generateRefreshToken(randomEmail);
         //when
         final Claims body = extractClaimsFromToken(refreshToken);
@@ -67,7 +67,7 @@ public class JWTProviderTest {
     @DisplayName("refreshToken을 이용하여 accessToken을 재발급한다.")
     void reIssueAccessToken(){
         //given
-        final String randomEmail = FixtureMonkey.create().giveMe(String.class).findFirst().get();
+        final String randomEmail = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(String.class);
         final String refreshToken = jwtProvider.generateRefreshToken(randomEmail);
         given(tokenQueryService.findEmailByValue(refreshToken, TokenType.REFRESH_TOKEN)).willReturn(randomEmail);
         //when
@@ -83,7 +83,7 @@ public class JWTProviderTest {
     @DisplayName("refreshToken을 이용하여 refreshToken을 재발급한다.")
     void reIssueRefreshToken(){
         //given
-        final String randomEmail = FixtureMonkey.create().giveMe(String.class).findFirst().get();
+        final String randomEmail = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(String.class);
         final String refreshToken = jwtProvider.generateRefreshToken(randomEmail);
         given(tokenQueryService.findEmailByValue(refreshToken, TokenType.REFRESH_TOKEN)).willReturn(randomEmail);
         //when
@@ -100,7 +100,7 @@ public class JWTProviderTest {
     @SneakyThrows
     void reIssueAccessTokenWithExpiredRefreshToken(){
         //given
-        final String randomEmail = FixtureMonkey.create().giveMe(String.class).findFirst().get();
+        final String randomEmail = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(String.class);
         final String refreshToken = jwtProvider.generateRefreshToken(randomEmail);
         Thread.sleep(JWTTestConsts.REFRESH_TOKEN_EXPIRED_TIME+1);
         //when
@@ -113,7 +113,7 @@ public class JWTProviderTest {
     @DisplayName("accessToken에서 email을 추출한다.")
     void extractEmailFromAccessToken(){
         //given
-        final String randomEmail = FixtureMonkey.create().giveMe(String.class).findAny().get();
+        final String randomEmail = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(String.class);
         final String accessToken = jwtProvider.generateAccessToken(randomEmail);
         //when
         final String email = jwtProvider.extractEmailFromAccessToken(accessToken);
@@ -125,7 +125,7 @@ public class JWTProviderTest {
     @DisplayName("refreshToken에서 email을 추출할때 잘못된 토큰이면 NotExistTokenException 예외가 발생한다.")
     void extractEmailFromRefreshToken(){
         //given
-        final String randomEmail = FixtureMonkey.create().giveMe(String.class).findFirst().get();
+        final String randomEmail = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(String.class);
         final String refreshToken = jwtProvider.generateRefreshToken(randomEmail);
         given(tokenQueryService.findEmailByValue(refreshToken, TokenType.REFRESH_TOKEN)).willThrow(NotExistTokenException.class);
         //when
@@ -138,7 +138,7 @@ public class JWTProviderTest {
     @DisplayName("validateToken 메소드에 잘못된 token이 입력되면 InvalidTokenException 예외가 발생한다.")
     void validateTokenWithInvalidToken(){
         //given
-        final String randomToken = FixtureMonkey.create().giveMe(String.class).findFirst().get();
+        final String randomToken = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(String.class);
         //when
         //then
         Assertions.assertThatCode(() -> jwtProvider.validateToken(randomToken, TokenType.ACCESS_TOKEN))
@@ -150,7 +150,7 @@ public class JWTProviderTest {
     @SneakyThrows
     void validateTokenWithExpiredToken(){
         //given
-        final String randomEmail = FixtureMonkey.create().giveMe(String.class).findFirst().get();
+        final String randomEmail = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(String.class);
         final String refreshToken = jwtProvider.generateRefreshToken(randomEmail);
         Thread.sleep(JWTTestConsts.REFRESH_TOKEN_EXPIRED_TIME+1);
         //when
