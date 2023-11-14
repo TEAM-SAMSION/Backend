@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.repository.query.Param;
 
 public interface AssignRepository extends JpaRepository<Assign, Long> {
 
@@ -46,4 +47,8 @@ public interface AssignRepository extends JpaRepository<Assign, Long> {
             "join fetch a.todo t " +
             "where t.id=:todoId")
     List<Assign> findAllByTodoId(Long todoId);
+
+    @Modifying
+    @Query("update Assign a set a.isDeleted = true where a.todo.id in (select t.id from Todo t where t.category.id = :categoryId)")
+    void deleteAllByCategoryId(@Param("categoryId") Long categoryId);
 }

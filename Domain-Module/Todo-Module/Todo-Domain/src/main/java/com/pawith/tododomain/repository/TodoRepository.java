@@ -4,6 +4,7 @@ import com.pawith.tododomain.entity.Todo;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -47,6 +48,10 @@ public interface TodoRepository extends JpaRepository<Todo, Long> {
             "join Category c on c.id=:categoryId " +
             "where t.category.id = c.id and t.scheduledDate = :moveDate")
     List<Todo> findTodoListByCategoryIdAndscheduledDate(Long categoryId, LocalDate moveDate);
+
+    @Modifying
+    @Query("update Todo t set t.isDeleted = true where t.category.id=:categoryId")
+    void deleteAllByCategoryId(@Param("categoryId") Long categoryId);
 
     void deleteById(Long todoId);
 
