@@ -2,7 +2,6 @@ package com.pawith.todopresentation;
 
 import com.pawith.commonmodule.BaseRestDocsTest;
 import com.pawith.commonmodule.response.ListResponse;
-import com.pawith.commonmodule.response.SliceResponse;
 import com.pawith.commonmodule.utils.FixtureMonkeyUtils;
 import com.pawith.todoapplication.dto.request.ScheduledDateChangeRequest;
 import com.pawith.todoapplication.dto.request.TodoCreateRequest;
@@ -16,12 +15,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.SliceImpl;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -49,6 +48,8 @@ public class TodoControllerTest extends BaseRestDocsTest {
     private AssignChangeUseCase assignChangeUseCase;
     @MockBean
     private TodoDeleteUseCase todoDeleteUseCase;
+    @MockBean
+    private TodoNotificationCreateUseCase todoNotificationCreateUseCase;
 
     private static final String TODO_REQUEST_URL = "/teams";
 
@@ -335,5 +336,31 @@ public class TodoControllerTest extends BaseRestDocsTest {
                                 parameterWithName("todoId").description("투두 항목 Id")
                         )
                 ));
+    }
+
+    @Test
+    @DisplayName("투두 알림 생성 API 테스트")
+    void postNotification() throws Exception{
+        //given
+        final Long testTodoId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
+        final LocalTime notificationTime = LocalTime.of(12,00);
+        MockHttpServletRequestBuilder request = post(TODO_REQUEST_URL + "/todos/{todoId}/assign/notification", testTodoId)
+            .header("Authorization", "Bearer accessToken")
+            .queryParam("notificationTime", notificationTime.toString());
+        //when
+        ResultActions result = mvc.perform(request);
+        //then
+        result.andExpect(status().isOk())
+            .andDo(resultHandler.document(
+                requestHeaders(
+                    headerWithName("Authorization").description("access 토큰")
+                ),
+                pathParameters(
+                    parameterWithName("todoId").description("투두 항목 Id")
+                ),
+                requestParameters(
+                    parameterWithName("notificationTime").description("알림 시간")
+                )
+            ));
     }
 }
