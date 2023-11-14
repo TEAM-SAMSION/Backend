@@ -445,4 +445,52 @@ public class TodoControllerTest extends BaseRestDocsTest {
                 ));
     }
 
+    @Test
+    @DisplayName("투두 팀 탈퇴시 담당했던 Todo 개수 조회 API 테스트")
+    void getWithdrawTodoCount() throws Exception {
+        //given
+        final Long testTeamId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
+        final TodoCountResponse todoCountResponse = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(TodoCountResponse.class);
+        given(todoGetUseCase.getWithdrawTeamTodoCount(any())).willReturn(todoCountResponse);
+        MockHttpServletRequestBuilder request = get(TODO_REQUEST_URL + "/{todoTeamId}/todos/withdraw/count", testTeamId)
+                .header("Authorization", "Bearer accessToken");
+        //when
+        ResultActions result = mvc.perform(request);
+        //then
+        result.andExpect(status().isOk())
+                .andDo(resultHandler.document(
+                        requestHeaders(
+                                headerWithName("Authorization").description("access 토큰")
+                        ),
+                        pathParameters(
+                                parameterWithName("todoTeamId").description("투두 팀 Id")
+                        ),
+                        responseFields(
+                                fieldWithPath("todoCount").description("투두 개수")
+                        )
+                ));
+    }
+
+    @Test
+    @DisplayName("서비스 탈퇴시 담당했던 Todo 개수 조회 API 테스트")
+    void getAllWithdrawTodoCount() throws Exception {
+        //given
+        final TodoCountResponse todoCountResponse = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(TodoCountResponse.class);
+        given(todoGetUseCase.getWithdrawTodoCount()).willReturn(todoCountResponse);
+        MockHttpServletRequestBuilder request = get(TODO_REQUEST_URL + "/todos/withdraw/count")
+                .header("Authorization", "Bearer accessToken");
+        //when
+        ResultActions result = mvc.perform(request);
+        //then
+        result.andExpect(status().isOk())
+                .andDo(resultHandler.document(
+                        requestHeaders(
+                                headerWithName("Authorization").description("access 토큰")
+                        ),
+                        responseFields(
+                                fieldWithPath("todoCount").description("투두 개수")
+                        )
+                ));
+    }
+
 }

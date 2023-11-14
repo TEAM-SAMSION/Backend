@@ -110,6 +110,16 @@ operation::todo-controller-test/get-withdraw-todo-list[snippets='http-request,pa
 === 서비스 탈퇴시 담당했던 Todo 조회
 
 operation::todo-controller-test/get-all-withdraw-todo-list[snippets='http-request,request-headers,request-parameters,http-response,response-fields']
+
+[[TodoTeam-탈퇴시-담당했던-Todo-개수-조회]]
+=== TodoTeam 탈퇴시 담당했던 Todo 개수 조회
+
+operation::todo-controller-test/get-withdraw-todo-count[snippets='http-request,path-parameters,request-headers,http-response,response-fields']
+
+[[서비스-탈퇴시-담당했던-Todo-개수-조회]]
+=== 서비스 탈퇴시 담당했던 Todo 개수 조회
+
+operation::todo-controller-test/get-all-withdraw-todo-count[snippets='http-request,request-headers,http-response,response-fields']
 [[Category-API]]
 == Category API
 
