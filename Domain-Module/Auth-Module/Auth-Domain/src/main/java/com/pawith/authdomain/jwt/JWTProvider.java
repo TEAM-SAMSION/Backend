@@ -1,11 +1,11 @@
 package com.pawith.authdomain.jwt;
 
+import com.pawith.authdomain.exception.AuthError;
 import com.pawith.authdomain.exception.NotExistTokenException;
 import com.pawith.authdomain.jwt.exception.ExpiredTokenException;
 import com.pawith.authdomain.jwt.exception.InvalidTokenException;
 import com.pawith.authdomain.service.TokenQueryService;
 import com.pawith.authdomain.service.TokenSaveService;
-import com.pawith.commonmodule.exception.Error;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -146,9 +146,9 @@ public class JWTProvider {
         try {
             jwtParser.parse(token);
         } catch (MalformedJwtException | SignatureException | IncorrectClaimException | IllegalArgumentException e) {
-            throw new InvalidTokenException(Error.INVALID_TOKEN);
+            throw new InvalidTokenException(AuthError.INVALID_TOKEN);
         } catch (ExpiredJwtException e) {
-            throw new ExpiredTokenException(Error.EXPIRED_TOKEN);
+            throw new ExpiredTokenException(AuthError.EXPIRED_TOKEN);
         }
     }
 
