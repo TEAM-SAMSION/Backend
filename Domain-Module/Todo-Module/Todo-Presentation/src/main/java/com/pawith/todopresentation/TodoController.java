@@ -95,4 +95,15 @@ public class TodoController {
         return todoGetUseCase.getWithdrawTodoList(pageable);
     }
 
+    @GetMapping("/{todoTeamId}/todos/withdraw/count")
+    public TodoCountResponse getTodoCount(@PathVariable Long todoTeamId){
+        return todoGetUseCase.getWithdrawTeamTodoCount(todoTeamId);
+    }
+
+    @GetMapping("/todos/withdraw/count")
+    public TodoCountResponse getTodoCount(){
+        return todoGetUseCase.getWithdrawTodoCount();
+    }
+
+
 }

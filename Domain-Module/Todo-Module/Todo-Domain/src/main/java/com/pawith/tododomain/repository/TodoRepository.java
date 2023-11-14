@@ -66,4 +66,16 @@ public interface TodoRepository extends JpaRepository<Todo, Long> {
             "join Assign  a on a.register.id=r.id " +
             "where a.todo.id=t.id")
     Slice<Todo> findTodoSliceByUserId(Long userId, Pageable pageable);
+
+    @Query("select count(t) from Todo t " +
+            "join Register r on r.userId=:userId and r.todoTeam.id=:todoTeamId " +
+            "join Assign  a on a.register.id=r.id " +
+            "where a.todo.id=t.id")
+    Integer countTodoByUserIdAndTodoTeamId(Long userId, Long todoTeamId);
+
+    @Query("select count(t) from Todo t " +
+            "join Register r on r.userId=:userId " +
+            "join Assign  a on a.register.id=r.id " +
+            "where a.todo.id=t.id")
+    Integer countTodoByUserId(Long userId);
 }

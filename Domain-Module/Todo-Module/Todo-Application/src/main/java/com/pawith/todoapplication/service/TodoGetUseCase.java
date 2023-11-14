@@ -5,6 +5,7 @@ import com.pawith.commonmodule.response.ListResponse;
 import com.pawith.commonmodule.response.SliceResponse;
 import com.pawith.todoapplication.dto.response.AssignUserInfoResponse;
 import com.pawith.todoapplication.dto.response.TodoCompletionResponse;
+import com.pawith.todoapplication.dto.response.TodoCountResponse;
 import com.pawith.todoapplication.dto.response.TodoInfoResponse;
 import com.pawith.todoapplication.dto.response.CategorySubTodoResponse;
 import com.pawith.todoapplication.dto.response.WithdrawAllTodoResponse;
@@ -93,6 +94,18 @@ public class TodoGetUseCase {
                 todoQueryService.findAllTodoListByUserId(user.getId(), pageable)
                         .map(todo -> new WithdrawAllTodoResponse(todo.getCategory().getTodoTeam().getImageUrl(), todo.getCategory().getName(), todo.getDescription()));
         return SliceResponse.from(withdrawAllTodoResponses);
+    }
+
+    public TodoCountResponse getWithdrawTeamTodoCount(Long todoTeamId) {
+        final User user = userUtils.getAccessUser();
+        final Integer todoCount = todoQueryService.countTodoByTodoTeamId(user.getId(), todoTeamId);
+        return new TodoCountResponse(todoCount);
+    }
+
+    public TodoCountResponse getWithdrawTodoCount() {
+        final User user = userUtils.getAccessUser();
+        final Integer todoCount = todoQueryService.countTodoByUserId(user.getId());
+        return new TodoCountResponse(todoCount);
     }
 
     private Map<Todo, List<Assign>> getTodoMap(Long categoryId, LocalDate moveDate) {

@@ -62,4 +62,12 @@ public class TodoQueryService {
     public Slice<Todo> findAllTodoListByUserId(Long userId, Pageable pageable) {
         return todoRepository.findTodoSliceByUserId(userId, pageable);
     }
+
+    public Integer countTodoByTodoTeamId(Long userId, Long todoTeamId) {
+        return todoRepository.countTodoByUserIdAndTodoTeamId(userId, todoTeamId);
+    }
+
+    public Integer countTodoByUserId(Long userId) {
+        return todoRepository.countTodoByUserId(userId);
+    }
 }
