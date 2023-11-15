@@ -44,8 +44,7 @@ class AlarmUserControllerTest extends BaseRestDocsTest {
                     headerWithName("Authorization").description("access 토큰")
                 ),
                 requestFields(
-                    fieldWithPath("deviceToken").description("디바이스 토큰"),
-                    fieldWithPath("deviceType").description("디바이스 타입(AOS,IOS)")
+                    fieldWithPath("deviceToken").description("디바이스 토큰")
                 )
             ));
     }

@@ -1,6 +1,8 @@
 package com.pawith.alarmmodule.service;
 
 import com.pawith.alarmmodule.entity.AlarmUser;
+import com.pawith.alarmmodule.exception.AlarmError;
+import com.pawith.alarmmodule.exception.AlarmException;
 import com.pawith.alarmmodule.repository.AlarmUserRepository;
 import com.pawith.alarmmodule.service.dto.request.DeviceTokenSaveRequest;
 import com.pawith.userdomain.entity.User;
@@ -20,17 +22,21 @@ public class AlarmUserService {
         final User user = userUtils.getAccessUser();
         alarmUserRepository.findByUserId(user.getId())
             .ifPresentOrElse(
-                alarmUser ->{
-                    alarmUser.updateDeviceToken(request.getDeviceToken());
-                    alarmUser.updateDeviceType(request.getDeviceType());
-                },
-                () -> {
-                    final AlarmUser alarmUser = AlarmUser.builder()
-                        .deviceToken(request.getDeviceToken())
-                        .deviceType(request.getDeviceType())
-                        .build();
-                    alarmUserRepository.save(alarmUser);
-                }
+                alarmUser -> alarmUser.updateDeviceToken(request.getDeviceToken()),
+                () -> saveNewDeviceToken(request, user)
             );
+    }
+
+    private void saveNewDeviceToken(DeviceTokenSaveRequest request, User user) {
+        final AlarmUser alarmUser = AlarmUser.builder()
+            .deviceToken(request.getDeviceToken())
+            .userId(user.getId())
+            .build();
+        alarmUserRepository.save(alarmUser);
+    }
+
+    public AlarmUser findDeviceTokenByUserId(Long userId) {
+        return alarmUserRepository.findByUserId(userId)
+            .orElseThrow(() -> new AlarmException(AlarmError.DEVICE_TOKEN_NOT_FOUND));
     }
 }

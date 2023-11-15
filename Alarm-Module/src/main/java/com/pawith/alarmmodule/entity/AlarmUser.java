@@ -18,23 +18,16 @@ public class AlarmUser extends BaseEntity {
     private Long id;
 
     private String deviceToken;
-    @Enumerated(EnumType.STRING)
-    private DeviceType deviceType;
 
     private Long userId;
 
     @Builder
-    public AlarmUser(String deviceToken, DeviceType deviceType, Long userId) {
+    public AlarmUser(String deviceToken, Long userId) {
         this.deviceToken = deviceToken;
-        this.deviceType = deviceType;
         this.userId = userId;
     }
 
     public void updateDeviceToken(String deviceToken) {
         this.deviceToken = Objects.requireNonNull(deviceToken, "deviceToken must be not null");
-    }
-
-    public void updateDeviceType(DeviceType deviceType) {
-        this.deviceType = Objects.requireNonNull(deviceType, "deviceType must be not null");
     }
 }
