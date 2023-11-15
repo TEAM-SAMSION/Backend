@@ -1,4 +1,4 @@
-package com.pawith.alarmmodule.entity;
+package com.pawith.commonmodule.enums;
 
 public enum AlarmCategory {
     SERVICE_NOTICE,
