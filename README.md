@@ -2,7 +2,7 @@
 
 ## Module Dependencies
 
-<img src=".github/docs/Dependency.png" width="600">
+<img src=".github/docs/components-Modules.png" width="600">
 
 
 ## 성능 개선
