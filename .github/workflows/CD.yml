@@ -38,9 +38,9 @@ jobs:
       - name: make firebase.json
         uses: jsdaniell/create-json@v1.2.2
         with:
-          path: ./Api-Module/src/main/resources
+          dir: ./Api-Module/src/main/resources
           json: ${{ secrets.FCM_JSON }}
-          file: firebase.json
+          name: firebase.json
 
       - name: make promtail.yaml
         uses: appleboy/scp-action@master
