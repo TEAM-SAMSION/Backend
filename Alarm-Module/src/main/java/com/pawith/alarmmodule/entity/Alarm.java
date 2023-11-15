@@ -1,6 +1,8 @@
 package com.pawith.alarmmodule.entity;
 
+import com.pawith.alarmmodule.entity.vo.AlarmBody;
 import com.pawith.commonmodule.domain.BaseEntity;
+import com.pawith.commonmodule.enums.AlarmCategory;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,7 +18,8 @@ public class Alarm extends BaseEntity {
     @Column(name = "alarm_id")
     private Long id;
 
-    private String body;
+    @Embedded
+    private AlarmBody alarmBody;
     private Boolean isRead = Boolean.FALSE;
 
     @Enumerated(EnumType.STRING)
@@ -27,9 +30,8 @@ public class Alarm extends BaseEntity {
     private AlarmUser alarmUser;
 
     @Builder
-    public Alarm(String body, Boolean isRead, AlarmCategory alarmCategory, AlarmUser alarmUser) {
-        this.body = body;
-        this.isRead = isRead;
+    public Alarm(AlarmBody alarmBody, AlarmCategory alarmCategory, AlarmUser alarmUser) {
+        this.alarmBody = alarmBody;
         this.alarmCategory = alarmCategory;
         this.alarmUser = alarmUser;
     }
