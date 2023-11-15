@@ -37,9 +37,7 @@ jobs:
 
       - name: make firebase.json
         run: |
-          cd ./Api-Module/src/main/resources
-          mkdir ./firebase
-          cd ./firebase
+          cd ./Api-Module/src/main/resources/firebase
           touch ./firebase.json
           echo "${{ secrets.FCM_JSON }}" > ./firebase.json
         shell: bash

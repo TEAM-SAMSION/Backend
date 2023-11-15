@@ -37,9 +37,8 @@ out/
 .vscode/
 
 ### application ###
-/Api-Module/src/main/resources/application.yml
-**/src/main/resources/application.yml
 **/src/main/resources/application.properties
+**/src/main/resources/application-test.yml
 
 ### resources static docs ###
 **/src/main/resources/static/docs/
@@ -51,4 +50,4 @@ logs/logback/*
 **/.jqwik-database
 
 ### firebase ###
-**/src/main/resources/firebase/
+**/src/main/resources/firebase/firebase.json
