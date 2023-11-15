@@ -11,5 +11,7 @@ dependencies {
 
     implementation project(':Domain-Module:Auth-Module:Auth-Domain')
 
-//    implementation project(':Alarm-Module')
+    implementation project(':Alarm-Module')
+
+    implementation project(':Common-Module')
 }
