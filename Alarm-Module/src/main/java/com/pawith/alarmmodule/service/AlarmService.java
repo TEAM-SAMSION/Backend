@@ -1,5 +1,6 @@
 package com.pawith.alarmmodule.service;
 
+import com.pawith.alarmmodule.entity.Alarm;
 import com.pawith.alarmmodule.repository.AlarmRepository;
 import com.pawith.alarmmodule.service.dto.response.AlarmExistenceResponse;
 import com.pawith.alarmmodule.service.dto.response.AlarmInfoResponse;
@@ -26,7 +27,17 @@ public class AlarmService {
     public SliceResponse<AlarmInfoResponse> getAlarms(Pageable pageable){
         final Long userId = userUtils.getAccessUser().getId();
         Slice<AlarmInfoResponse> alarmInfoResponses = alarmRepository.findAllByUserId(userId, pageable)
-            .map(alarm -> new AlarmInfoResponse(alarm.getAlarmCategory(), alarm.getBody(), alarm.getIsRead(), alarm.getCreatedAt()));
+            .map(alarm -> AlarmInfoResponse.builder()
+                .alarmId(alarm.getId())
+                .title(alarm.getAlarmCategory())
+                .message(alarm.getAlarmBody().getMessage())
+                .isRead(alarm.getIsRead())
+                .createdAt(alarm.getCreatedAt())
+                .build());
         return SliceResponse.from(alarmInfoResponses);
+    }
+
+    public void saveAlarm(Alarm alarm){
+        alarmRepository.save(alarm);
     }
 }
