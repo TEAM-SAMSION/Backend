@@ -39,7 +39,7 @@ jobs:
         uses: jsdaniell/create-json@v1.2.2
         with:
           path: ./Api-Module/src/main/resources
-          json: ${{ secrets.FIREBASE }}
+          json: ${{ secrets.FCM_JSON }}
           file: firebase.json
 
       - name: make promtail.yaml
