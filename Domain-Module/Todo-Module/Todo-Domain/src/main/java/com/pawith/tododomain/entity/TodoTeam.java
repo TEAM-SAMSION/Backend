@@ -1,6 +1,7 @@
 package com.pawith.tododomain.entity;
 
 import com.pawith.commonmodule.domain.BaseEntity;
+import java.util.Objects;
 import lombok.*;
 
 import javax.persistence.*;
@@ -27,4 +28,15 @@ public class TodoTeam extends BaseEntity {
         this.imageUrl = imageUrl;
         this.description = description;
     }
+
+    public void updateTodoTeam(String teamName, String description, String imageUrl) {
+        this.teamName = updateIfDifferent(teamName, this.teamName);
+        this.description = updateIfDifferent(description, this.description);
+        this.imageUrl = updateIfDifferent(imageUrl, this.imageUrl);
+    }
+
+    public <T> T updateIfDifferent(T newValue, T currentValue) {
+        return Objects.equals(newValue, currentValue) ? currentValue : Objects.requireNonNullElse(newValue, currentValue);
+    }
+
 }
