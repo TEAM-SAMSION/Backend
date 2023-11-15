@@ -1,7 +1,7 @@
 package com.pawith.todoapplication.handler;
 
 import com.pawith.commonmodule.enums.AlarmCategory;
-import com.pawith.commonmodule.event.NotificationRequest;
+import com.pawith.commonmodule.event.NotificationEvent;
 import com.pawith.tododomain.repository.TodoNotificationRepository;
 import com.pawith.tododomain.repository.dao.NotificationDao;
 import lombok.RequiredArgsConstructor;
@@ -58,7 +58,7 @@ public class TodoNotificationHandler {
                 String message = buildMessageFromNotification(notification, diffNotificationTimeWithCurrentTime);
                 if (StringUtils.hasText(message)) {
                     applicationEventPublisher.publishEvent(
-                        new NotificationRequest(notification.getUserId(),
+                        new NotificationEvent(notification.getUserId(),
                             AlarmCategory.TODO,
                             message,
                             notification.getTodoTeamId()));
