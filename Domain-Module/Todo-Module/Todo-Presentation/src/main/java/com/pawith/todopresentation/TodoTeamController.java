@@ -3,6 +3,7 @@ package com.pawith.todopresentation;
 import com.pawith.commonmodule.response.ListResponse;
 import com.pawith.commonmodule.response.SliceResponse;
 import com.pawith.todoapplication.dto.request.TodoTeamCreateRequest;
+import com.pawith.todoapplication.dto.response.TodoTeamInfoDetailResponse;
 import com.pawith.todoapplication.dto.response.TodoTeamNameResponse;
 import com.pawith.todoapplication.dto.response.TodoTeamRandomCodeResponse;
 import com.pawith.todoapplication.dto.response.TodoTeamSearchInfoResponse;
@@ -66,5 +67,10 @@ public class TodoTeamController {
     @GetMapping("/withdraw")
     public ListResponse<WithdrawTodoTeamResponse> getWithdrawTodoTeamList() {
         return todoTeamGetUseCase.getWithdrawTodoTeam();
+    }
+
+    @GetMapping("/{todoTeamId}")
+    public TodoTeamInfoDetailResponse getTodoTeamInfo(@PathVariable Long todoTeamId) {
+        return todoTeamGetUseCase.getTodoTeamInfo(todoTeamId);
     }
 }

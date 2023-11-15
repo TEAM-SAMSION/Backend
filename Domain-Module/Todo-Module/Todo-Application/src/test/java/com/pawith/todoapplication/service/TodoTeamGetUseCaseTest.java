@@ -10,6 +10,7 @@ import com.pawith.todoapplication.dto.response.TodoTeamSearchInfoResponse;
 import com.pawith.todoapplication.dto.response.TodoTeamInfoResponse;
 import com.pawith.tododomain.entity.Register;
 import com.pawith.tododomain.entity.TodoTeam;
+import com.pawith.tododomain.service.PetQueryService;
 import com.pawith.tododomain.service.RegisterQueryService;
 import com.pawith.tododomain.service.TodoTeamQueryService;
 import com.pawith.userdomain.entity.User;
@@ -41,12 +42,14 @@ public class TodoTeamGetUseCaseTest {
     private TodoTeamQueryService todoTeamQueryService;
     @Mock
     private UserQueryService userQueryService;
+    @Mock
+    private PetQueryService petQueryService;
 
     private TodoTeamGetUseCase todoTeamGetUseCase;
 
     @BeforeEach
     void init() {
-        todoTeamGetUseCase = new TodoTeamGetUseCase(userUtils, registerQueryService, todoTeamQueryService, userQueryService);
+        todoTeamGetUseCase = new TodoTeamGetUseCase(userUtils, registerQueryService, todoTeamQueryService, userQueryService, petQueryService);
     }
 
     @Test
