@@ -13,7 +13,7 @@ import java.io.IOException;
 @Configuration
 public class FireBaseConfig {
 
-    private final ClassPathResource firebaseResource = new ClassPathResource("firebase/firebase.json");
+    private final ClassPathResource firebaseResource = new ClassPathResource("firebase.json");
 
 
     @Bean
