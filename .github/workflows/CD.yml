@@ -41,7 +41,7 @@ jobs:
           mkdir ./firebase
           cd ./firebase
           touch ./firebase.json
-          echo "${{ secrets.FIREBASE }}" > ./firebase.json
+          echo "${{ secrets.FCM_JSON }}" > ./firebase.json
         shell: bash
 
       - name: make promtail.yaml
