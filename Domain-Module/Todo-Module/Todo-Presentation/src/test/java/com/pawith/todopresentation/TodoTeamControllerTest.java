@@ -4,6 +4,7 @@ import com.pawith.commonmodule.BaseRestDocsTest;
 import com.pawith.commonmodule.response.ListResponse;
 import com.pawith.commonmodule.response.SliceResponse;
 import com.pawith.commonmodule.utils.FixtureMonkeyUtils;
+import com.pawith.todoapplication.dto.response.TodoTeamInfoDetailResponse;
 import com.pawith.todoapplication.dto.response.TodoTeamInfoResponse;
 import com.pawith.todoapplication.dto.response.TodoTeamNameResponse;
 import com.pawith.todoapplication.dto.response.TodoTeamRandomCodeResponse;
@@ -271,5 +272,35 @@ class TodoTeamControllerTest extends BaseRestDocsTest {
                                 fieldWithPath("content[].teamName").description("TodoTeam의 이름")
                         )
                 ));
+    }
+
+    @Test
+    @DisplayName("TodoTeam 상세 정보 조회 API 테스트")
+    void getTodoTeamInfo() throws Exception {
+        //given
+        final Long todoTeamId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
+        final TodoTeamInfoDetailResponse todoTeamInfoDetailResponse = FixtureMonkeyUtils.getConstructBasedFixtureMonkey()
+            .giveMeOne(TodoTeamInfoDetailResponse.class);
+        given(todoTeamGetUseCase.getTodoTeamInfo(todoTeamId)).willReturn(todoTeamInfoDetailResponse);
+        MockHttpServletRequestBuilder request = get(TODO_TEAM_REQUEST_URL+"/{todoTeamId}", todoTeamId)
+            .header("Authorization", "Bearer accessToken");
+        //when
+        ResultActions result = mvc.perform(request);
+        //then
+        result.andExpect(status().isOk())
+            .andDo(resultHandler.document(
+                requestHeaders(
+                    headerWithName("Authorization").description("access 토큰")
+                ),
+                pathParameters(
+                    parameterWithName("todoTeamId").description("TodoTeam의 Id")
+                ),
+                responseFields(
+                    fieldWithPath("todoTeamCode").description("TodoTeam의 코드"),
+                    fieldWithPath("teamDescription").description("TodoTeam의 설명"),
+                    fieldWithPath("teamMemberCount").description("TodoTeam의 가입자 수"),
+                    fieldWithPath("teamPetCount").description("TodoTeam의 펫 수")
+                )
+            ));
     }
 }
