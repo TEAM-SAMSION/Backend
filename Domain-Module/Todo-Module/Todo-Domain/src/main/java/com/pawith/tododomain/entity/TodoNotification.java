@@ -3,12 +3,14 @@ package com.pawith.tododomain.entity;
 import com.pawith.commonmodule.domain.BaseEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalTime;
 
 @Entity
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class TodoNotification extends BaseEntity {
     @Id@GeneratedValue(strategy = GenerationType.IDENTITY)
