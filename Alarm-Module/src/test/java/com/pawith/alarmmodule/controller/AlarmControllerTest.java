@@ -88,8 +88,9 @@ class AlarmControllerTest extends BaseRestDocsTest {
                     parameterWithName("size").description("페이지 크기")
                 ),
                 responseFields(
+                    fieldWithPath("content[].alarmId").description("알람 아이디"),
                     fieldWithPath("content[].title").description("알람 카테고리"),
-                    fieldWithPath("content[].body").description("알람 내용"),
+                    fieldWithPath("content[].message").description("알람 내용"),
                     fieldWithPath("content[].isRead").description("읽음 여부"),
                     fieldWithPath("content[].createdAt").description("알람 생성 시간"),
                     fieldWithPath("page").description("페이지 정보"),
