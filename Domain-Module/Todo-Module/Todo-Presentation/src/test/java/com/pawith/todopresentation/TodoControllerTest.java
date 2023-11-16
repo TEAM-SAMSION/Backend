@@ -393,6 +393,7 @@ public class TodoControllerTest extends BaseRestDocsTest {
                         responseFields(
                                 fieldWithPath("content[].categoryName").description("투두 항목 카테고리 이름"),
                                 fieldWithPath("content[].task").description("투두 항목 이름"),
+                                fieldWithPath("content[].categoryId").description("투두 카테고리 id"),
                                 fieldWithPath("page").description("요청 페이지"),
                                 fieldWithPath("size").description("요청 사이즈"),
                                 fieldWithPath("hasNext").description("다음 데이터 존재 여부")
