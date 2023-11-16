@@ -2,7 +2,7 @@ dependencies {
     implementation project(':Domain-Module:Auth-Module:Auth-Domain')
     // Feign
     implementation 'io.github.openfeign:feign-httpclient:12.1'
-    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:3.1.8'
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:4.0.3'
     // JWT
     implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'

@@ -44,7 +44,7 @@ public class TodoNotificationHandler {
         boolean hasNext = true;
         do {
             final PageRequest pageRequest = PageRequest.of(page, BATCH_SIZE);
-            final Slice<NotificationDao> notificationBatch = todoNotificationRepository.findAllWithNotCompletedAssignAndTodayScheduledTodo(3, pageRequest);
+            final Slice<NotificationDao> notificationBatch = todoNotificationRepository.findAllWithNotCompletedAssignAndTodayScheduledTodo(Duration.ofHours(3), pageRequest);
             handleNotification(notificationBatch);
             hasNext = notificationBatch.hasNext();
             page++;

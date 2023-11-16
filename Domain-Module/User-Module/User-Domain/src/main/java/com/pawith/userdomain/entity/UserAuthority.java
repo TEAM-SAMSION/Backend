@@ -1,9 +1,12 @@
 package com.pawith.userdomain.entity;
 
 import com.pawith.commonmodule.domain.BaseEntity;
-import lombok.*;
+import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
 
 @Entity
 @Getter

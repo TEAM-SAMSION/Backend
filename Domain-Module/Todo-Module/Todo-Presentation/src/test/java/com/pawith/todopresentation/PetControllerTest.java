@@ -1,20 +1,5 @@
 package com.pawith.todopresentation;
 
-import static org.mockito.BDDMockito.given;
-import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
-import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.multipart;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
-import static org.springframework.restdocs.payload.PayloadDocumentation.requestPartFields;
-import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import com.pawith.commonmodule.BaseRestDocsTest;
 import com.pawith.commonmodule.response.ListResponse;
 import com.pawith.commonmodule.utils.FixtureMonkeyUtils;
@@ -23,7 +8,6 @@ import com.pawith.todoapplication.service.PetChangeUseCase;
 import com.pawith.todoapplication.service.PetCreateUseCase;
 import com.pawith.todoapplication.service.PetDeleteUseCase;
 import com.pawith.todoapplication.service.PetGetUseCase;
-import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -33,6 +17,17 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+
+import java.util.List;
+
+import static org.mockito.BDDMockito.given;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Slf4j
 @WebMvcTest(PetController.class)
@@ -61,7 +56,7 @@ public class PetControllerTest extends BaseRestDocsTest {
     void getTodoTeamPets() throws Exception {
         // given
         final Long testTeamId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
-        final List<PetInfoResponse> petInfoResponses = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMe(PetInfoResponse.class, 2);
+        final List<PetInfoResponse> petInfoResponses = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMe(PetInfoResponse.class, 2);
         given(petGetUseCase.getTodoTeamPets(testTeamId)).willReturn(ListResponse.from(petInfoResponses));
         MockHttpServletRequestBuilder request = get(PET_REQUEST_URL + "/{todoTeamId}/pets", testTeamId)
                 .header("Authorization", "Bearer accessToken");

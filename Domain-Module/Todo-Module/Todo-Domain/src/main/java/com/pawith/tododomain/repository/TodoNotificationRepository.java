@@ -7,6 +7,8 @@ import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.time.Duration;
+
 public interface TodoNotificationRepository extends JpaRepository<TodoNotification, Long> {
 
     @Query("select c.todoTeam.id as todoTeamId ,r.userId as userId, c.name as categoryName, t.description as todoDescription, tn.notificationTime as notificationTime " +
@@ -15,7 +17,7 @@ public interface TodoNotificationRepository extends JpaRepository<TodoNotificati
         "join fetch Todo t on a.todo = t and t.scheduledDate = date(now()) " +
         "join fetch Category c on t.category = c "+
         "join fetch Register r on a.register = r and r.isRegistered = true "+
-        "where hour(timediff(tn.notificationTime,current_time)) <= :criterionTime " +
-        "and timediff(tn.notificationTime,current_time) > 0")
-    Slice<NotificationDao> findAllWithNotCompletedAssignAndTodayScheduledTodo(Integer criterionTime, Pageable pageable);
+        "where (tn.notificationTime-current_time) <= :criterionTime " +
+        "and timediff(tn.notificationTime, current_time) > 0")
+    Slice<NotificationDao> findAllWithNotCompletedAssignAndTodayScheduledTodo(Duration criterionTime, Pageable pageable);
 }

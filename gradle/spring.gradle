@@ -33,10 +33,25 @@ subprojects {
         // retryable
         implementation 'org.springframework.retry:spring-retry'
 
+        // modulith
+        implementation 'org.springframework.modulith:spring-modulith-starter-core'
+        runtimeOnly 'org.springframework.modulith:spring-modulith-runtime'
+        testImplementation 'org.springframework.modulith:spring-modulith-starter-test'
+
         //AWS S3
         implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
         // redis
 //        implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    }
+
+    dependencyManagement {
+        imports {
+            mavenBom 'org.springframework.modulith:spring-modulith-bom:1.0.2'
+        }
+    }
+
+    tasks.named('bootBuildImage') {
+        builder = 'paketobuildpacks/builder-jammy-base:latest'
     }
 
 }

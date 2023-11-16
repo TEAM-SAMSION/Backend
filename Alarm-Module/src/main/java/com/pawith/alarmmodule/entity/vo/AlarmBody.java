@@ -1,10 +1,10 @@
 package com.pawith.alarmmodule.entity.vo;
 
+import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Embeddable;
 
 @Embeddable
 @Getter

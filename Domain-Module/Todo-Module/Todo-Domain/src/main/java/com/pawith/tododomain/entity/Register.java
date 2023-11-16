@@ -1,7 +1,7 @@
 package com.pawith.tododomain.entity;
 
 import com.pawith.commonmodule.domain.BaseEntity;
-import java.util.Objects;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,8 +9,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
-import javax.persistence.*;
-import java.util.Arrays;
+import java.util.Objects;
 
 @Entity
 @Getter

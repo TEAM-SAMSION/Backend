@@ -1,7 +1,7 @@
 plugins {
     id 'java'
     id "java-test-fixtures"
-    id 'org.springframework.boot' version '2.7.13'
+    id 'org.springframework.boot' version '3.1.5'
     id 'io.spring.dependency-management' version '1.0.15.RELEASE'
     id 'org.asciidoctor.jvm.convert' version '3.3.2'
 }
@@ -9,7 +9,7 @@ plugins {
 allprojects {
     group = 'com.pawith'
     version = '0.0.1'
-    sourceCompatibility = '11'
+    sourceCompatibility = '17'
 
     repositories {
         mavenCentral()

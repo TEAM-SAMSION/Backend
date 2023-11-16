@@ -1,8 +1,9 @@
 package com.pawith.commonmodule.response;
 
-import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
+
+import java.util.List;
 
 @Getter
 public class ListResponse<T> {
@@ -10,7 +11,7 @@ public class ListResponse<T> {
     private final List<T> content;
 
     @Builder
-    public ListResponse(List<T> content) {
+    private ListResponse(List<T> content) {
         this.content = content;
     }
 

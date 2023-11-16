@@ -171,7 +171,7 @@ public class TodoControllerTest extends BaseRestDocsTest {
                         pathParameters(
                                 parameterWithName("categoryId").description("Category의 Id")
                         ),
-                        requestParameters(
+                        queryParameters(
                                 parameterWithName("moveDate").description("달력에서 이동하는 날짜(LocalDate)")
                         ),
                         responseFields(
@@ -353,7 +353,7 @@ public class TodoControllerTest extends BaseRestDocsTest {
                 pathParameters(
                     parameterWithName("todoId").description("투두 항목 Id")
                 ),
-                requestParameters(
+                queryParameters(
                     parameterWithName("notificationTime").description("알림 시간")
                 )
             ));
@@ -386,14 +386,14 @@ public class TodoControllerTest extends BaseRestDocsTest {
                         pathParameters(
                                 parameterWithName("todoTeamId").description("투두 팀 Id")
                         ),
-                        requestParameters(
+                        queryParameters(
                                 parameterWithName("page").description("요청 페이지"),
                                 parameterWithName("size").description("요청 사이즈")
                         ),
                         responseFields(
-                                fieldWithPath("content[].categoryId").description("투두 항목 카테고리 Id"),
                                 fieldWithPath("content[].categoryName").description("투두 항목 카테고리 이름"),
                                 fieldWithPath("content[].task").description("투두 항목 이름"),
+                                fieldWithPath("content[].categoryId").description("투두 카테고리 id"),
                                 fieldWithPath("page").description("요청 페이지"),
                                 fieldWithPath("size").description("요청 사이즈"),
                                 fieldWithPath("hasNext").description("다음 데이터 존재 여부")
@@ -424,7 +424,7 @@ public class TodoControllerTest extends BaseRestDocsTest {
                         requestHeaders(
                                 headerWithName("Authorization").description("access 토큰")
                         ),
-                        requestParameters(
+                        queryParameters(
                                 parameterWithName("page").description("요청 페이지"),
                                 parameterWithName("size").description("요청 사이즈")
                         ),

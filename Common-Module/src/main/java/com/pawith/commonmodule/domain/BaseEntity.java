@@ -1,13 +1,12 @@
 package com.pawith.commonmodule.domain;
 
-import java.util.Objects;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.EntityListeners;
-import javax.persistence.MappedSuperclass;
 import java.time.LocalDateTime;
 
 @Getter
@@ -21,7 +20,4 @@ public abstract class BaseEntity {
     @LastModifiedDate
     protected LocalDateTime updatedAt;
 
-    protected<T> T updateIfDifferent(T newValue, T currentValue) {
-        return Objects.equals(newValue, currentValue) ? currentValue : Objects.requireNonNullElse(newValue, currentValue);
-    }
 }

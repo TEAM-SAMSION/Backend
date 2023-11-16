@@ -3,12 +3,12 @@ package com.pawith.alarmmodule.entity;
 import com.pawith.alarmmodule.entity.vo.AlarmBody;
 import com.pawith.commonmodule.domain.BaseEntity;
 import com.pawith.commonmodule.enums.AlarmCategory;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
 
 @Entity
 @Getter
