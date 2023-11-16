@@ -192,6 +192,10 @@ operation::register-controller-test/unregister-todo-team[snippets='http-request,
 
 operation::register-controller-test/get-register-term[snippets='http-request,path-parameters,request-headers,http-response,response-fields']
 
+[[Todo-팀-가입자-내보내기]]
+=== Todo 팀 가입자 내보내기
+
+operation::register-controller-test/unregister-register[snippets='http-request,path-parameters,request-headers,http-response']
 [[PET-API]]
 == PET API
 
