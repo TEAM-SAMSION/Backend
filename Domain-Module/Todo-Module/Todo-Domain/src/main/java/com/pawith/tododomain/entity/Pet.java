@@ -2,6 +2,7 @@ package com.pawith.tododomain.entity;
 
 import com.pawith.commonmodule.domain.BaseEntity;
 import com.pawith.tododomain.entity.vo.PetSpecies;
+import java.util.Objects;
 import lombok.*;
 
 import javax.persistence.*;
@@ -35,5 +36,18 @@ public class Pet extends BaseEntity {
         this.imageUrl = imageUrl;
         this.petSpecies = petSpecies;
         this.todoTeam = todoTeam;
+    }
+
+
+    public void updatePet(String imageUrl, String name, Integer age, String description, String species, String genus) {
+        this.imageUrl = updateIfDifferent(imageUrl, this.imageUrl);
+        this.name = updateIfDifferent(name, this.name);
+        this.age = updateIfDifferent(age, this.age);
+        this.description = updateIfDifferent(description, this.description);
+        this.petSpecies.updatePetSpecies(genus, species);
+    }
+
+    public <T> T updateIfDifferent(T newValue, T currentValue) {
+        return Objects.equals(newValue, currentValue) ? currentValue : Objects.requireNonNullElse(newValue, currentValue);
     }
 }

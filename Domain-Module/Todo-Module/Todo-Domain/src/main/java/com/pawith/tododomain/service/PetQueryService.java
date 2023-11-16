@@ -19,4 +19,7 @@ public class PetQueryService {
     public List<Pet> findAllByTodoTeamId(Long todoTeamId){
         return petRepository.findAllByTodoTeamId(todoTeamId);
     }
+    public Pet findPetById(Long petId) {
+        return petRepository.findById(petId).orElseThrow();
+    }
 }
