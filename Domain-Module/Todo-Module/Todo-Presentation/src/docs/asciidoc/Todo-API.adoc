@@ -200,3 +200,8 @@ operation::pet-controller-test/get-todo-team-pets[snippets='http-request,path-pa
 === PET 생성
 
 operation::pet-controller-test/post-todo-team-pet[snippets='http-request,request-fields,request-headers,http-response']
+
+[[PET-삭제]]
+=== PET 삭제
+
+operation::pet-controller-test/delete-todo-team-pet[snippets='http-request,path-parameters,request-headers,http-response']
