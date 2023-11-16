@@ -21,7 +21,7 @@ public abstract class BaseEntity {
     @LastModifiedDate
     protected LocalDateTime updatedAt;
 
-    public <T> T updateIfDifferent(T newValue, T currentValue) {
+    protected<T> T updateIfDifferent(T newValue, T currentValue) {
         return Objects.equals(newValue, currentValue) ? currentValue : Objects.requireNonNullElse(newValue, currentValue);
     }
 }
