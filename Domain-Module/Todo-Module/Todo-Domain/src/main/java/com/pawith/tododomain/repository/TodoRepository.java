@@ -23,8 +23,8 @@ public interface TodoRepository extends JpaRepository<Todo, Long> {
     @Query(value = "select count(t) " +
         "from Todo t " +
         "join Register r on r.userId=:userId and r.todoTeam.id=:todoTeamId " +
-        "join Assign  a on a.register.id=r.id " +
-        "where a.todo.id=t.id and t.scheduledDate = :scheduledDate and t.completionStatus='COMPLETE'"
+        "join Assign  a on a.register.id=r.id and a.completionStatus='COMPLETE'" +
+        "where a.todo.id=t.id and t.scheduledDate = :scheduledDate"
     )
     Long countCompleteTodoByDate(@Param("userId") Long userId, @Param("todoTeamId") Long todoTeamId, @Param("scheduledDate") LocalDate scheduledDate);
 
