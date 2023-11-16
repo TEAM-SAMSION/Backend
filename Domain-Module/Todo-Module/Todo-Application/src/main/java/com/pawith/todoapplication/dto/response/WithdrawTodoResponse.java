@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class WithdrawTodoResponse {
+    private Long categoryId;
     private String categoryName;
     private String task;
 }
