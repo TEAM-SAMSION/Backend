@@ -3,9 +3,10 @@ package com.pawith.tododomain.service;
 import com.pawith.commonmodule.annotation.DomainService;
 import com.pawith.tododomain.entity.Pet;
 import com.pawith.tododomain.repository.PetRepository;
-import java.util.List;
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+
+import java.util.List;
 
 @DomainService
 @RequiredArgsConstructor
