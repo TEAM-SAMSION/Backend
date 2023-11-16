@@ -1,9 +1,9 @@
 package com.pawith.userdomain.entity;
 
 import com.pawith.commonmodule.domain.BaseEntity;
+import jakarta.persistence.*;
 import lombok.*;
 
-import javax.persistence.*;
 
 @Entity
 @Getter

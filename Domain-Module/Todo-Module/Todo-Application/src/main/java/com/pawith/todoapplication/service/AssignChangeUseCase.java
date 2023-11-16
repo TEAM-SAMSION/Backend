@@ -8,7 +8,7 @@ import com.pawith.tododomain.service.AssignQueryService;
 import com.pawith.tododomain.service.TodoQueryService;
 import com.pawith.userdomain.entity.User;
 import com.pawith.userdomain.utils.UserUtils;
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 
