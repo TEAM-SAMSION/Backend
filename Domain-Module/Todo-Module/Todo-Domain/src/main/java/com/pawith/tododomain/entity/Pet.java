@@ -52,8 +52,4 @@ public class Pet extends BaseEntity {
         this.description = updateIfDifferent(description, this.description);
         this.petSpecies.updatePetSpecies(genus, species);
     }
-
-    public <T> T updateIfDifferent(T newValue, T currentValue) {
-        return Objects.equals(newValue, currentValue) ? currentValue : Objects.requireNonNullElse(newValue, currentValue);
-    }
 }

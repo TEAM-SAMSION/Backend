@@ -34,9 +34,4 @@ public class TodoTeam extends BaseEntity {
         this.description = updateIfDifferent(description, this.description);
         this.imageUrl = updateIfDifferent(imageUrl, this.imageUrl);
     }
-
-    public <T> T updateIfDifferent(T newValue, T currentValue) {
-        return Objects.equals(newValue, currentValue) ? currentValue : Objects.requireNonNullElse(newValue, currentValue);
-    }
-
 }
