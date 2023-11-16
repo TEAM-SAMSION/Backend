@@ -85,18 +85,15 @@ public class TodoControllerTest extends BaseRestDocsTest {
     @DisplayName("할당받은 Todo 조회 API 테스트")
     void getTodos() throws Exception{
         //given
-        final PageRequest pageRequest = PageRequest.of(0, 6);
         final Long testTeamId = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(Long.class);
         final List<TodoInfoResponse> todoResponse = FixtureMonkeyUtils.getConstructBasedFixtureMonkey()
                 .giveMeBuilder(TodoInfoResponse.class)
                 .set("todoId", Arbitraries.longs().greaterOrEqual(1L))
                 .set("task", Arbitraries.strings().withCharRange('a', 'z').ofMinLength(5).ofMaxLength(10))
                 .set("status", FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeBuilder("COMPLETE"))
-                .sampleList(pageRequest.getPageSize());
+                .sampleList(2);
         given(todoGetUseCase.getTodoListByTodoTeamId(any())).willReturn(ListResponse.from(todoResponse));
         MockHttpServletRequestBuilder request = get(TODO_REQUEST_URL + "/{todoTeamId}/todos", testTeamId)
-                .queryParam("page", String.valueOf(pageRequest.getPageNumber()))
-                .queryParam("size", String.valueOf(pageRequest.getPageSize()))
                 .header("Authorization", "Bearer accessToken");
         //when
         ResultActions result = mvc.perform(request);
@@ -108,10 +105,6 @@ public class TodoControllerTest extends BaseRestDocsTest {
                         ),
                         pathParameters(
                                 parameterWithName("todoTeamId").description("TodoTeam의 Id")
-                        ),
-                        queryParameters(
-                                parameterWithName("page").description("요청 페이지"),
-                                parameterWithName("size").description("요청 사이즈")
                         ),
                         responseFields(
                                 fieldWithPath("content[].todoId").description("투두 항목 Id"),

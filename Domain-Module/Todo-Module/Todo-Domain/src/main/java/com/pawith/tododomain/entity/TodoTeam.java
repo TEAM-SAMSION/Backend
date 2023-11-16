@@ -30,4 +30,10 @@ public class TodoTeam extends BaseEntity {
         this.imageUrl = imageUrl;
         this.description = description;
     }
+
+    public void updateTodoTeam(String teamName, String description, String imageUrl) {
+        this.teamName = updateIfDifferent(teamName, this.teamName);
+        this.description = updateIfDifferent(description, this.description);
+        this.imageUrl = updateIfDifferent(imageUrl, this.imageUrl);
+    }
 }
