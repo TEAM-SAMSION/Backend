@@ -180,7 +180,7 @@ public class CategoryControllerTest extends BaseRestDocsTest {
     public void getCategoryListForManage() throws Exception {
         // given
         final Long testTeamId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
-        final List<CategoryManageInfoResponse> categoryListResponses = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMe(CategoryManageInfoResponse.class, 2);
+        final List<CategoryManageInfoResponse> categoryListResponses = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMe(CategoryManageInfoResponse.class, 2);
         given(categoryGetUseCase.getManageCategoryList(testTeamId)).willReturn(ListResponse.from(categoryListResponses));
         MockHttpServletRequestBuilder request = get(CATEGORY_REQUEST_URL + "/{teamId}/category/manage", testTeamId)
                 .header("Authorization", "Bearer accessToken");
