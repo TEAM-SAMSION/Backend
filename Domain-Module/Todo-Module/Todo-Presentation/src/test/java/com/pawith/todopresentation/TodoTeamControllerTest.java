@@ -1,16 +1,10 @@
 package com.pawith.todopresentation;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pawith.commonmodule.BaseRestDocsTest;
 import com.pawith.commonmodule.response.ListResponse;
 import com.pawith.commonmodule.response.SliceResponse;
 import com.pawith.commonmodule.utils.FixtureMonkeyUtils;
-import com.pawith.todoapplication.dto.response.TodoTeamInfoDetailResponse;
-import com.pawith.todoapplication.dto.response.TodoTeamInfoResponse;
-import com.pawith.todoapplication.dto.response.TodoTeamNameResponse;
-import com.pawith.todoapplication.dto.response.TodoTeamRandomCodeResponse;
-import com.pawith.todoapplication.dto.response.TodoTeamSearchInfoResponse;
-import com.pawith.todoapplication.dto.response.WithdrawTodoTeamResponse;
+import com.pawith.todoapplication.dto.response.*;
 import com.pawith.todoapplication.service.TodoTeamChangeUseCase;
 import com.pawith.todoapplication.service.TodoTeamCreateUseCase;
 import com.pawith.todoapplication.service.TodoTeamGetUseCase;
@@ -22,15 +16,12 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.SliceImpl;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 import java.util.List;
-import org.springframework.test.web.servlet.request.MockMultipartHttpServletRequestBuilder;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -38,13 +29,9 @@ import static org.springframework.restdocs.headers.HeaderDocumentation.headerWit
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.multipart;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.request;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.web.servlet.function.RequestPredicates.accept;
 
 @Slf4j
 @WebMvcTest(TodoTeamController.class)
