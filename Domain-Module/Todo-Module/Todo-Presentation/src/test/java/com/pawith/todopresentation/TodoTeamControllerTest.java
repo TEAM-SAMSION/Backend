@@ -327,14 +327,13 @@ class TodoTeamControllerTest extends BaseRestDocsTest {
         final MockMultipartFile mockMultipartFileTeam = new MockMultipartFile("teamImageFile", "teamImageFile", "image/jpeg", "image".getBytes());
         final MockMultipartFile todoTeamInfoChangeRequest = new MockMultipartFile("todoTeamUpdateInfo", "", MediaType.APPLICATION_JSON_VALUE, TODO_TEAM_UPDATE_INFO.getBytes());
         //when
-        ResultActions result = mvc.perform(
-                multipart(TODO_TEAM_REQUEST_URL + "/{todoTeamId}", todoTeamId, HttpMethod.PUT)
-                .file(mockMultipartFileTeam)
-                .file(todoTeamInfoChangeRequest)
-                .header("Authorization", "Bearer accessToken"))
-                .andExpect(status().isOk());
-
-
+        MockHttpServletRequestBuilder request = multipart(TODO_TEAM_REQUEST_URL+"/{todoTeamId}", todoTeamId)
+            .file(mockMultipartFileTeam)
+            .file(todoTeamInfoChangeRequest)
+            .accept(MediaType.APPLICATION_JSON)
+            .header("Authorization", "Bearer accessToken");
+        //when
+        ResultActions result = mvc.perform(request);
         //then
         result.andExpect(status().isOk())
             .andDo(resultHandler.document(

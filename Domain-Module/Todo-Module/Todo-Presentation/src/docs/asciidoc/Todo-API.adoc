@@ -46,6 +46,10 @@ operation::todo-team-controller-test/get-withdraw-todo-team[snippets='http-reque
 
 operation::todo-team-controller-test/get-todo-team-info[snippets='http-request,path-parameters,request-headers,http-response,response-fields']
 
+[[Todo-Team-정보-수정]]
+=== Todo Team 정보 수정
+
+operation::todo-team-controller-test/put-todo-team-info[snippets='http-request,path-parameters,request-headers,request-fields,http-response']
 [[Todo-API]]
 == Todo API
 

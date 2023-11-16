@@ -77,7 +77,7 @@ public class TodoTeamController {
         return todoTeamGetUseCase.getTodoTeamInfo(todoTeamId);
     }
 
-    @PutMapping("/{todoTeamId}")
+    @PostMapping("/{todoTeamId}")
     public void putTodoTeamInfo (@PathVariable Long todoTeamId, @RequestPart(value = "teamImageFile", required = false) MultipartFile teamImageFile,
                                  @RequestPart(value = "todoTeamUpdateInfo", required = false) TodoTeamInfoChangeRequest todoTeamInfoChangeRequest) {
         todoTeamChangeUseCase.updateTodoTeam(todoTeamId, teamImageFile, todoTeamInfoChangeRequest);
