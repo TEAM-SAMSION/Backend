@@ -41,7 +41,7 @@ public class TodoTeamMapper {
         return TodoTeamSearchInfoResponse.builder()
             .teamName(todoTeam.getTeamName())
             .code(todoTeam.getTeamCode())
-            .description(null)
+            .description(todoTeam.getDescription())
             .teamImageUrl(todoTeam.getImageUrl())
             .presidentName(user.getNickname())
             .registerCount(registerCount)
