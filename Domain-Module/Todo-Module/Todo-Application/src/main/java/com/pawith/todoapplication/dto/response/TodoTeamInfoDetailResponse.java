@@ -10,8 +10,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class WithdrawTodoResponse {
-    private Long categoryId;
-    private String categoryName;
-    private String task;
+public class TodoTeamInfoDetailResponse {
+    private String todoTeamCode;
+    private String teamDescription;
+    private Integer teamMemberCount;
+    private Integer teamPetCount;
 }

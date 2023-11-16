@@ -239,4 +239,25 @@ class RegisterControllerTest extends BaseRestDocsTest {
                 )
             ));
     }
+
+    @Test
+    @DisplayName("TodoTeam의 가입자를 내보내는 API 테스트")
+    void unregisterRegister() throws Exception {
+        //given
+        final Long registerId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
+        MockHttpServletRequestBuilder request = put(REGISTER_REQUEST_URL + "/registers/{registerId}", registerId)
+            .header("Authorization", "Bearer accessToken");
+        //when
+        ResultActions result = mvc.perform(request);
+        //then
+        result.andExpect(status().isOk())
+            .andDo(resultHandler.document(
+                requestHeaders(
+                    headerWithName("Authorization").description("access 토큰")
+                ),
+                pathParameters(
+                    parameterWithName("registerId").description("내보낼 Register의 Id")
+                )
+            ));
+    }
 }

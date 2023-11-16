@@ -41,6 +41,15 @@ operation::todo-team-controller-test/get-todo-team-by-code[snippets='http-reques
 
 operation::todo-team-controller-test/get-withdraw-todo-team[snippets='http-request,request-headers,http-response,response-fields']
 
+[[Todo-Team-상세-정보-조회]]
+=== Todo Team 상세 정보 조회
+
+operation::todo-team-controller-test/get-todo-team-info[snippets='http-request,path-parameters,request-headers,http-response,response-fields']
+
+[[Todo-Team-정보-수정]]
+=== Todo Team 정보 수정
+
+operation::todo-team-controller-test/put-todo-team-info[snippets='http-request,path-parameters,request-headers,request-fields,http-response']
 [[Todo-API]]
 == Todo API
 
@@ -182,3 +191,30 @@ operation::register-controller-test/unregister-todo-team[snippets='http-request,
 === Todo 팀 가입 기간 조회
 
 operation::register-controller-test/get-register-term[snippets='http-request,path-parameters,request-headers,http-response,response-fields']
+
+[[Todo-팀-가입자-내보내기]]
+=== Todo 팀 가입자 내보내기
+
+operation::register-controller-test/unregister-register[snippets='http-request,path-parameters,request-headers,http-response']
+[[PET-API]]
+== PET API
+
+[[PET-조회]]
+=== PET 조회
+
+operation::pet-controller-test/get-todo-team-pets[snippets='http-request,path-parameters,request-headers,http-response,response-fields']
+
+[[PET-생성]]
+=== PET 생성
+
+operation::pet-controller-test/post-todo-team-pet[snippets='http-request,request-fields,request-headers,http-response']
+
+[[PET-삭제]]
+=== PET 삭제
+
+operation::pet-controller-test/delete-todo-team-pet[snippets='http-request,path-parameters,request-headers,http-response']
+
+[[PET-정보-수정]]
+=== PET 정보 수정
+
+operation::pet-controller-test/put-todo-team-pet[snippets='http-request,path-parameters,request-headers,request-fields,http-response']

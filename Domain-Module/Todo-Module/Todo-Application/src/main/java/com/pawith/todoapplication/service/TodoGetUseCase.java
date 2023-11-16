@@ -84,7 +84,7 @@ public class TodoGetUseCase {
         final User user = userUtils.getAccessUser();
         final Slice<WithdrawTodoResponse> withdrawTodoResponses =
                 todoQueryService.findAllTodoListByTodoTeamId(user.getId(), todoTeamId, pageable)
-                        .map(todo -> new WithdrawTodoResponse(todo.getCategory().getName(), todo.getDescription()));
+                        .map(todo -> new WithdrawTodoResponse(todo.getCategory().getId(), todo.getCategory().getName(), todo.getDescription()));
         return SliceResponse.from(withdrawTodoResponses);
     }
 

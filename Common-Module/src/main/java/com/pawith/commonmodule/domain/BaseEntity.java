@@ -1,5 +1,6 @@
 package com.pawith.commonmodule.domain;
 
+import java.util.Objects;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -19,4 +20,8 @@ public abstract class BaseEntity {
 
     @LastModifiedDate
     protected LocalDateTime updatedAt;
+
+    protected<T> T updateIfDifferent(T newValue, T currentValue) {
+        return Objects.equals(newValue, currentValue) ? currentValue : Objects.requireNonNullElse(newValue, currentValue);
+    }
 }

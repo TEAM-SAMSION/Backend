@@ -3,6 +3,7 @@ package com.pawith.todoapplication.service;
 import com.pawith.commonmodule.annotation.ApplicationService;
 import com.pawith.commonmodule.response.ListResponse;
 import com.pawith.commonmodule.response.SliceResponse;
+import com.pawith.todoapplication.dto.response.TodoTeamInfoDetailResponse;
 import com.pawith.todoapplication.dto.response.TodoTeamNameResponse;
 import com.pawith.todoapplication.dto.response.TodoTeamRandomCodeResponse;
 import com.pawith.todoapplication.dto.response.TodoTeamInfoResponse;
@@ -11,6 +12,7 @@ import com.pawith.todoapplication.dto.response.WithdrawTodoTeamResponse;
 import com.pawith.todoapplication.mapper.TodoTeamMapper;
 import com.pawith.tododomain.entity.Register;
 import com.pawith.tododomain.entity.TodoTeam;
+import com.pawith.tododomain.service.PetQueryService;
 import com.pawith.tododomain.service.RegisterQueryService;
 import com.pawith.tododomain.service.TodoTeamQueryService;
 import com.pawith.userdomain.entity.User;
@@ -23,6 +25,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.multipart.MultipartFile;
 
 @ApplicationService
 @RequiredArgsConstructor
@@ -33,6 +39,7 @@ public class TodoTeamGetUseCase {
     private final RegisterQueryService registerQueryService;
     private final TodoTeamQueryService todoTeamQueryService;
     private final UserQueryService userQueryService;
+    private final PetQueryService petQueryService;
 
 
     public SliceResponse<TodoTeamInfoResponse> getTodoTeams(final Pageable pageable) {
@@ -74,5 +81,12 @@ public class TodoTeamGetUseCase {
                         .map(todoTeam -> new WithdrawTodoTeamResponse(todoTeam.getImageUrl(), todoTeam.getTeamName()))
                         .collect(Collectors.toList())
         );
+    }
+
+    public TodoTeamInfoDetailResponse getTodoTeamInfo(Long todoTeamId) {
+        TodoTeam todoTeam = todoTeamQueryService.findTodoTeamById(todoTeamId);
+        Integer registerCount = registerQueryService.countRegisterByTodoTeamId(todoTeamId);
+        Integer petCount = petQueryService.countPetByTodoTeamId(todoTeamId);
+        return TodoTeamMapper.mapToTodoTeamInfoDetailResponse(todoTeam, registerCount, petCount);
     }
 }

@@ -3,11 +3,14 @@ package com.pawith.todopresentation;
 import com.pawith.commonmodule.response.ListResponse;
 import com.pawith.commonmodule.response.SliceResponse;
 import com.pawith.todoapplication.dto.request.TodoTeamCreateRequest;
+import com.pawith.todoapplication.dto.request.TodoTeamInfoChangeRequest;
+import com.pawith.todoapplication.dto.response.TodoTeamInfoDetailResponse;
 import com.pawith.todoapplication.dto.response.TodoTeamNameResponse;
 import com.pawith.todoapplication.dto.response.TodoTeamRandomCodeResponse;
 import com.pawith.todoapplication.dto.response.TodoTeamSearchInfoResponse;
 import com.pawith.todoapplication.dto.response.TodoTeamInfoResponse;
 import com.pawith.todoapplication.dto.response.WithdrawTodoTeamResponse;
+import com.pawith.todoapplication.service.TodoTeamChangeUseCase;
 import com.pawith.todoapplication.service.TodoTeamCreateUseCase;
 import com.pawith.todoapplication.service.TodoTeamGetUseCase;
 import com.pawith.todoapplication.service.TodoTeamRandomCodeGetUseCase;
@@ -30,6 +33,7 @@ public class TodoTeamController {
     private final TodoTeamGetUseCase todoTeamGetUseCase;
     private final TodoTeamRandomCodeGetUseCase todoTeamRandomCodeGetUseCase;
     private final TodoTeamCreateUseCase todoTeamCreateUseCase;
+    private final TodoTeamChangeUseCase todoTeamChangeUseCase;
 
     @GetMapping
     public SliceResponse<TodoTeamInfoResponse> getTodoTeams(Pageable pageable) {
@@ -66,5 +70,16 @@ public class TodoTeamController {
     @GetMapping("/withdraw")
     public ListResponse<WithdrawTodoTeamResponse> getWithdrawTodoTeamList() {
         return todoTeamGetUseCase.getWithdrawTodoTeam();
+    }
+
+    @GetMapping("/{todoTeamId}")
+    public TodoTeamInfoDetailResponse getTodoTeamInfo(@PathVariable Long todoTeamId) {
+        return todoTeamGetUseCase.getTodoTeamInfo(todoTeamId);
+    }
+
+    @PostMapping("/{todoTeamId}")
+    public void putTodoTeamInfo (@PathVariable Long todoTeamId, @RequestPart(value = "teamImageFile", required = false) MultipartFile teamImageFile,
+                                 @RequestPart(value = "todoTeamUpdateInfo", required = false) TodoTeamInfoChangeRequest todoTeamInfoChangeRequest) {
+        todoTeamChangeUseCase.updateTodoTeam(todoTeamId, teamImageFile, todoTeamInfoChangeRequest);
     }
 }

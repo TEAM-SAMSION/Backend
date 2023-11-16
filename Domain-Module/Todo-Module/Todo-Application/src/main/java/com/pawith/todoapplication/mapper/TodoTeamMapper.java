@@ -1,6 +1,7 @@
 package com.pawith.todoapplication.mapper;
 
 import com.pawith.todoapplication.dto.request.TodoTeamCreateRequest;
+import com.pawith.todoapplication.dto.response.TodoTeamInfoDetailResponse;
 import com.pawith.todoapplication.dto.response.TodoTeamRandomCodeResponse;
 import com.pawith.todoapplication.dto.response.TodoTeamSearchInfoResponse;
 import com.pawith.todoapplication.dto.response.TodoTeamInfoResponse;
@@ -40,7 +41,7 @@ public class TodoTeamMapper {
         return TodoTeamSearchInfoResponse.builder()
             .teamName(todoTeam.getTeamName())
             .code(todoTeam.getTeamCode())
-            .description(null)
+            .description(todoTeam.getDescription())
             .teamImageUrl(todoTeam.getImageUrl())
             .presidentName(user.getNickname())
             .registerCount(registerCount)
@@ -49,5 +50,14 @@ public class TodoTeamMapper {
 
     public static TodoTeamRandomCodeResponse mapToTodoTeamRandomCodeResponse(final TodoTeam todoTeam) {
         return new TodoTeamRandomCodeResponse(todoTeam.getTeamCode());
+    }
+
+    public static TodoTeamInfoDetailResponse mapToTodoTeamInfoDetailResponse(final TodoTeam todoTeam, final Integer registerCount, final Integer petCount) {
+        return TodoTeamInfoDetailResponse.builder()
+                .todoTeamCode(todoTeam.getTeamCode())
+                .teamDescription(todoTeam.getDescription())
+                .teamMemberCount(registerCount)
+                .teamPetCount(petCount)
+                .build();
     }
 }
