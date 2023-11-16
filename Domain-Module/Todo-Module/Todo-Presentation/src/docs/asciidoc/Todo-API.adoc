@@ -4,7 +4,7 @@
 [[가입된-Todo-Team-조회-마이페이지]]
 === 가입된 Todo Team 조회 (마이페이지용)
 
-operation::todo-team-controller-test/get-todo-teams[snippets='http-request,request-parameters,request-headers,http-response,response-fields']
+operation::todo-team-controller-test/get-todo-teams[snippets='http-request,query-parameters,request-headers,http-response,response-fields']
 
 [[가입된-Todo-Team-조회-메인페이지-todo페이지]]
 === 가입된 Todo Team 조회 (메인페이지, todo페이지에서 페밀리 선택 버튼)
@@ -14,7 +14,7 @@ operation::todo-team-controller-test/get-todo-team-name[snippets='http-request,r
 [[Todo-Team-가입]]
 === Todo Team 가입
 
-operation::register-controller-test/post-register[snippets='http-request,request-parameters,request-headers,http-response']
+operation::register-controller-test/post-register[snippets='http-request,query-parameters,request-headers,http-response']
 
 [[Todo-Team-생성]]
 === Todo Team 생성
@@ -49,19 +49,19 @@ operation::todo-team-controller-test/get-todo-team-info[snippets='http-request,p
 [[Todo-Team-정보-수정]]
 === Todo Team 정보 수정
 
-operation::todo-team-controller-test/put-todo-team-info[snippets='http-request,path-parameters,request-headers,request-fields,http-response']
+operation::todo-team-controller-test/put-todo-team-info[snippets='http-request,path-parameters,request-part-todoTeamUpdateInfo-fields,request-headers,http-response']
 [[Todo-API]]
 == Todo API
 
 [[할당-받은-Todo-조회-메인페이지-조회용]]
 === 할당받은 Todo 조회 (메인페이지 조회용)
 
-operation::todo-controller-test/get-todos[snippets='http-request,path-parameters,request-parameters,request-headers,http-response,response-fields']
+operation::todo-controller-test/get-todos[snippets='http-request,path-parameters,request-headers,http-response,response-fields']
 
 [[카테고리-하위-Todo-조회]]
 === 카테고리 하위 Todo 조회
 
-operation::todo-controller-test/get-todo-list[snippets='http-request,path-parameters,request-headers,request-parameters,http-response,response-fields']
+operation::todo-controller-test/get-todo-list[snippets='http-request,path-parameters,request-headers,query-parameters,http-response,response-fields']
 
 [[Todo-달성률]]
 === Todo 달성률 조회
@@ -106,19 +106,19 @@ operation::todo-controller-test/delete-todo[snippets='http-request,path-paramete
 [[Todo-알림-설정]]
 === Todo 알림 설정
 
-operation::todo-controller-test/post-notification[snippets='http-request,request-headers,path-parameters,request-parameters,http-response']
+operation::todo-controller-test/post-notification[snippets='http-request,request-headers,path-parameters,query-parameters,http-response']
 
 [[Todo-알림-설정-조회]]
 
 [[TodoTeam-탈퇴시-담당했던-Todo-조회]]
 === TodoTeam 탈퇴시 담당했던 Todo 조회
 
-operation::todo-controller-test/get-withdraw-todo-list[snippets='http-request,path-parameters,request-headers,request-parameters,http-response,response-fields']
+operation::todo-controller-test/get-withdraw-todo-list[snippets='http-request,path-parameters,request-headers,query-parameters,http-response,response-fields']
 
 [[서비스-탈퇴시-담당했던-Todo-조회]]
 === 서비스 탈퇴시 담당했던 Todo 조회
 
-operation::todo-controller-test/get-all-withdraw-todo-list[snippets='http-request,request-headers,request-parameters,http-response,response-fields']
+operation::todo-controller-test/get-all-withdraw-todo-list[snippets='http-request,request-headers,query-parameters,http-response,response-fields']
 
 [[TodoTeam-탈퇴시-담당했던-Todo-개수-조회]]
 === TodoTeam 탈퇴시 담당했던 Todo 개수 조회
@@ -162,12 +162,12 @@ operation::category-controller-test/put-category-name[snippets='http-request,pat
 [[Register-API]]
 == Register API
 
-[[Todo-Team에-가입된-사용자-조회]]
+[[Todo-Team에-가입된-사용자-조회-todo-생성]]
 === Todo Team에 가입된 사용자 조회 (todo 생성할 때 사용)
 
 operation::register-controller-test/get-registers[snippets='http-request,path-parameters,request-headers,http-response,response-fields']
 
-[[Todo-Team에-가입된-사용자-조회]]
+[[Todo-Team에-가입된-사용자-조회-관리자]]
 === Todo Team에 가입된 사용자 조회 (관리자 페이지에서 회원 정보 조회할 때 사용)
 
 operation::register-controller-test/get-manage-registers[snippets='http-request,path-parameters,request-headers,http-response,response-fields']
@@ -180,7 +180,7 @@ operation::register-controller-test/put-authority[snippets='http-request,path-pa
 [[Todo-Teamd에-가입된-사용자-검색]]
 === Todo Team에 가입된 사용자 검색
 
-operation::register-controller-test/get-register-by-nickname[snippets='http-request,path-parameters,request-headers,request-parameters,http-response,response-fields']
+operation::register-controller-test/get-register-by-nickname[snippets='http-request,path-parameters,request-headers,query-parameters,http-response,response-fields']
 
 [[Todo-Team-탈퇴]]
 === Todo Team 탈퇴
@@ -207,7 +207,7 @@ operation::pet-controller-test/get-todo-team-pets[snippets='http-request,path-pa
 [[PET-생성]]
 === PET 생성
 
-operation::pet-controller-test/post-todo-team-pet[snippets='http-request,request-fields,request-headers,http-response']
+operation::pet-controller-test/post-todo-team-pet[snippets='http-request,path-parameters,request-part-petCreateInfo-fields,request-headers,http-response']
 
 [[PET-삭제]]
 === PET 삭제
@@ -217,4 +217,4 @@ operation::pet-controller-test/delete-todo-team-pet[snippets='http-request,path-
 [[PET-정보-수정]]
 === PET 정보 수정
 
-operation::pet-controller-test/put-todo-team-pet[snippets='http-request,path-parameters,request-headers,request-fields,http-response']
+operation::pet-controller-test/put-todo-team-pet[snippets='http-request,path-parameters,request-headers,request-part-petUpdateInfo-fields,http-response']
