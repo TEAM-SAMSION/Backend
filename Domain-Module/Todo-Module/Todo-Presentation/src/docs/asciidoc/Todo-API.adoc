@@ -187,3 +187,11 @@ operation::register-controller-test/unregister-todo-team[snippets='http-request,
 === Todo 팀 가입 기간 조회
 
 operation::register-controller-test/get-register-term[snippets='http-request,path-parameters,request-headers,http-response,response-fields']
+
+[[PET-API]]
+== PET API
+
+[[PET-조회]]
+=== PET 조회
+
+operation::pet-controller-test/get-todo-team-pets[snippets='http-request,path-parameters,request-headers,http-response,response-fields']
