@@ -6,10 +6,14 @@ import java.util.Objects;
 import lombok.*;
 
 import javax.persistence.*;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SQLDelete(sql = "UPDATE pet SET is_deleted = true WHERE pet_id = ?")
+@Where(clause = "is_deleted = false")
 public class Pet extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,6 +27,8 @@ public class Pet extends BaseEntity {
 
     @Embedded
     private PetSpecies petSpecies;
+
+    private Boolean isDeleted=Boolean.FALSE;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "team_id")
