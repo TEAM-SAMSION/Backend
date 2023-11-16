@@ -1,6 +1,7 @@
 package com.pawith.tododomain.entity;
 
 import com.pawith.commonmodule.domain.BaseEntity;
+import com.pawith.commonmodule.util.DomainFieldUtils;
 import com.pawith.tododomain.entity.vo.PetSpecies;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -48,10 +49,10 @@ public class Pet extends BaseEntity {
 
 
     public void updatePet(String imageUrl, String name, Integer age, String description, String species, String genus) {
-        this.imageUrl = updateIfDifferent(imageUrl, this.imageUrl);
-        this.name = updateIfDifferent(name, this.name);
-        this.age = updateIfDifferent(age, this.age);
-        this.description = updateIfDifferent(description, this.description);
+        this.imageUrl = DomainFieldUtils.updateIfDifferent(imageUrl, this.imageUrl);
+        this.name = DomainFieldUtils.updateIfDifferent(name, this.name);
+        this.age = DomainFieldUtils.updateIfDifferent(age, this.age);
+        this.description = DomainFieldUtils.updateIfDifferent(description, this.description);
         this.petSpecies.updatePetSpecies(genus, species);
     }
 }

@@ -1,6 +1,7 @@
 package com.pawith.tododomain.entity;
 
 import com.pawith.commonmodule.domain.BaseEntity;
+import com.pawith.commonmodule.util.DomainFieldUtils;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -32,8 +33,8 @@ public class TodoTeam extends BaseEntity {
     }
 
     public void updateTodoTeam(String teamName, String description, String imageUrl) {
-        this.teamName = updateIfDifferent(teamName, this.teamName);
-        this.description = updateIfDifferent(description, this.description);
-        this.imageUrl = updateIfDifferent(imageUrl, this.imageUrl);
+        this.teamName = DomainFieldUtils.updateIfDifferent(teamName, this.teamName);
+        this.description = DomainFieldUtils.updateIfDifferent(description, this.description);
+        this.imageUrl = DomainFieldUtils.updateIfDifferent(imageUrl, this.imageUrl);
     }
 }

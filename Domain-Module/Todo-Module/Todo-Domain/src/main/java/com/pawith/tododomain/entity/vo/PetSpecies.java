@@ -1,5 +1,6 @@
 package com.pawith.tododomain.entity.vo;
 
+import com.pawith.commonmodule.util.DomainFieldUtils;
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -21,11 +22,7 @@ public class PetSpecies {
     }
 
     public void updatePetSpecies(String genus, String species) {
-        this.genus = updateIfDifferent(genus, this.genus);
-        this.species = updateIfDifferent(species, this.species);
-    }
-
-    public <T> T updateIfDifferent(T newValue, T currentValue) {
-        return Objects.equals(newValue, currentValue) ? currentValue : Objects.requireNonNullElse(newValue, currentValue);
+        this.genus = DomainFieldUtils.updateIfDifferent(genus, this.genus);
+        this.species = DomainFieldUtils.updateIfDifferent(species, this.species);
     }
 }
