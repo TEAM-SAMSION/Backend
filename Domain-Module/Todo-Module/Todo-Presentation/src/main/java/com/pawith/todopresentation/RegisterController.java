@@ -58,5 +58,10 @@ public class RegisterController {
         return registersGetUseCase.searchRegisterByNickname(todoTeamId, nickname);
     }
 
+    @PutMapping("/registers/{registerId}")
+    public void putRegister(@PathVariable Long registerId) {
+        changeRegisterUseCase.changeRegistered(registerId);
+    }
+
 
 }

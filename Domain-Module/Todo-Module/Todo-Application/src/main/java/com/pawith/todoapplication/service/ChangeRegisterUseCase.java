@@ -38,4 +38,9 @@ public class ChangeRegisterUseCase {
         register.updateAuthority(authority);
     }
 
+    public void changeRegistered(Long registerId) {
+        Register register = registerQueryService.findRegisterById(registerId);
+        register.unregister();
+    }
+
 }
