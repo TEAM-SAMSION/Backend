@@ -63,7 +63,7 @@ public class PetControllerTest extends BaseRestDocsTest {
         final Long testTeamId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
         final List<PetInfoResponse> petInfoResponses = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMe(PetInfoResponse.class, 2);
         given(petGetUseCase.getTodoTeamPets(testTeamId)).willReturn(ListResponse.from(petInfoResponses));
-        MockHttpServletRequestBuilder request = get(PET_REQUEST_URL + "/{todoTeamId}/pet", testTeamId)
+        MockHttpServletRequestBuilder request = get(PET_REQUEST_URL + "/{todoTeamId}/pets", testTeamId)
                 .header("Authorization", "Bearer accessToken");
         // when
         ResultActions result = mvc.perform(request);
@@ -96,7 +96,7 @@ public class PetControllerTest extends BaseRestDocsTest {
         final Long testTeamId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
         final MockMultipartFile mockMultipartFilePet = new MockMultipartFile("petImageFile", "petImageFile", "image/jpeg", "image".getBytes());
         final MockMultipartFile petCreateInfo = new MockMultipartFile("petCreateInfo", "", MediaType.APPLICATION_JSON_VALUE, PET_TEAM_CREATE_INFO.getBytes());
-        MockHttpServletRequestBuilder request = multipart(PET_REQUEST_URL + "/{todoTeamId}/pet", testTeamId)
+        MockHttpServletRequestBuilder request = multipart(PET_REQUEST_URL + "/{todoTeamId}/pets", testTeamId)
                 .file(mockMultipartFilePet)
                 .file(petCreateInfo)
                 .accept(MediaType.APPLICATION_JSON)
@@ -127,7 +127,7 @@ public class PetControllerTest extends BaseRestDocsTest {
     void deleteTodoTeamPet() throws Exception {
         // given
         final Long testPetId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
-        MockHttpServletRequestBuilder request = delete(PET_REQUEST_URL + "/pet/{petId}", testPetId)
+        MockHttpServletRequestBuilder request = delete(PET_REQUEST_URL + "/pets/{petId}", testPetId)
                 .header("Authorization", "Bearer accessToken");
         // when
         ResultActions result = mvc.perform(request);
@@ -150,7 +150,7 @@ public class PetControllerTest extends BaseRestDocsTest {
         final Long testPetId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
         final MockMultipartFile mockMultipartFilePet = new MockMultipartFile("petImageFile", "petImageFile", "image/jpeg", "image".getBytes());
         final MockMultipartFile petCreateInfo = new MockMultipartFile("petUpdateInfo", "", MediaType.APPLICATION_JSON_VALUE, PET_TEAM_CREATE_INFO.getBytes());
-        MockHttpServletRequestBuilder request = multipart(PET_REQUEST_URL + "/pet/{petId}", testPetId)
+        MockHttpServletRequestBuilder request = multipart(PET_REQUEST_URL + "/pets/{petId}", testPetId)
                 .file(mockMultipartFilePet)
                 .file(petCreateInfo)
                 .accept(MediaType.APPLICATION_JSON)

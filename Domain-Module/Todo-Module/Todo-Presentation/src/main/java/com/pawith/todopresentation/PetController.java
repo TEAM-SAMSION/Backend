@@ -30,23 +30,23 @@ public class PetController {
     private final PetDeleteUseCase petDeleteUseCase;
     private final PetChangeUseCase petChangeUseCase;
 
-    @PostMapping("/{todoTeamId}/pet")
+    @PostMapping("/{todoTeamId}/pets")
     public void postTodoTeamPet(@PathVariable Long todoTeamId, @RequestPart(value = "petImageFile") MultipartFile petImageFile,
                                 @RequestPart(value = "petCreateInfo") PetRegisterRequest petRegisterRequest) {
         petCreateUseCase.createPet(todoTeamId, petImageFile, petRegisterRequest);
     }
 
-    @GetMapping("/{todoTeamId}/pet")
+    @GetMapping("/{todoTeamId}/pets")
     public ListResponse<PetInfoResponse> getTodoTeamPets(@PathVariable Long todoTeamId) {
         return petGetUseCase.getTodoTeamPets(todoTeamId);
     }
 
-    @DeleteMapping("pet/{petId}")
+    @DeleteMapping("pets/{petId}")
     public void deleteTodoTeamPet(@PathVariable Long petId) {
         petDeleteUseCase.deletePet(petId);
     }
 
-    @PostMapping("pet/{petId}")
+    @PostMapping("pets/{petId}")
     public void putTodoTeamPet(@PathVariable Long petId, @RequestPart(value = "petImageFile", required = false) MultipartFile petImageFile,
                                @RequestPart(value = "petUpdateInfo", required = false) PetInfoChangeRequest petInfoChangeRequest) {
         petChangeUseCase.updatePet(petId, petImageFile, petInfoChangeRequest);
