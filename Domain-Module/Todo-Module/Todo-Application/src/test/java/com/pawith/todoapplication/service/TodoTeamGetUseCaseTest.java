@@ -107,7 +107,7 @@ public class TodoTeamGetUseCaseTest {
         Assertions.assertThat(result.getTeamName()).isEqualTo(todoTeam.getTeamName());
         Assertions.assertThat(result.getPresidentName()).isEqualTo(presidentUser.getNickname());
         Assertions.assertThat(result.getRegisterCount()).isEqualTo(registerCount);
-        Assertions.assertThat(result.getDescription()).isEqualTo(null);
+        Assertions.assertThat(result.getDescription()).isEqualTo(todoTeam.getDescription());
         Assertions.assertThat(result.getTeamImageUrl()).isEqualTo(todoTeam.getImageUrl());
 
     }
