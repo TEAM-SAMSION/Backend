@@ -1,5 +1,6 @@
 package com.pawith.todopresentation;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pawith.commonmodule.BaseRestDocsTest;
 import com.pawith.commonmodule.response.ListResponse;
 import com.pawith.commonmodule.response.SliceResponse;
@@ -10,6 +11,7 @@ import com.pawith.todoapplication.dto.response.TodoTeamNameResponse;
 import com.pawith.todoapplication.dto.response.TodoTeamRandomCodeResponse;
 import com.pawith.todoapplication.dto.response.TodoTeamSearchInfoResponse;
 import com.pawith.todoapplication.dto.response.WithdrawTodoTeamResponse;
+import com.pawith.todoapplication.service.TodoTeamChangeUseCase;
 import com.pawith.todoapplication.service.TodoTeamCreateUseCase;
 import com.pawith.todoapplication.service.TodoTeamGetUseCase;
 import com.pawith.todoapplication.service.TodoTeamRandomCodeGetUseCase;
@@ -20,12 +22,15 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.SliceImpl;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 import java.util.List;
+import org.springframework.test.web.servlet.request.MockMultipartHttpServletRequestBuilder;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -33,9 +38,13 @@ import static org.springframework.restdocs.headers.HeaderDocumentation.headerWit
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.multipart;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.request;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.web.servlet.function.RequestPredicates.accept;
 
 @Slf4j
 @WebMvcTest(TodoTeamController.class)
@@ -64,12 +73,18 @@ class TodoTeamControllerTest extends BaseRestDocsTest {
         "\n" +
         "    ]\n" +
         "}";
+    private static final String TODO_TEAM_UPDATE_INFO = "{\n" +
+        "    \"teamName\" : \"test\",\n" +
+        "    \"description\" : \"test\"\n" +
+        "}";
     @MockBean
     private TodoTeamGetUseCase todoTeamGetUseCase;
     @MockBean
     private TodoTeamRandomCodeGetUseCase todoTeamRandomCodeGetUseCase;
     @MockBean
     private TodoTeamCreateUseCase todoTeamCreateUseCase;
+    @MockBean
+    private TodoTeamChangeUseCase todoTeamChangeUseCase;
 
     @Test
     @DisplayName("TodoTeam 목록을 가져오는 테스트")
@@ -300,6 +315,38 @@ class TodoTeamControllerTest extends BaseRestDocsTest {
                     fieldWithPath("teamDescription").description("TodoTeam의 설명"),
                     fieldWithPath("teamMemberCount").description("TodoTeam의 가입자 수"),
                     fieldWithPath("teamPetCount").description("TodoTeam의 펫 수")
+                )
+            ));
+    }
+
+    @Test
+    @DisplayName("TodoTeam 정보 수정 API 테스트")
+    void putTodoTeamInfo() throws Exception {
+        //given
+        final Long todoTeamId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
+        final MockMultipartFile mockMultipartFileTeam = new MockMultipartFile("teamImageFile", "teamImageFile", "image/jpeg", "image".getBytes());
+        final MockMultipartFile todoTeamInfoChangeRequest = new MockMultipartFile("todoTeamUpdateInfo", "", MediaType.APPLICATION_JSON_VALUE, TODO_TEAM_UPDATE_INFO.getBytes());
+        //when
+        ResultActions result = mvc.perform(
+                multipart(TODO_TEAM_REQUEST_URL + "/{todoTeamId}", todoTeamId, HttpMethod.PUT)
+                .file(mockMultipartFileTeam)
+                .file(todoTeamInfoChangeRequest)
+                .header("Authorization", "Bearer accessToken"))
+                .andExpect(status().isOk());
+
+
+        //then
+        result.andExpect(status().isOk())
+            .andDo(resultHandler.document(
+                requestHeaders(
+                    headerWithName("Authorization").description("access 토큰")
+                ),
+                pathParameters(
+                    parameterWithName("todoTeamId").description("TodoTeam의 Id")
+                ),
+                requestPartFields("todoTeamUpdateInfo",
+                    fieldWithPath("teamName").description("TodoTeam 이름"),
+                    fieldWithPath("description").description("TodoTeam 한줄설명")
                 )
             ));
     }
