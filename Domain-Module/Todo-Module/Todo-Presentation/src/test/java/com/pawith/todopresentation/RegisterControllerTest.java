@@ -209,9 +209,9 @@ class RegisterControllerTest extends BaseRestDocsTest {
     @DisplayName("닉네임으로 Register를 검색하는 테스트")
     void getRegisterByNickname() throws Exception {
         //given
-        final Long todoTeamId = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(Long.class);
+        final Long todoTeamId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
         final String nickname = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(String.class);
-        final List<RegisterSearchInfoResponse> registerSearchInfoResponses = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMe(RegisterSearchInfoResponse.class, 2);
+        final List<RegisterSearchInfoResponse> registerSearchInfoResponses = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMe(RegisterSearchInfoResponse.class, 2);
         given(registersGetUseCase.searchRegisterByNickname(todoTeamId, nickname)).willReturn(ListResponse.from(registerSearchInfoResponses));
         MockHttpServletRequestBuilder request = get(REGISTER_REQUEST_URL + "/{todoTeamId}/registers/search", todoTeamId)
             .queryParam("nickname", nickname)

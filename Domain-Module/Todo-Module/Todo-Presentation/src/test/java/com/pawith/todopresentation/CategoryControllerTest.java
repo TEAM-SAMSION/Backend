@@ -57,7 +57,7 @@ public class CategoryControllerTest extends BaseRestDocsTest {
     public void getCategoryList() throws Exception {
         // given
         final Long testTeamId = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(Long.class);
-        final List<CategoryInfoResponse> categoryListResponses = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMe(CategoryInfoResponse.class, 2);
+        final List<CategoryInfoResponse> categoryListResponses = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMe(CategoryInfoResponse.class, 2);
         given(categoryGetUseCase.getCategoryList(testTeamId)).willReturn(ListResponse.from(categoryListResponses));
         MockHttpServletRequestBuilder request = get(CATEGORY_REQUEST_URL + "/{teamId}/category", testTeamId)
                 .header("Authorization", "Bearer accessToken");

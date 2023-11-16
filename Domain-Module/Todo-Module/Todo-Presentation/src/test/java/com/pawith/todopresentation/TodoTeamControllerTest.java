@@ -257,7 +257,8 @@ class TodoTeamControllerTest extends BaseRestDocsTest {
     @DisplayName("서비스 탈퇴 시 가입한 팀 조회 API 테스트")
     void getWithdrawTodoTeam() throws Exception {
         //given
-        final List<WithdrawTodoTeamResponse> withdrawTodoTeamResponses = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMe(WithdrawTodoTeamResponse.class, 5);
+        final List<WithdrawTodoTeamResponse> withdrawTodoTeamResponses =
+            FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMe(WithdrawTodoTeamResponse.class, 5);
         given(todoTeamGetUseCase.getWithdrawTodoTeam()).willReturn(ListResponse.from(withdrawTodoTeamResponses));
         MockHttpServletRequestBuilder request = get(TODO_TEAM_REQUEST_URL + "/withdraw")
                 .header("Authorization", "Bearer accessToken");
@@ -281,7 +282,7 @@ class TodoTeamControllerTest extends BaseRestDocsTest {
     void getTodoTeamInfo() throws Exception {
         //given
         final Long todoTeamId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
-        final TodoTeamInfoDetailResponse todoTeamInfoDetailResponse = FixtureMonkeyUtils.getConstructBasedFixtureMonkey()
+        final TodoTeamInfoDetailResponse todoTeamInfoDetailResponse = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey()
             .giveMeOne(TodoTeamInfoDetailResponse.class);
         given(todoTeamGetUseCase.getTodoTeamInfo(todoTeamId)).willReturn(todoTeamInfoDetailResponse);
         MockHttpServletRequestBuilder request = get(TODO_TEAM_REQUEST_URL+"/{todoTeamId}", todoTeamId)
