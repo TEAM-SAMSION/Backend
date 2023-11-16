@@ -195,3 +195,8 @@ operation::register-controller-test/get-register-term[snippets='http-request,pat
 === PET 조회
 
 operation::pet-controller-test/get-todo-team-pets[snippets='http-request,path-parameters,request-headers,http-response,response-fields']
+
+[[PET-생성]]
+=== PET 생성
+
+operation::pet-controller-test/post-todo-team-pet[snippets='http-request,request-fields,request-headers,http-response']

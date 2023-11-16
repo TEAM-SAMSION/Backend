@@ -24,7 +24,7 @@ public class PetController {
     private final PetGetUseCase petGetUseCase;
     @PostMapping("/{todoTeamId}/pet")
     public void postTodoTeamPet(@PathVariable Long todoTeamId, @RequestPart(value = "petImageFile") MultipartFile petImageFile,
-                                @RequestPart(value = "petInfo") PetRegisterRequest petRegisterRequest) {
+                                @RequestPart(value = "petCreateInfo") PetRegisterRequest petRegisterRequest) {
         petCreateUseCase.createPet(todoTeamId, petImageFile, petRegisterRequest);
     }
 
