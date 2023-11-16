@@ -205,3 +205,8 @@ operation::pet-controller-test/post-todo-team-pet[snippets='http-request,request
 === PET 삭제
 
 operation::pet-controller-test/delete-todo-team-pet[snippets='http-request,path-parameters,request-headers,http-response']
+
+[[PET-정보-수정]]
+=== PET 정보 수정
+
+operation::pet-controller-test/put-todo-team-pet[snippets='http-request,path-parameters,request-headers,request-fields,http-response']
