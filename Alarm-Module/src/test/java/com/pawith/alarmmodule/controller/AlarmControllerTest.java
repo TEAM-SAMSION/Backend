@@ -24,8 +24,7 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
@@ -83,7 +82,7 @@ class AlarmControllerTest extends BaseRestDocsTest {
                 requestHeaders(
                     headerWithName("Authorization").description("access 토큰")
                 ),
-                requestParameters(
+                queryParameters(
                     parameterWithName("page").description("페이지 번호"),
                     parameterWithName("size").description("페이지 크기")
                 ),

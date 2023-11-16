@@ -62,7 +62,7 @@ class OAuthControllerTest extends BaseRestDocsTest {
         result.andExpect(status().isOk())
             .andDo(print())
             .andDo(resultHandler.document(
-                requestParameters(
+                queryParameters(
                     parameterWithName(OAUTH_REQUEST_ACCESS_TOKEN_PARAM_NAME).description("OAuth 접근 토큰")
                 ),
                 pathParameters(

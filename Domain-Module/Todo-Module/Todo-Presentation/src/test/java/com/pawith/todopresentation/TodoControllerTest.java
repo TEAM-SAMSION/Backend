@@ -109,7 +109,7 @@ public class TodoControllerTest extends BaseRestDocsTest {
                         pathParameters(
                                 parameterWithName("todoTeamId").description("TodoTeam의 Id")
                         ),
-                        requestParameters(
+                        queryParameters(
                                 parameterWithName("page").description("요청 페이지"),
                                 parameterWithName("size").description("요청 사이즈")
                         ),
@@ -178,7 +178,7 @@ public class TodoControllerTest extends BaseRestDocsTest {
                         pathParameters(
                                 parameterWithName("categoryId").description("Category의 Id")
                         ),
-                        requestParameters(
+                        queryParameters(
                                 parameterWithName("moveDate").description("달력에서 이동하는 날짜(LocalDate)")
                         ),
                         responseFields(
@@ -360,7 +360,7 @@ public class TodoControllerTest extends BaseRestDocsTest {
                 pathParameters(
                     parameterWithName("todoId").description("투두 항목 Id")
                 ),
-                requestParameters(
+                queryParameters(
                     parameterWithName("notificationTime").description("알림 시간")
                 )
             ));
@@ -393,7 +393,7 @@ public class TodoControllerTest extends BaseRestDocsTest {
                         pathParameters(
                                 parameterWithName("todoTeamId").description("투두 팀 Id")
                         ),
-                        requestParameters(
+                        queryParameters(
                                 parameterWithName("page").description("요청 페이지"),
                                 parameterWithName("size").description("요청 사이즈")
                         ),
@@ -430,7 +430,7 @@ public class TodoControllerTest extends BaseRestDocsTest {
                         requestHeaders(
                                 headerWithName("Authorization").description("access 토큰")
                         ),
-                        requestParameters(
+                        queryParameters(
                                 parameterWithName("page").description("요청 페이지"),
                                 parameterWithName("size").description("요청 사이즈")
                         ),

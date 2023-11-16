@@ -93,7 +93,7 @@ class TodoTeamControllerTest extends BaseRestDocsTest {
                 requestHeaders(
                     headerWithName("Authorization").description("access 토큰")
                 ),
-                requestParameters(
+                queryParameters(
                     parameterWithName("page").description("요청 페이지"),
                     parameterWithName("size").description("요청 사이즈")
                 ),

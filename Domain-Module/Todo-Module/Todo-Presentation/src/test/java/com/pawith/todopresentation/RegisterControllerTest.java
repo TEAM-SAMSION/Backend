@@ -82,7 +82,7 @@ class RegisterControllerTest extends BaseRestDocsTest {
                 requestHeaders(
                     headerWithName("Authorization").description("access 토큰")
                 ),
-                requestParameters(
+                queryParameters(
                     parameterWithName("todoTeamCode").description("TodoTeam의 코드")
                 )
             ));
@@ -227,7 +227,7 @@ class RegisterControllerTest extends BaseRestDocsTest {
                 pathParameters(
                     parameterWithName("todoTeamId").description("TodoTeam의 Id")
                 ),
-                requestParameters(
+                queryParameters(
                     parameterWithName("nickname").description("검색할 Register의 nickname")
                 ),
                 responseFields(
