@@ -37,3 +37,8 @@ operation::user-controller-test/delete-user[snippets='http-request,request-heade
 === 사용자 가입 기간 조회
 
 operation::user-controller-test/get-term[snippets='http-request,request-headers,http-response,response-fields']
+
+[[사용자-탈퇴-이유-저장]]
+=== 사용자 탈퇴 이유 저장
+
+operation::user-controller-test/post-withdraw-reason[snippets='http-request,request-headers,request-fields,http-response']
