@@ -3,6 +3,10 @@ package com.pawith.userdomain.entity;
 import com.pawith.commonmodule.domain.BaseEntity;
 import com.pawith.commonmodule.enums.Provider;
 import jakarta.persistence.*;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -54,5 +58,11 @@ public class User extends BaseEntity {
 
     public Boolean isNotMatchingProvider(Provider provider) {
         return !this.provider.equals(provider);
+    }
+
+    public Long getJoinTerm() {
+        LocalDate nowDate = LocalDate.now();
+        LocalDate joinDate = this.createdAt.toLocalDate();
+        return ChronoUnit.DAYS.between(joinDate, nowDate) + 1;
     }
 }
