@@ -108,6 +108,7 @@ public class TodoControllerTest extends BaseRestDocsTest {
                         ),
                         responseFields(
                                 fieldWithPath("content[].todoId").description("투두 항목 Id"),
+                                fieldWithPath("content[].categoryId").description("투두 항목 카테고리 Id"),
                                 fieldWithPath("content[].categoryName").description("투두 항목 카테고리 이름"),
                                 fieldWithPath("content[].task").description("투두 항목 이름"),
                                 fieldWithPath("content[].completionStatus").description("투두 항목 상태(완료, 미완료)")
