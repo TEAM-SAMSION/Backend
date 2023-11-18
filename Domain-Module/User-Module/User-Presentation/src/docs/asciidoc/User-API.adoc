@@ -32,3 +32,8 @@ operation::user-controller-test/post-path-history[snippets='http-request,request
 === 사용자 탈퇴
 
 operation::user-controller-test/delete-user[snippets='http-request,request-headers,http-response']
+
+[[사용자-가입-기간-조회]]
+=== 사용자 가입 기간 조회
+
+operation::user-controller-test/get-term[snippets='http-request,request-headers,http-response,response-fields']

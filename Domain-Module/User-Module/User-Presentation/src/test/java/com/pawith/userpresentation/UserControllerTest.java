@@ -5,6 +5,7 @@ import com.pawith.commonmodule.utils.FixtureMonkeyUtils;
 import com.pawith.userapplication.dto.request.PathHistoryCreateRequest;
 import com.pawith.userapplication.dto.request.UserNicknameChangeRequest;
 import com.pawith.userapplication.dto.response.UserInfoResponse;
+import com.pawith.userapplication.dto.response.UserJoinTermResponse;
 import com.pawith.userapplication.service.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -148,6 +149,29 @@ class UserControllerTest extends BaseRestDocsTest {
             .andDo(resultHandler.document(
                 requestHeaders(
                     headerWithName(AUTHORIZATION_HEADER).description("access 토큰")
+                )
+            ));
+    }
+
+    @Test
+    @DisplayName("서비스 가입 조회 테스트")
+    void getTerm() throws Exception {
+        //given
+        final MockHttpServletRequestBuilder request = get(USER_REQUEST_URL + "/term")
+            .contentType("application/json")
+            .header(AUTHORIZATION_HEADER, ACCESS_TOKEN);
+        given(userInfoGetUseCase.getTerm()).willReturn(FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(
+                UserJoinTermResponse.class));
+        //when
+        ResultActions result = mvc.perform(request);
+        //then
+        result.andExpect(status().isOk())
+            .andDo(resultHandler.document(
+                requestHeaders(
+                    headerWithName(AUTHORIZATION_HEADER).description("access 토큰")
+                ),
+                responseFields(
+                    fieldWithPath("joinTerm").description("서비스 가입 기간")
                 )
             ));
     }
