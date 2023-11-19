@@ -48,7 +48,7 @@ public class TodoGetUseCase {
         List<TodoInfoResponse> todoInfoResponseList = new ArrayList<>();
         for (Todo todo : todoAssignMap.keySet()) {
             Assign assign = todoAssignMap.get(todo);
-            TodoInfoResponse todoInfoResponse = new TodoInfoResponse(todo.getId(), todo.getCategory().getName(), todo.getDescription(), assign.getCompletionStatus());
+            TodoInfoResponse todoInfoResponse = new TodoInfoResponse(todo.getId(), todo.getCategory().getId(), todo.getCategory().getName(), todo.getDescription(), assign.getCompletionStatus());
             todoInfoResponseList.add(todoInfoResponse);
         }
         return ListResponse.from(todoInfoResponseList);

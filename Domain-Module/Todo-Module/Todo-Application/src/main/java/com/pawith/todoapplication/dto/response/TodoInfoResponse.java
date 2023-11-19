@@ -11,6 +11,7 @@ import lombok.ToString;
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
 public class TodoInfoResponse {
     private Long todoId;
+    private Long categoryId;
     private String categoryName;
     private String task;
     private CompletionStatus completionStatus;

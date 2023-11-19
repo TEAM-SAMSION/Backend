@@ -2,7 +2,9 @@ package com.pawith.userpresentation;
 
 import com.pawith.userapplication.dto.request.PathHistoryCreateRequest;
 import com.pawith.userapplication.dto.request.UserNicknameChangeRequest;
+import com.pawith.userapplication.dto.request.WithdrawReasonCreateRequest;
 import com.pawith.userapplication.dto.response.UserInfoResponse;
+import com.pawith.userapplication.dto.response.UserJoinTermResponse;
 import com.pawith.userapplication.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +20,7 @@ public class UserController {
     private final UserProfileImageUpdateUseCase userProfileImageUpdateUseCase;
     private final PathHistoryCreateUseCase pathHistoryCreateUseCase;
     private final UserDeleteUseCase userDeleteUseCase;
+    private final WithdrawReasonCreateUseCase withdrawReasonCreateUseCase;
 
     @PutMapping("/name")
     public void putNicknameOnUser(@RequestBody UserNicknameChangeRequest request){
@@ -42,5 +45,15 @@ public class UserController {
     @DeleteMapping
     public void deleteUser(){
         userDeleteUseCase.deleteUser();
+    }
+
+    @GetMapping("/term")
+    public UserJoinTermResponse getTerm() {
+        return userInfoGetUseCase.getTerm();
+    }
+
+    @PostMapping("/withdraw")
+    public void postWithdrawReason(@RequestBody WithdrawReasonCreateRequest withDrawCreateRequest){
+        withdrawReasonCreateUseCase.createWithdrawReason(withDrawCreateRequest);
     }
 }
