@@ -17,9 +17,4 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("select u from User u where u.nickname = :nickname and u.id in :ids")
     List<User> findAllByNicknameAndIds(String nickname, List<Long> ids);
 
-    @Query("select count(u) > 0 from User u" +
-            " join Register r on r.userId = u.id" +
-            " and r.authority = 'PRESIDENT'")
-    boolean existsRegisterByUserId(Long userId);
-
 }

@@ -31,21 +31,35 @@ public class RegisterValidateService {
         }
     }
 
-    public void validatePresidentRegisterListDeletable(final List<Register> registerList){
-        final List<Long> todoTeamIds = registerList.stream()
-            .map(register -> register.getTodoTeam().getId())
-            .collect(Collectors.toList());
-        final List<Integer> presidentRegisterCountList = registerRepository.countAllByTodoTeamIdsInAndAuthority(todoTeamIds, Authority.PRESIDENT);
-        final boolean isNotUnregistrable = presidentRegisterCountList.stream()
-            .anyMatch(presidentRegisterCount -> presidentRegisterCount <= 1);
-        if (isNotUnregistrable) {
-            throw new UnregistrableException(TodoError.CANNOT_PRESIDENT_UNREGISTRABLE);
-        }
+    public void validateRegisterDeletable(final List<Register> registerList) {
+        validatePresidentRegisterListDeletable(registerList);
+        validatePresidentRegisterExist(registerList);
     }
 
     public void validateAuthorityChangeable(final Register userRegister, final Authority authority) {
         if (!userRegister.isPresident() && authority.equals(Authority.PRESIDENT)) {
             throw new UnchangeableException(TodoError.CANNOT_CHANGE_AUTHORITY);
+        }
+    }
+
+
+    public void validatePresidentRegisterListDeletable(final List<Register> registerList){
+        final List<Long> todoTeamIds = registerList.stream()
+                .map(register -> register.getTodoTeam().getId())
+                .collect(Collectors.toList());
+        final List<Integer> presidentRegisterCountList = registerRepository.countAllByTodoTeamIdsInAndAuthority(todoTeamIds, Authority.PRESIDENT);
+        final boolean isNotUnregistrable = presidentRegisterCountList.stream()
+                .anyMatch(presidentRegisterCount -> presidentRegisterCount <= 1);
+        if (isNotUnregistrable) {
+            throw new UnregistrableException(TodoError.CANNOT_PRESIDENT_UNREGISTRABLE);
+        }
+    }
+
+    public void validatePresidentRegisterExist(final List<Register> registerList){
+        final boolean isPresidentExist = registerList.stream()
+                .anyMatch(Register::isPresident);
+        if (isPresidentExist) {
+            throw new UnregistrableException(TodoError.CANNOT_PRESIDENT_UNREGISTRABLE);
         }
     }
 }
