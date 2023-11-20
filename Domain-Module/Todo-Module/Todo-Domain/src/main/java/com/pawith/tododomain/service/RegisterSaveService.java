@@ -29,7 +29,7 @@ public class RegisterSaveService {
         registerRepository.findByTodoTeamIdAndUserId(todoTeam.getId(), userId)
                 .ifPresentOrElse(register -> {
                     register.updateAuthority(authority);
-                    register.ReRegister();
+                    register.reRegister();
                 }, () -> {
                     registerRepository.save(Register.builder()
                             .todoTeam(todoTeam)
