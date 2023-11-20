@@ -16,4 +16,5 @@ public class CategorySubTodoResponse {
     private String task;
     private CompletionStatus completionStatus;
     private List<AssignUserInfoResponse> assignNames;
+    private Boolean isAssigned;
 }

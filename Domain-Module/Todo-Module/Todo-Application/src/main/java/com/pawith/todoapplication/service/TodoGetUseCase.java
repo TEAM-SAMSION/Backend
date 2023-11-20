@@ -21,9 +21,11 @@ import com.pawith.userdomain.service.UserQueryService;
 import com.pawith.userdomain.utils.UserUtils;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -56,6 +58,7 @@ public class TodoGetUseCase {
 
 
     public ListResponse<CategorySubTodoResponse> getTodoListByCategoryId(Long categoryId, LocalDate moveDate) {
+        final User user = userUtils.getAccessUser();
         final List<Register> registers = registerQueryService.findAllRegistersByCategoryId(categoryId);
         Map<Long, Register> registerMap = listToMap(registers, Register::getId);
         List<Long> userIds = listToList(registers, Register::getUserId);
@@ -63,14 +66,18 @@ public class TodoGetUseCase {
         final Map<Todo, List<Assign>> groupByTodo = getTodoMap(categoryId, moveDate);
         final ArrayList<CategorySubTodoResponse> todoMainResponses = new ArrayList<>();
         for (Todo todo : groupByTodo.keySet()) {
-            final List<Assign> assigns = groupByTodo.get(todo);
+            List<Assign> assigns = new ArrayList<>(groupByTodo.get(todo));
+            assigns.sort(Comparator.comparing(assign ->
+                    Objects.equals(userMap.get(registerMap.get(assign.getRegister().getId()).getUserId()).getId(), user.getId()) ? 0 : 1
+            ));
             ArrayList<AssignUserInfoResponse> assignUserInfoResponses = new ArrayList<>();
             for (Assign assign : assigns) {
                 final Register register = registerMap.get(assign.getRegister().getId());
                 final User findUser = userMap.get(register.getUserId());
                 assignUserInfoResponses.add(new AssignUserInfoResponse(findUser.getId(), findUser.getNickname(), assign.getCompletionStatus()));
             }
-            todoMainResponses.add(new CategorySubTodoResponse(todo.getId(), todo.getDescription(), todo.getCompletionStatus(), assignUserInfoResponses));
+            final Boolean isAssigned = assignUserInfoResponses.stream().anyMatch(assignUserInfoResponse -> Objects.equals(assignUserInfoResponse.getAssigneeId(), user.getId()));
+            todoMainResponses.add(new CategorySubTodoResponse(todo.getId(), todo.getDescription(), todo.getCompletionStatus(), assignUserInfoResponses, isAssigned));
         }
         return ListResponse.from(todoMainResponses);
     }
