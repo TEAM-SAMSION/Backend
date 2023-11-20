@@ -53,7 +53,7 @@ public class TodoTeamGetUseCase {
     public ListResponse<TodoTeamNameResponse> getTodoTeamName() {
         final User requestUser = userUtils.getAccessUser();
         final List<TodoTeamNameResponse> todoTeamNameResponses =
-            registerQueryService.findAllRegisterListByUserId(requestUser.getId())
+            registerQueryService.findRegisterListByUserIdWithTodoTeam(requestUser.getId())
                 .stream()
                 .map(register -> TodoTeamMapper.mapToTodoTeamNameResponse(register.getTodoTeam(), register))
                 .collect(Collectors.toList());
