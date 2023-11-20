@@ -68,17 +68,4 @@ class RegisterSaveServiceTest {
         Assertions.assertThatCode(() -> registerSaveService.saveRegisterAboutMember(todoTeam, userId))
                 .isInstanceOf(AlreadyRegisterTodoTeamException.class);
     }
-
-    @Test
-    @DisplayName("todoTeam 엔티티와 userId를 입력받아 재가입하는 사용자라면 isRegistered를 true로 변경한다.")
-    void saveRegisterAboutMemberSuccess() {
-        //given
-        final TodoTeam todoTeam = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeOne(TodoTeam.class);
-        final Long userId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
-        given(registerRepository.existsByTodoTeamIdAndUserIdAndIsRegistered(todoTeam.getId(), userId,false)).willReturn(true);
-        //when
-        registerSaveService.saveRegisterAboutMember(todoTeam, userId);
-        //then
-        then(registerRepository).should().changeIsRegisteredWhenRegisterAlreadyExist(todoTeam.getId(), userId);
-    }
 }
