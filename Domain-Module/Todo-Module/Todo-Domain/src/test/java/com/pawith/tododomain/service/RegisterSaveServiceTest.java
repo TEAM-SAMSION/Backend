@@ -35,7 +35,7 @@ class RegisterSaveServiceTest {
     void saveRegisterAboutMember() {
         //given
         final TodoTeam todoTeam = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeOne(TodoTeam.class);
-        final Long userId = FixtureMonkey.create().giveMeOne(Long.class);
+        final Long userId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
         //when
         registerSaveService.saveRegisterAboutMember(todoTeam, userId);
         //then
@@ -47,7 +47,7 @@ class RegisterSaveServiceTest {
     void saveRegisterAboutPresident() {
         //given
         final TodoTeam todoTeam = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeOne(TodoTeam.class);
-        final Long userId = FixtureMonkey.create().giveMeOne(Long.class);
+        final Long userId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
         given(registerRepository.existsByTodoTeamIdAndUserIdAndIsRegistered(todoTeam.getId(), userId,true)).willReturn(false);
         //when
         registerSaveService.saveRegisterAboutPresident(todoTeam, userId);
@@ -60,7 +60,7 @@ class RegisterSaveServiceTest {
     void saveRegisterAboutMemberFail() {
         //given
         final TodoTeam todoTeam = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeOne(TodoTeam.class);
-        final Long userId = FixtureMonkey.create().giveMeOne(Long.class);
+        final Long userId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
         given(registerRepository.existsByTodoTeamIdAndUserIdAndIsRegistered(todoTeam.getId(), userId,false)).willReturn(false);
         given(registerRepository.existsByTodoTeamIdAndUserIdAndIsRegistered(todoTeam.getId(), userId,true)).willReturn(true);
         //when
@@ -74,7 +74,7 @@ class RegisterSaveServiceTest {
     void saveRegisterAboutMemberSuccess() {
         //given
         final TodoTeam todoTeam = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeOne(TodoTeam.class);
-        final Long userId = FixtureMonkey.create().giveMeOne(Long.class);
+        final Long userId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
         given(registerRepository.existsByTodoTeamIdAndUserIdAndIsRegistered(todoTeam.getId(), userId,false)).willReturn(true);
         //when
         registerSaveService.saveRegisterAboutMember(todoTeam, userId);
