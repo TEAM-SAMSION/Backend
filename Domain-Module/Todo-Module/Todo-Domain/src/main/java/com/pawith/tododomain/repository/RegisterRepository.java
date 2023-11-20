@@ -28,6 +28,7 @@ public interface RegisterRepository extends JpaRepository<Register, Long> {
     @Query("select r from Register r join Category c on c.id = :categoryId where c.todoTeam.id= r.todoTeam.id")
     List<Register> findAllByCategoryId(Long categoryId);
 
+    @Query("select r from Register r join fetch r.todoTeam where r.userId = :userId and r.isRegistered = true")
     List<Register> findAllByUserId(Long userId);
 
     Optional<Register> findByTodoTeamIdAndUserId(Long todoTeamId, Long userId);
@@ -48,8 +49,4 @@ public interface RegisterRepository extends JpaRepository<Register, Long> {
     @Modifying
     @Query("update Register r set r.isDeleted=true , r.isRegistered=false where r.id in (:registerIds)")
     void deleteByRegisterIds(List<Long> registerIds);
-
-    @Modifying
-    @Query("update Register r set r.isRegistered = true where r.todoTeam.id = :todoTeamId and r.userId = :userId")
-    void changeIsRegisteredWhenRegisterAlreadyExist(Long todoTeamId, Long userId);
 }
