@@ -61,7 +61,6 @@ class RegisterSaveServiceTest {
         //given
         final TodoTeam todoTeam = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeOne(TodoTeam.class);
         final Long userId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
-        given(registerRepository.existsByTodoTeamIdAndUserIdAndIsRegistered(todoTeam.getId(), userId,false)).willReturn(false);
         given(registerRepository.existsByTodoTeamIdAndUserIdAndIsRegistered(todoTeam.getId(), userId,true)).willReturn(true);
         //when
         //then
