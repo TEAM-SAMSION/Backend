@@ -17,10 +17,6 @@ public class RegisterSaveService {
     private final RegisterRepository registerRepository;
 
     public void saveRegisterAboutMember(TodoTeam todoTeam, Long userId) {
-        if(registerRepository.existsByTodoTeamIdAndUserIdAndIsRegistered(todoTeam.getId(), userId, false)){
-            registerRepository.changeIsRegisteredWhenRegisterAlreadyExist(todoTeam.getId(), userId);
-            return;
-        }
         saveRegisterEntity(todoTeam, userId, Authority.MEMBER);
     }
 
@@ -30,11 +26,17 @@ public class RegisterSaveService {
 
     private void saveRegisterEntity(TodoTeam todoTeam, Long userId, Authority authority) {
         checkAlreadyRegisterTodoTeam(todoTeam, userId);
-        registerRepository.save(Register.builder()
-                .todoTeam(todoTeam)
-                .userId(userId)
-                .authority(authority)
-                .build());
+        registerRepository.findByTodoTeamIdAndUserId(todoTeam.getId(), userId)
+                .ifPresentOrElse(register -> {
+                    register.updateAuthority(authority);
+                    register.ReRegister();
+                }, () -> {
+                    registerRepository.save(Register.builder()
+                            .todoTeam(todoTeam)
+                            .userId(userId)
+                            .authority(authority)
+                            .build());
+                });
     }
 
     private void checkAlreadyRegisterTodoTeam(TodoTeam todoTeam, Long userId) {
