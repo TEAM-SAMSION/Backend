@@ -181,7 +181,8 @@ public class TodoControllerTest extends BaseRestDocsTest {
                                 fieldWithPath("content[].completionStatus").description("투두 항목 상태(완료, 미완료)"),
                                 fieldWithPath("content[].assignNames[].assigneeId").description("할당받은 사용자의 ID"),
                                 fieldWithPath("content[].assignNames[].assigneeName").description("할당받은 사용자의 이름"),
-                                fieldWithPath("content[].assignNames[].completionStatus").description("할당받은 사용자의 완료 상태(완료, 미완료)")
+                                fieldWithPath("content[].assignNames[].completionStatus").description("할당받은 사용자의 완료 상태(완료, 미완료)"),
+                                fieldWithPath("content[].isAssigned").description("사용자가 할당받은 투두인지 여부")
                         )
                 ));
     }
