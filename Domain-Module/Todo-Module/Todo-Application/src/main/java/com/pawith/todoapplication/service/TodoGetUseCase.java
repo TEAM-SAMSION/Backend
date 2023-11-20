@@ -68,7 +68,7 @@ public class TodoGetUseCase {
         for (Todo todo : groupByTodo.keySet()) {
             List<Assign> assigns = new ArrayList<>(groupByTodo.get(todo));
             assigns.sort(Comparator.comparing(assign ->
-                    Objects.equals(userMap.get(registerMap.get(assign.getRegister().getId()).getUserId()).getId(), user.getId()) ? 0 : 1
+                    Objects.equals(assign.getRegister().getUserId(), user.getId()) ? 0 : 1
             ));
             ArrayList<AssignUserInfoResponse> assignUserInfoResponses = new ArrayList<>();
             for (Assign assign : assigns) {
