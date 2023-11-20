@@ -8,7 +8,7 @@ import lombok.Getter;
 public class PetRegisterRequest {
     private String name;
     private Integer age;
-    private String petGenus; // 과
-    private String petSpecies; // 종
+    private String genus; // 과
+    private String species; // 종
     private String description;
 }
