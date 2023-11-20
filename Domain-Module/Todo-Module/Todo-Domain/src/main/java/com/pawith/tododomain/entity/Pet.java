@@ -48,7 +48,7 @@ public class Pet extends BaseEntity {
     }
 
 
-    public void updatePet(String imageUrl, String name, Integer age, String description, String species, String genus) {
+    public void updatePet(String imageUrl, String name, Integer age, String genus, String species, String description) {
         this.imageUrl = DomainFieldUtils.updateIfDifferent(imageUrl, this.imageUrl);
         this.name = DomainFieldUtils.updateIfDifferent(name, this.name);
         this.age = DomainFieldUtils.updateIfDifferent(age, this.age);
