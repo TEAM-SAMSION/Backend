@@ -47,8 +47,8 @@ public class PetControllerTest extends BaseRestDocsTest {
             "        \"name\" : \"이름이 뭐에요~\",\n" +
             "        \"age\" : 2,\n" +
             "        \"description\" : \"귀엽습니다\",\n" +
-            "        \"petGenus\" : \"과\",\n" +
-            "        \"petSpecies\" : \"종\"\n" +
+            "        \"genus\" : \"과\",\n" +
+            "        \"species\" : \"종\"\n" +
             "    }";
 
     @Test
@@ -75,11 +75,11 @@ public class PetControllerTest extends BaseRestDocsTest {
                         responseFields(
                                 fieldWithPath("content[].petId").description("Pet의 Id"),
                                 fieldWithPath("content[].imageUrl").description("Pet의 이미지 URL"),
-                                fieldWithPath("content[].petName").description("Pet의 이름"),
-                                fieldWithPath("content[].petAge").description("Pet의 나이"),
-                                fieldWithPath("content[].petGenus").description("Pet의 종"),
-                                fieldWithPath("content[].petSpecies").description("Pet의 품종"),
-                                fieldWithPath("content[].petDescription").description("Pet의 설명")
+                                fieldWithPath("content[].name").description("Pet의 이름"),
+                                fieldWithPath("content[].age").description("Pet의 나이"),
+                                fieldWithPath("content[].genus").description("Pet의 종"),
+                                fieldWithPath("content[].species").description("Pet의 품종"),
+                                fieldWithPath("content[].description").description("Pet의 설명")
                         )
                 ));
     }
@@ -110,8 +110,8 @@ public class PetControllerTest extends BaseRestDocsTest {
                         requestPartFields("petCreateInfo",
                                 fieldWithPath("name").description("Pet의 이름"),
                                 fieldWithPath("age").description("Pet의 나이"),
-                                fieldWithPath("petGenus").description("Pet의 종"),
-                                fieldWithPath("petSpecies").description("Pet의 품종"),
+                                fieldWithPath("genus").description("Pet의 종"),
+                                fieldWithPath("species").description("Pet의 품종"),
                                 fieldWithPath("description").description("Pet의 설명")
                         )
                 ));
@@ -164,8 +164,8 @@ public class PetControllerTest extends BaseRestDocsTest {
                         requestPartFields("petUpdateInfo",
                                 fieldWithPath("name").description("Pet의 이름"),
                                 fieldWithPath("age").description("Pet의 나이"),
-                                fieldWithPath("petGenus").description("Pet의 종"),
-                                fieldWithPath("petSpecies").description("Pet의 품종"),
+                                fieldWithPath("genus").description("Pet의 종"),
+                                fieldWithPath("species").description("Pet의 품종"),
                                 fieldWithPath("description").description("Pet의 설명")
                         )
                 ));

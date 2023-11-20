@@ -18,8 +18,8 @@ public class PetMapper {
             .age(petRegister.getAge())
             .imageUrl(imageUrl)
             .petSpecies(PetSpecies.builder()
-                .genus(petRegister.getPetGenus())
-                .species(petRegister.getPetSpecies())
+                .genus(petRegister.getGenus())
+                .species(petRegister.getSpecies())
                 .build())
             .build();
     }
