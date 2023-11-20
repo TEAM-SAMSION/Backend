@@ -79,7 +79,7 @@ public class TodoTeamGetUseCaseTest {
         final List<TodoTeam> todoTeamList = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMe(TodoTeam.class, 10);
         final List<Register> registerList = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMe(Register.class, 10);
         given(userUtils.getAccessUser()).willReturn(mockUser);
-        given(registerQueryService.findRegisterListByUserId(mockUser.getId())).willReturn(registerList);
+        given(registerQueryService.findRegisterListByUserIdWithTodoTeam(mockUser.getId())).willReturn(registerList);
         // when
         ListResponse<TodoTeamNameResponse> result = todoTeamGetUseCase.getTodoTeamName();
         // then
