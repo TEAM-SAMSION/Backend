@@ -28,6 +28,14 @@ public class RegisterQueryService {
         return registerRepository.findAllByUserId(userId, pageable);
     }
 
+    public List<Register> findRegisterListByUserId(Long userId) {
+        return registerRepository.findAllByUserId(userId);
+    }
+
+    public List<Register> findRegisterListByUserIdWithTodoTeam(Long userId) {
+        return registerRepository.findAllByUserIdWithTodoTeamFetch(userId);
+    }
+
     public Register findRegisterByTodoTeamIdAndUserId(Long todoTeamId, Long userId) {
         return findRegister(() -> registerRepository.findByTodoTeamIdAndUserId(todoTeamId, userId));
     }

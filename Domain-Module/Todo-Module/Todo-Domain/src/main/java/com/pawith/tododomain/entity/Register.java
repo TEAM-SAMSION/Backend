@@ -60,4 +60,8 @@ public class Register extends BaseEntity {
         return this.authority.equals(Authority.PRESIDENT);
     }
 
+    public void reRegister(){
+        this.isRegistered = Boolean.TRUE;
+    }
+
 }

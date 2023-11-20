@@ -26,11 +26,17 @@ public class RegisterSaveService {
 
     private void saveRegisterEntity(TodoTeam todoTeam, Long userId, Authority authority) {
         checkAlreadyRegisterTodoTeam(todoTeam, userId);
-        registerRepository.save(Register.builder()
-                .todoTeam(todoTeam)
-                .userId(userId)
-                .authority(authority)
-                .build());
+        registerRepository.findByTodoTeamIdAndUserId(todoTeam.getId(), userId)
+                .ifPresentOrElse(register -> {
+                    register.updateAuthority(authority);
+                    register.reRegister();
+                }, () -> {
+                    registerRepository.save(Register.builder()
+                            .todoTeam(todoTeam)
+                            .userId(userId)
+                            .authority(authority)
+                            .build());
+                });
     }
 
     private void checkAlreadyRegisterTodoTeam(TodoTeam todoTeam, Long userId) {
