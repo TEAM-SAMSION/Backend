@@ -32,6 +32,10 @@ public class RegisterQueryService {
         return registerRepository.findAllByUserId(userId);
     }
 
+    public List<Register> findAllRegisterListByUserId(Long userId) {
+        return registerRepository.findAllRegisterByUserId(userId);
+    }
+
     public Register findRegisterByTodoTeamIdAndUserId(Long todoTeamId, Long userId) {
         return findRegister(() -> registerRepository.findByTodoTeamIdAndUserId(todoTeamId, userId));
     }
