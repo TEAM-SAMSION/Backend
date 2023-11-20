@@ -2,6 +2,7 @@ package com.pawith.todoapplication.mapper;
 
 import com.pawith.todoapplication.dto.request.TodoTeamCreateRequest;
 import com.pawith.todoapplication.dto.response.TodoTeamInfoDetailResponse;
+import com.pawith.todoapplication.dto.response.TodoTeamNameResponse;
 import com.pawith.todoapplication.dto.response.TodoTeamRandomCodeResponse;
 import com.pawith.todoapplication.dto.response.TodoTeamSearchInfoResponse;
 import com.pawith.todoapplication.dto.response.TodoTeamInfoResponse;
@@ -23,6 +24,14 @@ public class TodoTeamMapper {
             .teamName(request.getTeamName())
             .imageUrl(imageUrl)
             .description(request.getDescription())
+            .build();
+    }
+
+    public static TodoTeamNameResponse mapToTodoTeamNameResponse(final TodoTeam todoTeam, final Register register) {
+        return TodoTeamNameResponse.builder()
+            .teamId(todoTeam.getId())
+            .teamName(todoTeam.getTeamName())
+            .authority(register.getAuthority())
             .build();
     }
 

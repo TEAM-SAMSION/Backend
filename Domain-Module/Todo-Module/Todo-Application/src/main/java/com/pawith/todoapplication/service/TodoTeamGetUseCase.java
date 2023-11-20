@@ -52,12 +52,12 @@ public class TodoTeamGetUseCase {
 
     public ListResponse<TodoTeamNameResponse> getTodoTeamName() {
         final User requestUser = userUtils.getAccessUser();
-        return ListResponse.from(
-                todoTeamQueryService.findAllTodoTeamByUserId(requestUser.getId())
+        final List<TodoTeamNameResponse> todoTeamNameResponses =
+            registerQueryService.findRegisterListByUserId(requestUser.getId())
                 .stream()
-                .map(todoTeam -> new TodoTeamNameResponse(todoTeam.getId(), todoTeam.getTeamName()))
-                .collect(Collectors.toList())
-        );
+                .map(register -> TodoTeamMapper.mapToTodoTeamNameResponse(register.getTodoTeam(), register))
+                .collect(Collectors.toList());
+        return ListResponse.from(todoTeamNameResponses);
     }
 
     public TodoTeamSearchInfoResponse searchTodoTeamByCode(final String code) {
