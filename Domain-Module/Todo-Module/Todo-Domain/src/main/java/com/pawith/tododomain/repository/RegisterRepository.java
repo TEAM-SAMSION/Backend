@@ -48,4 +48,8 @@ public interface RegisterRepository extends JpaRepository<Register, Long> {
     @Modifying
     @Query("update Register r set r.isDeleted=true , r.isRegistered=false where r.id in (:registerIds)")
     void deleteByRegisterIds(List<Long> registerIds);
+
+    @Modifying
+    @Query("update Register r set r.isRegistered = true where r.todoTeam.id = :todoTeamId and r.userId = :userId")
+    void changeIsRegisteredWhenRegisterAlreadyExist(Long todoTeamId, Long userId);
 }

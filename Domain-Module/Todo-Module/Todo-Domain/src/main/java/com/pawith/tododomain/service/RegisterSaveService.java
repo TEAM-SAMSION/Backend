@@ -17,6 +17,10 @@ public class RegisterSaveService {
     private final RegisterRepository registerRepository;
 
     public void saveRegisterAboutMember(TodoTeam todoTeam, Long userId) {
+        if(registerRepository.existsByTodoTeamIdAndUserIdAndIsRegistered(todoTeam.getId(), userId, false)){
+            registerRepository.changeIsRegisteredWhenRegisterAlreadyExist(todoTeam.getId(), userId);
+            return;
+        }
         saveRegisterEntity(todoTeam, userId, Authority.MEMBER);
     }
 
