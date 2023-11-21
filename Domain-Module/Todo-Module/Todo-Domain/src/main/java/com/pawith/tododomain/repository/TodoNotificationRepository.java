@@ -25,7 +25,7 @@ public interface TodoNotificationRepository extends JpaRepository<TodoNotificati
     @Query(value = """
         select tn
         from TodoNotification tn
-            join fetch Assign a on tn.assign = a and a.completionStatus='INCOMPLETE'
+            join Assign a on tn.assign = a and a.completionStatus='INCOMPLETE'
             join Register r on a.register = r and r.isRegistered = true and r.userId = :userId
         where a.todo.id in :todoId
         """)
