@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.time.Duration;
+import java.util.List;
 
 public interface TodoNotificationRepository extends JpaRepository<TodoNotification, Long> {
 
@@ -20,4 +21,13 @@ public interface TodoNotificationRepository extends JpaRepository<TodoNotificati
         "where (tn.notificationTime-current_time) <= :criterionTime " +
         "and timediff(tn.notificationTime, current_time) > 0")
     Slice<NotificationDao> findAllWithNotCompletedAssignAndTodayScheduledTodo(Duration criterionTime, Pageable pageable);
+
+    @Query(value = """
+        select tn
+        from TodoNotification tn
+            join fetch Assign a on tn.assign = a and a.completionStatus='INCOMPLETE'
+            join Register r on a.register = r and r.isRegistered = true and r.userId = :userId
+        where a.todo.id in :todoId
+        """)
+    List<TodoNotification> findAllByTodoIdWithIncompleteAssign(List<Long> todoId, Long userId);
 }
