@@ -1,15 +1,12 @@
 package com.pawith.todoapplication.dto.response;
 
 import com.pawith.tododomain.entity.CompletionStatus;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.List;
 
 @Getter
-@ToString
+@Builder
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
 public class CategorySubTodoResponse {
     private Long todoId;
@@ -17,4 +14,5 @@ public class CategorySubTodoResponse {
     private CompletionStatus completionStatus;
     private List<AssignUserInfoResponse> assignNames;
     private Boolean isAssigned;
+    private TodoNotificationInfoResponse notificationInfo;
 }

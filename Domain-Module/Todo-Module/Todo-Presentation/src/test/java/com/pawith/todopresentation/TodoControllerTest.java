@@ -52,6 +52,8 @@ public class TodoControllerTest extends BaseRestDocsTest {
     private TodoDeleteUseCase todoDeleteUseCase;
     @MockBean
     private TodoNotificationCreateUseCase todoNotificationCreateUseCase;
+    @MockBean
+    private TodoWithdrawGetUseCase todoWithdrawGetUseCase;
 
     private static final String TODO_REQUEST_URL = "/teams";
 
@@ -149,11 +151,11 @@ public class TodoControllerTest extends BaseRestDocsTest {
         final Long testCategoryId = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(Long.class);
         final LocalDate testMoveDate = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(LocalDate.class);
         final List<AssignUserInfoResponse> assignUserInfoResponses = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMe(AssignUserInfoResponse.class, 2);
+        final TodoNotificationInfoResponse todoNotificationInfoResponse = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeBuilder(TodoNotificationInfoResponse.class)
+            .set("isNotification", true)
+            .sample();
         final List<CategorySubTodoResponse> categorySubTodoResponses = FixtureMonkeyUtils.getConstructBasedFixtureMonkey()
             .giveMeBuilder(CategorySubTodoResponse.class)
-            .set("todoId", Arbitraries.longs().greaterOrEqual(1L))
-            .set("task", Arbitraries.strings().withCharRange('a', 'z').ofMinLength(5).ofMaxLength(10))
-            .set("status", FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeBuilder("COMPLETE"))
             .set("assignNames", assignUserInfoResponses)
             .sampleList(2);
 
@@ -182,7 +184,9 @@ public class TodoControllerTest extends BaseRestDocsTest {
                                 fieldWithPath("content[].assignNames[].assigneeId").description("할당받은 사용자의 ID"),
                                 fieldWithPath("content[].assignNames[].assigneeName").description("할당받은 사용자의 이름"),
                                 fieldWithPath("content[].assignNames[].completionStatus").description("할당받은 사용자의 완료 상태(완료, 미완료)"),
-                                fieldWithPath("content[].isAssigned").description("사용자가 할당받은 투두인지 여부")
+                                fieldWithPath("content[].isAssigned").description("사용자가 할당받은 투두인지 여부"),
+                                fieldWithPath("content[].notificationInfo.isNotification").description("투두 알림 여부(true, false)"),
+                                fieldWithPath("content[].notificationInfo.notificationTime").description("투두 알림 시간(알림이 없을 경우 안보냄)")
                         )
                 ));
     }
@@ -372,7 +376,7 @@ public class TodoControllerTest extends BaseRestDocsTest {
                 .sampleList(pageRequest.getPageSize());
         final SliceImpl<WithdrawTodoResponse> slice = new SliceImpl(withdrawTodoResponses, pageRequest, true);
 
-        given(todoGetUseCase.getWithdrawTeamTodoList(any(), any())).willReturn(SliceResponse.from(slice));
+        given(todoWithdrawGetUseCase.getWithdrawTeamTodoList(any(), any())).willReturn(SliceResponse.from(slice));
         MockHttpServletRequestBuilder request = get(TODO_REQUEST_URL + "/{todoTeamId}/todos/withdraw", testTeamId)
                 .queryParam("page", String.valueOf(pageRequest.getPageNumber()))
                 .queryParam("size", String.valueOf(pageRequest.getPageSize()))
@@ -413,7 +417,7 @@ public class TodoControllerTest extends BaseRestDocsTest {
                 .sampleList(pageRequest.getPageSize());
         final SliceImpl<WithdrawAllTodoResponse> slice = new SliceImpl(withdrawAllTodoResponses, pageRequest, true);
 
-        given(todoGetUseCase.getWithdrawTodoList(any())).willReturn(SliceResponse.from(slice));
+        given(todoWithdrawGetUseCase.getWithdrawTodoList(any())).willReturn(SliceResponse.from(slice));
         MockHttpServletRequestBuilder request = get(TODO_REQUEST_URL + "/todos/withdraw")
                 .queryParam("page", String.valueOf(pageRequest.getPageNumber()))
                 .queryParam("size", String.valueOf(pageRequest.getPageSize()))
@@ -447,7 +451,7 @@ public class TodoControllerTest extends BaseRestDocsTest {
         //given
         final Long testTeamId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
         final TodoCountResponse todoCountResponse = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(TodoCountResponse.class);
-        given(todoGetUseCase.getWithdrawTeamTodoCount(any())).willReturn(todoCountResponse);
+        given(todoWithdrawGetUseCase.getWithdrawTeamTodoCount(any())).willReturn(todoCountResponse);
         MockHttpServletRequestBuilder request = get(TODO_REQUEST_URL + "/{todoTeamId}/todos/withdraw/count", testTeamId)
                 .header("Authorization", "Bearer accessToken");
         //when
@@ -472,7 +476,7 @@ public class TodoControllerTest extends BaseRestDocsTest {
     void getAllWithdrawTodoCount() throws Exception {
         //given
         final TodoCountResponse todoCountResponse = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(TodoCountResponse.class);
-        given(todoGetUseCase.getWithdrawTodoCount()).willReturn(todoCountResponse);
+        given(todoWithdrawGetUseCase.getWithdrawTodoCount()).willReturn(todoCountResponse);
         MockHttpServletRequestBuilder request = get(TODO_REQUEST_URL + "/todos/withdraw/count")
                 .header("Authorization", "Bearer accessToken");
         //when

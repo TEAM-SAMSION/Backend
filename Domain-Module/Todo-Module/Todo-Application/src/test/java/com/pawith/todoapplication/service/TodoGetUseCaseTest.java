@@ -1,10 +1,7 @@
 package com.pawith.todoapplication.service;
 
 import com.pawith.commonmodule.UnitTestConfig;
-import com.pawith.tododomain.service.AssignQueryService;
-import com.pawith.tododomain.service.CategoryQueryService;
-import com.pawith.tododomain.service.RegisterQueryService;
-import com.pawith.tododomain.service.TodoQueryService;
+import com.pawith.tododomain.service.*;
 import com.pawith.userdomain.service.UserQueryService;
 import com.pawith.userdomain.utils.UserUtils;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,12 +24,14 @@ class TodoGetUseCaseTest {
     private RegisterQueryService registerQueryService;
     @Mock
     private AssignQueryService assignQueryService;
+    @Mock
+    private TodoNotificationQueryService todoNotificationQueryService;
 
     private TodoGetUseCase todoGetUseCase;
 
     @BeforeEach
     void init(){
-        todoGetUseCase = new TodoGetUseCase(userUtils, todoQueryService, userQueryService, registerQueryService, assignQueryService);
+        todoGetUseCase = new TodoGetUseCase(userUtils, todoQueryService, userQueryService, registerQueryService, assignQueryService, todoNotificationQueryService);
     }
 
 //    @Test
