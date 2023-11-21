@@ -28,6 +28,7 @@ public class TodoController {
     private final AssignChangeUseCase assignChangeUseCase;
     private final TodoDeleteUseCase todoDeleteUseCase;
     private final TodoNotificationCreateUseCase todoNotificationCreateUseCase;
+    private final TodoWithdrawGetUseCase todoWithdrawGetUseCase;
 
     @GetMapping("/{todoTeamId}/todos/progress")
     public TodoProgressResponse getTodoProgress(@PathVariable Long todoTeamId) {
@@ -87,22 +88,22 @@ public class TodoController {
 
     @GetMapping("/{todoTeamId}/todos/withdraw")
     public SliceResponse<WithdrawTodoResponse> getWithdrawTeamTodoList(@PathVariable Long todoTeamId, Pageable pageable){
-        return todoGetUseCase.getWithdrawTeamTodoList(todoTeamId, pageable);
+        return todoWithdrawGetUseCase.getWithdrawTeamTodoList(todoTeamId, pageable);
     }
 
     @GetMapping("/todos/withdraw")
     public SliceResponse<WithdrawAllTodoResponse> getWithdrawTodoList(Pageable pageable){
-        return todoGetUseCase.getWithdrawTodoList(pageable);
+        return todoWithdrawGetUseCase.getWithdrawTodoList(pageable);
     }
 
     @GetMapping("/{todoTeamId}/todos/withdraw/count")
     public TodoCountResponse getTodoCount(@PathVariable Long todoTeamId){
-        return todoGetUseCase.getWithdrawTeamTodoCount(todoTeamId);
+        return todoWithdrawGetUseCase.getWithdrawTeamTodoCount(todoTeamId);
     }
 
     @GetMapping("/todos/withdraw/count")
     public TodoCountResponse getTodoCount(){
-        return todoGetUseCase.getWithdrawTodoCount();
+        return todoWithdrawGetUseCase.getWithdrawTodoCount();
     }
 
 
