@@ -92,8 +92,7 @@ public class TodoTeamGetUseCase {
 
     public TodoTeamNameResponse getTodoTeamLatest() {
         final User requestUser = userUtils.getAccessUser();
-        final List<Register> registers = registerQueryService.findRegisterListByUserIdWithTodoTeam(requestUser.getId());
-        final Register register = registers.get(0);
+        final Register register = registerQueryService.findLatestTodoTeam(requestUser.getId());
         return TodoTeamMapper.mapToTodoTeamNameResponse(register.getTodoTeam(), register);
     }
 }
