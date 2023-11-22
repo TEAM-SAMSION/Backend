@@ -11,6 +11,9 @@ public class UserAuthoritySaveService {
     private final UserAuthorityRepository userAuthorityRepository;
 
     public void saveUserAuthority(final String email) {
-        userAuthorityRepository.save(new UserAuthority(email));
+        userAuthorityRepository.findByEmail(email)
+            .ifPresentOrElse(
+                UserAuthority::initialUserAuthority,
+                () -> userAuthorityRepository.save(new UserAuthority(email)));
     }
 }
