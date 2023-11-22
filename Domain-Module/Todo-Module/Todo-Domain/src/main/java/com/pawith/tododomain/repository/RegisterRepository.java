@@ -28,7 +28,7 @@ public interface RegisterRepository extends JpaRepository<Register, Long> {
     @Query("select r from Register r join Category c on c.id = :categoryId where c.todoTeam.id= r.todoTeam.id")
     List<Register> findAllByCategoryId(Long categoryId);
 
-    @Query("select r from Register r join fetch r.todoTeam where r.userId = :userId and r.isRegistered = true")
+    @Query("select r from Register r join fetch r.todoTeam where r.userId = :userId and r.isRegistered = true order by r.id desc")
     List<Register> findAllByUserIdWithTodoTeamFetch(Long userId);
 
     List<Register> findAllByUserId(Long userId);
