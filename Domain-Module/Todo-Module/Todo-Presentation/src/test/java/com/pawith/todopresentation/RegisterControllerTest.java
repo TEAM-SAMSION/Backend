@@ -50,42 +50,43 @@ class RegisterControllerTest extends BaseRestDocsTest {
     void unregisterTodoTeam() throws Exception {
         // given
         final Long todoTeamId = FixtureMonkey.create().giveMeOne(Long.class);
-        MockHttpServletRequestBuilder request = RestDocumentationRequestBuilders.delete(REGISTER_REQUEST_URL + "/{todoTeamId}/registers", todoTeamId)
-            .header("Authorization", "Bearer accessToken");
+        MockHttpServletRequestBuilder request = RestDocumentationRequestBuilders.delete(
+                        REGISTER_REQUEST_URL + "/{todoTeamId}/registers", todoTeamId)
+                .header("Authorization", "Bearer accessToken");
         // when
         ResultActions result = mvc.perform(request);
         // then
         result.andExpect(status().isOk())
-            .andDo(resultHandler.document(
-                requestHeaders(
-                    headerWithName("Authorization").description("access 토큰")
-                ),
-                pathParameters(
-                    parameterWithName("todoTeamId").description("삭제할 TodoTeam의 Id")
-                )
-            ));
+                .andDo(resultHandler.document(
+                        requestHeaders(
+                                headerWithName("Authorization").description("access 토큰")
+                        ),
+                        pathParameters(
+                                parameterWithName("todoTeamId").description("삭제할 TodoTeam의 Id")
+                        )
+                ));
     }
 
     @Test
     @DisplayName("TodoTeamCode로 TodoTeam을 등록하는 테스트")
-    void postRegister() throws Exception{
+    void postRegister() throws Exception {
         //given
         final String todoTeamCode = UUID.randomUUID().toString().split("-")[0];
-        MockHttpServletRequestBuilder request = post(REGISTER_REQUEST_URL+"/registers")
-            .queryParam("todoTeamCode", todoTeamCode)
-            .header("Authorization", "Bearer accessToken");
+        MockHttpServletRequestBuilder request = post(REGISTER_REQUEST_URL + "/registers")
+                .queryParam("todoTeamCode", todoTeamCode)
+                .header("Authorization", "Bearer accessToken");
         //when
         ResultActions result = mvc.perform(request);
         //then
         result.andExpect(status().isOk())
-            .andDo(resultHandler.document(
-                requestHeaders(
-                    headerWithName("Authorization").description("access 토큰")
-                ),
-                queryParameters(
-                    parameterWithName("todoTeamCode").description("TodoTeam의 코드")
-                )
-            ));
+                .andDo(resultHandler.document(
+                        requestHeaders(
+                                headerWithName("Authorization").description("access 토큰")
+                        ),
+                        queryParameters(
+                                parameterWithName("todoTeamCode").description("TodoTeam의 코드")
+                        )
+                ));
     }
 
     @Test
@@ -93,26 +94,27 @@ class RegisterControllerTest extends BaseRestDocsTest {
     void getRegisters() throws Exception {
         //given
         final Long todoTeamId = FixtureMonkey.create().giveMeOne(Long.class);
-        final List<RegisterInfoResponse> registerInfoResponses = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMe(RegisterInfoResponse.class, 10);
+        final List<RegisterInfoResponse> registerInfoResponses = FixtureMonkeyUtils.getConstructBasedFixtureMonkey()
+                .giveMe(RegisterInfoResponse.class, 10);
         given(registersGetUseCase.getRegisters(todoTeamId)).willReturn(ListResponse.from(registerInfoResponses));
-        MockHttpServletRequestBuilder request = get(REGISTER_REQUEST_URL + "/{todoTeamId}/registers",todoTeamId)
-            .header("Authorization", "Bearer accessToken");
+        MockHttpServletRequestBuilder request = get(REGISTER_REQUEST_URL + "/{todoTeamId}/registers", todoTeamId)
+                .header("Authorization", "Bearer accessToken");
         //when
         ResultActions result = mvc.perform(request);
         //then
         result.andExpect(status().isOk())
-            .andDo(resultHandler.document(
-                requestHeaders(
-                    headerWithName("Authorization").description("access 토큰")
-                ),
-                pathParameters(
-                    parameterWithName("todoTeamId").description("조회하는 TodoTeamId")
-                ),
-                responseFields(
-                    fieldWithPath("content[].registerId").description("TodoTeam에 등록된 사용자 registerId"),
-                    fieldWithPath("content[].registerName").description("TodoTeam에 등록된 사용자 이메일")
-                )
-            ));
+                .andDo(resultHandler.document(
+                        requestHeaders(
+                                headerWithName("Authorization").description("access 토큰")
+                        ),
+                        pathParameters(
+                                parameterWithName("todoTeamId").description("조회하는 TodoTeamId")
+                        ),
+                        responseFields(
+                                fieldWithPath("content[].registerId").description("TodoTeam에 등록된 사용자 registerId"),
+                                fieldWithPath("content[].registerName").description("TodoTeam에 등록된 사용자 이메일")
+                        )
+                ));
 
     }
 
@@ -122,9 +124,11 @@ class RegisterControllerTest extends BaseRestDocsTest {
     void getManageRegisters() throws Exception {
         //given
         final Long todoTeamId = FixtureMonkey.create().giveMeOne(Long.class);
-        final List<RegisterManageInfoResponse> registerManageInfoResponses = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMe(RegisterManageInfoResponse.class, 10);
-        given(registersGetUseCase.getManageRegisters(todoTeamId)).willReturn(ListResponse.from(registerManageInfoResponses));
-        MockHttpServletRequestBuilder request = get(REGISTER_REQUEST_URL + "/{todoTeamId}/registers/manage",todoTeamId)
+        final List<RegisterManageInfoResponse> registerManageInfoResponses = FixtureMonkeyUtils.getConstructBasedFixtureMonkey()
+                .giveMe(RegisterManageInfoResponse.class, 10);
+        given(registersGetUseCase.getManageRegisters(todoTeamId)).willReturn(
+                ListResponse.from(registerManageInfoResponses));
+        MockHttpServletRequestBuilder request = get(REGISTER_REQUEST_URL + "/{todoTeamId}/registers/manage", todoTeamId)
                 .header("Authorization", "Bearer accessToken");
         //when
         ResultActions result = mvc.perform(request);
@@ -154,27 +158,29 @@ class RegisterControllerTest extends BaseRestDocsTest {
         //given
         final Long registerId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
         final Long todoTeamId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
-        final AuthorityChangeRequest authorityChangeRequest = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(AuthorityChangeRequest.class);
-        MockHttpServletRequestBuilder request = put(REGISTER_REQUEST_URL + "/{todoTeamId}/registers/{registerId}", todoTeamId, registerId)
-            .contentType("application/json")
-            .header("Authorization", "Bearer accessToken")
-            .content(objectMapper.writeValueAsString(authorityChangeRequest));
+        final AuthorityChangeRequest authorityChangeRequest = FixtureMonkeyUtils.getConstructBasedFixtureMonkey()
+                .giveMeOne(AuthorityChangeRequest.class);
+        MockHttpServletRequestBuilder request = put(REGISTER_REQUEST_URL + "/{todoTeamId}/registers/{registerId}",
+                todoTeamId, registerId)
+                .contentType("application/json")
+                .header("Authorization", "Bearer accessToken")
+                .content(objectMapper.writeValueAsString(authorityChangeRequest));
         //when
         ResultActions result = mvc.perform(request);
         //then
         result.andExpect(status().isOk())
-            .andDo(resultHandler.document(
-                requestHeaders(
-                    headerWithName("Authorization").description("access 토큰")
-                ),
-                pathParameters(
-                    parameterWithName("todoTeamId").description("변경할 TodoTeam의 Id"),
-                    parameterWithName("registerId").description("변경할 register의 Id")
-                ),
-                requestFields(
-                    fieldWithPath("authority").description("변경할 권한")
-                )
-            ));
+                .andDo(resultHandler.document(
+                        requestHeaders(
+                                headerWithName("Authorization").description("access 토큰")
+                        ),
+                        pathParameters(
+                                parameterWithName("todoTeamId").description("변경할 TodoTeam의 Id"),
+                                parameterWithName("registerId").description("변경할 register의 Id")
+                        ),
+                        requestFields(
+                                fieldWithPath("authority").description("변경할 권한")
+                        )
+                ));
     }
 
 
@@ -187,22 +193,22 @@ class RegisterControllerTest extends BaseRestDocsTest {
         final RegisterTermResponse registerTermResponse = new RegisterTermResponse(registerTerm);
         given(registersGetUseCase.getRegisterTerm(todoTeamId)).willReturn(registerTermResponse);
         MockHttpServletRequestBuilder request = get(REGISTER_REQUEST_URL + "/{todoTeamId}/registers/term", todoTeamId)
-            .header("Authorization", "Bearer accessToken");
+                .header("Authorization", "Bearer accessToken");
         //when
         ResultActions result = mvc.perform(request);
         //then
         result.andExpect(status().isOk())
-            .andDo(resultHandler.document(
-                requestHeaders(
-                    headerWithName("Authorization").description("access 토큰")
-                ),
-                pathParameters(
-                    parameterWithName("todoTeamId").description("TodoTeam의 Id")
-                ),
-                responseFields(
-                    fieldWithPath("registerTerm").description("팀 가입한 기간")
-                )
-            ));
+                .andDo(resultHandler.document(
+                        requestHeaders(
+                                headerWithName("Authorization").description("access 토큰")
+                        ),
+                        pathParameters(
+                                parameterWithName("todoTeamId").description("TodoTeam의 Id")
+                        ),
+                        responseFields(
+                                fieldWithPath("registerTerm").description("팀 가입한 기간")
+                        )
+                ));
     }
 
     @Test
@@ -211,33 +217,35 @@ class RegisterControllerTest extends BaseRestDocsTest {
         //given
         final Long todoTeamId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
         final String nickname = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(String.class);
-        final List<RegisterSearchInfoResponse> registerSearchInfoResponses = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMe(RegisterSearchInfoResponse.class, 2);
-        given(registersGetUseCase.searchRegisterByNickname(todoTeamId, nickname)).willReturn(ListResponse.from(registerSearchInfoResponses));
+        final List<RegisterSearchInfoResponse> registerSearchInfoResponses = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey()
+                .giveMe(RegisterSearchInfoResponse.class, 2);
+        given(registersGetUseCase.searchRegisterByNickname(todoTeamId, nickname)).willReturn(
+                ListResponse.from(registerSearchInfoResponses));
         MockHttpServletRequestBuilder request = get(REGISTER_REQUEST_URL + "/{todoTeamId}/registers/search", todoTeamId)
-            .queryParam("nickname", nickname)
-            .header("Authorization", "Bearer accessToken");
+                .queryParam("nickname", nickname)
+                .header("Authorization", "Bearer accessToken");
         //when
         ResultActions result = mvc.perform(request);
         //then
         result.andExpect(status().isOk())
-            .andDo(resultHandler.document(
-                requestHeaders(
-                    headerWithName("Authorization").description("access 토큰")
-                ),
-                pathParameters(
-                    parameterWithName("todoTeamId").description("TodoTeam의 Id")
-                ),
-                queryParameters(
-                    parameterWithName("nickname").description("검색할 Register의 nickname")
-                ),
-                responseFields(
-                    fieldWithPath("content[].registerId").description("Register의 Id"),
-                    fieldWithPath("content[].authority").description("Register의 권한"),
-                    fieldWithPath("content[].registerName").description("Register의 이름"),
-                    fieldWithPath("content[].registerEmail").description("Register의 이메일"),
-                    fieldWithPath("content[].profileImage").description("Register의 프로필 이미지")
-                )
-            ));
+                .andDo(resultHandler.document(
+                        requestHeaders(
+                                headerWithName("Authorization").description("access 토큰")
+                        ),
+                        pathParameters(
+                                parameterWithName("todoTeamId").description("TodoTeam의 Id")
+                        ),
+                        queryParameters(
+                                parameterWithName("nickname").description("검색할 Register의 nickname")
+                        ),
+                        responseFields(
+                                fieldWithPath("content[].registerId").description("Register의 Id"),
+                                fieldWithPath("content[].authority").description("Register의 권한"),
+                                fieldWithPath("content[].registerName").description("Register의 이름"),
+                                fieldWithPath("content[].registerEmail").description("Register의 이메일"),
+                                fieldWithPath("content[].profileImage").description("Register의 프로필 이미지")
+                        )
+                ));
     }
 
     @Test
@@ -246,18 +254,39 @@ class RegisterControllerTest extends BaseRestDocsTest {
         //given
         final Long registerId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
         MockHttpServletRequestBuilder request = put(REGISTER_REQUEST_URL + "/registers/{registerId}", registerId)
-            .header("Authorization", "Bearer accessToken");
+                .header("Authorization", "Bearer accessToken");
         //when
         ResultActions result = mvc.perform(request);
         //then
         result.andExpect(status().isOk())
-            .andDo(resultHandler.document(
-                requestHeaders(
-                    headerWithName("Authorization").description("access 토큰")
-                ),
-                pathParameters(
-                    parameterWithName("registerId").description("내보낼 Register의 Id")
-                )
-            ));
+                .andDo(resultHandler.document(
+                        requestHeaders(
+                                headerWithName("Authorization").description("access 토큰")
+                        ),
+                        pathParameters(
+                                parameterWithName("registerId").description("내보낼 Register의 Id")
+                        )
+                ));
+    }
+
+    @Test
+    @DisplayName("TodoTeam 탈퇴 가능 여부 검증 API 테스트")
+    void validateRegisterDeletable() throws Exception {
+        //given
+        final Long todoTeamId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
+        MockHttpServletRequestBuilder request = post(REGISTER_REQUEST_URL + "/{todoTeamId}/registers/validate", todoTeamId)
+                .header("Authorization", "Bearer accessToken");
+        //when
+        ResultActions result = mvc.perform(request);
+        //then
+        result.andExpect(status().isOk())
+                .andDo(resultHandler.document(
+                        requestHeaders(
+                                headerWithName("Authorization").description("access 토큰")
+                        ),
+                        pathParameters(
+                                parameterWithName("todoTeamId").description("검증할 TodoTeam의 Id")
+                        )
+                ));
     }
 }
