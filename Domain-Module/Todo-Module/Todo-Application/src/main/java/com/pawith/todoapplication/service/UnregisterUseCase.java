@@ -20,7 +20,12 @@ public class UnregisterUseCase {
     public void unregisterTodoTeam(final Long todoTeamId) {
         final User user = userUtils.getAccessUser();
         final Register register = registerQueryService.findRegisterByTodoTeamIdAndUserId(todoTeamId, user.getId());
-        registerValidateService.validatePresidentRegisterDeletable(register);
         register.unregister();
+    }
+
+    public void validateRegisterDeletable(final Long todoTeamId) {
+        final User user = userUtils.getAccessUser();
+        final Register register = registerQueryService.findRegisterByTodoTeamIdAndUserId(todoTeamId, user.getId());
+        registerValidateService.validatePresidentRegisterDeletable(register);
     }
 }

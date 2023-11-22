@@ -28,6 +28,11 @@ public class RegisterController {
         unregisterUseCase.unregisterTodoTeam(todoTeamId);
     }
 
+    @PostMapping("/{todoTeamId}/registers/validate")
+    public void validateRegisterDeletable(@PathVariable Long todoTeamId) {
+        unregisterUseCase.validateRegisterDeletable(todoTeamId);
+    }
+
     @PostMapping("/registers")
     public void postRegister(@RequestParam String todoTeamCode) {
         todoTeamRegisterUseCase.registerTodoTeam(todoTeamCode);
