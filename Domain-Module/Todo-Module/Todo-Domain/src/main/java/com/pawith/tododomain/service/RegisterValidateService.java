@@ -8,6 +8,7 @@ import com.pawith.tododomain.exception.TodoError;
 import com.pawith.tododomain.exception.UnchangeableException;
 import com.pawith.tododomain.exception.UnregistrableException;
 import com.pawith.tododomain.repository.RegisterRepository;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,41 +26,27 @@ public class RegisterValidateService {
         if (register.isPresident()) {
             final TodoTeam todoTeam = register.getTodoTeam();
             final Integer presidentRegisterCount = registerRepository.countByTodoTeamIdAndAuthority(todoTeam.getId(), Authority.PRESIDENT);
-            if (presidentRegisterCount <= 1) {
+            final Integer registerCount = registerRepository.countByTodoTeamId(todoTeam.getId());
+            if (presidentRegisterCount <= 1 && registerCount > 1) {
                 throw new UnregistrableException(TodoError.CANNOT_PRESIDENT_UNREGISTRABLE);
             }
         }
     }
 
     public void validateRegisterDeletable(final List<Register> registerList) {
-        validatePresidentRegisterListDeletable(registerList);
-        validatePresidentRegisterExist(registerList);
+        final Map<Register, Integer> registerCountMap = registerList.stream()
+                .collect(Collectors.toMap(register -> register, register -> registerRepository.countByTodoTeamId(register.getTodoTeam().getId())));
+        final boolean isPresidentExist = registerList.stream()
+                .filter(Register::isPresident)
+                .allMatch(register -> registerCountMap.get(register) > 1);
+        if (isPresidentExist) {
+            throw new UnregistrableException(TodoError.CANNOT_PRESIDENT_UNREGISTRABLE);
+        }
     }
 
     public void validateAuthorityChangeable(final Register userRegister, final Authority authority) {
         if (!userRegister.isPresident() && authority.equals(Authority.PRESIDENT)) {
             throw new UnchangeableException(TodoError.CANNOT_CHANGE_AUTHORITY);
-        }
-    }
-
-
-    public void validatePresidentRegisterListDeletable(final List<Register> registerList){
-        final List<Long> todoTeamIds = registerList.stream()
-                .map(register -> register.getTodoTeam().getId())
-                .collect(Collectors.toList());
-        final List<Integer> presidentRegisterCountList = registerRepository.countAllByTodoTeamIdsInAndAuthority(todoTeamIds, Authority.PRESIDENT);
-        final boolean isNotUnregistrable = presidentRegisterCountList.stream()
-                .anyMatch(presidentRegisterCount -> presidentRegisterCount <= 1);
-        if (isNotUnregistrable) {
-            throw new UnregistrableException(TodoError.CANNOT_PRESIDENT_UNREGISTRABLE);
-        }
-    }
-
-    public void validatePresidentRegisterExist(final List<Register> registerList){
-        final boolean isPresidentExist = registerList.stream()
-                .anyMatch(Register::isPresident);
-        if (isPresidentExist) {
-            throw new UnregistrableException(TodoError.CANNOT_PRESIDENT_UNREGISTRABLE);
         }
     }
 }
