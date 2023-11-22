@@ -338,4 +338,29 @@ class TodoTeamControllerTest extends BaseRestDocsTest {
                 )
             ));
     }
+
+    @Test
+    @DisplayName("TodoTeam 최근 가입한 팀 조회 API 테스트")
+    void getTodoTeamLatest() throws Exception {
+        //given
+        final TodoTeamNameResponse todoTeamNameResponse = FixtureMonkeyUtils.getConstructBasedFixtureMonkey()
+            .giveMeOne(TodoTeamNameResponse.class);
+        given(todoTeamGetUseCase.getTodoTeamLatest()).willReturn(todoTeamNameResponse);
+        MockHttpServletRequestBuilder request = get(TODO_TEAM_REQUEST_URL + "/latest")
+            .header("Authorization", "Bearer accessToken");
+        //when
+        ResultActions result = mvc.perform(request);
+        //then
+        result.andExpect(status().isOk())
+            .andDo(resultHandler.document(
+                requestHeaders(
+                    headerWithName("Authorization").description("access 토큰")
+                ),
+                responseFields(
+                    fieldWithPath("teamId").description("TodoTeam의 Id"),
+                    fieldWithPath("teamName").description("TodoTeam의 이름"),
+                    fieldWithPath("authority").description("TodoTeam의 권한")
+                )
+            ));
+    }
 }
