@@ -31,6 +31,7 @@ public interface RegisterRepository extends JpaRepository<Register, Long> {
     @Query("select r from Register r join fetch r.todoTeam where r.userId = :userId and r.isRegistered = true order by r.id desc")
     List<Register> findAllByUserIdWithTodoTeamFetch(Long userId);
 
+
     List<Register> findAllByUserId(Long userId);
 
     Optional<Register> findByTodoTeamIdAndUserId(Long todoTeamId, Long userId);
@@ -44,6 +45,9 @@ public interface RegisterRepository extends JpaRepository<Register, Long> {
     Integer countByTodoTeamIdAndAuthority(Long todoTeamId, Authority authority);
 
     Boolean existsByTodoTeamIdAndUserIdAndIsRegistered(Long todoTeamId, Long userId, boolean isRegistered);
+
+    @Query("select r from Register r join fetch r.todoTeam where r.id = (select max(r.id) from Register r where r.userId = :userId and r.isRegistered = true)")
+    Optional<Register> findLatestRegisterByUserId(Long userId);
 
     @Modifying
     @Query("update Register r set r.isDeleted=true , r.isRegistered=false where r.id in (:registerIds)")

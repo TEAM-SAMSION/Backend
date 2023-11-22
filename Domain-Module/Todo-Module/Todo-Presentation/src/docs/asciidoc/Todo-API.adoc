@@ -50,6 +50,11 @@ operation::todo-team-controller-test/get-todo-team-info[snippets='http-request,p
 === Todo Team 정보 수정
 
 operation::todo-team-controller-test/put-todo-team-info[snippets='http-request,path-parameters,request-part-todoTeamUpdateInfo-fields,request-headers,http-response']
+
+[[가장-최근에-만든-Todo-Team-조회]]
+=== 가장 최근에 만든 Todo Team 조회
+
+operation::todo-team-controller-test/get-todo-team-latest[snippets='http-request,request-headers,http-response,response-fields']
 [[Todo-API]]
 == Todo API
 

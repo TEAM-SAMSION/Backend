@@ -57,6 +57,11 @@ public class TodoTeamController {
         todoTeamCreateUseCase.createTodoTeam(teamImageFile,petImageFiles, todoTeamCreateInfo);
     }
 
+    @GetMapping("/latest")
+    public TodoTeamNameResponse getTodoTeamLatest() {
+        return todoTeamGetUseCase.getTodoTeamLatest();
+    }
+
     @GetMapping("/name")
     public ListResponse<TodoTeamNameResponse> getTodoTeamName() {
         return todoTeamGetUseCase.getTodoTeamName();

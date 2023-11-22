@@ -83,6 +83,9 @@ public class RegisterQueryService {
         return (int) ChronoUnit.DAYS.between(register.getCreatedAt().toLocalDate(), LocalDate.now());
     }
 
+    public Register findLatestTodoTeam(Long userId){
+        return findRegister(() -> registerRepository.findLatestRegisterByUserId(userId));
+    }
     private Register findRegister(Supplier<Optional<Register>> optionalSupplier){
         return registerOptionalHandle(optionalSupplier);
     }

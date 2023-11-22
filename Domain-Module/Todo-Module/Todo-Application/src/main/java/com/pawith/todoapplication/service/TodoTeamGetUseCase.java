@@ -89,4 +89,10 @@ public class TodoTeamGetUseCase {
         Integer petCount = petQueryService.countPetByTodoTeamId(todoTeamId);
         return TodoTeamMapper.mapToTodoTeamInfoDetailResponse(todoTeam, registerCount, petCount);
     }
+
+    public TodoTeamNameResponse getTodoTeamLatest() {
+        final User requestUser = userUtils.getAccessUser();
+        final Register register = registerQueryService.findLatestTodoTeam(requestUser.getId());
+        return TodoTeamMapper.mapToTodoTeamNameResponse(register.getTodoTeam(), register);
+    }
 }

@@ -42,7 +42,8 @@ public class TodoGetUseCase {
                 final Category category = todo.getCategory();
                 return new TodoInfoResponse(todo.getId(), category.getId(), category.getName(), todo.getDescription(), assign.getCompletionStatus());
             })
-            .toList();
+            .sorted(Comparator.comparing(TodoInfoResponse::getCategoryId).reversed())
+            .collect(Collectors.toList());
         return ListResponse.from(todoInfoResponses);
     }
 
@@ -64,7 +65,7 @@ public class TodoGetUseCase {
                     return new AssignUserInfoResponse(findUser.getId(), findUser.getNickname(), assign.getCompletionStatus());
                 })
                 .sorted(Comparator.comparing(assignUserInfoResponse -> !Objects.equals(assignUserInfoResponse.getAssigneeId(), accessUser.getId())))
-                .toList();
+                .collect(Collectors.toList());
             TodoNotificationInfoResponse todoNotificationInfoResponse = getTodoNotificationInfoResponse(todo, todoNotificationMap);
             todoMainResponses.add(TodoMapper.mapToCategorySubTodoResponse(todo, assignUserInfoResponses, isAssigned.get(),todoNotificationInfoResponse));
         }
@@ -93,7 +94,7 @@ public class TodoGetUseCase {
     }
 
     private Map<Long, TodoNotification> createTodoNotificationMapWithTodoId(List<Todo> todoList, Long userId) {
-        final List<Long> todoIds = todoList.stream().map(Todo::getId).toList();
+        final List<Long> todoIds = todoList.stream().map(Todo::getId).collect(Collectors.toList());
         return todoNotificationQueryService.findAllByTodoIdsWithIncompleteAssign(todoIds, userId)
             .stream()
             .collect(Collectors.toMap(todoNotification -> todoNotification.getAssign().getTodo().getId(), todoNotification -> todoNotification));
