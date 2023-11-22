@@ -1,6 +1,7 @@
 package com.pawith.tododomain.entity;
 
 import com.pawith.commonmodule.domain.BaseEntity;
+import com.pawith.commonmodule.util.DomainFieldUtils;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -26,5 +27,12 @@ public class TodoNotification extends BaseEntity {
     public TodoNotification(LocalTime localTime, Assign assign) {
         this.notificationTime = localTime;
         this.assign = assign;
+    }
+
+    public void updateNotificationTime(LocalTime updateNotificationTime){
+        this.notificationTime = DomainFieldUtils.DomainValidateBuilder.builder(LocalTime.class)
+                .newValue(updateNotificationTime)
+                .currentValue(this.notificationTime)
+                .validate();
     }
 }
