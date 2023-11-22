@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.Optional;
 
 public interface TodoNotificationRepository extends JpaRepository<TodoNotification, Long> {
 
@@ -30,4 +31,7 @@ public interface TodoNotificationRepository extends JpaRepository<TodoNotificati
         where a.todo.id in :todoId
         """)
     List<TodoNotification> findAllByTodoIdWithIncompleteAssign(List<Long> todoId, Long userId);
+
+
+    Optional<TodoNotification> findByAssignId(Long assignId);
 }

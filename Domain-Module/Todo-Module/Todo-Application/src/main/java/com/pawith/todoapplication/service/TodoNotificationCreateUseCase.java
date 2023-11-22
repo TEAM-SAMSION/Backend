@@ -2,7 +2,6 @@ package com.pawith.todoapplication.service;
 
 import com.pawith.commonmodule.annotation.ApplicationService;
 import com.pawith.tododomain.entity.Assign;
-import com.pawith.tododomain.entity.TodoNotification;
 import com.pawith.tododomain.service.AssignQueryService;
 import com.pawith.tododomain.service.TodoNotificationSaveService;
 import com.pawith.userdomain.entity.User;
@@ -24,6 +23,6 @@ public class TodoNotificationCreateUseCase {
     public void createNotification(Long todoId, LocalTime notificationTime) {
         final User user = userUtils.getAccessUser();
         final Assign assign = assignQueryService.findAssignByTodoIdAndUserId(todoId, user.getId());
-        todoNotificationSaveService.saveNotificationEntity(new TodoNotification(notificationTime, assign));
+        todoNotificationSaveService.saveNotification(notificationTime, assign);
     }
 }
