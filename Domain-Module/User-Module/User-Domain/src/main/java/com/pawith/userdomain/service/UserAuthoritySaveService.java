@@ -14,6 +14,6 @@ public class UserAuthoritySaveService {
         userAuthorityRepository.findByEmail(email)
             .ifPresentOrElse(
                 UserAuthority::initialUserAuthority,
-                () -> new UserAuthority(email));
+                () -> userAuthorityRepository.save(new UserAuthority(email)));
     }
 }
