@@ -31,4 +31,8 @@ public class UserAuthority extends BaseEntity {
             this.authority = Authority.USER;
         }
     }
+
+    public void initialUserAuthority(){
+        this.authority = Authority.GUEST;
+    }
 }
