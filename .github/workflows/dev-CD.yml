@@ -28,13 +28,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
-      - name: make application.yml
-        run: |
-          cd ./Api-Module/src/main/resources
-          touch ./application.yml
-          echo "${{ secrets.APPLICATION }}" > ./application.yml
-        shell: bash
-
       - name: make firebase.json
         uses: jsdaniell/create-json@v1.2.2
         with:
@@ -42,13 +35,13 @@ jobs:
           json: ${{ secrets.FCM_JSON }}
           name: firebase.json
 
-      - name: make promtail.yaml
+      - name: make promtail-dev.yaml
         uses: appleboy/scp-action@master
         with:
             host: ${{ secrets.HOST }}
             username: ubuntu
             key: ${{ secrets.KEY }}
-            source: "./.deploy/promtail.yaml"
+            source: "./.deploy/promtail-dev.yaml"
             target: "/home/ubuntu"
             strip_components: 2
 
@@ -94,13 +87,23 @@ jobs:
       - name: Docker push
         run: docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}
 
-      - name: deploy-docker-compose push
+      - name: deploy docker-compose push
         uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.HOST }}
           username: ubuntu
           key: ${{ secrets.KEY }}
           source: "./.deploy/docker-compose.yml"
+          target: "/home/ubuntu"
+          strip_components: 2
+
+      - name: deploy docker-compose-dev push
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ubuntu
+          key: ${{ secrets.KEY }}
+          source: "./.deploy/docker-compose-dev.yml"
           target: "/home/ubuntu"
           strip_components: 2
 
@@ -114,5 +117,5 @@ jobs:
             docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}
             docker stop ${{ secrets.DOCKER_REPOSITORY }}
             docker rm -f ${{ secrets.DOCKER_REPOSITORY }}
-            docker-compose up -d
+            docker compose -f docker-compose.yml -f docker-compose-dev.yml up -d
             docker image prune -f
