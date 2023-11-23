@@ -18,7 +18,7 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ubuntu
           key: ${{ secrets.KEY }}
-          source: "./.deploy/nginx/nginx.conf"
+          source: "./.deploy/nginx/conf-dev/nginx.conf"
           target: "/home/ubuntu/nginx/conf"
           strip_components: 3
 
