@@ -10,7 +10,7 @@ clients:
   - url: http://log.simproject.kr:3100/loki/api/v1/push
 
 scrape_configs:
-  - job_name: spring
+  - job_name: dev-pawith
     docker_sd_configs:
       - host: unix:///var/run/docker.sock
         refresh_interval: 10s
@@ -18,5 +18,5 @@ scrape_configs:
       - targets:
           - localhost
         labels:
-          job: spring
+          job: dev-pawith
           __path__: /logs/logback/*.log
