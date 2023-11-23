@@ -9,9 +9,5 @@ dependencies {
     implementation project(":Domain-Module:Auth-Module:Auth-Presentation")
     implementation project(":Domain-Module:User-Module:User-Presentation")
 
-    implementation project(':Domain-Module:Auth-Module:Auth-Domain')
-
     implementation project(':Alarm-Module')
-
-    implementation project(':Common-Module')
 }
