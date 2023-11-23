@@ -1,9 +1,9 @@
-name: dev-CI
+name: CI-prod
 
 on:
   pull_request:
     branches:
-      - main
+      - release
 
 jobs:
   build:
