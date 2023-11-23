@@ -20,7 +20,7 @@ jobs:
           key: ${{ secrets.KEY }}
           source: "./.deploy/nginx/conf-dev/nginx.conf"
           target: "/home/ubuntu/nginx/conf"
-          strip_components: 3
+          strip_components: 4
 
       - name: docker-compose-nginx push
         uses: appleboy/scp-action@master
