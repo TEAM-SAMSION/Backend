@@ -1,4 +1,4 @@
-name: dev-Nginx-CD
+name: Nginx-CD-dev
 
 on:
   push:
