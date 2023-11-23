@@ -1,4 +1,4 @@
-경services:
+services:
   promtail:
     volumes:
       - /home/ubuntu/promtail-dev.yaml:/etc/promtail/promtail-config.yaml
