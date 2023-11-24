@@ -35,6 +35,9 @@ public class Todo extends BaseEntity {
     @JoinColumn(name = "category_id")
     private Category category;
 
+    @Version
+    private Long version;
+
     @Builder
     public Todo(String description, LocalDate scheduledDate, Category category) {
         this.description = description;
