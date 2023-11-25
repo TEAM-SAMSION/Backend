@@ -2,6 +2,7 @@ package com.pawith.tododomain.entity;
 
 import com.pawith.commonmodule.domain.BaseEntity;
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -31,6 +32,8 @@ public class Register extends BaseEntity {
 
     private Long userId;
 
+    private LocalDateTime registerAt;
+
     private Boolean isDeleted=Boolean.FALSE;
 
     private Boolean isRegistered=Boolean.TRUE;
@@ -40,6 +43,7 @@ public class Register extends BaseEntity {
         this.authority = authority;
         this.todoTeam = todoTeam;
         this.userId = userId;
+        this.registerAt = LocalDateTime.now();
     }
 
     public void updateAuthority(Authority authority) {
@@ -62,6 +66,7 @@ public class Register extends BaseEntity {
 
     public void reRegister(){
         this.isRegistered = Boolean.TRUE;
+        this.registerAt = LocalDateTime.now();
     }
 
 }
