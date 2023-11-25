@@ -36,7 +36,7 @@ public class TodoTeamMapper {
     }
 
     public static TodoTeamInfoResponse mapToTodoTeamSimpleResponse(final TodoTeam todoTeam, final Register register) {
-        final int registerPeriod = Period.between(register.getRegisterAt().toLocalDate(), LocalDate.now()).getDays();
+        final int registerPeriod = Period.between(register.getRegisterAt(), LocalDate.now()).getDays();
         return TodoTeamInfoResponse.builder()
             .teamId(todoTeam.getId())
             .teamName(todoTeam.getTeamName())
