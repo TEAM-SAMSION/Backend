@@ -6,6 +6,7 @@ import com.pawith.tododomain.service.RegisterQueryService;
 import com.pawith.tododomain.service.RegisterValidateService;
 import com.pawith.userdomain.entity.User;
 import com.pawith.userdomain.utils.UserUtils;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,5 +28,11 @@ public class UnregisterUseCase {
         final User user = userUtils.getAccessUser();
         final Register register = registerQueryService.findRegisterByTodoTeamIdAndUserId(todoTeamId, user.getId());
         registerValidateService.validatePresidentRegisterDeletable(register);
+    }
+
+    public void validateRegistersDeletable() {
+        final User user = userUtils.getAccessUser();
+        final List<Register> registers = registerQueryService.findAllRegistersByUserId(user.getId());
+        registerValidateService.validateRegisterDeletable(registers);
     }
 }

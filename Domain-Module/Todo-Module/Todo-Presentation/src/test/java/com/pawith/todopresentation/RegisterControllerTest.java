@@ -289,4 +289,21 @@ class RegisterControllerTest extends BaseRestDocsTest {
                         )
                 ));
     }
+
+    @Test
+    @DisplayName("서비스 탈퇴 가능 여부 검증 API 테스트")
+    void validateRegistersDeletable() throws Exception {
+        //given
+        MockHttpServletRequestBuilder request = post(REGISTER_REQUEST_URL + "/registers/validate")
+                .header("Authorization", "Bearer accessToken");
+        //when
+        ResultActions result = mvc.perform(request);
+        //then
+        result.andExpect(status().isOk())
+                .andDo(resultHandler.document(
+                        requestHeaders(
+                                headerWithName("Authorization").description("access 토큰")
+                        )
+                ));
+    }
 }

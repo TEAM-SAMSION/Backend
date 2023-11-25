@@ -9,6 +9,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public class TodoTeamSearchInfoResponse {
     private final String code;
+    private final Long teamId;
     private final String teamName;
     private final String presidentName;
     private final Integer registerCount;

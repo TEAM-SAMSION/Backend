@@ -206,6 +206,11 @@ operation::register-controller-test/unregister-register[snippets='http-request,p
 === Todo 팀 탈퇴 검증
 
 operation::register-controller-test/validate-register-deletable[snippets='http-request,path-parameters,request-headers,http-response,response-fields']
+
+[[서비스-탈퇴-검증]]
+=== 서비스 탈퇴 검증
+
+operation::register-controller-test/validate-registers-deletable[snippets='http-request,request-headers,http-response']
 [[PET-API]]
 == PET API
 
