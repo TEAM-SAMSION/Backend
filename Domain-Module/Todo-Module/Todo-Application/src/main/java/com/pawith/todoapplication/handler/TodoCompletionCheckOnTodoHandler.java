@@ -24,14 +24,14 @@ public class TodoCompletionCheckOnTodoHandler {
 
     @EventListener
     public void changeTodoStatus(TodoCompletionCheckEvent todoCompletionCheckEvent) throws InterruptedException {
-        final List<Assign> assigns = assignQueryService.findAllAssignByTodoId(todoCompletionCheckEvent.getTodoId());
-        final Todo todo = todoQueryService.findTodoByTodoId(todoCompletionCheckEvent.getTodoId());
-        CompletionStatus newStatus = assigns.stream()
-                .allMatch(assign -> assign.getCompletionStatus() == CompletionStatus.COMPLETE)
-                ? CompletionStatus.COMPLETE
-                : CompletionStatus.INCOMPLETE;
         while(true) {
             try {
+                final List<Assign> assigns = assignQueryService.findAllAssignByTodoId(todoCompletionCheckEvent.getTodoId());
+                final Todo todo = todoQueryService.findTodoByTodoId(todoCompletionCheckEvent.getTodoId());
+                CompletionStatus newStatus = assigns.stream()
+                        .allMatch(assign -> assign.getCompletionStatus() == CompletionStatus.COMPLETE)
+                        ? CompletionStatus.COMPLETE
+                        : CompletionStatus.INCOMPLETE;
                 todo.updateCompletionStatus(newStatus);
                 break;
             } catch (OptimisticLockException e) {
