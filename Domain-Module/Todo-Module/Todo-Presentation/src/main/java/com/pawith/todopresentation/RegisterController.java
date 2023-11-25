@@ -28,9 +28,20 @@ public class RegisterController {
         unregisterUseCase.unregisterTodoTeam(todoTeamId);
     }
 
+    /**
+     * 팀 탈퇴 시 사용하는 검증 API
+     */
     @PostMapping("/{todoTeamId}/registers/validate")
     public void validateRegisterDeletable(@PathVariable Long todoTeamId) {
         unregisterUseCase.validateRegisterDeletable(todoTeamId);
+    }
+
+    /**
+     * 서비스 탈퇴 시 사용하는 검증 API
+     */
+    @PostMapping("/registers/validate")
+    public void validateRegistersDeletable() {
+        unregisterUseCase.validateRegistersDeletable();
     }
 
     @PostMapping("/registers")
