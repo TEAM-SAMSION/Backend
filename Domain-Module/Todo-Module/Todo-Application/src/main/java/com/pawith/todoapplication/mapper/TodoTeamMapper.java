@@ -49,6 +49,7 @@ public class TodoTeamMapper {
     public static TodoTeamSearchInfoResponse mapToTodoTeamSearchInfoResponse(final TodoTeam todoTeam, final User user, final Integer registerCount) {
         return TodoTeamSearchInfoResponse.builder()
             .teamName(todoTeam.getTeamName())
+            .teamId(todoTeam.getId())
             .code(todoTeam.getTeamCode())
             .description(todoTeam.getDescription())
             .teamImageUrl(todoTeam.getImageUrl())
