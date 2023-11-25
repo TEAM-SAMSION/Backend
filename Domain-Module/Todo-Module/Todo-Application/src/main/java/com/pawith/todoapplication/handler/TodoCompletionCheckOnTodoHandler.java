@@ -6,6 +6,7 @@ import com.pawith.tododomain.entity.CompletionStatus;
 import com.pawith.tododomain.entity.Todo;
 import com.pawith.tododomain.service.AssignQueryService;
 import com.pawith.tododomain.service.TodoQueryService;
+import jakarta.persistence.OptimisticLockException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,13 +23,20 @@ public class TodoCompletionCheckOnTodoHandler {
     private final TodoQueryService todoQueryService;
 
     @EventListener
-    public void changeTodoStatus(TodoCompletionCheckEvent todoCompletionCheckEvent){
-        final List<Assign> assigns = assignQueryService.findAllAssignByTodoId(todoCompletionCheckEvent.getTodoId());
-        final Todo todo = todoQueryService.findTodoByTodoId(todoCompletionCheckEvent.getTodoId());
-        CompletionStatus newStatus = assigns.stream()
-                .allMatch(assign -> assign.getCompletionStatus() == CompletionStatus.COMPLETE)
-                ? CompletionStatus.COMPLETE
-                : CompletionStatus.INCOMPLETE;
-        todo.updateCompletionStatus(newStatus);
+    public void changeTodoStatus(TodoCompletionCheckEvent todoCompletionCheckEvent) throws InterruptedException {
+        while(true) {
+            try {
+                final List<Assign> assigns = assignQueryService.findAllAssignByTodoId(todoCompletionCheckEvent.getTodoId());
+                final Todo todo = todoQueryService.findTodoByTodoId(todoCompletionCheckEvent.getTodoId());
+                CompletionStatus newStatus = assigns.stream()
+                        .allMatch(assign -> assign.getCompletionStatus() == CompletionStatus.COMPLETE)
+                        ? CompletionStatus.COMPLETE
+                        : CompletionStatus.INCOMPLETE;
+                todo.updateCompletionStatus(newStatus);
+                break;
+            } catch (OptimisticLockException e) {
+                Thread.sleep(20);
+            }
+        }
     }
 }

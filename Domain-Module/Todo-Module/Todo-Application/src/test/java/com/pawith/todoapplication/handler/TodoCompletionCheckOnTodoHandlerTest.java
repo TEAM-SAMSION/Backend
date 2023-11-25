@@ -34,7 +34,7 @@ public class TodoCompletionCheckOnTodoHandlerTest {
 
     @Test
     @DisplayName("Todo 완료 여부 변경 테스트-담당자가 모두 완료하면 Todo 완료")
-    void changeTodoStatus() {
+    void changeTodoStatus() throws InterruptedException {
         // given
         final TodoCompletionCheckEvent todoCompletionCheckEvent = FixtureMonkeyUtils.getConstructBasedFixtureMonkey()
                 .giveMeOne(TodoCompletionCheckEvent.class);
@@ -56,7 +56,7 @@ public class TodoCompletionCheckOnTodoHandlerTest {
 
     @Test
     @DisplayName("Todo 완료 여부 변경 테스트-담당자가 하나라도 미완료면 Todo 미완료")
-    void changeTodoStatusWithIncompletedAssignee() {
+    void changeTodoStatusWithIncompletedAssignee() throws InterruptedException {
         // given
         final TodoCompletionCheckEvent todoCompletionCheckEvent = FixtureMonkeyUtils.getConstructBasedFixtureMonkey()
                 .giveMeOne(TodoCompletionCheckEvent.class);
