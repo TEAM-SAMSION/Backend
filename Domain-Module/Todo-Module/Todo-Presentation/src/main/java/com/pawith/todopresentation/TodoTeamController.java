@@ -37,7 +37,7 @@ public class TodoTeamController {
 
     @GetMapping
     public SliceResponse<TodoTeamInfoResponse> getTodoTeams(Pageable pageable) {
-        return todoTeamGetUseCase.getTodoTeams(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("id").descending()));
+        return todoTeamGetUseCase.getTodoTeams(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("registerAt").descending()));
     }
 
     @GetMapping("/codes/random")
