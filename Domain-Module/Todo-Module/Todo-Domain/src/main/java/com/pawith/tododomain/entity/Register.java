@@ -18,7 +18,7 @@ import java.util.Objects;
 @SQLDelete(sql = "UPDATE register SET is_deleted = true WHERE register_id = ?")
 @Where(clause = "is_deleted = false")
 @Table(name = "register" , indexes = {
-        @Index(name = "idx_register_user_id", columnList = "user_id"),
+        @Index(name = "idx_register_user_id", columnList = "userId"),
 })
 public class Register extends BaseEntity {
     @Id
