@@ -2,6 +2,7 @@ package com.pawith.userdomain.entity;
 
 import com.pawith.commonmodule.domain.BaseEntity;
 import com.pawith.commonmodule.enums.Provider;
+import com.pawith.commonmodule.util.DomainFieldUtils;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -12,7 +13,6 @@ import org.hibernate.annotations.Where;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.Objects;
 
 @Entity
 @Getter
@@ -46,15 +46,11 @@ public class User extends BaseEntity {
     }
 
     public void updateNickname(final String nickname) {
-        if(this.nickname.equals(nickname))
-            return;
-        this.nickname = Objects.requireNonNull(nickname, "nickname must be not null");
+        this.nickname = DomainFieldUtils.updateIfDifferent(this.nickname, nickname);
     }
 
     public void updateProfileImage(final String imageUrl) {
-        if(this.imageUrl.equals(imageUrl))
-            return;
-        this.imageUrl = Objects.requireNonNull(imageUrl, "imageUrl must be not null");
+        this.imageUrl = DomainFieldUtils.updateIfDifferent(this.imageUrl, imageUrl);
     }
 
     public Boolean isNotMatchingProvider(Provider provider) {
