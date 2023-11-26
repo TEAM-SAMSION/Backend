@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class UserSignUpHandler {
 
-    private static final String DEFAULT_PROFILE_IMAGE_URL = "https://pawith.s3.ap-northeast-2.amazonaws.com/base-image/profileDefault.png";
+    private static final String DEFAULT_PROFILE_IMAGE_URL = "https://pawith.s3.ap-northeast-2.amazonaws.com/base-image/default_user.png";
 
     private final UserSaveService userSaveService;
     private final UserQueryService userQueryService;
