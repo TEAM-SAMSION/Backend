@@ -10,12 +10,17 @@ public interface AlarmRepository extends JpaRepository<Alarm, Long> {
 
     @Query("select count(a) > 0 " +
         "from Alarm a " +
-        "join AlarmUser au on au.userId = :userId and a.alarmUser = au "+
+        "join AlarmUser au on au.userId = :userId and a.alarmUser = au " +
         "where a.isRead = false")
     Boolean existsByUserId(Long userId);
 
-    @Query("select a " +
-        "from Alarm a " +
-        "join AlarmUser au on au.userId = :userId and a.alarmUser = au ")
+    @Query(
+        """
+                    select a
+                    from Alarm a
+                        join AlarmUser au on au.userId = :userId and a.alarmUser = au
+                    order by a.id desc
+            """
+    )
     Slice<Alarm> findAllByUserId(Long userId, Pageable pageable);
 }

@@ -23,7 +23,7 @@ import java.time.LocalTime;
 @RequiredArgsConstructor
 public class TodoNotificationHandler {
     private static final Integer BATCH_SIZE = 100;
-    private static final String FIRST_NOTIFICATION_MESSAGE_FORMAT = "오늘 %s시 %s분,[%s] %s 잊지 않았죠?";
+    private static final String FIRST_NOTIFICATION_MESSAGE_FORMAT = "오늘 %s시 %s분, [%s] %s 잊지 않았죠?";
     private static final String SECOND_NOTIFICATION_MESSAGE_FORMAT = "[%s] %s 시작까지 1시간 남았어요!";
 
     private final TodoNotificationRepository todoNotificationRepository;
@@ -41,10 +41,11 @@ public class TodoNotificationHandler {
     @Scheduled(cron = "0 0 * * * *")
     public void sendTodoNotification() {
         int page = 0;
+        final LocalTime now = LocalTime.now().withMinute(0);
         boolean hasNext = true;
         do {
             final PageRequest pageRequest = PageRequest.of(page, BATCH_SIZE);
-            final Slice<NotificationDao> notificationBatch = todoNotificationRepository.findAllWithNotCompletedAssignAndTodayScheduledTodo(Duration.ofHours(3), pageRequest);
+            final Slice<NotificationDao> notificationBatch = todoNotificationRepository.findAllWithNotCompletedAssignAndTodayScheduledTodo(Duration.ofHours(3), now, pageRequest);
             handleNotification(notificationBatch);
             hasNext = notificationBatch.hasNext();
             page++;
