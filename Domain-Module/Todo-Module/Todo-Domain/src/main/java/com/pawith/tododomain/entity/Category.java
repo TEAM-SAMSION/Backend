@@ -1,6 +1,7 @@
 package com.pawith.tododomain.entity;
 
 import com.pawith.commonmodule.domain.BaseEntity;
+import com.pawith.commonmodule.util.DomainFieldUtils;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -41,14 +42,16 @@ public class Category extends BaseEntity {
     }
 
     public void updateCategoryStatus(CategoryStatus categoryStatus) {
-        if(this.categoryStatus.equals(categoryStatus))
-            return;
-        this.categoryStatus = Objects.requireNonNull(categoryStatus, "categoryStatus must be not null");
+        this.categoryStatus = DomainFieldUtils.DomainValidateBuilder.builder(CategoryStatus.class)
+                .newValue(categoryStatus)
+                .currentValue(this.categoryStatus)
+                .validate();
     }
 
     public void updateCategoryName(String categoryName) {
-        if(this.name.equals(categoryName))
-            return;
-        this.name = Objects.requireNonNull(categoryName, "categoryName must be not null");
+        this.name = DomainFieldUtils.DomainValidateBuilder.builder(String.class)
+                .newValue(categoryName)
+                .currentValue(this.name)
+                .validate();
     }
 }

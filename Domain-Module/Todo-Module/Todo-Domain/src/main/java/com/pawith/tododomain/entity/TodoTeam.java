@@ -33,8 +33,17 @@ public class TodoTeam extends BaseEntity {
     }
 
     public void updateTodoTeam(String teamName, String description, String imageUrl) {
-        this.teamName = DomainFieldUtils.updateIfDifferent(teamName, this.teamName);
-        this.description = DomainFieldUtils.updateIfDifferent(description, this.description);
-        this.imageUrl = DomainFieldUtils.updateIfDifferent(imageUrl, this.imageUrl);
+        this.teamName = DomainFieldUtils.DomainValidateBuilder.builder(String.class)
+                .newValue(teamName)
+                .currentValue(this.teamName)
+                .validate();
+        this.description = DomainFieldUtils.DomainValidateBuilder.builder(String.class)
+                .newValue(description)
+                .currentValue(this.description)
+                .validate();
+        this.imageUrl = DomainFieldUtils.DomainValidateBuilder.builder(String.class)
+                .newValue(imageUrl)
+                .currentValue(this.imageUrl)
+                .validate();
     }
 }

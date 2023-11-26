@@ -22,7 +22,13 @@ public class PetSpecies {
     }
 
     public void updatePetSpecies(String genus, String species) {
-        this.genus = DomainFieldUtils.updateIfDifferent(genus, this.genus);
-        this.species = DomainFieldUtils.updateIfDifferent(species, this.species);
+        this.genus = DomainFieldUtils.DomainValidateBuilder.builder(String.class)
+                .newValue(genus)
+                .currentValue(this.genus)
+                .validate();
+        this.species = DomainFieldUtils.DomainValidateBuilder.builder(String.class)
+                .newValue(species)
+                .currentValue(this.species)
+                .validate();
     }
 }

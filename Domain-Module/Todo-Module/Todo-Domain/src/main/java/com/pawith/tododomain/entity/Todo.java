@@ -1,6 +1,7 @@
 package com.pawith.tododomain.entity;
 
 import com.pawith.commonmodule.domain.BaseEntity;
+import com.pawith.commonmodule.util.DomainFieldUtils;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -47,20 +48,23 @@ public class Todo extends BaseEntity {
     }
 
     public void updateScheduledDate(LocalDate scheduledDate) {
-        if(this.scheduledDate.equals(scheduledDate))
-            return;
-        this.scheduledDate = Objects.requireNonNull(scheduledDate, "nickname must be not null");
+        this.scheduledDate = DomainFieldUtils.DomainValidateBuilder.builder(LocalDate.class)
+                .newValue(scheduledDate)
+                .currentValue(this.scheduledDate)
+                .validate();
     }
 
     public void updateDescription(String description) {
-        if(this.description.equals(description))
-            return;
-        this.description = Objects.requireNonNull(description, "nickname must be not null");
+        this.description = DomainFieldUtils.DomainValidateBuilder.builder(String.class)
+                .newValue(description)
+                .currentValue(this.description)
+                .validate();
     }
 
     public void updateCompletionStatus(CompletionStatus completionStatus){
-        if(this.completionStatus.equals(completionStatus))
-            return;
-        this.completionStatus = Objects.requireNonNull(completionStatus, "nickname must be not null");
+        this.completionStatus = DomainFieldUtils.DomainValidateBuilder.builder(CompletionStatus.class)
+                .newValue(completionStatus)
+                .currentValue(this.completionStatus)
+                .validate();
     }
 }

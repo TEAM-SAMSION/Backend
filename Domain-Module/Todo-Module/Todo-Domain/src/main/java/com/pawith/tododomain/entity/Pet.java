@@ -49,10 +49,22 @@ public class Pet extends BaseEntity {
 
 
     public void updatePet(String imageUrl, String name, Integer age, String genus, String species, String description) {
-        this.imageUrl = DomainFieldUtils.updateIfDifferent(imageUrl, this.imageUrl);
-        this.name = DomainFieldUtils.updateIfDifferent(name, this.name);
-        this.age = DomainFieldUtils.updateIfDifferent(age, this.age);
-        this.description = DomainFieldUtils.updateIfDifferent(description, this.description);
+        this.imageUrl = DomainFieldUtils.DomainValidateBuilder.builder(String.class)
+                .newValue(imageUrl)
+                .currentValue(this.imageUrl)
+                .validate();
+        this.name = DomainFieldUtils.DomainValidateBuilder.builder(String.class)
+                .newValue(name)
+                .currentValue(this.name)
+                .validate();
+        this.age = DomainFieldUtils.DomainValidateBuilder.builder(Integer.class)
+                .newValue(age)
+                .currentValue(this.age)
+                .validate();
+        this.description = DomainFieldUtils.DomainValidateBuilder.builder(String.class)
+                .newValue(description)
+                .currentValue(this.description)
+                .validate();
         this.petSpecies.updatePetSpecies(genus, species);
     }
 }
