@@ -15,7 +15,7 @@ import java.util.Objects;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@SQLDelete(sql = "UPDATE todo SET is_deleted = true WHERE todo_id=?")
+@SQLDelete(sql = "UPDATE todo SET is_deleted = true WHERE todo_id=? and version=?")
 @Where(clause = "is_deleted=false")
 public class Todo extends BaseEntity {
     @Id
