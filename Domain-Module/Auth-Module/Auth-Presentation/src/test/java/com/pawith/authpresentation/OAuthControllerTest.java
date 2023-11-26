@@ -37,7 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class OAuthControllerTest extends BaseRestDocsTest {
 
     private static final String OAUTH_URL = "/oauth/{provider}";
-    private static final String OAUTH_REQUEST_ACCESS_TOKEN_PARAM_NAME = "accessToken";
+    private static final String OAUTH_REQUEST_ACCESS_TOKEN_PARAM_NAME = "Authorization";
 
     @MockBean
     private OAuthUseCase oAuthUseCase;
@@ -54,7 +54,7 @@ class OAuthControllerTest extends BaseRestDocsTest {
         final String OAUTH_ACCESS_TOKEN = FixtureMonkey.create().giveMeOne(String.class);
         final OAuthResponse testOAuthResponse = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(OAuthResponse.class);
         MockHttpServletRequestBuilder request = get(OAUTH_URL, testProvider)
-            .param(OAUTH_REQUEST_ACCESS_TOKEN_PARAM_NAME, OAUTH_ACCESS_TOKEN);
+            .header(OAUTH_REQUEST_ACCESS_TOKEN_PARAM_NAME, OAUTH_ACCESS_TOKEN);
         given(oAuthUseCase.oAuthLogin(testProvider, OAUTH_ACCESS_TOKEN)).willReturn(testOAuthResponse);
         //when
         ResultActions result = mvc.perform(request);
@@ -62,11 +62,11 @@ class OAuthControllerTest extends BaseRestDocsTest {
         result.andExpect(status().isOk())
             .andDo(print())
             .andDo(resultHandler.document(
-                queryParameters(
-                    parameterWithName(OAUTH_REQUEST_ACCESS_TOKEN_PARAM_NAME).description("OAuth 접근 토큰")
+                requestHeaders(
+                    headerWithName(OAUTH_REQUEST_ACCESS_TOKEN_PARAM_NAME).description("OAuth access 토큰")
                 ),
                 pathParameters(
-                    parameterWithName("provider").description("OAuth 제공자")
+                    parameterWithName("provider").description("OAuth 제공자(GOOGLE, KAKAO, NAVER, APPLE)")
                 ),
                 responseFields(
                     fieldWithPath("accessToken").description("access 토큰"),
