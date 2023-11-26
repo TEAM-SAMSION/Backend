@@ -48,9 +48,9 @@ jobs:
       - name: Set .env for configuration
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.HOST }}
+          host: ${{ secrets.PROD_HOST }}
           username: ubuntu
-          key: ${{ secrets.KEY }}
+          key: ${{ secrets.PROD_KEY }}
           script: |
             rm -rf ./.env
             touch ./.env
