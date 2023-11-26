@@ -2,8 +2,6 @@ package com.pawith.tododomain.entity;
 
 import com.pawith.commonmodule.domain.BaseEntity;
 import jakarta.persistence.*;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,6 +9,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
@@ -18,6 +17,9 @@ import java.util.Objects;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SQLDelete(sql = "UPDATE register SET is_deleted = true WHERE register_id = ?")
 @Where(clause = "is_deleted = false")
+@Table(name = "register" , indexes = {
+        @Index(name = "idx_register_user_id", columnList = "user_id"),
+})
 public class Register extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

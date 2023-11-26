@@ -3,10 +3,6 @@ package com.pawith.userdomain.entity;
 import com.pawith.commonmodule.domain.BaseEntity;
 import com.pawith.commonmodule.enums.Provider;
 import jakarta.persistence.*;
-import java.time.Duration;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,6 +10,8 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
 @Entity
@@ -21,6 +19,9 @@ import java.util.Objects;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SQLDelete(sql = "UPDATE user SET is_deleted = true WHERE user_id = ?")
 @Where(clause = "is_deleted = false")
+@Table(name = "user", indexes = {
+    @Index(name = "idx_user_email", columnList = "email")
+})
 public class User extends BaseEntity {
 
     @Id
