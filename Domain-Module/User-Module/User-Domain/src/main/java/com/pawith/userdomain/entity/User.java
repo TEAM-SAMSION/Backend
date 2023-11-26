@@ -46,11 +46,17 @@ public class User extends BaseEntity {
     }
 
     public void updateNickname(final String nickname) {
-        this.nickname = DomainFieldUtils.updateIfDifferent(this.nickname, nickname);
+        this.nickname = DomainFieldUtils.DomainValidateBuilder.builder(String.class)
+            .newValue(nickname)
+            .currentValue(this.nickname)
+            .validate();
     }
 
     public void updateProfileImage(final String imageUrl) {
-        this.imageUrl = DomainFieldUtils.updateIfDifferent(this.imageUrl, imageUrl);
+        this.imageUrl = DomainFieldUtils.DomainValidateBuilder.builder(String.class)
+            .newValue(imageUrl)
+            .currentValue(this.imageUrl)
+            .validate();
     }
 
     public Boolean isNotMatchingProvider(Provider provider) {
