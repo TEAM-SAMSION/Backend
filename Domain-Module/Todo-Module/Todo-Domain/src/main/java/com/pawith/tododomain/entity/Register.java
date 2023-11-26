@@ -1,6 +1,7 @@
 package com.pawith.tododomain.entity;
 
 import com.pawith.commonmodule.domain.BaseEntity;
+import com.pawith.commonmodule.util.DomainFieldUtils;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -50,9 +51,10 @@ public class Register extends BaseEntity {
     }
 
     public void updateAuthority(Authority authority) {
-        if(this.authority.equals(authority))
-            return;
-        this.authority = Objects.requireNonNull(authority, "authority must be not null");
+        this.authority = DomainFieldUtils.DomainValidateBuilder.builder(Authority.class)
+                .newValue(authority)
+                .currentValue(this.authority)
+                .validate();
     }
 
     public void unregister(){
