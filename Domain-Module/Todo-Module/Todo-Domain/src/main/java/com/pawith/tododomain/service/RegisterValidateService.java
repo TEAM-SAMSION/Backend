@@ -36,9 +36,9 @@ public class RegisterValidateService {
     public void validateRegisterDeletable(final List<Register> registerList) {
         final Map<Register, Integer> registerCountMap = registerList.stream()
                 .collect(Collectors.toMap(register -> register, register -> registerRepository.countByTodoTeamId(register.getTodoTeam().getId())));
-        final boolean isPresidentExist = !registerList.isEmpty() && registerList.stream()
-                .filter(Register::isPresident)
-                .allMatch(register -> registerCountMap.get(register) > 1);
+        final boolean isPresidentExist = !registerList.isEmpty() &&
+                registerList.stream()
+                        .anyMatch(register -> register.isPresident() && registerCountMap.get(register) > 1);
         if (isPresidentExist) {
             throw new UnregistrableException(TodoError.CANNOT_PRESIDENT_UNREGISTRABLE);
         }
