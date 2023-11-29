@@ -41,21 +41,21 @@ public class TodoNotificationHandler {
     @Scheduled(cron = "0 0 * * * *")
     public void sendTodoNotification() {
         int page = 0;
-        final LocalTime now = LocalTime.now().withMinute(0);
+        final LocalTime now = LocalTime.now().withMinute(0).withSecond(0).withNano(0);
         boolean hasNext = true;
         do {
             final PageRequest pageRequest = PageRequest.of(page, BATCH_SIZE);
             final Slice<NotificationDao> notificationBatch = todoNotificationRepository.findAllWithNotCompletedAssignAndTodayScheduledTodo(Duration.ofHours(3), now, pageRequest);
-            handleNotification(notificationBatch);
+            handleNotification(notificationBatch, now);
             hasNext = notificationBatch.hasNext();
             page++;
         } while (hasNext);
     }
 
-    private void handleNotification(Slice<NotificationDao> notificationBatch) {
+    private void handleNotification(Slice<NotificationDao> notificationBatch, LocalTime executeTime) {
         notificationBatch.stream().parallel()
             .forEach(notification -> {
-                final long diffNotificationTimeWithCurrentTime = diffNotificationTimeWithCurrentTime(notification.getNotificationTime());
+                final long diffNotificationTimeWithCurrentTime = Duration.between(executeTime, notification.getNotificationTime()).toHours();
                 String message = buildMessageFromNotification(notification, diffNotificationTimeWithCurrentTime);
                 if (StringUtils.hasText(message)) {
                     applicationEventPublisher.publishEvent(
@@ -65,9 +65,5 @@ public class TodoNotificationHandler {
                             notification.getTodoTeamId()));
                 }
             });
-    }
-
-    private Long diffNotificationTimeWithCurrentTime(LocalTime notificationTime) {
-        return Duration.between(LocalTime.now(), notificationTime).toHours();
     }
 }
