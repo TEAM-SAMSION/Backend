@@ -36,15 +36,18 @@ public class Todo extends BaseEntity {
     @JoinColumn(name = "category_id")
     private Category category;
 
+    private Long registerId;
+
     @Version
     private Long version;
 
     @Builder
-    public Todo(String description, LocalDate scheduledDate, Category category) {
+    public Todo(String description, LocalDate scheduledDate, Category category, Long registerId) {
         this.description = description;
         this.scheduledDate = scheduledDate;
         this.completionStatus = CompletionStatus.INCOMPLETE;
         this.category = category;
+        this.registerId = registerId;
     }
 
     public void updateScheduledDate(LocalDate scheduledDate) {

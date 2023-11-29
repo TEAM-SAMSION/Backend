@@ -11,6 +11,8 @@ import com.pawith.tododomain.service.AssignSaveService;
 import com.pawith.tododomain.service.CategoryQueryService;
 import com.pawith.tododomain.service.RegisterQueryService;
 import com.pawith.tododomain.service.TodoSaveService;
+import com.pawith.userdomain.entity.User;
+import com.pawith.userdomain.utils.UserUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,10 +27,13 @@ public class TodoCreateUseCase {
     private final RegisterQueryService registerQueryService;
     private final CategoryQueryService categoryQueryService;
     private final AssignSaveService assignSaveService;
+    private final UserUtils userUtils;
 
     public void createTodo(TodoCreateRequest request) {
+        final User accessUser = userUtils.getAccessUser();
+        final Long accessUserRegisterId = registerQueryService.findRegisterByTodoTeamIdAndUserId(request.getTodoTeamId(), accessUser.getId()).getId();
         final Category category = categoryQueryService.findCategoryByCategoryId(request.getCategoryId());
-        final Todo todo = TodoMapper.mapToTodo(request, category);
+        final Todo todo = TodoMapper.mapToTodo(request, category, accessUserRegisterId);
         todoSaveService.saveTodoEntity(todo);
         ListIterator<Register> registerListIterator = registerQueryService.findAllRegistersByIds(request.getRegisterIds()).listIterator();
         request.getRegisterIds().forEach(registerId -> {
