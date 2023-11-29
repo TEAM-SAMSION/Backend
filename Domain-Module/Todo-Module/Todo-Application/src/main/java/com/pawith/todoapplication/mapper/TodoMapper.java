@@ -19,7 +19,7 @@ public class TodoMapper {
             .category(category)
             .description(request.getDescription())
             .scheduledDate(request.getScheduledDate())
-            .registerId(registerId)
+            .creatorId(registerId)
             .build();
     }
 

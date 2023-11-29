@@ -36,18 +36,18 @@ public class Todo extends BaseEntity {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    private Long registerId;
+    private Long creatorId;
 
     @Version
     private Long version;
 
     @Builder
-    public Todo(String description, LocalDate scheduledDate, Category category, Long registerId) {
+    public Todo(String description, LocalDate scheduledDate, Category category, Long creatorId) {
         this.description = description;
         this.scheduledDate = scheduledDate;
         this.completionStatus = CompletionStatus.INCOMPLETE;
         this.category = category;
-        this.registerId = registerId;
+        this.creatorId = creatorId;
     }
 
     public void updateScheduledDate(LocalDate scheduledDate) {
@@ -71,7 +71,7 @@ public class Todo extends BaseEntity {
                 .validate();
     }
 
-    public boolean isTodoCreator(Long registerId) {
-        return Objects.equals(this.registerId, registerId);
+    public boolean isTodoCreator(Long creatorId) {
+        return Objects.equals(this.creatorId, creatorId);
     }
 }
