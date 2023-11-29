@@ -108,6 +108,11 @@ operation::todo-controller-test/get-todo-completion[snippets='http-request,path-
 
 operation::todo-controller-test/delete-todo[snippets='http-request,path-parameters,request-headers,http-response']
 
+[[Todo-삭제-및-수정-검증]]
+=== Todo 삭제 및 수정 검증
+
+operation::todo-controller-test/validate-delete-and-update-todo[snippets='http-request,path-parameters,request-headers,http-response']
+
 [[Todo-알림-설정]]
 === Todo 알림 설정
 
