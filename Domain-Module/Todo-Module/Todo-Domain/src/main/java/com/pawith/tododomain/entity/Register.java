@@ -69,6 +69,10 @@ public class Register extends BaseEntity {
         return this.authority.equals(Authority.PRESIDENT);
     }
 
+    public Boolean isMember() {
+        return this.authority.equals(Authority.MEMBER);
+    }
+
     public void reRegister(){
         this.isRegistered = Boolean.TRUE;
         this.registerAt = LocalDateTime.now();

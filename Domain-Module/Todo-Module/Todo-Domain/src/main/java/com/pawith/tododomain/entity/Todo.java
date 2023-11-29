@@ -70,4 +70,8 @@ public class Todo extends BaseEntity {
                 .currentValue(this.completionStatus)
                 .validate();
     }
+
+    public boolean isTodoCreator(Long registerId) {
+        return Objects.equals(this.registerId, registerId);
+    }
 }
