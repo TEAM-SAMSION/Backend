@@ -36,15 +36,18 @@ public class Todo extends BaseEntity {
     @JoinColumn(name = "category_id")
     private Category category;
 
+    private Long creatorId;
+
     @Version
     private Long version;
 
     @Builder
-    public Todo(String description, LocalDate scheduledDate, Category category) {
+    public Todo(String description, LocalDate scheduledDate, Category category, Long creatorId) {
         this.description = description;
         this.scheduledDate = scheduledDate;
         this.completionStatus = CompletionStatus.INCOMPLETE;
         this.category = category;
+        this.creatorId = creatorId;
     }
 
     public void updateScheduledDate(LocalDate scheduledDate) {
@@ -66,5 +69,9 @@ public class Todo extends BaseEntity {
                 .newValue(completionStatus)
                 .currentValue(this.completionStatus)
                 .validate();
+    }
+
+    public boolean isTodoCreator(Long creatorId) {
+        return Objects.equals(this.creatorId, creatorId);
     }
 }

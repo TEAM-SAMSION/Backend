@@ -10,6 +10,7 @@ import java.util.List;
 @AllArgsConstructor
 public class TodoCreateRequest {
     private Long categoryId;
+    private Long todoTeamId;
     private String description;
     private LocalDate scheduledDate;
     private List<Long> registerIds;

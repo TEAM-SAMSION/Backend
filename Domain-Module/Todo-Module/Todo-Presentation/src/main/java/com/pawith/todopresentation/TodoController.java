@@ -27,6 +27,7 @@ public class TodoController {
     private final TodoChangeUseCase todoChangeUseCase;
     private final AssignChangeUseCase assignChangeUseCase;
     private final TodoDeleteUseCase todoDeleteUseCase;
+    private final TodoValidationUseCase todoValidationUseCase;
     private final TodoNotificationCreateUseCase todoNotificationCreateUseCase;
     private final TodoWithdrawGetUseCase todoWithdrawGetUseCase;
 
@@ -79,6 +80,11 @@ public class TodoController {
     @DeleteMapping("/todos/{todoId}")
     public void deleteTodoById(@PathVariable Long todoId){
         todoDeleteUseCase.deleteTodoByTodoId(todoId);
+    }
+
+    @PostMapping("/{todoTeamId}/todos/{todoId}/validate")
+    public void validateDeleteAndUpdateTodo(@PathVariable Long todoTeamId, @PathVariable Long todoId){
+        todoValidationUseCase.validateDeleteAndUpdateTodoByTodoId(todoTeamId, todoId);
     }
 
     @PostMapping("/todos/{todoId}/assign/notification")

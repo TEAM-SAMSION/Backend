@@ -14,7 +14,8 @@ public enum TodoError implements Error {
     CATEGORY_NOT_FOUND("카테고리를 찾을 수 없습니다.", 3006),
     CANNOT_PRESIDENT_UNREGISTRABLE("팀장 탈퇴시 탈퇴 후 팀장이 1명 이상 있어야 합니다.", 3007),
     CANNOT_CHANGE_AUTHORITY("권한을 변경할 수 없습니다", 3008),
-    ASSIGN_NOT_FOUND("할당된 Todo를 찾을 수 없습니다.", 3009)
+    ASSIGN_NOT_FOUND("할당된 Todo를 찾을 수 없습니다.", 3009),
+    TODO_MODIFICATION_NOT_ALLOWED("Todo 수정 및 삭제가 허용되지 않습니다.", 3010),
     ;
 
     private final String message;

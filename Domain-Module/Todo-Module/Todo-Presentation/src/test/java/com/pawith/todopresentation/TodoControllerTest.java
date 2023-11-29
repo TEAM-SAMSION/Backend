@@ -51,6 +51,8 @@ public class TodoControllerTest extends BaseRestDocsTest {
     @MockBean
     private TodoDeleteUseCase todoDeleteUseCase;
     @MockBean
+    private TodoValidationUseCase todoValidationUseCase;
+    @MockBean
     private TodoNotificationCreateUseCase todoNotificationCreateUseCase;
     @MockBean
     private TodoWithdrawGetUseCase todoWithdrawGetUseCase;
@@ -137,6 +139,7 @@ public class TodoControllerTest extends BaseRestDocsTest {
                 ),
                 requestFields(
                     fieldWithPath("categoryId").description("todo 등록 카테고리 id"),
+                    fieldWithPath("todoTeamId").description("todo 등록 팀 id"),
                     fieldWithPath("description").description("todo 설명"),
                     fieldWithPath("scheduledDate").description("todo 완료 기한 날짜"),
                     fieldWithPath("registerIds[]").description("todo를 할당할 사용자 registerId들")
@@ -335,6 +338,29 @@ public class TodoControllerTest extends BaseRestDocsTest {
                         ),
                         pathParameters(
                                 parameterWithName("todoId").description("투두 항목 Id")
+                        )
+                ));
+    }
+
+    @Test
+    @DisplayName("투두 삭제 및 수정 검증 API 테스트")
+    void validateDeleteAndUpdateTodo() throws Exception {
+        //given
+        final Long testTodoTeamId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
+        final Long testTodoId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
+        MockHttpServletRequestBuilder request = post(TODO_REQUEST_URL + "/{todoTeamId}/todos/{todoId}/validate", testTodoTeamId, testTodoId)
+                .header("Authorization", "Bearer accessToken");
+        //when
+        ResultActions result = mvc.perform(request);
+        //then
+        result.andExpect(status().isOk())
+                .andDo(resultHandler.document(
+                        requestHeaders(
+                                headerWithName("Authorization").description("access 토큰")
+                        ),
+                        pathParameters(
+                            parameterWithName("todoTeamId").description("투두 팀 Id"),
+                            parameterWithName("todoId").description("투두 항목 Id")
                         )
                 ));
     }
