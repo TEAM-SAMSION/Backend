@@ -62,6 +62,7 @@ public class CategoryControllerTest extends BaseRestDocsTest {
         final LocalDate mockMoveDate = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(LocalDate.class);
         given(categoryGetUseCase.getCategoryList(testTeamId, mockMoveDate)).willReturn(ListResponse.from(categoryListResponses));
         MockHttpServletRequestBuilder request = get(CATEGORY_REQUEST_URL + "/{teamId}/category", testTeamId)
+                .queryParam("moveDate", mockMoveDate.toString())
                 .header("Authorization", "Bearer accessToken");
         // when
         ResultActions result = mvc.perform(request);
@@ -73,6 +74,9 @@ public class CategoryControllerTest extends BaseRestDocsTest {
                         ),
                         pathParameters(
                                 parameterWithName("teamId").description("TodoTeam의 Id")
+                        ),
+                        queryParameters(
+                                parameterWithName("moveDate").description("달력에서 이동하는 날짜(LocalDate)")
                         ),
                         responseFields(
                                 fieldWithPath("content[].categoryId").description("Category의 Id"),
