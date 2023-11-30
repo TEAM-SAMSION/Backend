@@ -5,6 +5,7 @@ import com.pawith.tododomain.entity.Category;
 import com.pawith.tododomain.exception.CategoryNotFoundException;
 import com.pawith.tododomain.exception.TodoError;
 import com.pawith.tododomain.repository.CategoryRepository;
+import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,8 +18,8 @@ public class CategoryQueryService {
 
     private final CategoryRepository categoryRepository;
 
-    public List<Category> findCategoryListByTodoTeamIdAndStatus(Long todoTeamId) {
-        return categoryRepository.findAllByTodoTeamIdAndCategoryStatus(todoTeamId);
+    public List<Category> findCategoryListByTodoTeamIdAndStatus(Long todoTeamId, LocalDate moveDate) {
+        return categoryRepository.findAllByTodoTeamIdAndCategoryStatus(todoTeamId, moveDate);
     }
 
     public List<Category> findCategoryListByTodoTeamId(Long todoTeamId) {
