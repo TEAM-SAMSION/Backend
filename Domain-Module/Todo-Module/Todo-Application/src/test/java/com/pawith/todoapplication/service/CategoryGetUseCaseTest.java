@@ -7,6 +7,7 @@ import com.pawith.commonmodule.utils.FixtureMonkeyUtils;
 import com.pawith.todoapplication.dto.response.CategoryInfoResponse;
 import com.pawith.tododomain.entity.Category;
 import com.pawith.tododomain.service.CategoryQueryService;
+import java.time.LocalDate;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -37,9 +38,10 @@ public class CategoryGetUseCaseTest {
         final Long TodoTeamId = FixtureMonkey.create().giveMeOne(Long.class);
         final List<Category> categoryList = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey()
             .giveMe(Category.class, 5);
-        given(categoryQueryService.findCategoryListByTodoTeamIdAndStatus(TodoTeamId)).willReturn(categoryList);
+        final LocalDate moveDate = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeOne(LocalDate.class);
+        given(categoryQueryService.findCategoryListByTodoTeamIdAndStatus(TodoTeamId, moveDate)).willReturn(categoryList);
         // when
-        final ListResponse<CategoryInfoResponse> response = categoryGetUseCase.getCategoryList(TodoTeamId);
+        final ListResponse<CategoryInfoResponse> response = categoryGetUseCase.getCategoryList(TodoTeamId, moveDate);
         // then
         Assertions.assertThat(response.getContent().size()).isEqualTo(categoryList.size());
     }

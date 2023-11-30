@@ -9,13 +9,16 @@ import com.pawith.todoapplication.service.CategoryChangeUseCase;
 import com.pawith.todoapplication.service.CategoryCreateUseCase;
 import com.pawith.todoapplication.service.CategoryDeleteUseCase;
 import com.pawith.todoapplication.service.CategoryGetUseCase;
+import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -28,8 +31,8 @@ public class CategoryController {
     private final CategoryCreateUseCase categoryCreateUseCase;
 
     @GetMapping("/teams/{todoTeamId}/category")
-    public ListResponse<CategoryInfoResponse> getCategoryList(@PathVariable Long todoTeamId){
-        return categoryGetUseCase.getCategoryList(todoTeamId);
+    public ListResponse<CategoryInfoResponse> getCategoryList(@PathVariable Long todoTeamId, @RequestParam("moveDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate moveDate){
+        return categoryGetUseCase.getCategoryList(todoTeamId, moveDate);
     }
 
     @GetMapping("/teams/{todoTeamId}/category/manage")

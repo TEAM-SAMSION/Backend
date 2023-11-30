@@ -6,6 +6,7 @@ import com.pawith.todoapplication.dto.response.CategoryInfoResponse;
 import com.pawith.todoapplication.dto.response.CategoryManageInfoResponse;
 import com.pawith.tododomain.entity.Category;
 import com.pawith.tododomain.service.CategoryQueryService;
+import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,8 +20,8 @@ public class CategoryGetUseCase {
 
     private final CategoryQueryService categoryQueryService;
 
-    public ListResponse<CategoryInfoResponse> getCategoryList(final Long todoTeamId) {
-        List<Category> categoryList = categoryQueryService.findCategoryListByTodoTeamIdAndStatus(todoTeamId);
+    public ListResponse<CategoryInfoResponse> getCategoryList(final Long todoTeamId, LocalDate moveDate) {
+        List<Category> categoryList = categoryQueryService.findCategoryListByTodoTeamIdAndStatus(todoTeamId, moveDate);
         List<CategoryInfoResponse> categorySimpleResponses = categoryList.stream()
             .map(category -> new CategoryInfoResponse(category.getId(), category.getName()))
             .collect(Collectors.toList());

@@ -3,6 +3,7 @@ package com.pawith.tododomain.entity;
 import com.pawith.commonmodule.domain.BaseEntity;
 import com.pawith.commonmodule.util.DomainFieldUtils;
 import jakarta.persistence.*;
+import java.time.LocalDate;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -30,6 +31,8 @@ public class Category extends BaseEntity {
 
     private Boolean isDeleted=Boolean.FALSE;
 
+    private LocalDate disabledAt;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "team_id")
     private TodoTeam todoTeam;
@@ -39,12 +42,17 @@ public class Category extends BaseEntity {
         this.name = name;
         this.categoryStatus = categoryStatus;
         this.todoTeam = todoTeam;
+        this.disabledAt = LocalDate.now();
     }
 
     public void updateCategoryStatus(CategoryStatus categoryStatus) {
         this.categoryStatus = DomainFieldUtils.DomainValidateBuilder.builder(CategoryStatus.class)
                 .newValue(categoryStatus)
                 .currentValue(this.categoryStatus)
+                .validate();
+        this.disabledAt = DomainFieldUtils.DomainValidateBuilder.builder(LocalDate.class)
+                .newValue(LocalDate.now())
+                .currentValue(this.disabledAt)
                 .validate();
     }
 
