@@ -13,16 +13,16 @@ import static org.mockito.BDDMockito.given;
 
 @UnitTestConfig
 @DisplayName("TodoTeamCodeGenerateService 테스트")
-class TodoTeamCodeGenerateServiceTest {
+class TodoTeamCodeManageServiceTest {
 
     @Mock
     private TodoTeamRepository todoTeamRepository;
 
-    private TodoTeamCodeGenerateService todoTeamCodeGenerateService;
+    private TodoTeamCodeManageService todoTeamCodeManageService;
 
     @BeforeEach
     void init() {
-        todoTeamCodeGenerateService = new TodoTeamCodeGenerateService(todoTeamRepository);
+        todoTeamCodeManageService = new TodoTeamCodeManageService(todoTeamRepository);
     }
 
     @Test
@@ -31,7 +31,7 @@ class TodoTeamCodeGenerateServiceTest {
         //given
         given(todoTeamRepository.existsByTeamCode(anyString())).willReturn(false);
         //when
-        String result = todoTeamCodeGenerateService.generateRandomCode();
+        String result = todoTeamCodeManageService.generateRandomCode();
         //then
         assertEquals(8, result.length());
     }
