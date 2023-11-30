@@ -11,6 +11,7 @@ import com.pawith.todoapplication.service.CategoryChangeUseCase;
 import com.pawith.todoapplication.service.CategoryCreateUseCase;
 import com.pawith.todoapplication.service.CategoryDeleteUseCase;
 import com.pawith.todoapplication.service.CategoryGetUseCase;
+import java.time.LocalDate;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -58,7 +59,8 @@ public class CategoryControllerTest extends BaseRestDocsTest {
         // given
         final Long testTeamId = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(Long.class);
         final List<CategoryInfoResponse> categoryListResponses = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMe(CategoryInfoResponse.class, 2);
-        given(categoryGetUseCase.getCategoryList(testTeamId)).willReturn(ListResponse.from(categoryListResponses));
+        final LocalDate mockMoveDate = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(LocalDate.class);
+        given(categoryGetUseCase.getCategoryList(testTeamId, mockMoveDate)).willReturn(ListResponse.from(categoryListResponses));
         MockHttpServletRequestBuilder request = get(CATEGORY_REQUEST_URL + "/{teamId}/category", testTeamId)
                 .header("Authorization", "Bearer accessToken");
         // when
