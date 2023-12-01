@@ -2,6 +2,7 @@ package com.pawith.authapplication.service.impl;
 
 import com.pawith.authapplication.service.JWTExtractEmailUseCase;
 import com.pawith.authdomain.jwt.JWTProvider;
+import com.pawith.authdomain.jwt.TokenType;
 import com.pawith.commonmodule.annotation.ApplicationService;
 import lombok.RequiredArgsConstructor;
 
@@ -12,6 +13,6 @@ public class JWTExtractEmailUseCaseImpl implements JWTExtractEmailUseCase {
 
     @Override
     public String extractEmail(final String token){
-        return jwtProvider.extractEmailFromAccessToken(token);
+        return jwtProvider.extractEmailFromToken(token, TokenType.ACCESS_TOKEN);
     }
 }

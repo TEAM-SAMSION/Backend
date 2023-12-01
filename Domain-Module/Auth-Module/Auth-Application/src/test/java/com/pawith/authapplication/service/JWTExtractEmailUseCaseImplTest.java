@@ -2,6 +2,7 @@ package com.pawith.authapplication.service;
 
 import com.navercorp.fixturemonkey.FixtureMonkey;
 import com.pawith.authapplication.service.impl.JWTExtractEmailUseCaseImpl;
+import com.pawith.authdomain.jwt.TokenType;
 import com.pawith.commonmodule.UnitTestConfig;
 import com.pawith.authdomain.jwt.JWTProvider;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,11 +31,11 @@ public class JWTExtractEmailUseCaseImplTest {
         //given
         final String randomEmail = FixtureMonkey.create().giveMe(String.class).findFirst().get();
         final String accessToken = jwtProvider.generateAccessToken(randomEmail);
-        given(jwtProvider.extractEmailFromAccessToken(accessToken)).willReturn(randomEmail);
+        given(jwtProvider.extractEmailFromToken(accessToken, TokenType.ACCESS_TOKEN)).willReturn(randomEmail);
         //when
         final String email = jwtExtractEmailUseCaseImpl.extractEmail(accessToken);
         //then
-        verify(jwtProvider).extractEmailFromAccessToken(accessToken);
+        verify(jwtProvider).extractEmailFromToken(accessToken, TokenType.ACCESS_TOKEN);
         assertEquals(email, randomEmail);
     }
 }
