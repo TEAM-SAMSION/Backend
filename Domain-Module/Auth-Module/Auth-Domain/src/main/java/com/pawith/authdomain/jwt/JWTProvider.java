@@ -50,6 +50,12 @@ public class JWTProvider {
         return generateToken(claims, jwtProperties.getRefreshTokenExpirationTime());
     }
 
+    public Token generateToken(final String email){
+        final String accessToken = generateAccessToken(email);
+        final String refreshToken = generateRefreshToken(email);
+        return new Token(accessToken, refreshToken);
+    }
+
     /**
      * refresh token을 이용하여 access token 재발급
      *
