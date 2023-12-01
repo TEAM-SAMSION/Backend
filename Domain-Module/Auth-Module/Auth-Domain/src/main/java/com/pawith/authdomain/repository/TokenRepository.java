@@ -13,4 +13,6 @@ public interface TokenRepository extends JpaRepository<Token, Long> {
     List<Token> findAllByEmailAndTokenType(String email, TokenType tokenType);
 
     void deleteByValue(String value);
+
+    Boolean existsByValueAndTokenType(String value, TokenType tokenType);
 }
