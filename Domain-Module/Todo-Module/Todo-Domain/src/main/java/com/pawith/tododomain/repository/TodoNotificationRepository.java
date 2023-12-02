@@ -24,6 +24,7 @@ public interface TodoNotificationRepository extends JpaRepository<TodoNotificati
             join Register r on a.register = r and r.isRegistered = true
         where timediff(tn.notificationTime, :alarmTime) <= :criterionTime
         and timediff(tn.notificationTime , :alarmTime) > 0
+        and a.isDeleted = false and t.isDeleted = false and c.isDeleted = false and r.isDeleted = false
 """
     )
     Slice<NotificationDao> findAllWithNotCompletedAssignAndTodayScheduledTodo(Duration criterionTime, LocalTime alarmTime, Pageable pageable);

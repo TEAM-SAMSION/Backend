@@ -28,7 +28,7 @@ public class JWTEntryPoint extends OncePerRequestFilter {
 
     private void handleException(HttpServletResponse response, BusinessException exception) throws IOException {
         ErrorResponse errorResponse = ErrorResponse.from(exception);
-        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write(objectMapper.writeValueAsString(errorResponse));
