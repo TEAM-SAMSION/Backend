@@ -14,6 +14,8 @@ import com.pawith.commonmodule.annotation.ApplicationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.function.Function;
+
 @Transactional
 @RequiredArgsConstructor
 @ApplicationService
@@ -35,25 +37,26 @@ public class ReissueUseCaseImpl implements ReissueUseCase {
         try {
             tokenLockService.lockToken(userEmail);
             if (jwtProvider.existsCachedRefreshToken(refreshToken)) {
-                final JWTProvider.Token cachedToken = jwtProvider.getCachedToken(refreshToken);
-                final String cachedAccessToken = AuthConsts.AUTHENTICATION_TYPE_PREFIX + cachedToken.accessToken();
-                final String cachedRefreshToken = AuthConsts.AUTHENTICATION_TYPE_PREFIX + cachedToken.refreshToken();
-                return new TokenReissueResponse(cachedAccessToken, cachedRefreshToken);
+                return generateToken(jwtProvider::getCachedToken, refreshToken);
             }
-
             tokenValidateService.validateIsExistToken(refreshToken, TokenType.REFRESH_TOKEN);
             tokenDeleteService.deleteTokenByValue(refreshToken);
-            final JWTProvider.Token reIssueToken = jwtProvider.reIssueToken(refreshToken);
-            final String reissueAccessToken = AuthConsts.AUTHENTICATION_TYPE_PREFIX + reIssueToken.accessToken();
-            final String reissueRefreshToken = AuthConsts.AUTHENTICATION_TYPE_PREFIX + reIssueToken.refreshToken();
-
-            tokenSaveService.saveToken(reIssueToken.refreshToken(), userEmail, TokenType.REFRESH_TOKEN);
-
-            return new TokenReissueResponse(reissueAccessToken, reissueRefreshToken);
+            return generateAndSaveToken(jwtProvider::reIssueToken, refreshToken, userEmail);
         } finally {
             tokenLockService.releaseLockToken(userEmail);
         }
     }
 
+    private TokenReissueResponse generateToken(Function<String, JWTProvider.Token> tokenGenerator, String refreshToken) {
+        final JWTProvider.Token token = tokenGenerator.apply(refreshToken);
+        final String generatedAccessToken = AuthConsts.AUTHENTICATION_TYPE_PREFIX + token.accessToken();
+        final String generatedRefreshToken = AuthConsts.AUTHENTICATION_TYPE_PREFIX + token.refreshToken();
+        return new TokenReissueResponse(generatedAccessToken, generatedRefreshToken);
+    }
+    private TokenReissueResponse generateAndSaveToken(Function<String, JWTProvider.Token> tokenGenerator, String refreshToken, String userEmail) {
+        JWTProvider.Token token = tokenGenerator.apply(refreshToken);
+        tokenSaveService.saveToken(token.refreshToken(), userEmail, TokenType.REFRESH_TOKEN);
+        return generateToken(ref -> token, refreshToken);
+    }
 
 }
