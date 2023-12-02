@@ -3,7 +3,6 @@ rootProject.name = 'pawith'
 include 'Api-Module'
 
 include 'Log-Module'
-include 'Log-Module:Log-Aop'
 
 include 'Domain-Module'
 

@@ -12,5 +12,4 @@ public class TraceStatus {
     private Long startTime;
     private String className;
     private String methodName;
-    private Boolean isEndPoint;
 }
