@@ -39,6 +39,7 @@ out/
 ### application ###
 **/src/main/resources/application.properties
 **/src/main/resources/application-test.yml
+**/src/main/resources/application
 
 ### resources static docs ###
 **/src/main/resources/static/docs/
@@ -50,4 +51,7 @@ logs/logback/*
 **/.jqwik-database
 
 ### firebase ###
-**/src/main/resources/firebase/firebase.json
+**/src/main/resources/firebase.json
+
+### QueryDSL ###
+**/src/main/generated/
