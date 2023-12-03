@@ -33,8 +33,8 @@ public class TodoQueryService {
         return (int) ((countCompleteTodayTodo / (double) countTodayTodo) * 100);
     }
 
-    public List<Todo> findTodoListByCategoryIdAndscheduledDate(Long categoryId, LocalDate moveDate){
-        return todoRepository.findTodoListByCategoryIdAndscheduledDate(categoryId, moveDate);
+    public List<Todo> findTodoListByCategoryIdAndScheduledDate(Long categoryId, LocalDate moveDate){
+        return todoRepository.findTodoListByCategoryIdAndScheduledDateQuery(categoryId, moveDate);
     }
 
     public Integer findThisWeekTodoCompleteRate(Long userId, Long todoTeamId) {

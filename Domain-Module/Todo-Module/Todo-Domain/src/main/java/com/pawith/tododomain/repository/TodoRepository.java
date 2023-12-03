@@ -9,9 +9,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
-import java.util.List;
 
-public interface TodoRepository extends JpaRepository<Todo, Long> {
+public interface TodoRepository extends JpaRepository<Todo, Long>, TodoQueryRepository {
 
     @Query(value =
         """
@@ -53,10 +52,10 @@ public interface TodoRepository extends JpaRepository<Todo, Long> {
     )
     Long countCompleteTodoByBetweenDate(@Param("userId") Long userId, @Param("todoTeamId") Long todoTeamId, @Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
 
-    @Query("select t from Todo t " +
-        "join Category c on c.id=:categoryId " +
-        "where t.category.id = c.id and t.scheduledDate = :moveDate")
-    List<Todo> findTodoListByCategoryIdAndscheduledDate(Long categoryId, LocalDate moveDate);
+//    @Query("select t from Todo t " +
+//        "join Category c on c.id=:categoryId " +
+//        "where t.category.id = c.id and t.scheduledDate = :moveDate")
+//    List<Todo> findTodoListByCategoryIdAndScheduledDate(Long categoryId, LocalDate moveDate);
 
     @Modifying
     @Query("update Todo t set t.isDeleted = true where t.category.id=:categoryId")

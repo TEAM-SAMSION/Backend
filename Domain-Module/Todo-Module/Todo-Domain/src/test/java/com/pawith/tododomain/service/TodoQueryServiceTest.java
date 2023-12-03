@@ -10,9 +10,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Slice;
-import org.springframework.data.domain.SliceImpl;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -84,9 +81,9 @@ class TodoQueryServiceTest {
         final Long categoryId = FixtureMonkey.create().giveMeOne(Long.class);
         final LocalDate moveDate = FixtureMonkey.create().giveMeOne(LocalDate.class);
         final List<Todo> mockTodoList = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMe(Todo.class, 10);
-        given(todoRepository.findTodoListByCategoryIdAndscheduledDate(categoryId, moveDate)).willReturn(mockTodoList);
+        given(todoRepository.findTodoListByCategoryIdAndScheduledDateQuery(categoryId, moveDate)).willReturn(mockTodoList);
         //when
-        List<Todo> result = todoQueryService.findTodoListByCategoryIdAndscheduledDate(categoryId, moveDate);
+        List<Todo> result = todoQueryService.findTodoListByCategoryIdAndScheduledDate(categoryId, moveDate);
         //then
         Assertions.assertThat(result).usingRecursiveComparison().isEqualTo(mockTodoList);
     }
