@@ -4,20 +4,20 @@ import com.pawith.tododomain.entity.Assign;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import org.springframework.data.repository.query.Param;
 
-public interface AssignRepository extends JpaRepository<Assign, Long> {
+public interface AssignRepository extends JpaRepository<Assign, Long>, AssignQueryRepository {
 
-    @Query("select a " +
-        "from Assign a " +
-        "join fetch a.register " +
-        "join fetch a.todo t " +
-        "where t.category.id=:categoryId and t.scheduledDate=:scheduledDate order by t.completionStatus desc")
-    List<Assign> findAllByCategoryIdAndScheduledDate(Long categoryId, LocalDate scheduledDate);
+//    @Query("select a " +
+//        "from Assign a " +
+//        "join fetch a.register " +
+//        "join fetch a.todo t " +
+//        "where t.category.id=:categoryId and t.scheduledDate=:scheduledDate order by t.completionStatus desc")
+//    List<Assign> findAllByCategoryIdAndScheduledDate(Long categoryId, LocalDate scheduledDate);
 
 
     @Query("select a " +
@@ -43,9 +43,9 @@ public interface AssignRepository extends JpaRepository<Assign, Long> {
     Optional<Assign> findByTodoIdAndUserId(Long todoId, Long userId);
 
     @Query("select a " +
-            "from Assign a " +
-            "join fetch a.todo t " +
-            "where t.id=:todoId")
+        "from Assign a " +
+        "join fetch a.todo t " +
+        "where t.id=:todoId")
     List<Assign> findAllByTodoId(Long todoId);
 
     @Modifying
