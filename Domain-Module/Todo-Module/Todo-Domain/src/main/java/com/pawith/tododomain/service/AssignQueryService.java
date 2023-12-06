@@ -24,17 +24,17 @@ public class AssignQueryService {
 
     public List<Assign> findAllByUserIdAndTodoTeamIdAndScheduledDate(Long userId, Long todoTeamId) {
         final LocalDate now = LocalDate.now();
-        return assignRepository.findAllByUserIdAndTodoTeamIdAndScheduledDate(userId, todoTeamId, now);
+        return assignRepository.findAllByUserIdAndTodoTeamIdAndScheduledDateQuery(userId, todoTeamId, now);
     }
 
 
     public Assign findAssignByTodoIdAndUserId(Long todoId, Long userId) {
-        return assignRepository.findByTodoIdAndUserId(todoId, userId)
+        return assignRepository.findByTodoIdAndUserIdQuery(todoId, userId)
             .orElseThrow(() -> new AssignNotFoundException(TodoError.ASSIGN_NOT_FOUND));
     }
 
     public List<Assign> findAllAssignByTodoId(Long todoId) {
-        return assignRepository.findAllByTodoId(todoId);
+        return assignRepository.findAllByTodoIdQuery(todoId);
     }
 
 }
