@@ -26,7 +26,7 @@ public class TodoRepositoryImpl implements TodoQueryRepository {
     private final JPAQueryFactory jpaQueryFactory;
     @Override
     public List<Todo> findTodoListByCategoryIdAndScheduledDateQuery(Long categoryId, LocalDate moveDate) {
-        QTodo todo = QTodo.todo;
+        final QTodo todo = QTodo.todo;
         return jpaQueryFactory.selectFrom(todo)
             .where(todo.category.id.eq(categoryId)
                 .and(todo.scheduledDate.eq(moveDate)))
@@ -35,10 +35,10 @@ public class TodoRepositoryImpl implements TodoQueryRepository {
 
     @Override
     public Long countTodoByDateQuery(Long userId, Long todoTeamId, LocalDate scheduledDate) {
-        QTodo todo = QTodo.todo;
-        QRegister register = QRegister.register;
-        QAssign assign = QAssign.assign;
-        QCategory category = QCategory.category;
+        final QTodo todo = QTodo.todo;
+        final QRegister register = QRegister.register;
+        final QAssign assign = QAssign.assign;
+        final QCategory category = QCategory.category;
         return jpaQueryFactory.select(todo.count())
                 .from(todo)
                 .join(register).on(register.userId.eq(userId).and(register.todoTeam.id.eq(todoTeamId)))
@@ -51,10 +51,10 @@ public class TodoRepositoryImpl implements TodoQueryRepository {
 
     @Override
     public Long countCompleteTodoByDateQuery(Long userId, Long todoTeamId, LocalDate scheduledDate) {
-        QTodo todo = QTodo.todo;
-        QRegister register = QRegister.register;
-        QAssign assign = QAssign.assign;
-        QCategory category = QCategory.category;
+        final QTodo todo = QTodo.todo;
+        final QRegister register = QRegister.register;
+        final QAssign assign = QAssign.assign;
+        final QCategory category = QCategory.category;
         return jpaQueryFactory.select(todo.count())
                 .from(todo)
                 .join(register).on(register.userId.eq(userId).and(register.todoTeam.id.eq(todoTeamId)))
@@ -67,9 +67,9 @@ public class TodoRepositoryImpl implements TodoQueryRepository {
 
     @Override
     public Long countTodoByBetweenDateQuery(Long userId, Long todoTeamId, LocalDate startDate, LocalDate endDate) {
-        QTodo todo = QTodo.todo;
-        QRegister register = QRegister.register;
-        QAssign assign = QAssign.assign;
+        final QTodo todo = QTodo.todo;
+        final QRegister register = QRegister.register;
+        final QAssign assign = QAssign.assign;
         return jpaQueryFactory.select(todo.count())
                 .from(todo)
                 .join(register).on(register.userId.eq(userId).and(register.todoTeam.id.eq(todoTeamId)))
@@ -80,9 +80,9 @@ public class TodoRepositoryImpl implements TodoQueryRepository {
 
     @Override
     public Long countCompleteTodoByBetweenDateQuery(Long userId, Long todoTeamId, LocalDate startDate, LocalDate endDate) {
-        QTodo todo = QTodo.todo;
-        QRegister register = QRegister.register;
-        QAssign assign = QAssign.assign;
+        final QTodo todo = QTodo.todo;
+        final QRegister register = QRegister.register;
+        final QAssign assign = QAssign.assign;
         return jpaQueryFactory.select(todo.count())
                 .from(todo)
                 .join(register).on(register.userId.eq(userId).and(register.todoTeam.id.eq(todoTeamId)))
@@ -93,7 +93,7 @@ public class TodoRepositoryImpl implements TodoQueryRepository {
 
     @Override
     public void deleteAllByCategoryIdQuery(Long categoryId) {
-        QTodo todo = QTodo.todo;
+        final QTodo todo = QTodo.todo;
         jpaQueryFactory
                 .update(todo)
                 .set(todo.isDeleted, true)
@@ -103,10 +103,10 @@ public class TodoRepositoryImpl implements TodoQueryRepository {
 
     @Override
     public Slice<Todo> findTodoSliceByUserIdAndTodoTeamIdQuery(Long userId, Long todoTeamId, Pageable pageable) {
-        QTodo todo = QTodo.todo;
-        QCategory category = todo.category;
-        QRegister register = QRegister.register;
-        QAssign assign = QAssign.assign;
+        final QTodo todo = QTodo.todo;
+        final QCategory category = todo.category;
+        final QRegister register = QRegister.register;
+        final QAssign assign = QAssign.assign;
         List<Todo> todos =  jpaQueryFactory.select(todo)
                 .from(todo)
                 .join(category).fetchJoin()
@@ -121,11 +121,11 @@ public class TodoRepositoryImpl implements TodoQueryRepository {
 
     @Override
     public Slice<Todo> findTodoSliceByUserIdQuery(Long userId, Pageable pageable) {
-        QTodo todo = QTodo.todo;
-        QCategory category = todo.category;
-        QTodoTeam todoTeam = category.todoTeam;
-        QRegister register = QRegister.register;
-        QAssign assign = QAssign.assign;
+        final QTodo todo = QTodo.todo;
+        final QCategory category = todo.category;
+        final QTodoTeam todoTeam = category.todoTeam;
+        final QRegister register = QRegister.register;
+        final QAssign assign = QAssign.assign;
         List<Todo> todos = jpaQueryFactory.select(todo)
                 .from(todo)
                 .join(category).fetchJoin()
@@ -141,9 +141,9 @@ public class TodoRepositoryImpl implements TodoQueryRepository {
 
     @Override
     public Integer countTodoByUserIdAndTodoTeamIdQuery(Long userId, Long todoTeamId) {
-        QTodo todo = QTodo.todo;
-        QRegister register = QRegister.register;
-        QAssign assign = QAssign.assign;
+        final QTodo todo = QTodo.todo;
+        final QRegister register = QRegister.register;
+        final QAssign assign = QAssign.assign;
         return jpaQueryFactory.select(todo.count())
                 .from(todo)
                 .join(register).on(register.userId.eq(userId).and(register.todoTeam.id.eq(todoTeamId)))
@@ -154,9 +154,9 @@ public class TodoRepositoryImpl implements TodoQueryRepository {
 
     @Override
     public Integer countTodoByUserIdQuery(Long userId) {
-        QTodo todo = QTodo.todo;
-        QRegister register = QRegister.register;
-        QAssign assign = QAssign.assign;
+        final QTodo todo = QTodo.todo;
+        final QRegister register = QRegister.register;
+        final QAssign assign = QAssign.assign;
         return jpaQueryFactory.select(todo.count())
                 .from(todo)
                 .join(register).on(register.userId.eq(userId))
