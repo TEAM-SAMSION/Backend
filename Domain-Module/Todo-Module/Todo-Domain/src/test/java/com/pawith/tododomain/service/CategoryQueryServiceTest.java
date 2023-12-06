@@ -37,7 +37,7 @@ class CategoryQueryServiceTest {
         final Long mockTodoTeamId = FixtureMonkey.create().giveMeOne(Long.class);
         final LocalDate mockMoveDate = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeOne(LocalDate.class);
         final List<Category> mockCategoryList = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMe(Category.class, 10);
-        given(categoryRepository.findAllByTodoTeamIdAndCategoryStatus(mockTodoTeamId, mockMoveDate)).willReturn(mockCategoryList);
+        given(categoryRepository.findAllByTodoTeamIdAndCategoryStatusQuery(mockTodoTeamId, mockMoveDate)).willReturn(mockCategoryList);
         //when
         List<Category> result = categoryQueryService.findCategoryListByTodoTeamIdAndStatus(mockTodoTeamId, mockMoveDate);
         //then
