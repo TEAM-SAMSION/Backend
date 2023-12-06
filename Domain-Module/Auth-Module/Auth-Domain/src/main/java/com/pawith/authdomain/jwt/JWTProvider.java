@@ -3,13 +3,12 @@ package com.pawith.authdomain.jwt;
 import com.pawith.authdomain.exception.AuthError;
 import com.pawith.authdomain.jwt.exception.ExpiredTokenException;
 import com.pawith.authdomain.jwt.exception.InvalidTokenException;
+import com.pawith.commonmodule.cache.operators.ValueOperator;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
 import lombok.RequiredArgsConstructor;
-import net.jodah.expiringmap.ExpirationPolicy;
-import net.jodah.expiringmap.ExpiringMap;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
@@ -25,10 +24,7 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 public class JWTProvider {
     private final JWTProperties jwtProperties;
-    private final Map<String, Token> expiredTokenCacheMap = ExpiringMap.builder()
-        .expiration(1, TimeUnit.MINUTES)
-        .expirationPolicy(ExpirationPolicy.CREATED)
-        .build();
+    private final ValueOperator<String, Token> tokenCacheOperator;
 
     /**
      * access token 생성
@@ -74,7 +70,7 @@ public class JWTProvider {
         final String newAccessToken = generateAccessToken(email);
         final String newRefreshToken = generateRefreshToken(email);
 
-        expiredTokenCacheMap.put(refreshToken, new Token(newAccessToken, newRefreshToken));
+        tokenCacheOperator.setWithExpire(refreshToken, new Token(newAccessToken, newRefreshToken), 1, TimeUnit.MINUTES);
 
         return new Token(newAccessToken, newRefreshToken);
     }
@@ -100,11 +96,11 @@ public class JWTProvider {
     }
 
     public boolean existsCachedRefreshToken(String refreshToken){
-        return expiredTokenCacheMap.containsKey(refreshToken);
+        return tokenCacheOperator.contains(refreshToken);
     }
 
     public Token getCachedToken(String refreshToken){
-        return expiredTokenCacheMap.get(refreshToken);
+        return tokenCacheOperator.get(refreshToken);
     }
 
     /**

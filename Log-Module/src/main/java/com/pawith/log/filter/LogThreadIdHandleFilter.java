@@ -1,5 +1,6 @@
 package com.pawith.log.filter;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pawith.log.aop.LogTrace;
 import jakarta.servlet.*;
@@ -28,17 +29,19 @@ public class LogThreadIdHandleFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         logTrace.configThreadId();
-        final HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-        final RequestInfoFormat requestInfoFormat = RequestInfoFormat.builder()
-                .threadId(logTrace.getThreadId())
-                .url(httpServletRequest.getRequestURI())
-                .method(httpServletRequest.getMethod())
-//                .ip(httpServletRequest.getRemoteAddr())
-                .build();
-        final String requestInfo = objectMapper.writeValueAsString(requestInfoFormat);
-        log.info(requestInfo);
+        log.info(buildRequestInfoMessage((HttpServletRequest) request));
         chain.doFilter(request, response);
         logTrace.clearTheadId();
+    }
+
+    private String buildRequestInfoMessage(HttpServletRequest request) throws JsonProcessingException {
+        final RequestInfoFormat requestInfoFormat = RequestInfoFormat.builder()
+                .threadId(logTrace.getThreadId())
+                .url(request.getRequestURI())
+                .method(request.getMethod())
+//                .ip(httpServletRequest.getRemoteAddr())
+                .build();
+        return objectMapper.writeValueAsString(requestInfoFormat);
     }
 
     @Override

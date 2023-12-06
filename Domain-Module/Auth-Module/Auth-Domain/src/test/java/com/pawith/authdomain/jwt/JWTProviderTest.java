@@ -1,11 +1,9 @@
 package com.pawith.authdomain.jwt;
 
-import com.pawith.authdomain.exception.NotExistTokenException;
 import com.pawith.authdomain.jwt.exception.ExpiredTokenException;
 import com.pawith.authdomain.jwt.exception.InvalidTokenException;
-import com.pawith.authdomain.service.TokenQueryService;
-import com.pawith.authdomain.service.TokenSaveService;
 import com.pawith.commonmodule.UnitTestConfig;
+import com.pawith.commonmodule.cache.operators.ValueOperator;
 import com.pawith.commonmodule.utils.FixtureMonkeyUtils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtParser;
@@ -19,8 +17,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
-import static org.mockito.BDDMockito.given;
-
 @UnitTestConfig
 @DisplayName("JWTProvider 테스트")
 public class JWTProviderTest {
@@ -28,9 +24,12 @@ public class JWTProviderTest {
 
     private JWTProvider jwtProvider;
 
+    @Mock
+    private ValueOperator<String, JWTProvider.Token> tokenValueOperator;
+
     @BeforeEach
     void init(){
-        jwtProvider = new JWTProvider(jwtProperties);
+        jwtProvider = new JWTProvider(jwtProperties,tokenValueOperator);
     }
 
     @Test

@@ -1,6 +1,7 @@
 package com.pawith.tododomain.service;
 
 import com.pawith.commonmodule.UnitTestConfig;
+import com.pawith.commonmodule.cache.operators.SetOperator;
 import com.pawith.tododomain.repository.TodoTeamRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -17,12 +18,14 @@ class TodoTeamCodeManageServiceTest {
 
     @Mock
     private TodoTeamRepository todoTeamRepository;
+    @Mock
+    private SetOperator<String> setOperator;
 
     private TodoTeamCodeManageService todoTeamCodeManageService;
 
     @BeforeEach
     void init() {
-        todoTeamCodeManageService = new TodoTeamCodeManageService(todoTeamRepository);
+        todoTeamCodeManageService = new TodoTeamCodeManageService(todoTeamRepository, setOperator);
     }
 
     @Test
