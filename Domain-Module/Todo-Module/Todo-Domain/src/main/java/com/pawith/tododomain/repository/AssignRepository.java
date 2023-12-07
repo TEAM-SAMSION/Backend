@@ -12,43 +12,4 @@ import java.util.Optional;
 
 public interface AssignRepository extends JpaRepository<Assign, Long>, AssignQueryRepository {
 
-//    @Query("select a " +
-//        "from Assign a " +
-//        "join fetch a.register " +
-//        "join fetch a.todo t " +
-//        "where t.category.id=:categoryId and t.scheduledDate=:scheduledDate order by t.completionStatus desc")
-//    List<Assign> findAllByCategoryIdAndScheduledDate(Long categoryId, LocalDate scheduledDate);
-
-
-//    @Query("select a " +
-//            "from Assign a " +
-//            "join a.register r " +
-//            "join fetch a.todo t " +
-//            "join fetch t.category " +
-//            "where r.userId=:userId and r.todoTeam.id=:todoTeamId and t.scheduledDate=:scheduledDate and t.category.categoryStatus = 'ON'")
-//    List<Assign> findAllByUserIdAndTodoTeamIdAndScheduledDate(Long userId, Long todoTeamId, LocalDate scheduledDate);
-
-//    @Modifying
-//    @Query("update Assign a set a.isDeleted = true where a.register.id in (:registerIds)")
-//    void deleteByRegisterIds(final List<Long> registerIds);
-
-//    @Modifying
-//    @Query("update Assign a set a.isDeleted = true where a.todo.id=:todoId")
-//    void deleteAllByTodoId(final Long todoId);
-
-//    @Query("select a " +
-//        "from Assign a " +
-//        "join Register r on r.id = a.register.id and r.userId=:userId " +
-//        "join Todo t on t.id = a.todo.id and t.id = :todoId")
-//    Optional<Assign> findByTodoIdAndUserId(Long todoId, Long userId);
-
-//    @Query("select a " +
-//        "from Assign a " +
-//        "join fetch a.todo t " +
-//        "where t.id=:todoId")
-//    List<Assign> findAllByTodoId(Long todoId);
-
-//    @Modifying
-//    @Query("update Assign a set a.isDeleted = true where a.todo.id in (select t.id from Todo t where t.category.id = :categoryId)")
-//    void deleteAllByCategoryId(@Param("categoryId") Long categoryId);
 }

@@ -12,7 +12,4 @@ public interface TodoTeamRepository extends JpaRepository<TodoTeam, Long>, TodoT
     Optional<TodoTeam> findByTeamCode(String teamCode);
 
     Boolean existsByTeamCode(String teamCode);
-
-//    @Query("select t from TodoTeam t join Register r on r.userId = :userId where r.todoTeam.id = t.id and r.isRegistered = true")
-//    List<TodoTeam> findAllByUserId(@Param("userId") Long userId);
 }
