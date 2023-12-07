@@ -20,7 +20,7 @@ public class TodoTeamQueryService {
     private final TodoTeamRepository todoTeamRepository;
 
     public List<TodoTeam> findAllTodoTeamByUserId(Long userId){
-        return todoTeamRepository.findAllByUserId(userId);
+        return todoTeamRepository.findAllByUserIdQuery(userId);
     }
 
     public TodoTeam findTodoTeamById(Long todoTeamId) {
