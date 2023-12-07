@@ -12,24 +12,24 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Optional;
 
-public interface RegisterRepository extends JpaRepository<Register, Long> {
+public interface RegisterRepository extends JpaRepository<Register, Long>, RegisterQueryRepository {
 
-    @Query("select r from Register r join fetch r.todoTeam where r.userId = :userId and r.isRegistered = true")
-    Slice<Register> findAllByUserId(Long userId, Pageable pageable);
+//    @Query("select r from Register r join fetch r.todoTeam where r.userId = :userId and r.isRegistered = true")
+//    Slice<Register> findAllByUserId(Long userId, Pageable pageable);
 
     List<Register> findAllByTodoTeamId(Long todoTeamId);
 
-    @Query("select r from Register r where r.id in :ids")
-    List<Register> findAllByIds(@Param("ids") List<Long> ids);
-
-    @Query("select r from Register r join Assign a on a.id=:todoId where a.register.id = r.id")
-    List<Register> findByTodoId(Long todoId);
-
-    @Query("select r from Register r join Category c on c.id = :categoryId where c.todoTeam.id= r.todoTeam.id")
-    List<Register> findAllByCategoryId(Long categoryId);
-
-    @Query("select r from Register r join fetch r.todoTeam where r.userId = :userId and r.isRegistered = true order by r.registerAt desc")
-    List<Register> findAllByUserIdWithTodoTeamFetch(Long userId);
+//    @Query("select r from Register r where r.id in :ids")
+//    List<Register> findAllByIds(@Param("ids") List<Long> ids);
+//
+//    @Query("select r from Register r join Assign a on a.id=:todoId where a.register.id = r.id")
+//    List<Register> findByTodoId(Long todoId);
+//
+//    @Query("select r from Register r join Category c on c.id = :categoryId where c.todoTeam.id= r.todoTeam.id")
+//    List<Register> findAllByCategoryId(Long categoryId);
+//
+//    @Query("select r from Register r join fetch r.todoTeam where r.userId = :userId and r.isRegistered = true order by r.registerAt desc")
+//    List<Register> findAllByUserIdWithTodoTeamFetch(Long userId);
 
 
     List<Register> findAllByUserId(Long userId);
@@ -38,18 +38,18 @@ public interface RegisterRepository extends JpaRepository<Register, Long> {
 
     Optional<Register> findByTodoTeamIdAndAuthority(Long todoTeamId, Authority authority);
 
-    @Query("select count(r) from Register r where r.todoTeam.id = :todoTeamId and r.isRegistered = true")
-    Integer countByTodoTeamId(Long todoTeamId);
-
-    @Query("select count(r) from Register r where r.todoTeam.id = :todoTeamId and r.authority = :authority and r.isRegistered = true")
-    Integer countByTodoTeamIdAndAuthority(Long todoTeamId, Authority authority);
+//    @Query("select count(r) from Register r where r.todoTeam.id = :todoTeamId and r.isRegistered = true")
+//    Integer countByTodoTeamId(Long todoTeamId);
+//
+//    @Query("select count(r) from Register r where r.todoTeam.id = :todoTeamId and r.authority = :authority and r.isRegistered = true")
+//    Integer countByTodoTeamIdAndAuthority(Long todoTeamId, Authority authority);
 
     Boolean existsByTodoTeamIdAndUserIdAndIsRegistered(Long todoTeamId, Long userId, boolean isRegistered);
 
-    @Query("select r from Register r join fetch r.todoTeam where r.id = (select max(r.id) from Register r where r.userId = :userId and r.isRegistered = true)")
-    Optional<Register> findLatestRegisterByUserId(Long userId);
-
-    @Modifying
-    @Query("update Register r set r.isDeleted=true , r.isRegistered=false where r.id in (:registerIds)")
-    void deleteByRegisterIds(List<Long> registerIds);
+//    @Query("select r from Register r join fetch r.todoTeam where r.id = (select max(r.id) from Register r where r.userId = :userId and r.isRegistered = true)")
+//    Optional<Register> findLatestRegisterByUserId(Long userId);
+//
+//    @Modifying
+//    @Query("update Register r set r.isDeleted=true , r.isRegistered=false where r.id in (:registerIds)")
+//    void deleteByRegisterIds(List<Long> registerIds);
 }
