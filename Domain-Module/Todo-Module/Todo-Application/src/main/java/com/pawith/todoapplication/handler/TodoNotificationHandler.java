@@ -11,7 +11,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.time.Duration;
@@ -19,7 +18,6 @@ import java.time.LocalTime;
 
 @Slf4j
 @Component
-@Transactional
 @RequiredArgsConstructor
 public class TodoNotificationHandler {
     private static final Integer BATCH_SIZE = 100;
