@@ -73,7 +73,7 @@ class RegisterQueryServiceTest {
         final PageRequest pageRequest = PageRequest.of(0, 10);
         final List<Register> mockRegister = RegisterTestFixtureEntityUtils.getRegisterEntityList(pageRequest.getPageSize());
         SliceImpl<Register> mockSlice = new SliceImpl<>(mockRegister, pageRequest, true);
-        given(registerRepository.findAllByUserId(userId,pageRequest)).willReturn(mockSlice);
+        given(registerRepository.findAllByUserIdQuery(userId,pageRequest)).willReturn(mockSlice);
         //when
         Slice<Register> result = registerQueryService.findRegisterSliceByUserId(userId,pageRequest);
         //then
@@ -111,7 +111,7 @@ class RegisterQueryServiceTest {
         //given
         final List<Long> registerIds = FixtureMonkey.create().giveMe(Long.class, 10);
         final List<Register> mockRegister = RegisterTestFixtureEntityUtils.getRegisterEntityList(registerIds.size());
-        given(registerRepository.findAllByIds(registerIds)).willReturn(mockRegister);
+        given(registerRepository.findAllByIdsQuery(registerIds)).willReturn(mockRegister);
         //when
         List<Register> result = registerQueryService.findAllRegistersByIds(registerIds);
         //then
@@ -150,7 +150,7 @@ class RegisterQueryServiceTest {
         //given
         final Long todoId = FixtureMonkey.create().giveMeOne(Long.class);
         final List<Register> mockRegister = RegisterTestFixtureEntityUtils.getRegisterEntityList(5);
-        given(registerRepository.findByTodoId(todoId)).willReturn(mockRegister);
+        given(registerRepository.findByTodoIdQuery(todoId)).willReturn(mockRegister);
         //when
         List<Register> result = registerQueryService.findAllRegistersByTodoId(todoId);
         //then
@@ -163,7 +163,7 @@ class RegisterQueryServiceTest {
         //given
         final Long todoTeamId = FixtureMonkey.create().giveMeOne(Long.class);
         final Integer mockCount = FixtureMonkey.create().giveMeOne(Integer.class);
-        given(registerRepository.countByTodoTeamId(todoTeamId)).willReturn(mockCount);
+        given(registerRepository.countByTodoTeamIdQuery(todoTeamId)).willReturn(mockCount);
         //when
         Integer result = registerQueryService.countRegisterByTodoTeamId(todoTeamId);
         //then
@@ -176,7 +176,7 @@ class RegisterQueryServiceTest {
         //given
         final Long categoryId = FixtureMonkey.create().giveMeOne(Long.class);
         final List<Register> mockRegister = RegisterTestFixtureEntityUtils.getRegisterEntityList(5);
-        given(registerRepository.findAllByCategoryId(categoryId)).willReturn(mockRegister);
+        given(registerRepository.findAllByCategoryIdQuery(categoryId)).willReturn(mockRegister);
         //when
         List<Long> result = registerQueryService.findUserIdsByCategoryId(categoryId);
         //then
