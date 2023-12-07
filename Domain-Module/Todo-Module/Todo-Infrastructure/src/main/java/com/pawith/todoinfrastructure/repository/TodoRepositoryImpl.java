@@ -1,5 +1,6 @@
 package com.pawith.todoinfrastructure.repository;
 
+import com.pawith.commonmodule.util.SliceUtils;
 import com.pawith.tododomain.entity.CategoryStatus;
 import com.pawith.tododomain.entity.CompletionStatus;
 import com.pawith.tododomain.entity.QAssign;
@@ -24,6 +25,7 @@ import java.util.List;
 public class TodoRepositoryImpl implements TodoQueryRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
+
     @Override
     public List<Todo> findTodoListByCategoryIdAndScheduledDateQuery(Long categoryId, LocalDate moveDate) {
         final QTodo todo = QTodo.todo;
@@ -116,7 +118,7 @@ public class TodoRepositoryImpl implements TodoQueryRepository {
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize() + 1)
                 .fetch();
-        return getSliceImpl(todos, pageable);
+        return SliceUtils.getSliceImpl(todos, pageable);
     }
 
     @Override
@@ -136,7 +138,7 @@ public class TodoRepositoryImpl implements TodoQueryRepository {
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize() + 1)
                 .fetch();
-        return getSliceImpl(todos, pageable);
+        return SliceUtils.getSliceImpl(todos, pageable);
     }
 
     @Override
@@ -163,16 +165,6 @@ public class TodoRepositoryImpl implements TodoQueryRepository {
                 .join(assign).on(assign.register.id.eq(register.id))
                 .where(assign.todo.eq(todo))
                 .fetchOne().intValue();
-    }
-
-    private <T> Slice<T> getSliceImpl(List<T> list, Pageable pageable) {
-        boolean hasNext = false;
-        if (list.size() > pageable.getPageSize()) {
-            hasNext = true;
-            list.remove(list.size() - 1);
-        }
-
-        return new SliceImpl<>(list, pageable, hasNext);
     }
 
 }

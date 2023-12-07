@@ -1,5 +1,6 @@
 package com.pawith.todoinfrastructure.repository;
 
+import com.pawith.commonmodule.util.SliceUtils;
 import com.pawith.tododomain.entity.Authority;
 import com.pawith.tododomain.entity.QAssign;
 import com.pawith.tododomain.entity.QCategory;
@@ -13,7 +14,6 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
-import org.springframework.data.domain.SliceImpl;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -33,7 +33,7 @@ public class RegisterRepositoryImpl implements RegisterQueryRepository {
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize() + 1)
             .fetch();
-        return getSliceImpl(registers, pageable);
+        return SliceUtils.getSliceImpl(registers, pageable);
     }
 
     @Override
@@ -123,17 +123,6 @@ public class RegisterRepositoryImpl implements RegisterQueryRepository {
             .set(qRegister.isRegistered, false)
             .where(qRegister.id.in(registerIds))
             .execute();
-    }
-
-
-    private <T> Slice<T> getSliceImpl(List<T> list, Pageable pageable) {
-        boolean hasNext = false;
-        if (list.size() > pageable.getPageSize()) {
-            hasNext = true;
-            list.remove(list.size() - 1);
-        }
-
-        return new SliceImpl<>(list, pageable, hasNext);
     }
 
 }
