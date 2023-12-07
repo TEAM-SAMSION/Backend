@@ -20,6 +20,6 @@ public class RegisterDeleteService {
     }
 
     public void deleteRegisterByRegisterIds(List<Long> registerIds){
-        registerRepository.deleteByRegisterIds(registerIds);
+        registerRepository.deleteByRegisterIdsQuery(registerIds);
     }
 }

@@ -19,11 +19,11 @@ public class CategoryQueryService {
     private final CategoryRepository categoryRepository;
 
     public List<Category> findCategoryListByTodoTeamIdAndStatus(Long todoTeamId, LocalDate moveDate) {
-        return categoryRepository.findAllByTodoTeamIdAndCategoryStatus(todoTeamId, moveDate);
+        return categoryRepository.findAllByTodoTeamIdAndCategoryStatusQuery(todoTeamId, moveDate);
     }
 
     public List<Category> findCategoryListByTodoTeamId(Long todoTeamId) {
-        return categoryRepository.findAllByTodoTeamId(todoTeamId);
+        return categoryRepository.findAllByTodoTeamIdQuery(todoTeamId);
     }
 
     public Category findCategoryByCategoryId(Long categoryId) {

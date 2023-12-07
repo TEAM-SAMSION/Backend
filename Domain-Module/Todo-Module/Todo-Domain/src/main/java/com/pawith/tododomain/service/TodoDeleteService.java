@@ -17,6 +17,6 @@ public class TodoDeleteService {
     }
 
     public void deleteTodoByCategoryId(Long categoryId) {
-        todoRepository.deleteAllByCategoryId(categoryId);
+        todoRepository.deleteAllByCategoryIdQuery(categoryId);
     }
 }

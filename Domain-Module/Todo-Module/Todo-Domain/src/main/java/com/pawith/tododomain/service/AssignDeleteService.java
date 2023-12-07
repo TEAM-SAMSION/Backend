@@ -14,14 +14,14 @@ public class AssignDeleteService {
     private final AssignRepository assignRepository;
 
     public void deleteAssignByRegisterId(final List<Long> registerId){
-        assignRepository.deleteByRegisterIds(registerId);
+        assignRepository.deleteByRegisterIdsQuery(registerId);
     }
 
     public void deleteAllByTodoId(final Long todoId){
-        assignRepository.deleteAllByTodoId(todoId);
+        assignRepository.deleteAllByTodoIdQuery(todoId);
     }
 
     public void deleteAssignByCategoryId(final Long categoryId){
-        assignRepository.deleteAllByCategoryId(categoryId);
+        assignRepository.deleteAllByCategoryIdQuery(categoryId);
     }
 }

@@ -66,8 +66,8 @@ class TodoQueryServiceTest {
         final LocalDate now = LocalDate.now();
         final Long mockCountTodayTodo = FixtureMonkey.create().giveMeOne(Long.class);
         final Long mockCountCompleteTodayTodo = FixtureMonkey.create().giveMeOne(Long.class);
-        given(todoRepository.countTodoByDate(userId, todoTeamId, now)).willReturn(mockCountTodayTodo);
-        given(todoRepository.countCompleteTodoByDate(userId, todoTeamId, now)).willReturn(mockCountCompleteTodayTodo);
+        given(todoRepository.countTodoByDateQuery(userId, todoTeamId, now)).willReturn(mockCountTodayTodo);
+        given(todoRepository.countCompleteTodoByDateQuery(userId, todoTeamId, now)).willReturn(mockCountCompleteTodayTodo);
         //when
         Integer result = todoQueryService.findTodoCompleteRate(userId, todoTeamId);
         //then
@@ -98,8 +98,8 @@ class TodoQueryServiceTest {
         final LocalDate firstDayOfWeek = now.with(java.time.DayOfWeek.SUNDAY);
         final Long mockCountWeekTodo = FixtureMonkey.create().giveMeOne(Long.class);
         final Long mockCountCompleteWeekTodo = FixtureMonkey.create().giveMeOne(Long.class);
-        given(todoRepository.countTodoByBetweenDate(userId, todoTeamId, now, firstDayOfWeek)).willReturn(mockCountWeekTodo);
-        given(todoRepository.countCompleteTodoByBetweenDate(userId, todoTeamId, now, firstDayOfWeek)).willReturn(mockCountCompleteWeekTodo);
+        given(todoRepository.countTodoByBetweenDateQuery(userId, todoTeamId, now, firstDayOfWeek)).willReturn(mockCountWeekTodo);
+        given(todoRepository.countCompleteTodoByBetweenDateQuery(userId, todoTeamId, now, firstDayOfWeek)).willReturn(mockCountCompleteWeekTodo);
         //when
         Integer result = todoQueryService.findThisWeekTodoCompleteRate(userId, todoTeamId);
         //then
@@ -116,8 +116,8 @@ class TodoQueryServiceTest {
         final LocalDate firstDayOfLastWeek = now.with(java.time.DayOfWeek.SUNDAY).minusWeeks(1);
         final Long mockCountWeekTodo = FixtureMonkey.create().giveMeOne(Long.class);
         final Long mockCountCompleteWeekTodo = FixtureMonkey.create().giveMeOne(Long.class);
-        given(todoRepository.countTodoByBetweenDate(userId, todoTeamId, now, firstDayOfLastWeek)).willReturn(mockCountWeekTodo);
-        given(todoRepository.countCompleteTodoByBetweenDate(userId, todoTeamId, now, firstDayOfLastWeek)).willReturn(mockCountCompleteWeekTodo);
+        given(todoRepository.countTodoByBetweenDateQuery(userId, todoTeamId, now, firstDayOfLastWeek)).willReturn(mockCountWeekTodo);
+        given(todoRepository.countCompleteTodoByBetweenDateQuery(userId, todoTeamId, now, firstDayOfLastWeek)).willReturn(mockCountCompleteWeekTodo);
         //when
         Integer result = todoQueryService.findLastWeekTodoCompleteRate(userId, todoTeamId);
         //then
