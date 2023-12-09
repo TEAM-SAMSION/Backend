@@ -35,10 +35,10 @@ public class TodoNotificationRepositoryImpl implements TodoNotificationQueryRepo
         final List<NotificationDaoImpl> notificationDaoList =
             jpaQueryFactory.select(new QNotificationDaoImpl(register.todoTeam.id, register.userId, category.name, todo.description, todoNotification.notificationTime))
                 .from(todoNotification)
-                .innerJoin(todoNotification.assign, assign)
-                .innerJoin(todo)
-                .innerJoin(category)
-                .innerJoin(register)
+                .join(todoNotification.assign, assign)
+                .join(todo)
+                .join(category)
+                .join(register)
                 .where(todoNotification.notificationTime.between(alarmTime, alarmTime.plus(criterionTime))
                     .and(todoNotification.assign.eq(assign))
                     .and(todo.scheduledDate.eq(LocalDate.now()))
@@ -56,8 +56,8 @@ public class TodoNotificationRepositoryImpl implements TodoNotificationQueryRepo
         final QAssign assign = todoNotification.assign;
         final QRegister register = assign.register;
         return jpaQueryFactory.selectFrom(todoNotification)
-            .innerJoin(assign)
-            .innerJoin(register).on(register.userId.eq(userId))
+            .join(assign)
+            .join(register).on(register.userId.eq(userId))
             .where(assign.completionStatus.eq(CompletionStatus.INCOMPLETE)
                 .and(assign.todo.id.in(todoId))
                 .and(register.isRegistered.eq(true)))
