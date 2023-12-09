@@ -56,7 +56,7 @@ public class ReissueUseCaseImpl implements ReissueUseCase {
     private TokenReissueResponse generateAndSaveToken(final Function<String, JWTProvider.Token> tokenGenerator,final String refreshToken,final String userEmail) {
         final JWTProvider.Token token = tokenGenerator.apply(refreshToken);
         tokenSaveService.saveToken(token.refreshToken(), userEmail, TokenType.REFRESH_TOKEN);
-        return generateToken(ref -> token, refreshToken);
+        return generateToken(inputRefreshToken -> token, refreshToken);
     }
 
 }
