@@ -86,7 +86,7 @@ public class RegisterQueryService {
         return registerOptionalHandle(optionalSupplier);
     }
 
-    private <T> List<Register> findRegisterList(Supplier<List<Register>> listSupplier) {
+    private List<Register> findRegisterList(Supplier<List<Register>> listSupplier) {
         return filterUnregister(listSupplier.get());
     }
 
