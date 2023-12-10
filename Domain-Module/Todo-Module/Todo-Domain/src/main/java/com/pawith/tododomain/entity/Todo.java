@@ -64,11 +64,8 @@ public class Todo extends BaseEntity {
                 .validate();
     }
 
-    public void updateCompletionStatus(CompletionStatus completionStatus){
-        this.completionStatus = DomainFieldUtils.DomainValidateBuilder.builder(CompletionStatus.class)
-                .newValue(completionStatus)
-                .currentValue(this.completionStatus)
-                .validate();
+    public void updateCompletionStatus(boolean isAllCompleteTodo) {
+        this.completionStatus = isAllCompleteTodo ? CompletionStatus.COMPLETE : CompletionStatus.INCOMPLETE;
     }
 
     public boolean isTodoCreator(Long creatorId) {

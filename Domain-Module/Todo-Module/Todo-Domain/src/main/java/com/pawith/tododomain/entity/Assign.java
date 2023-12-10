@@ -47,4 +47,8 @@ public class Assign extends BaseEntity {
         else
             this.completionStatus = CompletionStatus.COMPLETE;
     }
+
+    public Boolean isCompleted() {
+        return this.completionStatus.equals(CompletionStatus.COMPLETE);
+    }
 }
