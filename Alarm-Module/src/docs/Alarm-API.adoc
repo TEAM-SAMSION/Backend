@@ -16,8 +16,6 @@ operation::alarm-controller-test/get-alarms[snippets='http-request,request-heade
 
 operation::alarm-controller-test/patch-alarms[snippets='http-request,request-headers,http-response']
 
-[[알림-삭제]]
-
 [[device-token-저장]]
 === 디바이스 토큰 저장
 
