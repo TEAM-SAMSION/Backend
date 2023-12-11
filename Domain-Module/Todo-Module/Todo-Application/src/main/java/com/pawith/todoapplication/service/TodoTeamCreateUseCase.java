@@ -31,16 +31,16 @@ public class TodoTeamCreateUseCase {
     private final PetSaveService petSaveService;
     private final ImageUploadService imageUploadService;
 
-    public void createTodoTeam(MultipartFile teamImageFile, List<MultipartFile> imageFiles, TodoTeamCreateRequest request) {
-        CompletableFuture<String> teamImageAsync = imageUploadService.uploadImgAsync(teamImageFile);
-        List<CompletableFuture<String>> petImageAsync = imageUploadService.uploadImgListAsync(imageFiles);
+    public void createTodoTeam(final MultipartFile teamImageFile,final List<MultipartFile> imageFiles,final TodoTeamCreateRequest request) {
+        final CompletableFuture<String> teamImageAsync = imageUploadService.uploadImgAsync(teamImageFile);
+        final List<CompletableFuture<String>> petImageAsync = imageUploadService.uploadImgListAsync(imageFiles);
         final User user = userUtils.getAccessUser();
 
         final TodoTeam todoTeam = TodoTeamMapper.mapToTodoTeam(request, teamImageAsync.join());
         todoTeamSaveService.saveTodoTeamEntity(todoTeam);
 
         registerSaveService.saveRegisterAboutPresident(todoTeam, user.getId());
-        ListIterator<CompletableFuture<String>> futureListIterator = petImageAsync.listIterator();
+        final ListIterator<CompletableFuture<String>> futureListIterator = petImageAsync.listIterator();
         request.getPetRegisters().forEach(petRegister -> {
             String imageUrl = futureListIterator.next().join();
             final Pet pet = PetMapper.mapToPet(petRegister, todoTeam, imageUrl);
