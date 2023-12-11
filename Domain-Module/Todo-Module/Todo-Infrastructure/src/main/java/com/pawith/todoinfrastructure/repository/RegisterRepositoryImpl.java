@@ -1,20 +1,19 @@
 package com.pawith.todoinfrastructure.repository;
 
 import com.pawith.commonmodule.util.SliceUtils;
-import com.pawith.tododomain.entity.Authority;
-import com.pawith.tododomain.entity.QAssign;
-import com.pawith.tododomain.entity.QCategory;
-import com.pawith.tododomain.entity.QRegister;
-import com.pawith.tododomain.entity.QTodoTeam;
-import com.pawith.tododomain.entity.Register;
+import com.pawith.tododomain.entity.*;
 import com.pawith.tododomain.repository.RegisterQueryRepository;
+import com.pawith.todoinfrastructure.dao.IncompleteTodoCountInfoDaoImpl;
+import com.pawith.todoinfrastructure.dao.QIncompleteTodoCountInfoDaoImpl;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Repository;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -123,6 +122,25 @@ public class RegisterRepositoryImpl implements RegisterQueryRepository {
             .set(qRegister.isRegistered, false)
             .where(qRegister.id.in(registerIds))
             .execute();
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<IncompleteTodoCountInfoDaoImpl> findAllIncompleteTodoCountInfoQuery(Pageable pageable) {
+        final QRegister qRegister = QRegister.register;
+        final QTodoTeam qTodoTeam = qRegister.todoTeam;
+        final QAssign qAssign = QAssign.assign;
+        final QTodo qTodo = qAssign.todo;
+        return queryFactory.select(new QIncompleteTodoCountInfoDaoImpl(qTodoTeam.id, qRegister.userId, qTodoTeam.teamName, qAssign.count()))
+            .from(qRegister)
+            .join(qTodoTeam)
+            .join(qAssign).on(qAssign.register.eq(qRegister))
+            .join(qTodo).on(qTodo.scheduledDate.eq(LocalDate.now()))
+            .where(qAssign.completionStatus.eq(CompletionStatus.INCOMPLETE))
+            .groupBy(qRegister.userId, qTodoTeam.teamName)
+            .offset(pageable.getOffset())
+            .limit(pageable.getPageSize())
+            .fetch();
     }
 
 }
