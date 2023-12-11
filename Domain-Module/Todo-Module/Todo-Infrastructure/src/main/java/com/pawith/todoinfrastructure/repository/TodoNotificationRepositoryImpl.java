@@ -1,6 +1,5 @@
 package com.pawith.todoinfrastructure.repository;
 
-import com.pawith.commonmodule.util.SliceUtils;
 import com.pawith.tododomain.entity.*;
 import com.pawith.tododomain.repository.TodoNotificationQueryRepository;
 import com.pawith.todoinfrastructure.dao.NotificationDaoImpl;
@@ -9,7 +8,6 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Repository;
 
 import java.time.Duration;
@@ -26,28 +24,26 @@ public class TodoNotificationRepositoryImpl implements TodoNotificationQueryRepo
 
     @Override
     @SuppressWarnings("unchecked")
-    public Slice<NotificationDaoImpl> findAllWithNotCompletedAssignAndAlarmTimeQuery(final Duration criterionTime, final LocalTime alarmTime, final Pageable pageable) {
+    public List<NotificationDaoImpl> findAllWithNotCompletedAssignAndAlarmTimeQuery(final Duration criterionTime, final LocalTime alarmTime, final Pageable pageable) {
         final QTodoNotification todoNotification = QTodoNotification.todoNotification;
         final QAssign assign = QAssign.assign;
         final QTodo todo = assign.todo;
         final QRegister register = assign.register;
         final QCategory category = todo.category;
-        final List<NotificationDaoImpl> notificationDaoList =
-            jpaQueryFactory.select(new QNotificationDaoImpl(register.todoTeam.id, register.userId, category.name, todo.description, todoNotification.notificationTime))
-                .from(todoNotification)
-                .join(todoNotification.assign, assign)
-                .join(todo)
-                .join(category)
-                .join(register)
-                .where(todoNotification.notificationTime.between(alarmTime, alarmTime.plus(criterionTime))
-                    .and(todoNotification.assign.eq(assign))
-                    .and(todo.scheduledDate.eq(LocalDate.now()))
-                    .and(assign.completionStatus.eq(CompletionStatus.INCOMPLETE))
-                    .and(register.isRegistered.eq(true)))
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
-                .fetch();
-        return SliceUtils.getSliceImpl(notificationDaoList, pageable);
+        return jpaQueryFactory.select(new QNotificationDaoImpl(register.todoTeam.id, register.userId, category.name, todo.description, todoNotification.notificationTime))
+            .from(todoNotification)
+            .join(todoNotification.assign, assign)
+            .join(todo)
+            .join(category)
+            .join(register)
+            .where(todoNotification.notificationTime.between(alarmTime, alarmTime.plus(criterionTime))
+                .and(todoNotification.assign.eq(assign))
+                .and(todo.scheduledDate.eq(LocalDate.now()))
+                .and(assign.completionStatus.eq(CompletionStatus.INCOMPLETE))
+                .and(register.isRegistered.eq(true)))
+            .offset(pageable.getOffset())
+            .limit(pageable.getPageSize())
+            .fetch();
     }
 
     @Override
