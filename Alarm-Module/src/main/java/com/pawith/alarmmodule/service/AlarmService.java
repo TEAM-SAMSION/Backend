@@ -2,7 +2,7 @@ package com.pawith.alarmmodule.service;
 
 import com.pawith.alarmmodule.entity.Alarm;
 import com.pawith.alarmmodule.repository.AlarmRepository;
-import com.pawith.alarmmodule.service.dto.response.AlarmExistenceResponse;
+import com.pawith.alarmmodule.service.dto.response.UnReadAlarmResponse;
 import com.pawith.alarmmodule.service.dto.response.AlarmInfoResponse;
 import com.pawith.commonmodule.response.SliceResponse;
 import com.pawith.userdomain.utils.UserUtils;
@@ -18,10 +18,10 @@ public class AlarmService {
     private final AlarmRepository alarmRepository;
     private final UserUtils userUtils;
 
-    public AlarmExistenceResponse getAlarmsExist(){
+    public UnReadAlarmResponse getUnreadAlarmCount(){
         final Long userId = userUtils.getAccessUser().getId();
-        final Boolean alarmExist = alarmRepository.existsByUserId(userId);
-        return new AlarmExistenceResponse(alarmExist);
+        final Integer unReadAlarmCount = alarmRepository.countUnReadAlarm(userId);
+        return new UnReadAlarmResponse(unReadAlarmCount);
     }
 
     public SliceResponse<AlarmInfoResponse> getAlarms(Pageable pageable){
@@ -39,5 +39,10 @@ public class AlarmService {
 
     public void saveAlarm(Alarm alarm){
         alarmRepository.save(alarm);
+    }
+
+    public void changeAllAlarmStatusToRead(){
+        final Long userId = userUtils.getAccessUser().getId();
+        alarmRepository.changeAllAlarmStatusToRead(userId);
     }
 }

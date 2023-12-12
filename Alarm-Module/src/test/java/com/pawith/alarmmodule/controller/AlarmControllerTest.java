@@ -1,7 +1,7 @@
 package com.pawith.alarmmodule.controller;
 
 import com.pawith.alarmmodule.service.AlarmService;
-import com.pawith.alarmmodule.service.dto.response.AlarmExistenceResponse;
+import com.pawith.alarmmodule.service.dto.response.UnReadAlarmResponse;
 import com.pawith.alarmmodule.service.dto.response.AlarmInfoResponse;
 import com.pawith.commonmodule.BaseRestDocsTest;
 import com.pawith.commonmodule.response.SliceResponse;
@@ -42,8 +42,8 @@ class AlarmControllerTest extends BaseRestDocsTest {
     @DisplayName("알람 존재 여부 확인")
     void getAlarmsExist() throws Exception {
         // given
-        final AlarmExistenceResponse alarmExistenceResponse = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(AlarmExistenceResponse.class);
-        given(alarmService.getAlarmsExist()).willReturn(alarmExistenceResponse);
+        final UnReadAlarmResponse unReadAlarmResponse = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(UnReadAlarmResponse.class);
+        given(alarmService.getUnreadAlarmCount()).willReturn(unReadAlarmResponse);
         MockHttpServletRequestBuilder request = RestDocumentationRequestBuilders.get(BASE_URL + "/exist")
             .header("Authorization", "Bearer token");
         // when
@@ -55,7 +55,7 @@ class AlarmControllerTest extends BaseRestDocsTest {
                     headerWithName("Authorization").description("access 토큰")
                 ),
                 responseFields(
-                    fieldWithPath("isExist").description("알람 존재 여부")
+                    fieldWithPath("unReadAlarmCount").description("미열람 알람 수")
                 )
             ));
     }
@@ -98,5 +98,23 @@ class AlarmControllerTest extends BaseRestDocsTest {
                 )
             ));
     }
+
+    @Test
+    @DisplayName("알람 일괄 읽음 처리")
+    void patchAlarms() throws Exception {
+        //given
+        MockHttpServletRequestBuilder request = RestDocumentationRequestBuilders.patch(BASE_URL)
+            .header("Authorization", "Bearer token");
+        //when
+        ResultActions result = mvc.perform(request);
+        //then
+        result.andExpect(status().isOk())
+            .andDo(resultHandler.document(
+                requestHeaders(
+                    headerWithName("Authorization").description("access 토큰")
+                )
+            ));
+    }
+
 
 }

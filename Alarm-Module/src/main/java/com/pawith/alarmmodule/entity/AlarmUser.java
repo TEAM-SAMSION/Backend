@@ -1,13 +1,12 @@
 package com.pawith.alarmmodule.entity;
 
 import com.pawith.commonmodule.domain.BaseEntity;
+import com.pawith.commonmodule.util.DomainFieldUtils;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.Objects;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -29,6 +28,9 @@ public class AlarmUser extends BaseEntity {
     }
 
     public void updateDeviceToken(String deviceToken) {
-        this.deviceToken = Objects.requireNonNull(deviceToken, "deviceToken must be not null");
+        this.deviceToken = DomainFieldUtils.DomainValidateBuilder.builder(String.class)
+            .currentValue(this.deviceToken)
+            .newValue(deviceToken)
+            .validate();
     }
 }
