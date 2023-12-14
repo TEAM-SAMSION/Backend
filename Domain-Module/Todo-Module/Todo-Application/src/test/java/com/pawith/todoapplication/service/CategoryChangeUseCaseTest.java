@@ -1,7 +1,5 @@
 package com.pawith.todoapplication.service;
 
-import static org.mockito.BDDMockito.given;
-
 import com.pawith.commonmodule.UnitTestConfig;
 import com.pawith.commonmodule.utils.FixtureMonkeyUtils;
 import com.pawith.todoapplication.dto.request.CategoryNameChageRequest;
@@ -13,6 +11,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+
+import static org.mockito.BDDMockito.given;
 
 @UnitTestConfig
 @DisplayName("CategoryChangeUseCase 테스트")
@@ -34,7 +34,7 @@ public class CategoryChangeUseCaseTest {
         //given
         Long categoryId = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeOne(Long.class);
         Category category = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeBuilder(Category.class)
-                        .set("categorystatus", CategoryStatus.ON)
+                        .set("categoryStatus", CategoryStatus.ON)
                         .sample();
         given(categoryQueryService.findCategoryByCategoryId(categoryId)).willReturn(category);
         //when
@@ -49,7 +49,7 @@ public class CategoryChangeUseCaseTest {
         //given
         Long categoryId = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeOne(Long.class);
         Category category = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeBuilder(Category.class)
-                        .set("categorystatus", CategoryStatus.OFF)
+                        .set("categoryStatus", CategoryStatus.OFF)
                         .sample();
         given(categoryQueryService.findCategoryByCategoryId(categoryId)).willReturn(category);
         //when
