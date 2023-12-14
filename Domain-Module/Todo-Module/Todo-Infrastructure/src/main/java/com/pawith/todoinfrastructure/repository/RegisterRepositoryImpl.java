@@ -27,8 +27,7 @@ public class RegisterRepositoryImpl implements RegisterQueryRepository {
         List<Register> registers = queryFactory.select(qRegister)
             .from(qRegister)
             .join(qTodoTeam).fetchJoin()
-            .where(qRegister.userId.eq(userId)
-                .and(qRegister.isRegistered.eq(true)))
+            .where(qRegister.userId.eq(userId).and(qRegister.isRegistered.isTrue()))
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize() + 1)
             .fetch();
@@ -45,36 +44,13 @@ public class RegisterRepositoryImpl implements RegisterQueryRepository {
     }
 
     @Override
-    public List<Register> findByTodoIdQuery(Long todoId) {
-        QRegister qRegister = QRegister.register;
-        QAssign qAssign = QAssign.assign;
-        return queryFactory.select(qRegister)
-            .from(qRegister)
-            .join(qAssign).on(qAssign.id.eq(todoId))
-            .where(qAssign.register.id.eq(qRegister.id))
-            .fetch();
-    }
-
-    @Override
-    public List<Register> findAllByCategoryIdQuery(Long categoryId) {
-        QRegister qRegister = QRegister.register;
-        QCategory qCategory = QCategory.category;
-        return queryFactory.select(qRegister)
-            .from(qRegister)
-            .join(qCategory).on(qCategory.id.eq(categoryId))
-            .where(qCategory.todoTeam.id.eq(qRegister.todoTeam.id))
-            .fetch();
-    }
-
-    @Override
     public List<Register> findAllByUserIdWithTodoTeamFetchQuery(Long userId) {
         QRegister qRegister = QRegister.register;
         QTodoTeam qTodoTeam = qRegister.todoTeam;
         return queryFactory.select(qRegister)
             .from(qRegister)
             .join(qTodoTeam).fetchJoin()
-            .where(qRegister.userId.eq(userId)
-                .and(qRegister.isRegistered.eq(true)))
+            .where(qRegister.userId.eq(userId))
             .orderBy(qRegister.registerAt.desc())
             .fetch();
     }
@@ -90,25 +66,13 @@ public class RegisterRepositoryImpl implements RegisterQueryRepository {
     }
 
     @Override
-    public Integer countByTodoTeamIdAndAuthorityQuery(Long todoTeamId, Authority authority) {
-        QRegister qRegister = QRegister.register;
-        return queryFactory.select(qRegister.count())
-            .from(qRegister)
-            .where(qRegister.todoTeam.id.eq(todoTeamId)
-                .and(qRegister.authority.eq(authority))
-                .and(qRegister.isRegistered.eq(true)))
-            .fetchOne().intValue();
-    }
-
-    @Override
     public Optional<Register> findLatestRegisterByUserIdQuery(Long userId) {
         QRegister qRegister = QRegister.register;
         QTodoTeam qTodoTeam = qRegister.todoTeam;
         return Optional.ofNullable(queryFactory.select(qRegister)
             .from(qRegister)
             .join(qTodoTeam).fetchJoin()
-            .where(qRegister.userId.eq(userId)
-                .and(qRegister.isRegistered.isTrue()))
+            .where(qRegister.userId.eq(userId))
                 .orderBy(qRegister.id.desc())
                 .limit(1)
             .fetchOne());
@@ -136,7 +100,7 @@ public class RegisterRepositoryImpl implements RegisterQueryRepository {
             .join(qTodoTeam)
             .join(qAssign).on(qAssign.register.eq(qRegister))
             .join(qTodo).on(qTodo.scheduledDate.eq(LocalDate.now()))
-            .where(qAssign.completionStatus.eq(CompletionStatus.INCOMPLETE))
+            .where(qAssign.completionStatus.eq(CompletionStatus.INCOMPLETE).and(qRegister.isRegistered.isTrue()))
             .groupBy(qRegister.userId, qTodoTeam.teamName)
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize())

@@ -29,7 +29,7 @@ public class RegisterQueryService {
     }
 
     public List<Register> findRegisterListByUserIdWithTodoTeam(Long userId) {
-        return registerRepository.findAllByUserIdWithTodoTeamFetchQuery(userId);
+        return findRegisterList(() -> registerRepository.findAllByUserIdWithTodoTeamFetchQuery(userId));
     }
 
     public Register findRegisterByTodoTeamIdAndUserId(Long todoTeamId, Long userId) {
@@ -52,22 +52,8 @@ public class RegisterQueryService {
         return findRegisterList(() -> registerRepository.findAllByIdsQuery(registerIds));
     }
 
-    public List<Register> findAllRegistersByTodoId(Long todoId) {
-        return findRegisterList(() -> registerRepository.findByTodoIdQuery(todoId));
-    }
-
-    public List<Register> findAllRegistersByCategoryId(Long categoryId) {
-        return registerRepository.findAllByCategoryIdQuery(categoryId);
-    }
-
     public List<Register> findAllRegistersByUserId(Long userId){
         return findRegisterList(() -> registerRepository.findAllByUserId(userId));
-    }
-
-    public List<Long> findUserIdsByCategoryId(Long categoryId){
-        return findRegisterList(() -> registerRepository.findAllByCategoryIdQuery(categoryId)).stream()
-            .map(Register::getUserId)
-            .collect(Collectors.toList());
     }
 
     public Integer countRegisterByTodoTeamId(Long todoTeamId){
