@@ -10,6 +10,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -71,7 +75,7 @@ class TodoQueryServiceTest {
         //when
         Integer result = todoQueryService.findTodoCompleteRate(userId, todoTeamId);
         //then
-        Assertions.assertThat(result).isEqualTo((int)(mockCountCompleteTodayTodo / (double) mockCountTodayTodo * 100));
+        Assertions.assertThat(result).isEqualTo((int) (mockCountCompleteTodayTodo / (double) mockCountTodayTodo * 100));
     }
 
     @Test
@@ -103,7 +107,7 @@ class TodoQueryServiceTest {
         //when
         Integer result = todoQueryService.findThisWeekTodoCompleteRate(userId, todoTeamId);
         //then
-        Assertions.assertThat(result).isEqualTo((int)(mockCountCompleteWeekTodo / (double) mockCountWeekTodo * 100));
+        Assertions.assertThat(result).isEqualTo((int) (mockCountCompleteWeekTodo / (double) mockCountWeekTodo * 100));
     }
 
     @Test
@@ -121,8 +125,67 @@ class TodoQueryServiceTest {
         //when
         Integer result = todoQueryService.findLastWeekTodoCompleteRate(userId, todoTeamId);
         //then
-        Assertions.assertThat(result).isEqualTo((int)(mockCountCompleteWeekTodo / (double) mockCountWeekTodo * 100));
+        Assertions.assertThat(result).isEqualTo((int) (mockCountCompleteWeekTodo / (double) mockCountWeekTodo * 100));
     }
+
+    @Test
+    @DisplayName("UserId와 TodoTeamId로 Todo 목록을 조회한다.")
+    void findAllTodoListByTodoTeamId() {
+        //given
+        final Long userId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
+        final Long todoTeamId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
+        final Pageable pageable = PageRequest.of(0, 10);
+        final List<Todo> mockTodoList = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMe(Todo.class, pageable.getPageSize());
+        final SliceImpl<Todo> mockTodoSlice = new SliceImpl<>(mockTodoList, pageable, true);
+        given(todoRepository.findTodoSliceByUserIdAndTodoTeamIdQuery(userId, todoTeamId, pageable)).willReturn(mockTodoSlice);
+        //when
+        Slice<Todo> result = todoQueryService.findAllTodoListByTodoTeamId(userId, todoTeamId, pageable);
+        //then
+        Assertions.assertThat(result).usingRecursiveComparison().isEqualTo(mockTodoSlice);
+    }
+
+    @Test
+    @DisplayName("UserId로 Todo 목록을 조회한다.")
+    void findAllTodoListByUserId() {
+        //given
+        final Long userId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
+        final Pageable pageable = PageRequest.of(0, 10);
+        final List<Todo> mockTodoList = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMe(Todo.class, pageable.getPageSize());
+        final SliceImpl<Todo> mockTodoSlice = new SliceImpl<>(mockTodoList, pageable, true);
+        given(todoRepository.findTodoSliceByUserIdQuery(userId, pageable)).willReturn(mockTodoSlice);
+        //when
+        Slice<Todo> result = todoQueryService.findAllTodoListByUserId(userId, pageable);
+        //then
+        Assertions.assertThat(result).usingRecursiveComparison().isEqualTo(mockTodoSlice);
+    }
+
+    @Test
+    @DisplayName("UserId와 TodoTeamId로 Todo의 개수를 조회한다.")
+    void countTodoByTodoTeamId() {
+        //given
+        final Long userId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
+        final Long todoTeamId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
+        final Integer mockCount = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Integer.class);
+        given(todoRepository.countTodoByUserIdAndTodoTeamIdQuery(userId, todoTeamId)).willReturn(mockCount);
+        //when
+        Integer result = todoQueryService.countTodoByTodoTeamId(userId, todoTeamId);
+        //then
+        Assertions.assertThat(result).isEqualTo(mockCount);
+    }
+
+    @Test
+    @DisplayName("UserId로 Todo의 개수를 조회한다.")
+    void countTodoByUserId() {
+        //given
+        final Long userId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
+        final Integer mockCount = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Integer.class);
+        given(todoRepository.countTodoByUserIdQuery(userId)).willReturn(mockCount);
+        //when
+        Integer result = todoQueryService.countTodoByUserId(userId);
+        //then
+        Assertions.assertThat(result).isEqualTo(mockCount);
+    }
+
 
 
 }
