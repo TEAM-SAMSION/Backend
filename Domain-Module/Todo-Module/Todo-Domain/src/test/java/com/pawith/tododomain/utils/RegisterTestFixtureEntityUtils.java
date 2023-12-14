@@ -23,13 +23,13 @@ public class RegisterTestFixtureEntityUtils {
     }
 
     public static List<Register> getRegisterEntityList(int size){
-        return FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeBuilder(Register.class)
+        return FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeBuilder(Register.class)
             .set("isRegistered", true)
             .sampleList(size);
     }
 
     public static List<Register> getRegisterEntityListWithUnregistered(int size){
-        return FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeBuilder(Register.class)
+        return FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeBuilder(Register.class)
             .set("isRegistered", false)
             .sampleList(size);
     }
