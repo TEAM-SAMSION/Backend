@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
-import java.util.Objects;
 
 @Entity
 @Getter
@@ -45,11 +44,12 @@ public class Category extends BaseEntity {
         this.disabledAt = LocalDate.now();
     }
 
-    public void updateCategoryStatus(CategoryStatus categoryStatus) {
+    public void updateCategoryStatus() {
         this.categoryStatus = DomainFieldUtils.DomainValidateBuilder.builder(CategoryStatus.class)
-                .newValue(categoryStatus)
+                .newValue(this.categoryStatus.equals(CategoryStatus.ON) ? CategoryStatus.OFF : CategoryStatus.ON)
                 .currentValue(this.categoryStatus)
                 .validate();
+
         this.disabledAt = DomainFieldUtils.DomainValidateBuilder.builder(LocalDate.class)
                 .newValue(LocalDate.now())
                 .currentValue(this.disabledAt)
