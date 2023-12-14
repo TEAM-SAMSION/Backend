@@ -8,12 +8,10 @@ import com.pawith.tododomain.exception.TodoError;
 import com.pawith.tododomain.exception.UnchangeableException;
 import com.pawith.tododomain.exception.UnregistrableException;
 import com.pawith.tododomain.repository.RegisterRepository;
-import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @DomainService
 @RequiredArgsConstructor
@@ -25,23 +23,21 @@ public class RegisterValidateService {
     public void validatePresidentRegisterDeletable(final Register register) {
         if (register.isPresident()) {
             final TodoTeam todoTeam = register.getTodoTeam();
-            final Integer presidentRegisterCount = registerRepository.countByTodoTeamIdAndAuthorityQuery(todoTeam.getId(), Authority.PRESIDENT);
             final Integer registerCount = registerRepository.countByTodoTeamIdQuery(todoTeam.getId());
-            if (presidentRegisterCount <= 1 && registerCount > 1) {
+            if (registerCount > 1) {
                 throw new UnregistrableException(TodoError.CANNOT_PRESIDENT_UNREGISTRABLE);
             }
         }
     }
 
     public void validateRegisterDeletable(final List<Register> registerList) {
-        final Map<Register, Integer> registerCountMap = registerList.stream()
-                .collect(Collectors.toMap(register -> register, register -> registerRepository.countByTodoTeamIdQuery(register.getTodoTeam().getId())));
-        final boolean isPresidentExist = !registerList.isEmpty() &&
-                registerList.stream()
-                        .anyMatch(register -> register.isPresident() && registerCountMap.get(register) > 1);
-        if (isPresidentExist) {
-            throw new UnregistrableException(TodoError.CANNOT_PRESIDENT_UNREGISTRABLE);
-        }
+        registerList.forEach(register -> {
+            final Long todoTeamId = register.getTodoTeam().getId();
+            final Integer registerCount = registerRepository.countByTodoTeamIdQuery(todoTeamId);
+            if (register.isPresident() && registerCount > 1) {
+                throw new UnregistrableException(TodoError.CANNOT_PRESIDENT_UNREGISTRABLE);
+            }
+        });
     }
 
     public void validateAuthorityChangeable(final Register userRegister, final Authority authority) {
