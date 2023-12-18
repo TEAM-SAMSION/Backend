@@ -1,6 +1,7 @@
 package com.pawith.todoapplication.handler;
 
 import com.pawith.commonmodule.enums.AlarmCategory;
+import com.pawith.commonmodule.event.MultiNotificationEvent;
 import com.pawith.commonmodule.event.NotificationEvent;
 import com.pawith.commonmodule.schedule.AbstractBatchSchedulingHandler;
 import com.pawith.tododomain.repository.TodoNotificationRepository;
@@ -13,8 +14,14 @@ import org.springframework.util.StringUtils;
 
 import java.time.Duration;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Batch Insert 전 : 1637ms
+ * Batch Insert 후 : 1293ms
+ * 20 건 기준
+ */
 @Slf4j
 @Component
 public class TodoNotificationHandler extends AbstractBatchSchedulingHandler<NotificationDao> {
@@ -52,14 +59,15 @@ public class TodoNotificationHandler extends AbstractBatchSchedulingHandler<Noti
     }
 
     private void handleNotification(List<NotificationDao> notificationBatch, LocalTime executeTime) {
-        notificationBatch.stream().parallel()
-            .forEach(notification -> {
-                final long diffNotificationTimeWithCurrentTime = Duration.between(executeTime, notification.getNotificationTime()).toHours();
-                final String message = buildMessageFromNotification(notification, diffNotificationTimeWithCurrentTime);
-                if (StringUtils.hasText(message)) {
-                    applicationEventPublisher.publishEvent(new NotificationEvent(notification.getUserId(), AlarmCategory.TODO, message, notification.getTodoTeamId()));
-                }
-            });
+        final List<NotificationEvent> notificationEvents = new ArrayList<>();
+        for (NotificationDao batch : notificationBatch) {
+            final long diffNotificationTimeWithCurrentTime = Duration.between(executeTime, batch.getNotificationTime()).toHours();
+            final String message = buildMessageFromNotification(batch, diffNotificationTimeWithCurrentTime);
+            if (StringUtils.hasText(message)) {
+                notificationEvents.add(new NotificationEvent(batch.getUserId(), AlarmCategory.TODO, message, batch.getTodoTeamId()));
+            }
+        }
+        applicationEventPublisher.publishEvent(new MultiNotificationEvent(notificationEvents));
     }
 
     private LocalTime getCurrentHourTime() {
