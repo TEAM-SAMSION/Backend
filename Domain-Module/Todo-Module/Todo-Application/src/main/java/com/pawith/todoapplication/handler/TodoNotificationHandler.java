@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import java.time.Duration;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.function.Function;
 
 /**
  * Batch Insert 전 : 1637ms
@@ -61,16 +62,30 @@ public class TodoNotificationHandler extends AbstractBatchSchedulingHandler<Noti
     }
 
     private enum NotificationMessage {
-        FIRST_NOTIFICATION_MESSAGE_FORMAT(3L, "오늘 %s시 %s분, [%s] %s 잊지 않았죠?"),
-        SECOND_NOTIFICATION_MESSAGE_FORMAT(1L, "[%s] %s 시작까지 1시간 남았어요!");
+        FIRST_NOTIFICATION_MESSAGE_FORMAT(3L,
+            notification -> {
+                final String messageFormat = "오늘 %s시 %s분, [%s] %s 잊지 않았죠?";
+                return java.lang.String.format(messageFormat,
+                    notification.getNotificationTime().getHour(),
+                    notification.getNotificationTime().getMinute(),
+                    notification.getCategoryName(),
+                    notification.getTodoDescription());
+            }),
+        SECOND_NOTIFICATION_MESSAGE_FORMAT(1L,
+            notification -> {
+                final String messageFormat = "[%s] %s 시작까지 1시간 남았어요!";
+                return java.lang.String.format(messageFormat,
+                    notification.getCategoryName(),
+                    notification.getTodoDescription());
+            });
 
         private static final List<NotificationMessage> values = List.of(values());
         private final Long criticalTime;
-        private final String messageFormat;
+        private final Function<NotificationDao, String> buildMessage;
 
-        NotificationMessage(Long criticalTime, String messageFormat) {
+        NotificationMessage(Long criticalTime, Function<NotificationDao, String> buildMessage) {
             this.criticalTime = criticalTime;
-            this.messageFormat = messageFormat;
+            this.buildMessage = buildMessage;
         }
 
         public static Boolean contains(Long diffTime) {
@@ -83,11 +98,7 @@ public class TodoNotificationHandler extends AbstractBatchSchedulingHandler<Noti
                 .filter(notificationMessage -> notificationMessage.criticalTime.equals(diffTime))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("해당 시간에 맞는 메시지가 없습니다."));
-            return String.format(messageBuilder.messageFormat,
-                notification.getNotificationTime().getHour(),
-                notification.getNotificationTime().getMinute(),
-                notification.getCategoryName(),
-                notification.getTodoDescription());
+            return messageBuilder.buildMessage.apply(notification);
         }
     }
 }
