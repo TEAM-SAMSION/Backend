@@ -61,8 +61,8 @@ public class TodoNotificationHandler extends AbstractBatchSchedulingHandler<Noti
     }
 
     private enum NotificationMessage {
-        FIRST_NOTIFICATION_MESSAGE_FORMAT(1L, "오늘 %s시 %s분, [%s] %s 잊지 않았죠?"),
-        SECOND_NOTIFICATION_MESSAGE_FORMAT(3L, "[%s] %s 시작까지 1시간 남았어요!");
+        FIRST_NOTIFICATION_MESSAGE_FORMAT(3L, "오늘 %s시 %s분, [%s] %s 잊지 않았죠?"),
+        SECOND_NOTIFICATION_MESSAGE_FORMAT(1L, "[%s] %s 시작까지 1시간 남았어요!");
 
         private static final List<NotificationMessage> values = List.of(values());
         private final Long criticalTime;
