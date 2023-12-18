@@ -2,6 +2,7 @@ package com.pawith.todoapplication.handler;
 
 import com.pawith.commonmodule.cache.operators.ValueOperator;
 import com.pawith.commonmodule.enums.AlarmCategory;
+import com.pawith.commonmodule.event.MultiNotificationEvent;
 import com.pawith.commonmodule.event.NotificationEvent;
 import com.pawith.commonmodule.schedule.AbstractBatchSchedulingHandler;
 import com.pawith.tododomain.repository.RegisterRepository;
@@ -42,11 +43,13 @@ public class IncompleteTodoCountNotificationHandler extends AbstractBatchSchedul
     @Override
     protected void processBatch(List<IncompleteTodoCountInfoDao> executionResult) {
         cachingUserInfo(executionResult);
-        executionResult.forEach(incompleteTodoCountInfoDao -> {
-            final String userNickname = valueOperator.get(incompleteTodoCountInfoDao.getUserId());
-            final String message = String.format(NOTIFICATION_MESSAGE, incompleteTodoCountInfoDao.getTodoTeamName(), userNickname, incompleteTodoCountInfoDao.getIncompleteTodoCount());
-            applicationEventPublisher.publishEvent(new NotificationEvent(incompleteTodoCountInfoDao.getUserId(), AlarmCategory.TODO, message, incompleteTodoCountInfoDao.getTodoTeamId()));
-        });
+        final List<NotificationEvent> notificationEventList = executionResult.stream()
+            .map(incompleteTodoCountInfoDao -> {
+                final String userNickname = valueOperator.get(incompleteTodoCountInfoDao.getUserId());
+                final String message = String.format(NOTIFICATION_MESSAGE, incompleteTodoCountInfoDao.getTodoTeamName(), userNickname, incompleteTodoCountInfoDao.getIncompleteTodoCount());
+                return new NotificationEvent(incompleteTodoCountInfoDao.getUserId(), AlarmCategory.TODO, message, incompleteTodoCountInfoDao.getTodoTeamId());
+            }).toList();
+        applicationEventPublisher.publishEvent(new MultiNotificationEvent(notificationEventList));
     }
 
     private void cachingUserInfo(List<IncompleteTodoCountInfoDao> executionResult) {

@@ -1,6 +1,7 @@
 package com.pawith.todoapplication.handler;
 
 import com.pawith.commonmodule.enums.AlarmCategory;
+import com.pawith.commonmodule.event.MultiNotificationEvent;
 import com.pawith.commonmodule.event.NotificationEvent;
 import com.pawith.commonmodule.schedule.AbstractBatchSchedulingHandler;
 import com.pawith.tododomain.repository.TodoNotificationRepository;
@@ -9,19 +10,22 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 
 import java.time.Duration;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.function.Function;
 
+/**
+ * Batch Insert 전 : 1637ms
+ * Batch Insert 후 : 1293ms
+ * 20 건 기준
+ */
 @Slf4j
 @Component
 public class TodoNotificationHandler extends AbstractBatchSchedulingHandler<NotificationDao> {
     private static final Integer BATCH_SIZE = 100;
     private static final String CRON_EXPRESSION = "0 0 * * * *";
-    private static final String FIRST_NOTIFICATION_MESSAGE_FORMAT = "오늘 %s시 %s분, [%s] %s 잊지 않았죠?";
-    private static final String SECOND_NOTIFICATION_MESSAGE_FORMAT = "[%s] %s 시작까지 1시간 남았어요!";
 
     private final TodoNotificationRepository todoNotificationRepository;
     private final ApplicationEventPublisher applicationEventPublisher;
@@ -42,27 +46,59 @@ public class TodoNotificationHandler extends AbstractBatchSchedulingHandler<Noti
         handleNotification(executionResult, getCurrentHourTime());
     }
 
-    private String buildMessageFromNotification(NotificationDao notification, long diffNotificationTimeWithCurrentTime) {
-        if (diffNotificationTimeWithCurrentTime == 3L) {
-            return String.format(FIRST_NOTIFICATION_MESSAGE_FORMAT, notification.getNotificationTime().getHour(), notification.getNotificationTime().getMinute(), notification.getCategoryName(), notification.getTodoDescription());
-        } else if (diffNotificationTimeWithCurrentTime == 1L) {
-            return String.format(SECOND_NOTIFICATION_MESSAGE_FORMAT, notification.getCategoryName(), notification.getTodoDescription());
-        }
-        return "";
-    }
-
     private void handleNotification(List<NotificationDao> notificationBatch, LocalTime executeTime) {
-        notificationBatch.stream().parallel()
-            .forEach(notification -> {
+        final List<NotificationEvent> notificationEventList = notificationBatch.stream()
+            .filter(notification -> NotificationMessage.contains(Duration.between(executeTime, notification.getNotificationTime()).toHours()))
+            .map(notification -> {
                 final long diffNotificationTimeWithCurrentTime = Duration.between(executeTime, notification.getNotificationTime()).toHours();
-                final String message = buildMessageFromNotification(notification, diffNotificationTimeWithCurrentTime);
-                if (StringUtils.hasText(message)) {
-                    applicationEventPublisher.publishEvent(new NotificationEvent(notification.getUserId(), AlarmCategory.TODO, message, notification.getTodoTeamId()));
-                }
-            });
+                final String message = NotificationMessage.buildMessage(notification, diffNotificationTimeWithCurrentTime);
+                return new NotificationEvent(notification.getUserId(), AlarmCategory.TODO, message, notification.getTodoTeamId());
+            }).toList();
+        applicationEventPublisher.publishEvent(new MultiNotificationEvent(notificationEventList));
     }
 
     private LocalTime getCurrentHourTime() {
         return LocalTime.now().withMinute(0).withSecond(0).withNano(0);
+    }
+
+    private enum NotificationMessage {
+        FIRST_NOTIFICATION_MESSAGE_FORMAT(3L,
+            notification -> {
+                final String messageFormat = "오늘 %s시 %s분, [%s] %s 잊지 않았죠?";
+                return String.format(messageFormat,
+                    notification.getNotificationTime().getHour(),
+                    notification.getNotificationTime().getMinute(),
+                    notification.getCategoryName(),
+                    notification.getTodoDescription());
+            }),
+        SECOND_NOTIFICATION_MESSAGE_FORMAT(1L,
+            notification -> {
+                final String messageFormat = "[%s] %s 시작까지 1시간 남았어요!";
+                return String.format(messageFormat,
+                    notification.getCategoryName(),
+                    notification.getTodoDescription());
+            });
+
+        private static final List<NotificationMessage> values = List.of(values());
+        private final Long criticalTime;
+        private final Function<NotificationDao, String> buildMessage;
+
+        NotificationMessage(Long criticalTime, Function<NotificationDao, String> buildMessage) {
+            this.criticalTime = criticalTime;
+            this.buildMessage = buildMessage;
+        }
+
+        public static Boolean contains(Long diffTime) {
+            return values.stream()
+                .anyMatch(notificationMessage -> notificationMessage.criticalTime.equals(diffTime));
+        }
+
+        public static String buildMessage(NotificationDao notification, long diffTime) {
+            NotificationMessage messageBuilder = values.stream()
+                .filter(notificationMessage -> notificationMessage.criticalTime.equals(diffTime))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("해당 시간에 맞는 메시지가 없습니다."));
+            return messageBuilder.buildMessage.apply(notification);
+        }
     }
 }
