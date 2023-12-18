@@ -11,6 +11,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -38,5 +43,10 @@ public class AlarmUserService {
     public AlarmUser findDeviceTokenByUserId(Long userId) {
         return alarmUserRepository.findByUserId(userId)
             .orElseThrow(() -> new AlarmException(AlarmError.DEVICE_TOKEN_NOT_FOUND));
+    }
+
+    public Map<Long, AlarmUser> findAlarmUsersByUserIds(List<Long> userIds) {
+        return alarmUserRepository.findByUserIdIn(userIds).stream()
+            .collect(Collectors.toMap(AlarmUser::getUserId, Function.identity()));
     }
 }
