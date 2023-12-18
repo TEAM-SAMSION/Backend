@@ -14,7 +14,7 @@ import java.util.Collection;
 public class AlarmBatchRepositoryImpl implements AlarmBatchRepository{
     private final JdbcTemplate jdbcTemplate;
 
-//    @Override
+    @Override
     public void saveAllBatch(Collection<Alarm> entities) {
         final String insertSql = """
             INSERT INTO alarm (domain_id, message, alarm_category,is_read,alarm_user_id,created_at, updated_at)
