@@ -22,7 +22,7 @@ import java.util.Map;
 public class MultiAlarmSendServiceImpl implements MultiAlarmSendService<MultiNotificationEvent> {
     private final AlarmUserService alarmUserService;
     private final AlarmService alarmService;
-    private final NotificationHandler<FcmSendMessageHandler.NotificationInfo> fcmSendHandler;
+    private final NotificationHandler<FcmSendMessageHandler.NotificationInfo> notificationHandler;
 
     @Override
     @EventListener
@@ -39,7 +39,7 @@ public class MultiAlarmSendServiceImpl implements MultiAlarmSendService<MultiNot
                 final Notification notification = notificationEvent.toNotification();
                 return new FcmSendMessageHandler.NotificationInfo(deviceToken, notification);
             }).toList();
-        fcmSendHandler.sendMultiAsync(notificationInfoList);
+        notificationHandler.sendMultiAsync(notificationInfoList);
     }
 
     private void saveAllAlarm(MultiNotificationEvent multiNotificationEvent, Map<Long, AlarmUser> alarmUserMap) {
