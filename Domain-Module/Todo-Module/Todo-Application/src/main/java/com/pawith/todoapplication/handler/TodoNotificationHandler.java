@@ -65,7 +65,7 @@ public class TodoNotificationHandler extends AbstractBatchSchedulingHandler<Noti
         FIRST_NOTIFICATION_MESSAGE_FORMAT(3L,
             notification -> {
                 final String messageFormat = "오늘 %s시 %s분, [%s] %s 잊지 않았죠?";
-                return java.lang.String.format(messageFormat,
+                return String.format(messageFormat,
                     notification.getNotificationTime().getHour(),
                     notification.getNotificationTime().getMinute(),
                     notification.getCategoryName(),
@@ -74,7 +74,7 @@ public class TodoNotificationHandler extends AbstractBatchSchedulingHandler<Noti
         SECOND_NOTIFICATION_MESSAGE_FORMAT(1L,
             notification -> {
                 final String messageFormat = "[%s] %s 시작까지 1시간 남았어요!";
-                return java.lang.String.format(messageFormat,
+                return String.format(messageFormat,
                     notification.getCategoryName(),
                     notification.getTodoDescription());
             });
