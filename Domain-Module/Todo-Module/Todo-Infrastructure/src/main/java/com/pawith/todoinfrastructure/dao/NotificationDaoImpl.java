@@ -3,10 +3,11 @@ package com.pawith.todoinfrastructure.dao;
 import com.pawith.tododomain.repository.dao.NotificationDao;
 import com.querydsl.core.annotations.QueryProjection;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 
 public record NotificationDaoImpl(Long todoTeamId, Long userId, String categoryName, String todoDescription,
-                                  LocalTime notificationTime) implements NotificationDao {
+                                  LocalTime notificationTime, LocalDate scheduledDate) implements NotificationDao {
 
     @QueryProjection
     public NotificationDaoImpl {
@@ -35,5 +36,10 @@ public record NotificationDaoImpl(Long todoTeamId, Long userId, String categoryN
     @Override
     public LocalTime getNotificationTime() {
         return this.notificationTime;
+    }
+
+    @Override
+    public LocalDate getScheduledDate() {
+        return this.scheduledDate;
     }
 }

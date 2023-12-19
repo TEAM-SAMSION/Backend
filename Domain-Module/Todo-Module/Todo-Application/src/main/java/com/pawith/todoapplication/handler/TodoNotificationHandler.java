@@ -12,7 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.function.Function;
 
@@ -38,27 +38,31 @@ public class TodoNotificationHandler extends AbstractBatchSchedulingHandler<Noti
 
     @Override
     protected List<NotificationDao> extractBatchData(Pageable pageable) {
-        return todoNotificationRepository.findAllWithNotCompletedAssignAndAlarmTimeQuery(Duration.ofHours(3), getCurrentHourTime(), pageable);
+        return todoNotificationRepository.findAllWithNotCompletedAssignAndAlarmTimeQuery(Duration.ofHours(3), getCurrentHourDateTime(), pageable);
     }
 
     @Override
     protected void processBatch(List<NotificationDao> executionResult) {
-        handleNotification(executionResult, getCurrentHourTime());
+        handleNotification(executionResult, getCurrentHourDateTime());
     }
 
-    private void handleNotification(List<NotificationDao> notificationBatch, LocalTime executeTime) {
+    private void handleNotification(List<NotificationDao> notificationBatch, LocalDateTime executeTime) {
         final List<NotificationEvent> notificationEventList = notificationBatch.stream()
-            .filter(notification -> NotificationMessage.contains(Duration.between(executeTime, notification.getNotificationTime()).toHours()))
+            .filter(notification -> NotificationMessage.contains(calculateDiffTimeHour(executeTime, notification)))
             .map(notification -> {
-                final long diffNotificationTimeWithCurrentTime = Duration.between(executeTime, notification.getNotificationTime()).toHours();
+                final long diffNotificationTimeWithCurrentTime = calculateDiffTimeHour(executeTime, notification);
                 final String message = NotificationMessage.buildMessage(notification, diffNotificationTimeWithCurrentTime);
                 return new NotificationEvent(notification.getUserId(), AlarmCategory.TODO, message, notification.getTodoTeamId());
             }).toList();
         applicationEventPublisher.publishEvent(new MultiNotificationEvent(notificationEventList));
     }
 
-    private LocalTime getCurrentHourTime() {
-        return LocalTime.now().withMinute(0).withSecond(0).withNano(0);
+    private long calculateDiffTimeHour(LocalDateTime executeTime, NotificationDao notification) {
+        return Duration.between(executeTime, LocalDateTime.of(notification.getScheduledDate(), notification.getNotificationTime())).toHours();
+    }
+
+    private LocalDateTime getCurrentHourDateTime() {
+        return LocalDateTime.now().withMinute(0).withSecond(0).withNano(0);
     }
 
     private enum NotificationMessage {
