@@ -1,6 +1,7 @@
 package com.pawith.todoapplication.service;
 
 import com.pawith.commonmodule.annotation.ApplicationService;
+import com.pawith.todoapplication.dto.response.TodoValidateResponse;
 import com.pawith.tododomain.entity.Register;
 import com.pawith.tododomain.entity.Todo;
 import com.pawith.tododomain.service.RegisterQueryService;
@@ -20,10 +21,11 @@ public class TodoValidationUseCase {
     private final RegisterQueryService registerQueryService;
     private final TodoValidateService todoValidateService;
 
-    public void validateDeleteAndUpdateTodoByTodoId(Long todoTeamId, Long todoId) {
+    public TodoValidateResponse validateDeleteAndUpdateTodoByTodoId(Long todoTeamId, Long todoId) {
         final User accessUser = userUtils.getAccessUser();
         final Todo todo = todoQueryService.findTodoByTodoId(todoId);
         final Register register = registerQueryService.findRegisterByTodoTeamIdAndUserId(todoTeamId, accessUser.getId());
-        todoValidateService.validateDeleteAndUpdate(todo, register);
+        boolean isNotValidate = todoValidateService.validateDeleteAndUpdate(todo, register);
+        return new TodoValidateResponse(isNotValidate);
     }
 }

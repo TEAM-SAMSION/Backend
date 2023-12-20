@@ -13,10 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class TodoValidateService {
 
-    public void validateDeleteAndUpdate(Todo todo, Register register) {
-        final boolean isNotValidate = !todo.isTodoCreator(register.getId()) && register.isMember();
-        if (isNotValidate) {
-            throw new TodoModificationNotAllowedException(TodoError.TODO_MODIFICATION_NOT_ALLOWED);
-        }
+    public boolean validateDeleteAndUpdate(Todo todo, Register register) {
+        return !todo.isTodoCreator(register.getId()) && register.isMember();
     }
 }
