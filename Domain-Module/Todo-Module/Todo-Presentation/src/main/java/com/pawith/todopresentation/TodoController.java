@@ -82,9 +82,9 @@ public class TodoController {
         todoDeleteUseCase.deleteTodoByTodoId(todoId);
     }
 
-    @PostMapping("/{todoTeamId}/todos/{todoId}/validate")
-    public void validateDeleteAndUpdateTodo(@PathVariable Long todoTeamId, @PathVariable Long todoId){
-        todoValidationUseCase.validateDeleteAndUpdateTodoByTodoId(todoTeamId, todoId);
+    @GetMapping("/{todoTeamId}/todos/{todoId}/validate")
+    public TodoValidateResponse validateDeleteAndUpdateTodo(@PathVariable Long todoTeamId, @PathVariable Long todoId){
+        return todoValidationUseCase.validateDeleteAndUpdateTodoByTodoId(todoTeamId, todoId);
     }
 
     @PostMapping("/todos/{todoId}/assign/notification")
