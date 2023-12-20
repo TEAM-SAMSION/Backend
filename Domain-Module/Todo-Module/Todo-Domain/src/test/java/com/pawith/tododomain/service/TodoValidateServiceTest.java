@@ -23,9 +23,10 @@ class TodoValidateServiceTest {
     }
 
     @Test
-    @DisplayName("todo 생성자가 아니면서 멤버이면 예외가 발생한다.")
+    @DisplayName("todo 생성자가 아니면서 멤버이면 true를 반환한다.")
     void validateDeleteAndUpdate_throw_ToDoModificationNotAllowedException() {
         // given
+        final Boolean isNotValidate = true;
         final Register register = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeBuilder(Register.class)
             .set("authority", Authority.MEMBER)
             .sample();
@@ -34,14 +35,15 @@ class TodoValidateServiceTest {
             .sample();
         // when
         // then
-        Assertions.assertThatCode(() -> todoValidateService.validateDeleteAndUpdate(todo, register))
-            .isInstanceOf(TodoModificationNotAllowedException.class);
+        Assertions.assertThat(todoValidateService.validateDeleteAndUpdate(todo, register)).isEqualTo(isNotValidate);
     }
 
+
     @Test
-    @DisplayName("todo 생성자이면 예외가 발생하지 않는다.")
+    @DisplayName("todo 생성자이면 false를 반환한다.")
     void validateDeleteAndUpdate_throw_NoException() {
         // given
+        final Boolean isNotValidate = false;
         final Register register = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeBuilder(Register.class)
             .set("authority", Authority.MEMBER)
             .sample();
@@ -50,14 +52,14 @@ class TodoValidateServiceTest {
             .sample();
         // when
         // then
-        Assertions.assertThatCode(() -> todoValidateService.validateDeleteAndUpdate(todo, register))
-            .doesNotThrowAnyException();
+        Assertions.assertThat(todoValidateService.validateDeleteAndUpdate(todo, register)).isEqualTo(isNotValidate);
     }
 
     @Test
-    @DisplayName("todo 생성자가 아니면서 운영진이면 예외가 발생하지 않는다.")
+    @DisplayName("todo 생성자가 아니면서 운영진이면 false를 반환한다.")
     void validateDeleteAndUpdate_throw_NoException2() {
         // given
+        final Boolean isNotValidate = false;
         final Register register = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeBuilder(Register.class)
             .set("authority", Authority.PRESIDENT)
             .sample();
@@ -66,10 +68,7 @@ class TodoValidateServiceTest {
             .sample();
         // when
         // then
-        Assertions.assertThatCode(() -> todoValidateService.validateDeleteAndUpdate(todo, register))
-            .doesNotThrowAnyException();
+        Assertions.assertThat(todoValidateService.validateDeleteAndUpdate(todo, register)).isEqualTo(isNotValidate);
     }
-
-
 
 }
