@@ -139,6 +139,11 @@ operation::todo-controller-test/get-withdraw-todo-count[snippets='http-request,p
 === 서비스 탈퇴시 담당했던 Todo 개수 조회
 
 operation::todo-controller-test/get-all-withdraw-todo-count[snippets='http-request,request-headers,http-response,response-fields']
+
+[[Todo-담당자-수정]]
+=== Todo 담당자 수정
+
+operation::todo-controller-test/change-assign[snippets='http-request,path-parameters,request-headers,request-fields,http-response']
 [[Category-API]]
 == Category API
 
