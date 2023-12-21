@@ -2,6 +2,7 @@ package com.pawith.todopresentation;
 
 import com.pawith.commonmodule.response.ListResponse;
 import com.pawith.commonmodule.response.SliceResponse;
+import com.pawith.todoapplication.dto.request.AssignChangeRequest;
 import com.pawith.todoapplication.dto.request.ScheduledDateChangeRequest;
 import com.pawith.todoapplication.dto.request.TodoCreateRequest;
 import com.pawith.todoapplication.dto.request.TodoDescriptionChangeRequest;
@@ -70,6 +71,11 @@ public class TodoController {
     @PutMapping("/todos/{todoId}/assign/complete")
     public void putAssignStatus(@PathVariable Long todoId){
         assignChangeUseCase.changeAssignStatus(todoId);
+    }
+
+    @PutMapping("/todos/{todoId}/assign")
+    public void putAssign(@PathVariable Long todoId, @RequestBody AssignChangeRequest assignChangeRequest){
+        assignChangeUseCase.changeAssign(todoId, assignChangeRequest);
     }
 
     @GetMapping("/todos/{todoId}/completion")

@@ -37,4 +37,8 @@ public class AssignQueryService {
         return assignRepository.findAllByTodoIdQuery(todoId);
     }
 
+    public List<Assign> findAllAssignWithRegisterByTodoId(Long todoId) {
+        return assignRepository.findAllByTodoIdWithRegisterFetchQuery(todoId);
+    }
+
 }

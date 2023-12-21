@@ -13,5 +13,6 @@ public interface AssignQueryRepository {
     void deleteAllByTodoIdQuery(final Long todoId);
     Optional<Assign> findByTodoIdAndUserIdQuery(Long todoId, Long userId);
     List<Assign> findAllByTodoIdQuery(Long todoId);
+    List<Assign> findAllByTodoIdWithRegisterFetchQuery(Long todoId);
     void deleteAllByCategoryIdQuery(final Long categoryId);
 }
