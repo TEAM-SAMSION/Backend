@@ -94,6 +94,17 @@ public class AssignRepositoryImpl implements AssignQueryRepository {
     }
 
     @Override
+    public List<Assign> findAllByTodoIdWithRegisterFetchQuery(Long todoId) {
+        final QAssign qAssign = QAssign.assign;
+        final QRegister qRegister = qAssign.register;
+        return queryFactory.select(qAssign)
+            .from(qAssign)
+            .join(qRegister).fetchJoin()
+            .where(qAssign.todo.id.eq(todoId))
+            .fetch();
+    }
+
+    @Override
     public void deleteAllByCategoryIdQuery(final Long categoryId) {
         final QAssign qAssign = QAssign.assign;
         final QTodo qTodo = QTodo.todo;

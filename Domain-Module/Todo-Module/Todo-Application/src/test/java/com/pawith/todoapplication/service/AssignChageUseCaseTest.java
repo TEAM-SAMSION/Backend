@@ -7,7 +7,10 @@ import com.pawith.commonmodule.utils.FixtureMonkeyUtils;
 import com.pawith.tododomain.entity.Assign;
 import com.pawith.tododomain.entity.CompletionStatus;
 import com.pawith.tododomain.entity.Todo;
+import com.pawith.tododomain.service.AssignDeleteService;
 import com.pawith.tododomain.service.AssignQueryService;
+import com.pawith.tododomain.service.AssignSaveService;
+import com.pawith.tododomain.service.RegisterQueryService;
 import com.pawith.tododomain.service.TodoQueryService;
 import com.pawith.userdomain.entity.User;
 import com.pawith.userdomain.utils.UserUtils;
@@ -27,6 +30,12 @@ public class AssignChageUseCaseTest {
     @Mock
     TodoQueryService todoQueryService;
     @Mock
+    AssignDeleteService assignDeleteService;
+    @Mock
+    AssignSaveService assignSaveService;
+    @Mock
+    RegisterQueryService registerQueryService;
+    @Mock
     private UserUtils userUtils;
     @Mock
     ApplicationEventPublisher applicationEventPublisher;
@@ -35,7 +44,7 @@ public class AssignChageUseCaseTest {
 
     @BeforeEach
     void init(){
-        assignChangeUseCase = new AssignChangeUseCase(assignQueryService, todoQueryService, userUtils, applicationEventPublisher);
+        assignChangeUseCase = new AssignChangeUseCase(assignQueryService, todoQueryService, assignDeleteService, assignSaveService, registerQueryService, userUtils, applicationEventPublisher);
     }
 
     @Test

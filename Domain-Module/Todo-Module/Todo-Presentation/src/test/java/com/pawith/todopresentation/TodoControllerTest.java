@@ -4,6 +4,7 @@ import com.pawith.commonmodule.BaseRestDocsTest;
 import com.pawith.commonmodule.response.ListResponse;
 import com.pawith.commonmodule.response.SliceResponse;
 import com.pawith.commonmodule.utils.FixtureMonkeyUtils;
+import com.pawith.todoapplication.dto.request.AssignChangeRequest;
 import com.pawith.todoapplication.dto.request.ScheduledDateChangeRequest;
 import com.pawith.todoapplication.dto.request.TodoCreateRequest;
 import com.pawith.todoapplication.dto.request.TodoDescriptionChangeRequest;
@@ -348,9 +349,7 @@ public class TodoControllerTest extends BaseRestDocsTest {
         //given
         final Long testTodoTeamId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
         final Long testTodoId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
-        final TodoValidateResponse todoValidateResponse = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeBuilder(TodoValidateResponse.class)
-                .set("isNotValidate", true)
-                .sample();
+        final TodoValidateResponse todoValidateResponse = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeOne(TodoValidateResponse.class);
 
         given(todoValidationUseCase.validateDeleteAndUpdateTodoByTodoId(any(), any())).willReturn(todoValidateResponse);
         MockHttpServletRequestBuilder request = get(TODO_REQUEST_URL + "/{todoTeamId}/todos/{todoId}/validate", testTodoTeamId, testTodoId)
@@ -527,4 +526,30 @@ public class TodoControllerTest extends BaseRestDocsTest {
                 ));
     }
 
+    @Test
+    @DisplayName("투두 담당자 변경 API 테스트")
+    void changeAssign() throws Exception {
+        //given
+        final Long testTodoId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
+        final AssignChangeRequest assignChangeRequest = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeOne(AssignChangeRequest.class);
+        MockHttpServletRequestBuilder request = put(TODO_REQUEST_URL + "/todos/{todoId}/assign", testTodoId)
+                .content(objectMapper.writeValueAsString(assignChangeRequest))
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Authorization", "Bearer accessToken");
+        //when
+        ResultActions result = mvc.perform(request);
+        //then
+        result.andExpect(status().isOk())
+            .andDo(resultHandler.document(
+                requestHeaders(
+                    headerWithName("Authorization").description("access 토큰")
+                ),
+                pathParameters(
+                    parameterWithName("todoId").description("투두 항목 Id")
+                ),
+                requestFields(
+                    fieldWithPath("registerIds[]").description("변경할 담당자들의 registerId")
+                )
+            ));
+    }
 }
