@@ -31,7 +31,7 @@ public class CategoryController {
     private final CategoryCreateUseCase categoryCreateUseCase;
 
     @GetMapping("/teams/{todoTeamId}/category")
-    public ListResponse<CategoryInfoResponse> getCategoryList(@PathVariable Long todoTeamId, @RequestParam("moveDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate moveDate){
+    public ListResponse<CategoryInfoResponse> getCategoryList(@PathVariable Long todoTeamId, @RequestParam(value = "moveDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate moveDate){
         return categoryGetUseCase.getCategoryList(todoTeamId, moveDate);
     }
 

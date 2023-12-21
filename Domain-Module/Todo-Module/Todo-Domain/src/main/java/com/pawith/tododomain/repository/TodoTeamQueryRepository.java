@@ -5,4 +5,5 @@ import java.util.List;
 
 public interface TodoTeamQueryRepository {
     List<TodoTeam> findAllByUserIdQuery(Long userId);
+    TodoTeam findByTodoId(Long todoId);
 }

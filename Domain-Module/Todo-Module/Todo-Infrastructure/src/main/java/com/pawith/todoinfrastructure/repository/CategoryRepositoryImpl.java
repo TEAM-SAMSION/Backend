@@ -20,10 +20,18 @@ public class CategoryRepositoryImpl implements CategoryQueryRepository {
         final QCategory qCategory = QCategory.category;
         return queryFactory.select(qCategory)
             .from(qCategory)
-            .where(qCategory.todoTeam.id.eq(todoTeamId)
-                .and(qCategory.categoryStatus.eq(CategoryStatus.ON)
-                    .or(qCategory.categoryStatus.eq(CategoryStatus.OFF)
-                        .and(qCategory.disabledAt.gt(moveDate)))))
+            .where(
+                qCategory.todoTeam.id.eq(todoTeamId)
+                  .and(
+                     qCategory.categoryStatus.eq(CategoryStatus.ON)
+                       .or(
+                            moveDate != null
+                            ? qCategory.categoryStatus.eq(CategoryStatus.OFF)
+                            .and(qCategory.disabledAt.gt(moveDate))
+                            : null
+                           )
+                    )
+                )
             .orderBy(qCategory.createdAt.desc())
             .fetch();
     }

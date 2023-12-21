@@ -348,7 +348,12 @@ public class TodoControllerTest extends BaseRestDocsTest {
         //given
         final Long testTodoTeamId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
         final Long testTodoId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
-        MockHttpServletRequestBuilder request = post(TODO_REQUEST_URL + "/{todoTeamId}/todos/{todoId}/validate", testTodoTeamId, testTodoId)
+        final TodoValidateResponse todoValidateResponse = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeBuilder(TodoValidateResponse.class)
+                .set("isNotValidate", true)
+                .sample();
+
+        given(todoValidationUseCase.validateDeleteAndUpdateTodoByTodoId(any(), any())).willReturn(todoValidateResponse);
+        MockHttpServletRequestBuilder request = get(TODO_REQUEST_URL + "/{todoTeamId}/todos/{todoId}/validate", testTodoTeamId, testTodoId)
                 .header("Authorization", "Bearer accessToken");
         //when
         ResultActions result = mvc.perform(request);
@@ -361,6 +366,9 @@ public class TodoControllerTest extends BaseRestDocsTest {
                         pathParameters(
                             parameterWithName("todoTeamId").description("투두 팀 Id"),
                             parameterWithName("todoId").description("투두 항목 Id")
+                        ),
+                        responseFields(
+                                fieldWithPath("isNotValidate").description("투두 삭제 및 수정 검증 여부 true면 삭제 및 수정 불가능")
                         )
                 ));
     }
