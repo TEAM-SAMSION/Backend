@@ -125,7 +125,7 @@ public class TodoControllerTest extends BaseRestDocsTest {
     @DisplayName("todo 등록 API 테스트")
     void postTodo() throws Exception {
         //given
-        final TodoCreateRequest todoCreateRequest = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(TodoCreateRequest.class);
+        final TodoCreateRequest todoCreateRequest = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeOne(TodoCreateRequest.class);
         MockHttpServletRequestBuilder request = post(TODO_REQUEST_URL+"/todos")
             .content(objectMapper.writeValueAsString(todoCreateRequest))
             .contentType(MediaType.APPLICATION_JSON)
