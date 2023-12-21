@@ -16,4 +16,10 @@ public class TodoValidateService {
     public boolean validateDeleteAndUpdate(Todo todo, Register register) {
         return !todo.isTodoCreator(register.getId()) && register.isMember();
     }
+
+    public void validateTodoDeletable(Todo todo, Register register) {
+        if(!todo.isTodoCreator(register.getId()) && register.isMember()){
+            throw new TodoModificationNotAllowedException(TodoError.TODO_MODIFICATION_NOT_ALLOWED);
+        }
+    }
 }

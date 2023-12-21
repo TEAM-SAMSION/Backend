@@ -1,5 +1,6 @@
 package com.pawith.todoinfrastructure.repository;
 
+import com.pawith.tododomain.entity.QAssign;
 import com.pawith.tododomain.entity.QRegister;
 import com.pawith.tododomain.entity.QTodoTeam;
 import com.pawith.tododomain.entity.TodoTeam;
@@ -24,6 +25,19 @@ public class TodoTeamRepositoryImpl implements TodoTeamQueryRepository {
                 .where(register.todoTeam.eq(todoTeam)
                         .and(register.isRegistered.eq(true)))
                 .fetch();
+    }
+
+    @Override
+    public TodoTeam findByTodoId(Long todoId) {
+        final QTodoTeam todoTeam = QTodoTeam.todoTeam;
+        final QRegister register = QRegister.register;
+        final QAssign assign = QAssign.assign;
+        return jpaQueryFactory.select(todoTeam)
+                .from(todoTeam)
+                .join(register).on(register.todoTeam.eq(todoTeam))
+                .join(assign).on(assign.register.eq(register))
+                .where(assign.todo.id.eq(todoId))
+                .fetchOne();
     }
 
 }
