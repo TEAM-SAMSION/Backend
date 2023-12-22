@@ -83,4 +83,8 @@ public class ChristmasEventService {
             });
     }
 
+    public Boolean isEventDay(){
+        return EVENT_TODO_SCHEDULED_DATE_LIST.contains(LocalDate.now());
+    }
+
 }
