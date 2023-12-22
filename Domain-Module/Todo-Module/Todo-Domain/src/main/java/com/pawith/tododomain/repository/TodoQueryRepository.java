@@ -1,11 +1,11 @@
 package com.pawith.tododomain.repository;
 
 import com.pawith.tododomain.entity.Todo;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 
 import java.time.LocalDate;
 import java.util.List;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
 
 public interface TodoQueryRepository {
     List<Todo> findTodoListByCategoryIdAndScheduledDateQuery(Long categoryId, LocalDate moveDate);
@@ -18,4 +18,6 @@ public interface TodoQueryRepository {
     Slice<Todo> findTodoSliceByUserIdQuery(Long userId, Pageable pageable);
     Integer countTodoByUserIdAndTodoTeamIdQuery(Long userId, Long todoTeamId);
     Integer countTodoByUserIdQuery(Long userId);
+
+    List<Todo> findTodoListByCreatorIdAndTodoTeamIdQuery(Long creatorId, Long todoTeamId);
 }
