@@ -31,9 +31,10 @@ public class TodoNotificationRepositoryImpl implements TodoNotificationQueryRepo
         final QTodo todo = assign.todo;
         final QRegister register = assign.register;
         final QCategory category = todo.category;
+        final QTodoTeam todoTeam = register.todoTeam;
         final DateTimeTemplate<LocalDateTime> localDateTimeTemplate =
             Expressions.dateTimeTemplate(LocalDateTime.class, "timestamp({0},{1})", todo.scheduledDate,todoNotification.notificationTime);
-        return jpaQueryFactory.select(new QNotificationDaoImpl(register.todoTeam.id, register.userId, category.name, todo.description, todoNotification.notificationTime, todo.scheduledDate))
+        return jpaQueryFactory.select(new QNotificationDaoImpl(register.todoTeam.id, register.userId, category.name, todo.description, todoNotification.notificationTime, todo.scheduledDate,todoTeam.teamName ))
             .from(todoNotification)
             .join(todoNotification.assign, assign)
             .join(todo)

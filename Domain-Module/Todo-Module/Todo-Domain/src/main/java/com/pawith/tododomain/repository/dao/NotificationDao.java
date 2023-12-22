@@ -10,4 +10,6 @@ public interface NotificationDao {
     String getTodoDescription();
     LocalTime getNotificationTime();
     LocalDate getScheduledDate();
+
+    String getTodoTeamName();
 }
