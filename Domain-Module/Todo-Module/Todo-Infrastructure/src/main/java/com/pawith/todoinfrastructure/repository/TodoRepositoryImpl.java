@@ -1,21 +1,14 @@
 package com.pawith.todoinfrastructure.repository;
 
 import com.pawith.commonmodule.util.SliceUtils;
-import com.pawith.tododomain.entity.CategoryStatus;
-import com.pawith.tododomain.entity.CompletionStatus;
-import com.pawith.tododomain.entity.QAssign;
-import com.pawith.tododomain.entity.QCategory;
-import com.pawith.tododomain.entity.QRegister;
-import com.pawith.tododomain.entity.QTodo;
-import com.pawith.tododomain.entity.QTodoTeam;
-import com.pawith.tododomain.entity.Todo;
+import com.pawith.tododomain.entity.*;
 import com.pawith.tododomain.repository.TodoQueryRepository;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
-import org.springframework.data.domain.SliceImpl;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -94,6 +87,7 @@ public class TodoRepositoryImpl implements TodoQueryRepository {
     }
 
     @Override
+    @Transactional
     public void deleteAllByCategoryIdQuery(Long categoryId) {
         final QTodo todo = QTodo.todo;
         jpaQueryFactory

@@ -2,7 +2,6 @@ package com.pawith.alarmmodule.entity;
 
 import com.pawith.alarmmodule.entity.vo.AlarmBody;
 import com.pawith.commonmodule.domain.BaseEntity;
-import com.pawith.commonmodule.enums.AlarmCategory;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -22,15 +21,14 @@ public class Alarm extends BaseEntity {
     private AlarmBody alarmBody;
     private Boolean isRead = Boolean.FALSE;
 
-    @Enumerated(EnumType.STRING)
-    private AlarmCategory alarmCategory;
+    private String alarmCategory;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "alarm_user_id")
     private AlarmUser alarmUser;
 
     @Builder
-    public Alarm(AlarmBody alarmBody, AlarmCategory alarmCategory, AlarmUser alarmUser) {
+    public Alarm(AlarmBody alarmBody, String alarmCategory, AlarmUser alarmUser) {
         this.alarmBody = alarmBody;
         this.alarmCategory = alarmCategory;
         this.alarmUser = alarmUser;

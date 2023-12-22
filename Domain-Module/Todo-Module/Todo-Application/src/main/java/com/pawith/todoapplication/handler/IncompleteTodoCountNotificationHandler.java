@@ -1,7 +1,6 @@
 package com.pawith.todoapplication.handler;
 
 import com.pawith.commonmodule.cache.operators.ValueOperator;
-import com.pawith.commonmodule.enums.AlarmCategory;
 import com.pawith.commonmodule.event.MultiNotificationEvent;
 import com.pawith.commonmodule.event.NotificationEvent;
 import com.pawith.commonmodule.schedule.AbstractBatchSchedulingHandler;
@@ -47,7 +46,7 @@ public class IncompleteTodoCountNotificationHandler extends AbstractBatchSchedul
             .map(incompleteTodoCountInfoDao -> {
                 final String userNickname = valueOperator.get(incompleteTodoCountInfoDao.getUserId());
                 final String message = String.format(NOTIFICATION_MESSAGE, incompleteTodoCountInfoDao.getTodoTeamName(), userNickname, incompleteTodoCountInfoDao.getIncompleteTodoCount());
-                return new NotificationEvent(incompleteTodoCountInfoDao.getUserId(), AlarmCategory.TODO, message, incompleteTodoCountInfoDao.getTodoTeamId());
+                return new NotificationEvent(incompleteTodoCountInfoDao.getUserId(), incompleteTodoCountInfoDao.getTodoTeamName(), message, incompleteTodoCountInfoDao.getTodoTeamId());
             }).toList();
         applicationEventPublisher.publishEvent(new MultiNotificationEvent(notificationEventList));
     }

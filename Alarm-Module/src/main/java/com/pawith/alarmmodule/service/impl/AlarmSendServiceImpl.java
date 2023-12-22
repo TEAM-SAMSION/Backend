@@ -25,11 +25,11 @@ public class AlarmSendServiceImpl implements AlarmSendService<NotificationEvent>
     @Override
     @EventListener
     public void sendAlarm(NotificationEvent notificationEvent) {
-        final AlarmUser alarmUser = alarmUserService.findDeviceTokenByUserId(notificationEvent.getUserId());
+        final AlarmUser alarmUser = alarmUserService.findDeviceTokenByUserId(notificationEvent.userId());
         alarmService.saveAlarm(Alarm.builder()
-            .alarmCategory(notificationEvent.getTitle())
+            .alarmCategory(notificationEvent.title())
             .alarmUser(alarmUser)
-            .alarmBody(new AlarmBody(notificationEvent.getBody(), notificationEvent.getDomainId()))
+            .alarmBody(new AlarmBody(notificationEvent.body(), notificationEvent.domainId()))
             .build());
         notificationHandler.sendAsync(
             new FcmSendMessageHandler.NotificationInfo(

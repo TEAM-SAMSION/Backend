@@ -35,7 +35,7 @@ public class MultiAlarmSendServiceImpl implements MultiAlarmSendService<MultiNot
     private void sendMultiNotification(MultiNotificationEvent multiNotificationEvent, Map<Long, AlarmUser> alarmUserMap) {
         final List<FcmSendMessageHandler.NotificationInfo> notificationInfoList = multiNotificationEvent.notificationEvents().stream()
             .map(notificationEvent -> {
-                final String deviceToken = alarmUserMap.get(notificationEvent.getUserId()).getDeviceToken();
+                final String deviceToken = alarmUserMap.get(notificationEvent.userId()).getDeviceToken();
                 final Notification notification = notificationEvent.toNotification();
                 return new FcmSendMessageHandler.NotificationInfo(deviceToken, notification);
             }).toList();
@@ -45,9 +45,9 @@ public class MultiAlarmSendServiceImpl implements MultiAlarmSendService<MultiNot
     private void saveAllAlarm(MultiNotificationEvent multiNotificationEvent, Map<Long, AlarmUser> alarmUserMap) {
         final List<Alarm> savedAlarmList = multiNotificationEvent.notificationEvents().stream()
             .map(notificationEvent -> Alarm.builder()
-                .alarmCategory(notificationEvent.getTitle())
-                .alarmUser(alarmUserMap.get(notificationEvent.getUserId()))
-                .alarmBody(new AlarmBody(notificationEvent.getBody(), notificationEvent.getDomainId()))
+                .alarmCategory(notificationEvent.title())
+                .alarmUser(alarmUserMap.get(notificationEvent.userId()))
+                .alarmBody(new AlarmBody(notificationEvent.body(), notificationEvent.domainId()))
                 .build())
             .toList();
         alarmService.saveAllAlarm(savedAlarmList);
