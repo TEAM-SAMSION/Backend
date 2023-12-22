@@ -1,6 +1,5 @@
 package com.pawith.tododomain.service;
 
-import com.navercorp.fixturemonkey.FixtureMonkey;
 import com.pawith.commonmodule.UnitTestConfig;
 import com.pawith.commonmodule.utils.FixtureMonkeyUtils;
 import com.pawith.tododomain.entity.TodoTeam;
@@ -11,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.springframework.context.ApplicationEventPublisher;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -22,12 +22,14 @@ class RegisterSaveServiceTest {
 
     @Mock
     private RegisterRepository registerRepository;
+    @Mock
+    private ApplicationEventPublisher applicationEventPublisher;
 
     private RegisterSaveService registerSaveService;
 
     @BeforeEach
     void init() {
-        registerSaveService = new RegisterSaveService(registerRepository);
+        registerSaveService = new RegisterSaveService(registerRepository, applicationEventPublisher);
     }
 
     @Test

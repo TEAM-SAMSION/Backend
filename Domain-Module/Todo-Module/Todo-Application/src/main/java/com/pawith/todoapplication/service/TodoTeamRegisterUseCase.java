@@ -19,7 +19,7 @@ public class TodoTeamRegisterUseCase {
 
     public void registerTodoTeam(String todoTeamCode) {
         final User user = userUtils.getAccessUser();
-        TodoTeam todoTeam = todoTeamQueryService.findTodoTeamByCode(todoTeamCode);
+        final TodoTeam todoTeam = todoTeamQueryService.findTodoTeamByCode(todoTeamCode);
         registerSaveService.saveRegisterAboutMember(todoTeam, user.getId());
     }
 }

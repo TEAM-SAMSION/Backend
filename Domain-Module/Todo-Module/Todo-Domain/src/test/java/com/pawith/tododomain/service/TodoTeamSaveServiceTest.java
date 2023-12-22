@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.springframework.context.ApplicationEventPublisher;
 
 import static org.mockito.BDDMockito.then;
 
@@ -19,12 +20,14 @@ class TodoTeamSaveServiceTest {
 
     @Mock
     private TodoTeamRepository todoTeamRepository;
+    @Mock
+    private ApplicationEventPublisher applicationEventPublisher;
 
     private TodoTeamSaveService todoTeamSaveService;
 
     @BeforeEach
     void init() {
-        todoTeamSaveService = new TodoTeamSaveService(todoTeamRepository);
+        todoTeamSaveService = new TodoTeamSaveService(todoTeamRepository, applicationEventPublisher);
     }
 
     @Test
