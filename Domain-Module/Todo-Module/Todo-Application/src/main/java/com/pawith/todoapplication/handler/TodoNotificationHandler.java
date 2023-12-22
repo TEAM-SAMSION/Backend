@@ -1,6 +1,5 @@
 package com.pawith.todoapplication.handler;
 
-import com.pawith.commonmodule.enums.AlarmCategory;
 import com.pawith.commonmodule.event.MultiNotificationEvent;
 import com.pawith.commonmodule.event.NotificationEvent;
 import com.pawith.commonmodule.schedule.AbstractBatchSchedulingHandler;
@@ -52,7 +51,7 @@ public class TodoNotificationHandler extends AbstractBatchSchedulingHandler<Noti
             .map(notification -> {
                 final long diffNotificationTimeWithCurrentTime = calculateDiffTimeHour(executeTime, notification);
                 final String message = NotificationMessage.buildMessage(notification, diffNotificationTimeWithCurrentTime);
-                return new NotificationEvent(notification.getUserId(), AlarmCategory.TODO, message, notification.getTodoTeamId());
+                return new NotificationEvent(notification.getUserId(), notification.getTodoTeamName(), message, notification.getTodoTeamId());
             }).toList();
         applicationEventPublisher.publishEvent(new MultiNotificationEvent(notificationEventList));
     }
