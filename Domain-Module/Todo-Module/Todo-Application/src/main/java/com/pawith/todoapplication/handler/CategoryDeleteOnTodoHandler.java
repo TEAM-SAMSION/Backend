@@ -19,7 +19,7 @@ public class CategoryDeleteOnTodoHandler {
 
     @EventListener
     public void deleteAllByCategoryId(CategoryDeleteEvent categoryDeleteEvent) {
-        todoDeleteService.deleteTodoByCategoryId(categoryDeleteEvent.getCategoryId());
         assignDeleteService.deleteAssignByCategoryId(categoryDeleteEvent.getCategoryId());
+        todoDeleteService.deleteTodoByCategoryId(categoryDeleteEvent.getCategoryId());
     }
 }

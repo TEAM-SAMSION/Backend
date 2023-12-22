@@ -1,11 +1,9 @@
 package com.pawith.authdomain.jwt;
 
 import com.pawith.authdomain.exception.AuthError;
-import com.pawith.authdomain.exception.NotExistTokenException;
 import com.pawith.authdomain.jwt.exception.ExpiredTokenException;
 import com.pawith.authdomain.jwt.exception.InvalidTokenException;
-import com.pawith.authdomain.service.TokenQueryService;
-import com.pawith.authdomain.service.TokenSaveService;
+import com.pawith.commonmodule.cache.operators.ValueOperator;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -17,6 +15,7 @@ import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * jjwt 깃허브 : https://github.com/jwtk/jjwt
@@ -25,8 +24,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class JWTProvider {
     private final JWTProperties jwtProperties;
-    private final TokenSaveService tokenSaveService;
-    private final TokenQueryService tokenQueryService;
+    private final ValueOperator<String, Token> tokenCacheOperator;
 
     /**
      * access token 생성
@@ -45,9 +43,13 @@ public class JWTProvider {
      */
     public String generateRefreshToken(final String email) {
         final Claims claims = createPrivateClaims(email, TokenType.REFRESH_TOKEN);
-        final String refreshToken = generateToken(claims, jwtProperties.getRefreshTokenExpirationTime());
-        tokenSaveService.saveToken(refreshToken, email, TokenType.REFRESH_TOKEN);
-        return refreshToken;
+        return generateToken(claims, jwtProperties.getRefreshTokenExpirationTime());
+    }
+
+    public Token generateToken(final String email){
+        final String accessToken = generateAccessToken(email);
+        final String refreshToken = generateRefreshToken(email);
+        return new Token(accessToken, refreshToken);
     }
 
     /**
@@ -58,8 +60,19 @@ public class JWTProvider {
      */
     public String reIssueAccessToken(final String refreshToken) {
         validateToken(refreshToken, TokenType.REFRESH_TOKEN);
-        final String email = extractEmailFromRefreshToken(refreshToken);
+        final String email = extractEmailFromToken(refreshToken, TokenType.REFRESH_TOKEN);
         return generateAccessToken(email);
+    }
+
+    public Token reIssueToken(final String refreshToken){
+        validateToken(refreshToken, TokenType.REFRESH_TOKEN);
+        final String email = extractEmailFromToken(refreshToken, TokenType.REFRESH_TOKEN);
+        final String newAccessToken = generateAccessToken(email);
+        final String newRefreshToken = generateRefreshToken(email);
+
+        tokenCacheOperator.setWithExpire(refreshToken, new Token(newAccessToken, newRefreshToken), 1, TimeUnit.MINUTES);
+
+        return new Token(newAccessToken, newRefreshToken);
     }
 
     /**
@@ -70,32 +83,24 @@ public class JWTProvider {
      */
     public String reIssueRefreshToken(final String refreshToken) {
         validateToken(refreshToken, TokenType.REFRESH_TOKEN);
-        final String email = extractEmailFromRefreshToken(refreshToken);
+        final String email = extractEmailFromToken(refreshToken, TokenType.REFRESH_TOKEN);
         return generateRefreshToken(email);
     }
 
-    /**
-     * accessToken에서 email 추출
-     *
-     * @throws InvalidTokenException : 잘못된 토큰 요청시 발생
-     * @throws ExpiredTokenException : 만료된 토큰 요청시 발생
-     */
-    public String extractEmailFromAccessToken(final String accessToken) {
-        return initializeJwtParser(TokenType.ACCESS_TOKEN)
-            .parseClaimsJws(accessToken)
+    public String extractEmailFromToken(String token, TokenType tokenType) {
+        return initializeJwtParser(tokenType)
+            .parseClaimsJws(token)
             .getBody()
             .get(JWTConsts.EMAIL)
             .toString();
     }
 
+    public boolean existsCachedRefreshToken(String refreshToken){
+        return tokenCacheOperator.contains(refreshToken);
+    }
 
-    /**
-     * DB에서 refresh token(value)를 이용한 email(key) 추출
-     *
-     * @throws NotExistTokenException : 존재하지 않는 토큰 요청시 발생
-     */
-    private String extractEmailFromRefreshToken(String refreshToken) {
-        return tokenQueryService.findEmailByValue(refreshToken, TokenType.REFRESH_TOKEN);
+    public Token getCachedToken(String refreshToken){
+        return tokenCacheOperator.get(refreshToken);
     }
 
     /**
@@ -163,6 +168,9 @@ public class JWTProvider {
             .requireIssuer(JWTConsts.TOKEN_ISSUER)
             .require(JWTConsts.TOKEN_TYPE, tokenType.name())
             .build();
+    }
+
+    public record Token(String accessToken, String refreshToken){
     }
 
 }

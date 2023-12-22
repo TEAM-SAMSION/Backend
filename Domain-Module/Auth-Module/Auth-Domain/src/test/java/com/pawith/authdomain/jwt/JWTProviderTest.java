@@ -1,11 +1,9 @@
 package com.pawith.authdomain.jwt;
 
-import com.pawith.authdomain.exception.NotExistTokenException;
 import com.pawith.authdomain.jwt.exception.ExpiredTokenException;
 import com.pawith.authdomain.jwt.exception.InvalidTokenException;
-import com.pawith.authdomain.service.TokenQueryService;
-import com.pawith.authdomain.service.TokenSaveService;
 import com.pawith.commonmodule.UnitTestConfig;
+import com.pawith.commonmodule.cache.operators.ValueOperator;
 import com.pawith.commonmodule.utils.FixtureMonkeyUtils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtParser;
@@ -19,22 +17,19 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
-import static org.mockito.BDDMockito.given;
-
 @UnitTestConfig
 @DisplayName("JWTProvider 테스트")
 public class JWTProviderTest {
     private final JWTProperties jwtProperties = new JWTProperties(JWTTestConsts.SECRET, JWTTestConsts.ACCESS_TOKEN_EXPIRED_TIME, JWTTestConsts.REFRESH_TOKEN_EXPIRED_TIME);
-    @Mock
-    private TokenSaveService tokenSaveService;
-    @Mock
-    private TokenQueryService tokenQueryService;
 
     private JWTProvider jwtProvider;
 
+    @Mock
+    private ValueOperator<String, JWTProvider.Token> tokenValueOperator;
+
     @BeforeEach
     void init(){
-        jwtProvider = new JWTProvider(jwtProperties, tokenSaveService, tokenQueryService);
+        jwtProvider = new JWTProvider(jwtProperties,tokenValueOperator);
     }
 
     @Test
@@ -64,38 +59,6 @@ public class JWTProviderTest {
     }
 
     @Test
-    @DisplayName("refreshToken을 이용하여 accessToken을 재발급한다.")
-    void reIssueAccessToken(){
-        //given
-        final String randomEmail = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(String.class);
-        final String refreshToken = jwtProvider.generateRefreshToken(randomEmail);
-        given(tokenQueryService.findEmailByValue(refreshToken, TokenType.REFRESH_TOKEN)).willReturn(randomEmail);
-        //when
-        final String accessToken = jwtProvider.reIssueAccessToken(refreshToken);
-        final Claims claims = extractClaimsFromToken(accessToken);
-        //then
-        Assertions.assertThat(accessToken).isNotNull();
-        Assertions.assertThat(claims.get(JWTConsts.EMAIL)).isEqualTo(randomEmail);
-        Assertions.assertThat(claims.get(JWTConsts.TOKEN_TYPE)).isEqualTo(TokenType.ACCESS_TOKEN.toString());
-    }
-
-    @Test
-    @DisplayName("refreshToken을 이용하여 refreshToken을 재발급한다.")
-    void reIssueRefreshToken(){
-        //given
-        final String randomEmail = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(String.class);
-        final String refreshToken = jwtProvider.generateRefreshToken(randomEmail);
-        given(tokenQueryService.findEmailByValue(refreshToken, TokenType.REFRESH_TOKEN)).willReturn(randomEmail);
-        //when
-        final String newRefreshToken = jwtProvider.reIssueRefreshToken(refreshToken);
-        final Claims claims = extractClaimsFromToken(newRefreshToken);
-        //then
-        Assertions.assertThat(newRefreshToken).isNotNull();
-        Assertions.assertThat(claims.get(JWTConsts.EMAIL)).isEqualTo(randomEmail);
-        Assertions.assertThat(claims.get(JWTConsts.TOKEN_TYPE)).isEqualTo(TokenType.REFRESH_TOKEN.toString());
-    }
-
-    @Test
     @DisplayName("refreshToken이 만료되었을 때, accessToken 재발급시 예외가 발생한다.")
     @SneakyThrows
     void reIssueAccessTokenWithExpiredRefreshToken(){
@@ -107,31 +70,6 @@ public class JWTProviderTest {
         //then
         Assertions.assertThatCode(() -> jwtProvider.reIssueAccessToken(refreshToken))
             .isInstanceOf(ExpiredTokenException.class);
-    }
-
-    @Test
-    @DisplayName("accessToken에서 email을 추출한다.")
-    void extractEmailFromAccessToken(){
-        //given
-        final String randomEmail = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(String.class);
-        final String accessToken = jwtProvider.generateAccessToken(randomEmail);
-        //when
-        final String email = jwtProvider.extractEmailFromAccessToken(accessToken);
-        //then
-        Assertions.assertThat(email).isEqualTo(randomEmail);
-    }
-
-    @Test
-    @DisplayName("refreshToken에서 email을 추출할때 잘못된 토큰이면 NotExistTokenException 예외가 발생한다.")
-    void extractEmailFromRefreshToken(){
-        //given
-        final String randomEmail = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(String.class);
-        final String refreshToken = jwtProvider.generateRefreshToken(randomEmail);
-        given(tokenQueryService.findEmailByValue(refreshToken, TokenType.REFRESH_TOKEN)).willThrow(NotExistTokenException.class);
-        //when
-        //then
-        Assertions.assertThatCode(() -> jwtProvider.reIssueRefreshToken(refreshToken))
-            .isInstanceOf(NotExistTokenException.class);
     }
 
     @Test

@@ -30,6 +30,7 @@ public class User extends BaseEntity {
     private Long id;
 
     private String nickname;
+    @Column(name="email", nullable = false)
     private String email;
     private String imageUrl;
     @Enumerated(EnumType.STRING)

@@ -2,6 +2,7 @@ package com.pawith.todopresentation;
 
 import com.pawith.commonmodule.response.ListResponse;
 import com.pawith.commonmodule.response.SliceResponse;
+import com.pawith.todoapplication.dto.request.AssignChangeRequest;
 import com.pawith.todoapplication.dto.request.ScheduledDateChangeRequest;
 import com.pawith.todoapplication.dto.request.TodoCreateRequest;
 import com.pawith.todoapplication.dto.request.TodoDescriptionChangeRequest;
@@ -27,6 +28,7 @@ public class TodoController {
     private final TodoChangeUseCase todoChangeUseCase;
     private final AssignChangeUseCase assignChangeUseCase;
     private final TodoDeleteUseCase todoDeleteUseCase;
+    private final TodoValidationUseCase todoValidationUseCase;
     private final TodoNotificationCreateUseCase todoNotificationCreateUseCase;
     private final TodoWithdrawGetUseCase todoWithdrawGetUseCase;
 
@@ -71,6 +73,11 @@ public class TodoController {
         assignChangeUseCase.changeAssignStatus(todoId);
     }
 
+    @PutMapping("/todos/{todoId}/assign")
+    public void putAssign(@PathVariable Long todoId, @RequestBody AssignChangeRequest assignChangeRequest){
+        assignChangeUseCase.changeAssign(todoId, assignChangeRequest);
+    }
+
     @GetMapping("/todos/{todoId}/completion")
     public TodoCompletionResponse getTodoCompletion(@PathVariable Long todoId){
         return todoGetUseCase.getTodoCompletion(todoId);
@@ -79,6 +86,11 @@ public class TodoController {
     @DeleteMapping("/todos/{todoId}")
     public void deleteTodoById(@PathVariable Long todoId){
         todoDeleteUseCase.deleteTodoByTodoId(todoId);
+    }
+
+    @GetMapping("/{todoTeamId}/todos/{todoId}/validate")
+    public TodoValidateResponse validateDeleteAndUpdateTodo(@PathVariable Long todoTeamId, @PathVariable Long todoId){
+        return todoValidationUseCase.validateDeleteAndUpdateTodoByTodoId(todoTeamId, todoId);
     }
 
     @PostMapping("/todos/{todoId}/assign/notification")

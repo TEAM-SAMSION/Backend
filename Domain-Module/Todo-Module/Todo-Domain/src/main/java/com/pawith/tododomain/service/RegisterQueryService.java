@@ -25,11 +25,11 @@ public class RegisterQueryService {
     private final RegisterRepository registerRepository;
 
     public Slice<Register> findRegisterSliceByUserId(Long userId, Pageable pageable) {
-        return registerRepository.findAllByUserId(userId, pageable);
+        return registerRepository.findAllByUserIdQuery(userId, pageable);
     }
 
     public List<Register> findRegisterListByUserIdWithTodoTeam(Long userId) {
-        return registerRepository.findAllByUserIdWithTodoTeamFetch(userId);
+        return findRegisterList(() -> registerRepository.findAllByUserIdWithTodoTeamFetchQuery(userId));
     }
 
     public Register findRegisterByTodoTeamIdAndUserId(Long todoTeamId, Long userId) {
@@ -49,29 +49,15 @@ public class RegisterQueryService {
     }
 
     public List<Register> findAllRegistersByIds(List<Long> registerIds){
-        return findRegisterList(() -> registerRepository.findAllByIds(registerIds));
-    }
-
-    public List<Register> findAllRegistersByTodoId(Long todoId) {
-        return findRegisterList(() -> registerRepository.findByTodoId(todoId));
-    }
-
-    public List<Register> findAllRegistersByCategoryId(Long categoryId) {
-        return registerRepository.findAllByCategoryId(categoryId);
+        return findRegisterList(() -> registerRepository.findAllByIdsQuery(registerIds));
     }
 
     public List<Register> findAllRegistersByUserId(Long userId){
         return findRegisterList(() -> registerRepository.findAllByUserId(userId));
     }
 
-    public List<Long> findUserIdsByCategoryId(Long categoryId){
-        return findRegisterList(() -> registerRepository.findAllByCategoryId(categoryId)).stream()
-            .map(Register::getUserId)
-            .collect(Collectors.toList());
-    }
-
     public Integer countRegisterByTodoTeamId(Long todoTeamId){
-        return registerRepository.countByTodoTeamId(todoTeamId);
+        return registerRepository.countByTodoTeamIdQuery(todoTeamId);
     }
 
     public Integer findUserRegisterTerm (Long todoTeamId, Long userId){
@@ -80,13 +66,13 @@ public class RegisterQueryService {
     }
 
     public Register findLatestTodoTeam(Long userId){
-        return findRegister(() -> registerRepository.findLatestRegisterByUserId(userId));
+        return findRegister(() -> registerRepository.findLatestRegisterByUserIdQuery(userId));
     }
     private Register findRegister(Supplier<Optional<Register>> optionalSupplier){
         return registerOptionalHandle(optionalSupplier);
     }
 
-    private <T> List<Register> findRegisterList(Supplier<List<Register>> listSupplier) {
+    private List<Register> findRegisterList(Supplier<List<Register>> listSupplier) {
         return filterUnregister(listSupplier.get());
     }
 

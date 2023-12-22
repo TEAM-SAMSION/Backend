@@ -3,6 +3,7 @@ package com.pawith.tododomain.entity;
 import com.pawith.commonmodule.domain.BaseEntity;
 import com.pawith.commonmodule.util.DomainFieldUtils;
 import jakarta.persistence.*;
+import java.time.LocalDate;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,7 +11,6 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
-import java.util.Objects;
 
 @Entity
 @Getter
@@ -30,6 +30,8 @@ public class Category extends BaseEntity {
 
     private Boolean isDeleted=Boolean.FALSE;
 
+    private LocalDate disabledAt;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "team_id")
     private TodoTeam todoTeam;
@@ -39,12 +41,18 @@ public class Category extends BaseEntity {
         this.name = name;
         this.categoryStatus = categoryStatus;
         this.todoTeam = todoTeam;
+        this.disabledAt = LocalDate.now();
     }
 
-    public void updateCategoryStatus(CategoryStatus categoryStatus) {
+    public void updateCategoryStatus() {
         this.categoryStatus = DomainFieldUtils.DomainValidateBuilder.builder(CategoryStatus.class)
-                .newValue(categoryStatus)
+                .newValue(this.categoryStatus.equals(CategoryStatus.ON) ? CategoryStatus.OFF : CategoryStatus.ON)
                 .currentValue(this.categoryStatus)
+                .validate();
+
+        this.disabledAt = DomainFieldUtils.DomainValidateBuilder.builder(LocalDate.class)
+                .newValue(LocalDate.now())
+                .currentValue(this.disabledAt)
                 .validate();
     }
 

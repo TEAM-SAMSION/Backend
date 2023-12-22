@@ -4,6 +4,7 @@ import com.pawith.commonmodule.BaseRestDocsTest;
 import com.pawith.commonmodule.response.ListResponse;
 import com.pawith.commonmodule.response.SliceResponse;
 import com.pawith.commonmodule.utils.FixtureMonkeyUtils;
+import com.pawith.todoapplication.dto.request.AssignChangeRequest;
 import com.pawith.todoapplication.dto.request.ScheduledDateChangeRequest;
 import com.pawith.todoapplication.dto.request.TodoCreateRequest;
 import com.pawith.todoapplication.dto.request.TodoDescriptionChangeRequest;
@@ -50,6 +51,8 @@ public class TodoControllerTest extends BaseRestDocsTest {
     private AssignChangeUseCase assignChangeUseCase;
     @MockBean
     private TodoDeleteUseCase todoDeleteUseCase;
+    @MockBean
+    private TodoValidationUseCase todoValidationUseCase;
     @MockBean
     private TodoNotificationCreateUseCase todoNotificationCreateUseCase;
     @MockBean
@@ -122,7 +125,7 @@ public class TodoControllerTest extends BaseRestDocsTest {
     @DisplayName("todo 등록 API 테스트")
     void postTodo() throws Exception {
         //given
-        final TodoCreateRequest todoCreateRequest = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(TodoCreateRequest.class);
+        final TodoCreateRequest todoCreateRequest = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeOne(TodoCreateRequest.class);
         MockHttpServletRequestBuilder request = post(TODO_REQUEST_URL+"/todos")
             .content(objectMapper.writeValueAsString(todoCreateRequest))
             .contentType(MediaType.APPLICATION_JSON)
@@ -137,6 +140,7 @@ public class TodoControllerTest extends BaseRestDocsTest {
                 ),
                 requestFields(
                     fieldWithPath("categoryId").description("todo 등록 카테고리 id"),
+                    fieldWithPath("todoTeamId").description("todo 등록 팀 id"),
                     fieldWithPath("description").description("todo 설명"),
                     fieldWithPath("scheduledDate").description("todo 완료 기한 날짜"),
                     fieldWithPath("registerIds[]").description("todo를 할당할 사용자 registerId들")
@@ -340,6 +344,35 @@ public class TodoControllerTest extends BaseRestDocsTest {
     }
 
     @Test
+    @DisplayName("투두 삭제 및 수정 검증 API 테스트")
+    void validateDeleteAndUpdateTodo() throws Exception {
+        //given
+        final Long testTodoTeamId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
+        final Long testTodoId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
+        final TodoValidateResponse todoValidateResponse = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeOne(TodoValidateResponse.class);
+
+        given(todoValidationUseCase.validateDeleteAndUpdateTodoByTodoId(any(), any())).willReturn(todoValidateResponse);
+        MockHttpServletRequestBuilder request = get(TODO_REQUEST_URL + "/{todoTeamId}/todos/{todoId}/validate", testTodoTeamId, testTodoId)
+                .header("Authorization", "Bearer accessToken");
+        //when
+        ResultActions result = mvc.perform(request);
+        //then
+        result.andExpect(status().isOk())
+                .andDo(resultHandler.document(
+                        requestHeaders(
+                                headerWithName("Authorization").description("access 토큰")
+                        ),
+                        pathParameters(
+                            parameterWithName("todoTeamId").description("투두 팀 Id"),
+                            parameterWithName("todoId").description("투두 항목 Id")
+                        ),
+                        responseFields(
+                                fieldWithPath("isNotValidate").description("투두 삭제 및 수정 검증 여부 true면 삭제 및 수정 불가능")
+                        )
+                ));
+    }
+
+    @Test
     @DisplayName("투두 알림 생성 API 테스트")
     void postNotification() throws Exception{
         //given
@@ -493,4 +526,30 @@ public class TodoControllerTest extends BaseRestDocsTest {
                 ));
     }
 
+    @Test
+    @DisplayName("투두 담당자 변경 API 테스트")
+    void changeAssign() throws Exception {
+        //given
+        final Long testTodoId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
+        final AssignChangeRequest assignChangeRequest = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeOne(AssignChangeRequest.class);
+        MockHttpServletRequestBuilder request = put(TODO_REQUEST_URL + "/todos/{todoId}/assign", testTodoId)
+                .content(objectMapper.writeValueAsString(assignChangeRequest))
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Authorization", "Bearer accessToken");
+        //when
+        ResultActions result = mvc.perform(request);
+        //then
+        result.andExpect(status().isOk())
+            .andDo(resultHandler.document(
+                requestHeaders(
+                    headerWithName("Authorization").description("access 토큰")
+                ),
+                pathParameters(
+                    parameterWithName("todoId").description("투두 항목 Id")
+                ),
+                requestFields(
+                    fieldWithPath("registerIds[]").description("변경할 담당자들의 registerId")
+                )
+            ));
+    }
 }

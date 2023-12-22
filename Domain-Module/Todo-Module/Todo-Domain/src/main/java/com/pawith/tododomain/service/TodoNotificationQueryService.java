@@ -16,6 +16,6 @@ public class TodoNotificationQueryService {
     private final TodoNotificationRepository todoNotificationRepository;
 
     public List<TodoNotification> findAllByTodoIdsWithIncompleteAssign(List<Long> todoIds, Long userId) {
-        return todoNotificationRepository.findAllByTodoIdWithIncompleteAssign(todoIds, userId);
+        return todoNotificationRepository.findAllByTodoIdsAndUserIdWithInCompleteAssignQuery(todoIds, userId);
     }
 }

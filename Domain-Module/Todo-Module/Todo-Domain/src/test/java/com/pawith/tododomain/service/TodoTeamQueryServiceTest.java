@@ -90,7 +90,7 @@ class TodoTeamQueryServiceTest {
         //given
         final Long userId = FixtureMonkey.create().giveMeOne(Long.class);
         final List<TodoTeam> mockTodoTeam = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMe(TodoTeam.class, 10);
-        given(todoTeamRepository.findAllByUserId(userId)).willReturn(mockTodoTeam);
+        given(todoTeamRepository.findAllByUserIdQuery(userId)).willReturn(mockTodoTeam);
         //when
         List<TodoTeam> result = todoTeamQueryService.findAllTodoTeamByUserId(userId);
         //then

@@ -5,6 +5,7 @@ import com.pawith.commonmodule.UnitTestConfig;
 import com.pawith.commonmodule.utils.FixtureMonkeyUtils;
 import com.pawith.tododomain.entity.Category;
 import com.pawith.tododomain.repository.CategoryRepository;
+import java.time.LocalDate;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -34,10 +35,11 @@ class CategoryQueryServiceTest {
     void findCategoryListByTodoTeamId() {
         //given
         final Long mockTodoTeamId = FixtureMonkey.create().giveMeOne(Long.class);
+        final LocalDate mockMoveDate = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeOne(LocalDate.class);
         final List<Category> mockCategoryList = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMe(Category.class, 10);
-        given(categoryRepository.findAllByTodoTeamIdAndCategoryStatus(mockTodoTeamId)).willReturn(mockCategoryList);
+        given(categoryRepository.findAllByTodoTeamIdAndCategoryStatusQuery(mockTodoTeamId, mockMoveDate)).willReturn(mockCategoryList);
         //when
-        List<Category> result = categoryQueryService.findCategoryListByTodoTeamIdAndStatus(mockTodoTeamId);
+        List<Category> result = categoryQueryService.findCategoryListByTodoTeamIdAndStatus(mockTodoTeamId, mockMoveDate);
         //then
         Assertions.assertThat(result).usingRecursiveComparison().isEqualTo(mockCategoryList);
     }

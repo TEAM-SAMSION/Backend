@@ -12,6 +12,10 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "todo_team",
+    uniqueConstraints = @UniqueConstraint(name = "team_code_unique", columnNames = "teamCode")
+)
+
 public class TodoTeam extends BaseEntity {
 
     @Id
@@ -34,16 +38,16 @@ public class TodoTeam extends BaseEntity {
 
     public void updateTodoTeam(String teamName, String description, String imageUrl) {
         this.teamName = DomainFieldUtils.DomainValidateBuilder.builder(String.class)
-                .newValue(teamName)
-                .currentValue(this.teamName)
-                .validate();
+            .newValue(teamName)
+            .currentValue(this.teamName)
+            .validate();
         this.description = DomainFieldUtils.DomainValidateBuilder.builder(String.class)
-                .newValue(description)
-                .currentValue(this.description)
-                .validate();
+            .newValue(description)
+            .currentValue(this.description)
+            .validate();
         this.imageUrl = DomainFieldUtils.DomainValidateBuilder.builder(String.class)
-                .newValue(imageUrl)
-                .currentValue(this.imageUrl)
-                .validate();
+            .newValue(imageUrl)
+            .currentValue(this.imageUrl)
+            .validate();
     }
 }
