@@ -1,0 +1,4 @@
+dependencies {
+    implementation project(":Common-Module")
+    implementation project(":Domain-Module:Todo-Module:Todo-Domain")
+}
