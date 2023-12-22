@@ -89,6 +89,19 @@ public class RegisterRepositoryImpl implements RegisterQueryRepository {
     }
 
     @Override
+    public Optional<Register> findByUserIdAndCategoryId(Long userId, Long categoryId) {
+        QRegister qRegister = QRegister.register;
+        QTodoTeam qTodoTeam = qRegister.todoTeam;
+        QCategory qCategory = QCategory.category;
+        return Optional.ofNullable(queryFactory.select(qRegister)
+            .from(qRegister)
+            .join(qTodoTeam)
+            .join(qCategory).on(qCategory.todoTeam.eq(qTodoTeam))
+            .where(qRegister.userId.eq(userId).and(qCategory.id.eq(categoryId)))
+            .fetchOne());
+    }
+
+    @Override
     @SuppressWarnings("unchecked")
     public List<IncompleteTodoCountInfoDaoImpl> findAllIncompleteTodoCountInfoQuery(Pageable pageable) {
         final QRegister qRegister = QRegister.register;

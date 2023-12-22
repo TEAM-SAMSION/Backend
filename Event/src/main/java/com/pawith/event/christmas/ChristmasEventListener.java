@@ -16,12 +16,16 @@ public class ChristmasEventListener {
 
     @EventListener
     public void handleEventCreateNewTodoTeam(ChristmasEvent.ChristmasEventCreateNewTodoTeam event) {
-        final TodoTeam todoTeam = todoTeamQueryService.findTodoTeamById(event.todoTeamId());
-        christmasEventService.publishEvent(todoTeam);
+        if(christmasEventService.isEventDay()){
+            final TodoTeam todoTeam = todoTeamQueryService.findTodoTeamById(event.todoTeamId());
+            christmasEventService.publishEvent(todoTeam);
+        }
     }
 
     @EventListener
     public void handleEventCreateNewRegister(ChristmasEvent.ChristmasEventCreateNewRegister event) {
-        christmasEventService.addNewRegisterAtChristmasEventTodo(event.todoTeamId(), event.userId());
+        if(christmasEventService.isEventDay()){
+            christmasEventService.addNewRegisterAtChristmasEventTodo(event.todoTeamId(), event.userId());
+        }
     }
 }

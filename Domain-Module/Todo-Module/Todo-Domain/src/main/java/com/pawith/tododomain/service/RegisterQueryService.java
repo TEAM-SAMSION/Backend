@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -33,6 +34,13 @@ public class RegisterQueryService {
     }
 
     public Register findRegisterByTodoTeamIdAndUserId(Long todoTeamId, Long userId) {
+        return findRegister(() -> registerRepository.findByTodoTeamIdAndUserId(todoTeamId, userId));
+    }
+
+    public Register findRegisterByNullableTodoTeamIdAndUserIdAndCategoryId(Long todoTeamId, Long userId, Long categoryId) {
+        if(Objects.isNull(todoTeamId)){
+            return findRegister(() -> registerRepository.findByUserIdAndCategoryId(userId, categoryId));
+        }
         return findRegister(() -> registerRepository.findByTodoTeamIdAndUserId(todoTeamId, userId));
     }
 
