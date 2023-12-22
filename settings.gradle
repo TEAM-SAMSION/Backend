@@ -28,3 +28,5 @@ include 'Common-Module'
 
 include 'Image-Module'
 include 'Alarm-Module'
+
+include 'Event'
