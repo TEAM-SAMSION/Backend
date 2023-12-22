@@ -161,4 +161,17 @@ public class TodoRepositoryImpl implements TodoQueryRepository {
                 .fetchOne().intValue();
     }
 
+    @Override
+    public List<Todo> findTodoListByCreatorIdAndTodoTeamIdQuery(Long creatorId, Long todoTeamId) {
+        final QTodo todo = QTodo.todo;
+        final QCategory category = todo.category;
+        final QTodoTeam todoTeam = category.todoTeam;
+        return jpaQueryFactory.select(todo)
+                .from(todo)
+                .join(category).fetchJoin()
+                .join(todoTeam).fetchJoin()
+                .where(todo.creatorId.eq(creatorId).and(todoTeam.id.eq(todoTeamId)))
+                .fetch();
+    }
+
 }
