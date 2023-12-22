@@ -19,7 +19,6 @@ public class ChristmasEventService {
     private static final String EVENT_CATEGORY_NAME = "크리스마스";
     private static final String EVENT_TODO_DESCRIPTION = "포잇스마스 이벤트 참여하기";
     private static final List<LocalDate> EVENT_TODO_SCHEDULED_DATE_LIST = List.of(
-        LocalDate.of(2023, 12, 22),
         LocalDate.of(2023, 12, 23),
         LocalDate.of(2023, 12, 24),
         LocalDate.of(2023, 12, 25)
