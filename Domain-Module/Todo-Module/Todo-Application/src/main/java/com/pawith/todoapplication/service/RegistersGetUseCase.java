@@ -2,18 +2,21 @@ package com.pawith.todoapplication.service;
 
 import com.pawith.commonmodule.annotation.ApplicationService;
 import com.pawith.commonmodule.response.ListResponse;
-import com.pawith.todoapplication.dto.response.*;
+import com.pawith.todoapplication.dto.response.RegisterInfoResponse;
+import com.pawith.todoapplication.dto.response.RegisterManageInfoResponse;
+import com.pawith.todoapplication.dto.response.RegisterSearchInfoResponse;
+import com.pawith.todoapplication.dto.response.RegisterTermResponse;
 import com.pawith.tododomain.entity.Authority;
 import com.pawith.tododomain.entity.Register;
 import com.pawith.tododomain.service.RegisterQueryService;
 import com.pawith.userdomain.entity.User;
 import com.pawith.userdomain.service.UserQueryService;
 import com.pawith.userdomain.utils.UserUtils;
-import java.util.Comparator;
-import java.util.LinkedHashMap;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -89,14 +92,12 @@ public class RegistersGetUseCase {
 
         List<Register> sortedRegisters = registers.stream()
                 .sorted(Comparator.comparing(Register::getAuthority, authorityComparator))
-                .collect(Collectors.toList());
+                .toList();
 
-        Map<User, Register> userRegisterMap = users.stream()
+        return users.stream()
                 .flatMap(user -> sortedRegisters.stream()
                         .filter(register -> user.getId().equals(register.getUserId()))
                         .map(register -> Map.entry(user, register)))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (existing, replacement) -> existing, LinkedHashMap::new));
-
-        return userRegisterMap;
     }
 }
