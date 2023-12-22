@@ -31,7 +31,8 @@ public class TodoCreateUseCase {
 
     public void createTodo(TodoCreateRequest request) {
         final User accessUser = userUtils.getAccessUser();
-        final Long accessUserRegisterId = registerQueryService.findRegisterByTodoTeamIdAndUserId(request.getTodoTeamId(), accessUser.getId()).getId();
+        final Long accessUserRegisterId =
+            registerQueryService.findRegisterByNullableTodoTeamIdAndUserIdAndCategoryId(request.getTodoTeamId(), accessUser.getId(), request.getCategoryId()).getId();
         final Category category = categoryQueryService.findCategoryByCategoryId(request.getCategoryId());
         final Todo todo = TodoMapper.mapToTodo(request, category, accessUserRegisterId);
         todoSaveService.saveTodoEntity(todo);

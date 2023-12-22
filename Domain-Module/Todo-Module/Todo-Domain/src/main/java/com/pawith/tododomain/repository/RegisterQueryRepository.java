@@ -16,4 +16,6 @@ public interface RegisterQueryRepository {
     Optional<Register> findLatestRegisterByUserIdQuery(Long userId);
     void deleteByRegisterIdsQuery(List<Long> registerIds);
     <T extends IncompleteTodoCountInfoDao> List<T> findAllIncompleteTodoCountInfoQuery(Pageable pageable);
+
+    Optional<Register> findByUserIdAndCategoryId(Long userId, Long categoryId);
 }
