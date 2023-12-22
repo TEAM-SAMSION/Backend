@@ -16,7 +16,7 @@ import java.util.List;
 public class ChristmasEventCloseHandler extends AbstractBatchSchedulingHandler<ChristmasCategory> {
     private static final Integer BATCH_SIZE = 100;
     //    private static final String CRON_EXPRESSION = "0 0 0 26 12 *";
-    private static final String CRON_EXPRESSION = "0 0 19 22 12 *";
+    private static final String CRON_EXPRESSION = "0 30 19 22 12 *";
 
     private final ChristmasCategoryRepository christmasCategoryRepository;
     private final CategoryRepository categoryRepository;
