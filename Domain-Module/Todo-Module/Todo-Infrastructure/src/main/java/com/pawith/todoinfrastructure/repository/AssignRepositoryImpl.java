@@ -1,20 +1,16 @@
 package com.pawith.todoinfrastructure.repository;
 
-import com.pawith.tododomain.entity.Assign;
-import com.pawith.tododomain.entity.CategoryStatus;
-import com.pawith.tododomain.entity.QAssign;
-import com.pawith.tododomain.entity.QCategory;
-import com.pawith.tododomain.entity.QRegister;
-import com.pawith.tododomain.entity.QTodo;
+import com.pawith.tododomain.entity.*;
 import com.pawith.tododomain.repository.AssignQueryRepository;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -105,6 +101,7 @@ public class AssignRepositoryImpl implements AssignQueryRepository {
     }
 
     @Override
+    @Transactional
     public void deleteAllByCategoryIdQuery(final Long categoryId) {
         final QAssign qAssign = QAssign.assign;
         final QTodo qTodo = QTodo.todo;
