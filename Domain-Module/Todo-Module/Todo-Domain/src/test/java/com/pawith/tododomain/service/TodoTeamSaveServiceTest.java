@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.context.ApplicationEventPublisher;
 
+import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 
 @Slf4j
@@ -36,7 +37,7 @@ class TodoTeamSaveServiceTest {
         //given
         final TodoTeam mockTodoTeam = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey()
             .giveMeOne(TodoTeam.class);
-        log.info("mockTodoTeam: {}", mockTodoTeam);
+        given(todoTeamRepository.save(mockTodoTeam)).willReturn(mockTodoTeam);
         //when
         todoTeamSaveService.saveTodoTeamEntity(mockTodoTeam);
         //then
