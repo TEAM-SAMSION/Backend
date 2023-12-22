@@ -14,8 +14,7 @@ import java.util.List;
 @Component
 public class ChristmasEventPublishHandler extends AbstractBatchSchedulingHandler<TodoTeam> {
     private static final Integer BATCH_SIZE = 100;
-    //    private static final String CRON_EXPRESSION = "0 0 0 23 12 *";
-    private static final String CRON_EXPRESSION = "0 40 18 22 12 *";
+        private static final String CRON_EXPRESSION = "0 0 0 23 12 *";
     private final TodoTeamRepository todoTeamRepository;
     private final ChristmasEventService christmasEventService;
     public ChristmasEventPublishHandler(TodoTeamRepository todoTeamRepository, ChristmasEventService christmasEventService) {
