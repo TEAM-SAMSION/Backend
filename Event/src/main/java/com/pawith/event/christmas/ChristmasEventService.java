@@ -21,7 +21,14 @@ public class ChristmasEventService {
     private static final List<LocalDate> EVENT_TODO_SCHEDULED_DATE_LIST = List.of(
         LocalDate.of(2023, 12, 23),
         LocalDate.of(2023, 12, 24),
-        LocalDate.of(2023, 12, 25)
+        LocalDate.of(2023, 12, 25),
+        LocalDate.of(2023, 12, 26),
+        LocalDate.of(2023, 12, 27),
+        LocalDate.of(2023, 12, 28),
+        LocalDate.of(2023, 12, 29),
+        LocalDate.of(2023, 12, 30),
+        LocalDate.of(2023, 12, 31),
+        LocalDate.of(2024, 1, 1)
     );
 
 
