@@ -3,9 +3,13 @@ package com.pawith.event.christmas;
 import com.pawith.event.christmas.entity.ChristmasCategory;
 import com.pawith.event.christmas.repository.ChristmasCategoryRepository;
 import com.pawith.tododomain.entity.*;
-import com.pawith.tododomain.repository.*;
+import com.pawith.tododomain.repository.AssignRepository;
+import com.pawith.tododomain.repository.CategoryRepository;
+import com.pawith.tododomain.repository.RegisterRepository;
+import com.pawith.tododomain.repository.TodoRepository;
 import com.pawith.tododomain.service.RegisterQueryService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -79,6 +83,46 @@ public class ChristmasEventService {
                     .build();
                 assignRepository.save(assign);
             });
+    }
+
+    @Scheduled(cron = "0 0 0 26 12 *")
+    public void addNewTodoAtChristmasEventCategory(){
+        final List<ChristmasCategory> allChristmasCategory = christmasCategoryRepository.findAll();
+        List<Todo> todoList = new ArrayList<>();
+        List<Assign> assignList = new ArrayList<>();
+        allChristmasCategory.forEach(christmasCategory ->{
+            final Long categoryId = christmasCategory.getCategoryId();
+            categoryRepository.findById(categoryId).ifPresent(category -> {
+                final List<LocalDate> eventDateList = new ArrayList<>(EVENT_START_DATE.datesUntil(EVENT_END_DATE).toList());
+                final TodoTeam todoTeam = category.getTodoTeam();
+                final List<Register> allRegisters = registerRepository.findAllByTodoTeamId(todoTeam.getId());
+                todoRepository.findTodoListByCreatorIdAndTodoTeamIdQuery(EVENT_CREATOR_ID, todoTeam.getId())
+                    .forEach(todo -> {
+                        final LocalDate scheduledDate = todo.getScheduledDate();
+                        eventDateList.remove(scheduledDate);
+                    });
+
+                eventDateList.forEach(eventDate -> {
+                    final Todo todo = Todo.builder()
+                        .category(category)
+                        .creatorId(EVENT_CREATOR_ID)
+                        .description(EVENT_TODO_DESCRIPTION)
+                        .scheduledDate(eventDate)
+                        .build();
+                    todoList.add(todo);
+                    List<Assign> allAssign = allRegisters.stream()
+                        .filter(Register::isRegistered)
+                        .map(register -> Assign.builder()
+                            .todo(todo)
+                            .register(register)
+                            .build())
+                        .toList();
+                    assignList.addAll(allAssign);
+                });
+            });
+        });
+        todoRepository.saveAll(todoList);
+        assignRepository.saveAll(assignList);
     }
 
     public Boolean isEventDay(){
