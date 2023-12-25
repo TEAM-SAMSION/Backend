@@ -18,12 +18,8 @@ import java.util.List;
 public class ChristmasEventService {
     private static final String EVENT_CATEGORY_NAME = "크리스마스";
     private static final String EVENT_TODO_DESCRIPTION = "포잇스마스 이벤트 참여하기";
-    private static final List<LocalDate> EVENT_TODO_SCHEDULED_DATE_LIST = List.of(
-        LocalDate.of(2023, 12, 23),
-        LocalDate.of(2023, 12, 24),
-        LocalDate.of(2023, 12, 25)
-    );
-
+    private static final LocalDate EVENT_START_DATE = LocalDate.of(2023, 12, 23);
+    private static final LocalDate EVENT_END_DATE = LocalDate.of(2024, 1, 2);
 
     private static final Long EVENT_CREATOR_ID = -1L;
     private final CategoryRepository categoryRepository;
@@ -47,7 +43,9 @@ public class ChristmasEventService {
         final List<Register> allRegisters = registerRepository.findAllByTodoTeamId(todoTeam.getId());
         final List<Todo> eventTodoList = new ArrayList<>();
         final List<Assign> eventAssignList = new ArrayList<>();
-        EVENT_TODO_SCHEDULED_DATE_LIST
+
+        final List<LocalDate> eventDateList = EVENT_START_DATE.datesUntil(EVENT_END_DATE).toList();
+        eventDateList
             .forEach(eventDate -> {
                     final Todo todo = Todo.builder()
                         .category(saved)
@@ -84,7 +82,8 @@ public class ChristmasEventService {
     }
 
     public Boolean isEventDay(){
-        return EVENT_TODO_SCHEDULED_DATE_LIST.contains(LocalDate.now());
+        final LocalDate now = LocalDate.now();
+        return now.isAfter(EVENT_START_DATE) && now.isBefore(EVENT_END_DATE);
     }
 
 }
