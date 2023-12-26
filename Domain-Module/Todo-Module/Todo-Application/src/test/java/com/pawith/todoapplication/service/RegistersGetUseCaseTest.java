@@ -56,7 +56,7 @@ public class RegistersGetUseCaseTest {
         );
         final List<Long> userIds = registerList.stream().map(Register::getUserId).collect(Collectors.toList());
         given(registerQueryService.findAllRegistersByTodoTeamId(todoTeamId)).willReturn(registerList);
-        given(userQueryService.findUserMapByIds(userIds)).willReturn(Map.of(mockFindUser.getId(), mockFindUser));
+        given(userQueryService.findMapWithUserIdKeyByIds(userIds)).willReturn(Map.of(mockFindUser.getId(), mockFindUser));
         // when
         ListResponse<RegisterInfoResponse> registerInfoListResponse = registersGetUseCase.getRegisters(todoTeamId);
         // then

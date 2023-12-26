@@ -37,13 +37,13 @@ public class UserQueryService {
         return findUser(() -> userRepository.findById(userId));
     }
 
-    public <T> Map<Long,User> findUserMapByIds(List<Long> userIds){
+    public Map<Long,User> findMapWithUserIdKeyByIds(List<Long> userIds){
         return userRepository.findAllByIds(userIds)
             .stream()
             .collect(Collectors.toMap(User::getId, Function.identity()));
     }
 
-    private <T> User findUser(Supplier<Optional<User>> method){
+    private User findUser(Supplier<Optional<User>> method){
         return method.get()
                 .orElseThrow(() -> new UserNotFoundException(UserError.USER_NOT_FOUND));
     }

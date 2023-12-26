@@ -47,7 +47,7 @@ public class RegistersGetUseCase {
         final Map<Long, User> registerUserMap = getRegisterUserMap(allRegisters);
         Comparator<Authority> authorityComparator = Comparator.comparing(Enum::ordinal);
         final List<RegisterManageInfoResponse> manageRegisterInfoResponses = allRegisters.stream()
-                .sorted(Comparator.comparing(register -> register.getAuthority(), authorityComparator))
+                .sorted(Comparator.comparing(Register::getAuthority, authorityComparator))
                 .map(register -> {
                     final User registerUser = registerUserMap.get(register.getUserId());
                     return new RegisterManageInfoResponse(register.getId(), register.getAuthority(), registerUser.getNickname(), registerUser.getEmail(), registerUser.getImageUrl());
@@ -67,7 +67,7 @@ public class RegistersGetUseCase {
         final List<Long> registerUserIds = allRegisters.stream()
             .map(Register::getUserId)
             .collect(Collectors.toList());
-        return userQueryService.findUserMapByIds(registerUserIds);
+        return userQueryService.findMapWithUserIdKeyByIds(registerUserIds);
     }
 
     public ListResponse<RegisterSearchInfoResponse> searchRegisterByNickname(final Long todoTeamId, final String nickname) {
