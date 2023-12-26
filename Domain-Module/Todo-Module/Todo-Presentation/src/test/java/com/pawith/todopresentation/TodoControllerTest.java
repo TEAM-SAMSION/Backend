@@ -57,6 +57,8 @@ public class TodoControllerTest extends BaseRestDocsTest {
     private TodoNotificationCreateUseCase todoNotificationCreateUseCase;
     @MockBean
     private TodoWithdrawGetUseCase todoWithdrawGetUseCase;
+    @MockBean
+    private TodoCompleteGetUseCase todoCompleteGetUseCase;
 
     private static final String TODO_REQUEST_URL = "/teams";
 
@@ -302,7 +304,7 @@ public class TodoControllerTest extends BaseRestDocsTest {
         //given
         final Long testTodoId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
         final TodoCompletionResponse todoCompletionResponse = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(TodoCompletionResponse.class);
-        given(todoGetUseCase.getTodoCompletion(testTodoId)).willReturn(todoCompletionResponse);
+        given(todoCompleteGetUseCase.getTodoCompletion(testTodoId)).willReturn(todoCompletionResponse);
         MockHttpServletRequestBuilder request = get(TODO_REQUEST_URL + "/todos/{todoId}/completion", testTodoId)
                 .header("Authorization", "Bearer accessToken");
         //when
