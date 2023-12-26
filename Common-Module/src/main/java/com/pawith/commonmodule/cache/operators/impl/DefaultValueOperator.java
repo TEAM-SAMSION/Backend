@@ -3,6 +3,7 @@ package com.pawith.commonmodule.cache.operators.impl;
 import com.pawith.commonmodule.cache.operators.ValueOperator;
 import net.jodah.expiringmap.ExpirationPolicy;
 
+import java.util.Collection;
 import java.util.concurrent.TimeUnit;
 
 public class DefaultValueOperator<K,V> extends ExpiredStorage<K,V> implements ValueOperator<K,V> {
@@ -19,6 +20,11 @@ public class DefaultValueOperator<K,V> extends ExpiredStorage<K,V> implements Va
     @Override
     public V get(K k) {
         return storage.get(k);
+    }
+
+    @Override
+    public Collection<K> getKeys() {
+        return storage.keySet();
     }
 
     @Override
