@@ -1,5 +1,6 @@
 package com.pawith.commonmodule.cache.operators;
 
+import java.util.Collection;
 import java.util.concurrent.TimeUnit;
 
 public interface ValueOperator<K,V> {
@@ -9,6 +10,8 @@ public interface ValueOperator<K,V> {
     void setWithExpire(K k, V v, long expire, TimeUnit timeUnit);
 
     V get(K k);
+
+    Collection<K> getKeys();
 
     void remove(K k);
 
