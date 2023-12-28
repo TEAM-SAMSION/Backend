@@ -12,5 +12,5 @@ public class TodoTeamInfoResponse {
     private String teamProfileImageUrl;
     private String teamName;
     private Authority authority;
-    private Integer registerPeriod;
+    private Long registerPeriod;
 }

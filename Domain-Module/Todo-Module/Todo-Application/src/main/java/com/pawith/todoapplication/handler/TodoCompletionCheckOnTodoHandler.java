@@ -26,8 +26,8 @@ public class TodoCompletionCheckOnTodoHandler {
     public void changeTodoStatus(TodoCompletionCheckEvent todoCompletionCheckEvent) throws InterruptedException {
         while(true) {
             try {
-                final List<Assign> assigns = assignQueryService.findAllAssignByTodoId(todoCompletionCheckEvent.getTodoId());
-                final Todo todo = todoQueryService.findTodoByTodoId(todoCompletionCheckEvent.getTodoId());
+                final List<Assign> assigns = assignQueryService.findAllAssignByTodoId(todoCompletionCheckEvent.todoId());
+                final Todo todo = todoQueryService.findTodoByTodoId(todoCompletionCheckEvent.todoId());
                 final boolean isAllCompleteTodo = assigns.stream().allMatch(Assign::isCompleted);
                 todo.updateCompletionStatus(isAllCompleteTodo);
                 break;

@@ -1,11 +1,7 @@
 package com.pawith.todoapplication.mapper;
 
 import com.pawith.todoapplication.dto.request.TodoTeamCreateRequest;
-import com.pawith.todoapplication.dto.response.TodoTeamInfoDetailResponse;
-import com.pawith.todoapplication.dto.response.TodoTeamNameResponse;
-import com.pawith.todoapplication.dto.response.TodoTeamRandomCodeResponse;
-import com.pawith.todoapplication.dto.response.TodoTeamSearchInfoResponse;
-import com.pawith.todoapplication.dto.response.TodoTeamInfoResponse;
+import com.pawith.todoapplication.dto.response.*;
 import com.pawith.tododomain.entity.Register;
 import com.pawith.tododomain.entity.TodoTeam;
 import com.pawith.userdomain.entity.User;
@@ -13,7 +9,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.time.Period;
+import java.time.temporal.ChronoUnit;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class TodoTeamMapper {
@@ -36,7 +32,7 @@ public class TodoTeamMapper {
     }
 
     public static TodoTeamInfoResponse mapToTodoTeamSimpleResponse(final TodoTeam todoTeam, final Register register) {
-        final int registerPeriod = Period.between(register.getRegisterAt().toLocalDate(), LocalDate.now()).getDays();
+        final long registerPeriod = ChronoUnit.DAYS.between(register.getRegisterAt().toLocalDate(), LocalDate.now());
         return TodoTeamInfoResponse.builder()
             .teamId(todoTeam.getId())
             .teamName(todoTeam.getTeamName())
