@@ -21,8 +21,9 @@ public class TodoTeamCodeManageService {
         while (true) {
             final String randomUUID = UUID.randomUUID().toString();
             final String[] split = randomUUID.split("-");
-            if (!todoTeamRepository.existsByTeamCode(split[0]) && !occupiedTodoTeamCodeSet.contains(split[0])) {
-                occupiedTodoTeamCodeSet.addWithExpire(split[0], 1, TimeUnit.HOURS);
+            final String randomCode = split[0];
+            if (!todoTeamRepository.existsByTeamCode(randomCode) && !occupiedTodoTeamCodeSet.contains(randomCode)) {
+                occupiedTodoTeamCodeSet.addWithExpire(randomCode, 1, TimeUnit.HOURS);
                 return split[0];
             }
         }
