@@ -52,18 +52,6 @@ public class JWTProvider {
         return new Token(accessToken, refreshToken);
     }
 
-    /**
-     * refresh token을 이용하여 access token 재발급
-     *
-     * @throws InvalidTokenException : 잘못된 토큰 요청시 발생
-     * @throws ExpiredTokenException : 만료된 토큰 요청시 발생
-     */
-    public String reIssueAccessToken(final String refreshToken) {
-        validateToken(refreshToken, TokenType.REFRESH_TOKEN);
-        final String email = extractEmailFromToken(refreshToken, TokenType.REFRESH_TOKEN);
-        return generateAccessToken(email);
-    }
-
     public Token reIssueToken(final String refreshToken){
         validateToken(refreshToken, TokenType.REFRESH_TOKEN);
         final String email = extractEmailFromToken(refreshToken, TokenType.REFRESH_TOKEN);
@@ -73,18 +61,6 @@ public class JWTProvider {
         tokenCacheOperator.setWithExpire(refreshToken, new Token(newAccessToken, newRefreshToken), 1, TimeUnit.MINUTES);
 
         return new Token(newAccessToken, newRefreshToken);
-    }
-
-    /**
-     * refresh token을 이용하여 refresh token 재발급
-     *
-     * @throws InvalidTokenException : 잘못된 토큰 요청시 발생
-     * @TODO : RefreshToken 인증 범위 결정
-     */
-    public String reIssueRefreshToken(final String refreshToken) {
-        validateToken(refreshToken, TokenType.REFRESH_TOKEN);
-        final String email = extractEmailFromToken(refreshToken, TokenType.REFRESH_TOKEN);
-        return generateRefreshToken(email);
     }
 
     public String extractEmailFromToken(String token, TokenType tokenType) {

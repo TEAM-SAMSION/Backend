@@ -59,20 +59,6 @@ public class JWTProviderTest {
     }
 
     @Test
-    @DisplayName("refreshToken이 만료되었을 때, accessToken 재발급시 예외가 발생한다.")
-    @SneakyThrows
-    void reIssueAccessTokenWithExpiredRefreshToken(){
-        //given
-        final String randomEmail = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(String.class);
-        final String refreshToken = jwtProvider.generateRefreshToken(randomEmail);
-        Thread.sleep(JWTTestConsts.REFRESH_TOKEN_EXPIRED_TIME+1);
-        //when
-        //then
-        Assertions.assertThatCode(() -> jwtProvider.reIssueAccessToken(refreshToken))
-            .isInstanceOf(ExpiredTokenException.class);
-    }
-
-    @Test
     @DisplayName("validateToken 메소드에 잘못된 token이 입력되면 InvalidTokenException 예외가 발생한다.")
     void validateTokenWithInvalidToken(){
         //given
