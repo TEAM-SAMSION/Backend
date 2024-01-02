@@ -51,6 +51,6 @@ public class AlarmService {
     }
 
     public void saveAllAlarm(List<Alarm> alarms){
-        alarmBatchRepository.saveAllBatch(alarms);
+        alarmBatchRepository.batchInsert(alarms);
     }
 }
