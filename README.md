@@ -4,6 +4,9 @@
 
 <img src=".github/docs/components-Modules.png">
 
+## Infra
+
+<img src=".github/docs/infra-diagram.png">
 
 ## 성능 개선
 
