@@ -27,7 +27,7 @@ public class UserAccountDeleteOnTodoHandler {
 
     @EventListener
     public void deleteUserInfo(UserAccountDeleteEvent userAccountDeleteEvent) {
-        final List<Register> registers = registerQueryService.findAllRegistersByUserId(userAccountDeleteEvent.getUserId());
+        final List<Register> registers = registerQueryService.findAllRegistersByUserId(userAccountDeleteEvent.userId());
         final List<Long> registerIds = registers.stream()
             .map(Register::getId)
             .collect(Collectors.toList());

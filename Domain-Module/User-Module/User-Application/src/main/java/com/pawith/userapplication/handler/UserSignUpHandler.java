@@ -26,13 +26,13 @@ public class UserSignUpHandler {
     @Transactional
     @EventListener
     public void signUp(final UserSignUpEvent userSignUpEvent){
-        if(!userQueryService.checkEmailAlreadyExist(userSignUpEvent.getEmail())) {
+        if(!userQueryService.checkEmailAlreadyExist(userSignUpEvent.email())) {
             final User user = UserMapper.toUserEntity(userSignUpEvent,DEFAULT_PROFILE_IMAGE_URL);
             userSaveService.saveUser(user);
-            userAuthoritySaveService.saveUserAuthority(userSignUpEvent.getEmail());
+            userAuthoritySaveService.saveUserAuthority(userSignUpEvent.email());
         }
         else {
-            userQueryService.checkAccountAlreadyExist(userSignUpEvent.getEmail(), userSignUpEvent.getProvider());
+            userQueryService.checkAccountAlreadyExist(userSignUpEvent.email(), userSignUpEvent.provider());
         }
     }
 

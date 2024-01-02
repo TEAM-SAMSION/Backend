@@ -9,9 +9,9 @@ public class UserMapper {
 
     public static User toUserEntity(UserSignUpEvent userSignUpEvent, String imageUrl) {
         return User.builder()
-            .nickname(userSignUpEvent.getNickname())
-            .email(userSignUpEvent.getEmail())
-            .provider(userSignUpEvent.getProvider())
+            .nickname(userSignUpEvent.nickname())
+            .email(userSignUpEvent.email())
+            .provider(userSignUpEvent.provider())
             .imageUrl(imageUrl)
             .build();
     }
