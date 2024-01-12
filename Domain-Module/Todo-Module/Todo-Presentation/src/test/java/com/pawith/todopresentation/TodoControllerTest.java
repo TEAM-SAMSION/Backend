@@ -351,9 +351,9 @@ public class TodoControllerTest extends BaseRestDocsTest {
         //given
         final Long testTodoTeamId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
         final Long testTodoId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
-        final TodoValidateResponse todoValidateResponse = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeOne(TodoValidateResponse.class);
+        final ValidateResponse validateResponse = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(ValidateResponse.class);
 
-        given(todoValidationUseCase.validateDeleteAndUpdateTodoByTodoId(any(), any())).willReturn(todoValidateResponse);
+        given(todoValidationUseCase.validateDeleteAndUpdateTodoByTodoId(any(), any())).willReturn(validateResponse);
         MockHttpServletRequestBuilder request = get(TODO_REQUEST_URL + "/{todoTeamId}/todos/{todoId}/validate", testTodoTeamId, testTodoId)
                 .header("Authorization", "Bearer accessToken");
         //when

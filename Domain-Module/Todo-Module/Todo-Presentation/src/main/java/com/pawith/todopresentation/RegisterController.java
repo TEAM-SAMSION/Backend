@@ -6,6 +6,7 @@ import com.pawith.todoapplication.dto.response.RegisterInfoResponse;
 import com.pawith.todoapplication.dto.response.RegisterManageInfoResponse;
 import com.pawith.todoapplication.dto.response.RegisterSearchInfoResponse;
 import com.pawith.todoapplication.dto.response.RegisterTermResponse;
+import com.pawith.todoapplication.dto.response.ValidateResponse;
 import com.pawith.todoapplication.service.ChangeRegisterUseCase;
 import com.pawith.todoapplication.service.RegistersGetUseCase;
 import com.pawith.todoapplication.service.TodoTeamRegisterUseCase;
@@ -31,17 +32,17 @@ public class RegisterController {
     /**
      * 팀 탈퇴 시 사용하는 검증 API
      */
-    @PostMapping("/{todoTeamId}/registers/validate")
-    public void validateRegisterDeletable(@PathVariable Long todoTeamId) {
-        unregisterUseCase.validateRegisterDeletable(todoTeamId);
+    @GetMapping("/{todoTeamId}/registers/validate")
+    public ValidateResponse validateRegisterDeletable(@PathVariable Long todoTeamId) {
+        return unregisterUseCase.validateRegisterDeletable(todoTeamId);
     }
 
     /**
      * 서비스 탈퇴 시 사용하는 검증 API
      */
-    @PostMapping("/registers/validate")
-    public void validateRegistersDeletable() {
-        unregisterUseCase.validateRegistersDeletable();
+    @GetMapping("/registers/validate")
+    public ValidateResponse validateRegistersDeletable() {
+        return unregisterUseCase.validateRegistersDeletable();
     }
 
     @PostMapping("/registers")

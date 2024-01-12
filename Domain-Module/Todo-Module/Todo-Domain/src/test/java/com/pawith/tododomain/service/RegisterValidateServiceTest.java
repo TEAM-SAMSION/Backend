@@ -34,7 +34,7 @@ class RegisterValidateServiceTest {
     }
 
     @Test
-    @DisplayName("운영진 register 탈퇴 가능 여부 테스트 - 운영진이 1명이고, register가 2명 이상일 때 UnregisterableException 발생")
+    @DisplayName("운영진 register 탈퇴 가능 여부 테스트 - 운영진이 1명이고, register가 2명 이상일 때 true 반환")
     void validatePresidentRegisterDeletable_one_president_two_register_throw_unregisterableException() {
         // given
         final Register mockRegister = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeBuilder(Register.class)
@@ -45,11 +45,11 @@ class RegisterValidateServiceTest {
         given(registerRepository.countByTodoTeamIdQuery(mockRegister.getTodoTeam().getId())).willReturn(registerCount);
         // when
         // then
-        Assertions.assertThatCode(() -> registerValidateService.validatePresidentRegisterDeletable(mockRegister)).isInstanceOf(UnregistrableException.class);
+        Assertions.assertThat(registerValidateService.validatePresidentRegisterDeletable(mockRegister)).isTrue();
     }
 
     @Test
-    @DisplayName("register 탈퇴 가능 여부 테스트 - 운영진이 1명 이상이고, register가 1명일 때 UnregisterableException 발생하지 않음")
+    @DisplayName("register 탈퇴 가능 여부 테스트 - 운영진이 1명 이상이고, register가 1명일 때 false 반환")
     void validateRegisterDeletable_one_over_president_one_register() {
         // given
         final Register mockRegister = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeBuilder(Register.class)
@@ -60,11 +60,11 @@ class RegisterValidateServiceTest {
         BDDMockito.lenient().when(registerRepository.countByTodoTeamIdQuery(mockRegister.getTodoTeam().getId())).thenReturn(registerCount);
         // when
         // then
-        Assertions.assertThatCode(() -> registerValidateService.validatePresidentRegisterDeletable(mockRegister)).doesNotThrowAnyException();
+        Assertions.assertThat(registerValidateService.validatePresidentRegisterDeletable(mockRegister)).isFalse();
     }
 
     @Test
-    @DisplayName("사용자 탈퇴 가능 여부 테스트 - 참여중인 todo team 중 운영진으로 포함된 todo team이 1개 이상일 때 UnregisterableException 발생")
+    @DisplayName("사용자 탈퇴 가능 여부 테스트 - 참여중인 todo team 중 운영진으로 포함된 todo team이 1개 이상일 때 true 반환")
     void validateRegisterDeletable_with_president_register() {
         // given
         final List<Register> registerList = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeBuilder(Register.class)
@@ -77,11 +77,11 @@ class RegisterValidateServiceTest {
         });
         // when
         // then
-        Assertions.assertThatCode(() -> registerValidateService.validateRegisterDeletable(registerList)).isInstanceOf(UnregistrableException.class);
+        Assertions.assertThat(registerValidateService.validateRegisterDeletable(registerList)).isTrue();
     }
 
     @Test
-    @DisplayName("사용자 탈퇴 가능 여부 테스트 - 참여중인 todo team 중 운영진으로 포함된 todo team이 1개 이하일 때 UnregisterableException 발생하지 않음")
+    @DisplayName("사용자 탈퇴 가능 여부 테스트 - 참여중인 todo team 중 운영진으로 포함된 todo team이 1개 이하일 때 false 반환")
     void validateRegisterDeletable_without_president_register() {
         // given
         final List<Register> registerList = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeBuilder(Register.class)
@@ -94,7 +94,7 @@ class RegisterValidateServiceTest {
         });
         // when
         // then
-        Assertions.assertThatCode(() -> registerValidateService.validateRegisterDeletable(registerList)).doesNotThrowAnyException();
+        Assertions.assertThat(registerValidateService.validateRegisterDeletable(registerList)).isFalse();
     }
 
     @Test
