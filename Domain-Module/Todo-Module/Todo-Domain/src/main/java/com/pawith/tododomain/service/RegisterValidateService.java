@@ -20,24 +20,19 @@ public class RegisterValidateService {
 
     private final RegisterRepository registerRepository;
 
-    public void validatePresidentRegisterDeletable(final Register register) {
-        if (register.isPresident()) {
-            final TodoTeam todoTeam = register.getTodoTeam();
-            final Integer registerCount = registerRepository.countByTodoTeamIdQuery(todoTeam.getId());
-            if (registerCount > 1) {
-                throw new UnregistrableException(TodoError.CANNOT_PRESIDENT_UNREGISTRABLE);
-            }
-        }
+    public boolean validatePresidentRegisterDeletable(final Register register) {
+        return register.isPresident() && registerCountGreaterThanOne(register);
     }
 
-    public void validateRegisterDeletable(final List<Register> registerList) {
-        registerList.forEach(register -> {
-            final Long todoTeamId = register.getTodoTeam().getId();
-            final Integer registerCount = registerRepository.countByTodoTeamIdQuery(todoTeamId);
-            if (register.isPresident() && registerCount > 1) {
-                throw new UnregistrableException(TodoError.CANNOT_PRESIDENT_UNREGISTRABLE);
-            }
-        });
+    public boolean validateRegisterDeletable(final List<Register> registerList) {
+        return registerList.stream()
+                .anyMatch(register -> register.isPresident() && registerCountGreaterThanOne(register));
+    }
+
+    private boolean registerCountGreaterThanOne(Register register) {
+        final Long todoTeamId = register.getTodoTeam().getId();
+        final Integer registerCount = registerRepository.countByTodoTeamIdQuery(todoTeamId);
+        return registerCount > 1;
     }
 
     public void validateAuthorityChangeable(final Register userRegister, final Authority authority) {
