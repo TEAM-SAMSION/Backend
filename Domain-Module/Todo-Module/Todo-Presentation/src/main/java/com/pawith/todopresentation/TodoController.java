@@ -89,7 +89,7 @@ public class TodoController {
     }
 
     @GetMapping("/{todoTeamId}/todos/{todoId}/validate")
-    public TodoValidateResponse validateDeleteAndUpdateTodo(@PathVariable Long todoTeamId, @PathVariable Long todoId){
+    public ValidateResponse validateDeleteAndUpdateTodo(@PathVariable Long todoTeamId, @PathVariable Long todoId){
         return todoValidationUseCase.validateDeleteAndUpdateTodoByTodoId(todoTeamId, todoId);
     }
 
