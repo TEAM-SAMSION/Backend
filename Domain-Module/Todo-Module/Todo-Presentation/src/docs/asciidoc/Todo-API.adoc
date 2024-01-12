@@ -220,7 +220,8 @@ operation::register-controller-test/validate-register-deletable[snippets='http-r
 [[서비스-탈퇴-검증]]
 === 서비스 탈퇴 검증
 
-operation::register-controller-test/validate-registers-deletable[snippets='http-request,request-headers,http-response']
+operation::register-controller-test/validate-registers-deletable[snippets='http-request,request-headers,http-response,response-fields']
+
 [[PET-API]]
 == PET API
 
