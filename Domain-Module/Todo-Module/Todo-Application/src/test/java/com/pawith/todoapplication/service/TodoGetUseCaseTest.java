@@ -15,13 +15,7 @@ class TodoGetUseCaseTest {
     @Mock
     private UserUtils userUtils;
     @Mock
-    private TodoQueryService todoQueryService;
-    @Mock
-    private CategoryQueryService categoryQueryService;
-    @Mock
     private UserQueryService userQueryService;
-    @Mock
-    private RegisterQueryService registerQueryService;
     @Mock
     private AssignQueryService assignQueryService;
     @Mock
@@ -31,7 +25,7 @@ class TodoGetUseCaseTest {
 
     @BeforeEach
     void init(){
-        todoGetUseCase = new TodoGetUseCase(userUtils, todoQueryService, userQueryService, registerQueryService, assignQueryService, todoNotificationQueryService);
+        todoGetUseCase = new TodoGetUseCase(userUtils, userQueryService, assignQueryService, todoNotificationQueryService);
     }
 
 //    @Test

@@ -16,7 +16,7 @@ import com.pawith.userdomain.utils.UserUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ListIterator;
+import java.util.List;
 
 @ApplicationService
 @RequiredArgsConstructor
@@ -31,14 +31,21 @@ public class TodoCreateUseCase {
 
     public void createTodo(TodoCreateRequest request) {
         final User accessUser = userUtils.getAccessUser();
-        final Long accessUserRegisterId =
-            registerQueryService.findRegisterByNullableTodoTeamIdAndUserIdAndCategoryId(request.getTodoTeamId(), accessUser.getId(), request.getCategoryId()).getId();
         final Category category = categoryQueryService.findCategoryByCategoryId(request.getCategoryId());
-        final Todo todo = TodoMapper.mapToTodo(request, category, accessUserRegisterId);
+        final List<Register> registers = registerQueryService.findAllRegistersByIds(request.getRegisterIds());
+        final Register todoCreateRegister = getTodoCreateRegister(request, registers, accessUser);
+        final Todo todo = TodoMapper.mapToTodo(request, category, todoCreateRegister.getId());
+        final List<Assign> assignList = registers.stream()
+            .map(register -> new Assign(todo, register))
+            .toList();
         todoSaveService.saveTodoEntity(todo);
-        ListIterator<Register> registerListIterator = registerQueryService.findAllRegistersByIds(request.getRegisterIds()).listIterator();
-        request.getRegisterIds().forEach(registerId -> {
-            assignSaveService.saveAssignEntity(new Assign(todo, registerListIterator.next()));
-        });
+        assignSaveService.saveAllAssignEntity(assignList);
+    }
+
+    private Register getTodoCreateRegister(TodoCreateRequest request, List<Register> registers, User accessUser) {
+        return registers.stream()
+            .filter(register -> register.matchUserId(accessUser.getId()))
+            .findFirst()
+            .orElseGet(() -> registerQueryService.findRegisterByNullableTodoTeamIdAndUserIdAndCategoryId(request.getTodoTeamId(), accessUser.getId(), request.getCategoryId()));
     }
 }

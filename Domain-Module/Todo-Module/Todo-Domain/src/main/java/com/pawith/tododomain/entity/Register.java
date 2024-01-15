@@ -11,7 +11,6 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 @Entity
 @Getter
@@ -76,6 +75,10 @@ public class Register extends BaseEntity {
     public void reRegister(){
         this.isRegistered = Boolean.TRUE;
         this.registerAt = LocalDateTime.now();
+    }
+
+    public Boolean matchUserId(Long userId) {
+        return this.userId.equals(userId);
     }
 
 }

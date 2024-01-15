@@ -42,7 +42,7 @@ public class UserSignUpHandlerTest {
     void userSignUp() {
         //given
         final UserSignUpEvent mockUserSignUpEvent = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(UserSignUpEvent.class);
-        System.out.println(mockUserSignUpEvent.getProvider());
+        System.out.println(mockUserSignUpEvent.provider());
         //when
         userSignUpHandler.signUp(mockUserSignUpEvent);
         //then
@@ -55,10 +55,10 @@ public class UserSignUpHandlerTest {
     void userSignUpWithDifferentProvider() {
         //given
         final UserSignUpEvent mockUserSignUpEvent = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(UserSignUpEvent.class);
-        given(userQueryService.checkEmailAlreadyExist(mockUserSignUpEvent.getEmail())).willReturn(true);
+        given(userQueryService.checkEmailAlreadyExist(mockUserSignUpEvent.email())).willReturn(true);
         doThrow(AccountAlreadyExistException.class)
                 .when(userQueryService)
-                .checkAccountAlreadyExist((mockUserSignUpEvent.getEmail()), (mockUserSignUpEvent.getProvider()));
+                .checkAccountAlreadyExist((mockUserSignUpEvent.email()), (mockUserSignUpEvent.provider()));
         //when
         //then
         Assertions.assertThatCode(() -> userSignUpHandler.signUp(mockUserSignUpEvent))

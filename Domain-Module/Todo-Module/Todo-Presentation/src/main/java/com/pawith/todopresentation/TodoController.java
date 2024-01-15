@@ -31,6 +31,7 @@ public class TodoController {
     private final TodoValidationUseCase todoValidationUseCase;
     private final TodoNotificationCreateUseCase todoNotificationCreateUseCase;
     private final TodoWithdrawGetUseCase todoWithdrawGetUseCase;
+    private final TodoCompleteGetUseCase todoCompleteGetUseCase;
 
     @GetMapping("/{todoTeamId}/todos/progress")
     public TodoProgressResponse getTodoProgress(@PathVariable Long todoTeamId) {
@@ -80,7 +81,7 @@ public class TodoController {
 
     @GetMapping("/todos/{todoId}/completion")
     public TodoCompletionResponse getTodoCompletion(@PathVariable Long todoId){
-        return todoGetUseCase.getTodoCompletion(todoId);
+        return todoCompleteGetUseCase.getTodoCompletion(todoId);
     }
 
     @DeleteMapping("/todos/{todoId}")
@@ -89,7 +90,7 @@ public class TodoController {
     }
 
     @GetMapping("/{todoTeamId}/todos/{todoId}/validate")
-    public TodoValidateResponse validateDeleteAndUpdateTodo(@PathVariable Long todoTeamId, @PathVariable Long todoId){
+    public ValidateResponse validateDeleteAndUpdateTodo(@PathVariable Long todoTeamId, @PathVariable Long todoId){
         return todoValidationUseCase.validateDeleteAndUpdateTodoByTodoId(todoTeamId, todoId);
     }
 

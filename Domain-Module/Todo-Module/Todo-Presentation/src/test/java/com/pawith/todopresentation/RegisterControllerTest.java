@@ -274,7 +274,10 @@ class RegisterControllerTest extends BaseRestDocsTest {
     void validateRegisterDeletable() throws Exception {
         //given
         final Long todoTeamId = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Long.class);
-        MockHttpServletRequestBuilder request = post(REGISTER_REQUEST_URL + "/{todoTeamId}/registers/validate", todoTeamId)
+        final ValidateResponse validateResponse = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(ValidateResponse.class);
+
+        given(unregisterUseCase.validateRegisterDeletable(todoTeamId)).willReturn(validateResponse);
+        MockHttpServletRequestBuilder request = get(REGISTER_REQUEST_URL + "/{todoTeamId}/registers/validate", todoTeamId)
                 .header("Authorization", "Bearer accessToken");
         //when
         ResultActions result = mvc.perform(request);
@@ -286,6 +289,9 @@ class RegisterControllerTest extends BaseRestDocsTest {
                         ),
                         pathParameters(
                                 parameterWithName("todoTeamId").description("검증할 TodoTeam의 Id")
+                        ),
+                        responseFields(
+                                fieldWithPath("isNotValidate").description("TodoTeam 탈퇴 검증 여부 true면 탈퇴 불가능")
                         )
                 ));
     }
@@ -294,7 +300,10 @@ class RegisterControllerTest extends BaseRestDocsTest {
     @DisplayName("서비스 탈퇴 가능 여부 검증 API 테스트")
     void validateRegistersDeletable() throws Exception {
         //given
-        MockHttpServletRequestBuilder request = post(REGISTER_REQUEST_URL + "/registers/validate")
+        final ValidateResponse validateResponse = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(ValidateResponse.class);
+
+        given(unregisterUseCase.validateRegistersDeletable()).willReturn(validateResponse);
+        MockHttpServletRequestBuilder request = get(REGISTER_REQUEST_URL + "/registers/validate")
                 .header("Authorization", "Bearer accessToken");
         //when
         ResultActions result = mvc.perform(request);
@@ -303,6 +312,9 @@ class RegisterControllerTest extends BaseRestDocsTest {
                 .andDo(resultHandler.document(
                         requestHeaders(
                                 headerWithName("Authorization").description("access 토큰")
+                        ),
+                        responseFields(
+                                fieldWithPath("isNotValidate").description("서비스 탈퇴 검증 여부 true면 탈퇴 불가능")
                         )
                 ));
     }

@@ -1,6 +1,7 @@
 package com.pawith.todoapplication.service;
 
 import com.pawith.commonmodule.annotation.ApplicationService;
+import com.pawith.todoapplication.dto.response.ValidateResponse;
 import com.pawith.tododomain.entity.Register;
 import com.pawith.tododomain.service.RegisterQueryService;
 import com.pawith.tododomain.service.RegisterValidateService;
@@ -24,15 +25,17 @@ public class UnregisterUseCase {
         register.unregister();
     }
 
-    public void validateRegisterDeletable(final Long todoTeamId) {
+    public ValidateResponse validateRegisterDeletable(final Long todoTeamId) {
         final User user = userUtils.getAccessUser();
         final Register register = registerQueryService.findRegisterByTodoTeamIdAndUserId(todoTeamId, user.getId());
-        registerValidateService.validatePresidentRegisterDeletable(register);
+        boolean isNotValidate = registerValidateService.validatePresidentRegisterDeletable(register);
+        return new ValidateResponse(isNotValidate);
     }
 
-    public void validateRegistersDeletable() {
+    public ValidateResponse validateRegistersDeletable() {
         final User user = userUtils.getAccessUser();
         final List<Register> registers = registerQueryService.findAllRegistersByUserId(user.getId());
-        registerValidateService.validateRegisterDeletable(registers);
+        boolean isNotValidate = registerValidateService.validateRegisterDeletable(registers);
+        return new ValidateResponse(isNotValidate);
     }
 }

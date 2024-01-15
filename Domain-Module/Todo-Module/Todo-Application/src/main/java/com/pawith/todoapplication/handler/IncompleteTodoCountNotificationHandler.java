@@ -56,7 +56,7 @@ public class IncompleteTodoCountNotificationHandler extends AbstractBatchSchedul
             .map(IncompleteTodoCountInfoDao::getUserId)
             .filter(userId -> !valueOperator.contains(userId))
             .toList();
-        userQueryService.findUserMapByIds(userIds)
+        userQueryService.findMapWithUserIdKeyByIds(userIds)
             .forEach((userId, user) -> valueOperator.setWithExpire(userId, user.getNickname(), 1, TimeUnit.MINUTES));
     }
 }

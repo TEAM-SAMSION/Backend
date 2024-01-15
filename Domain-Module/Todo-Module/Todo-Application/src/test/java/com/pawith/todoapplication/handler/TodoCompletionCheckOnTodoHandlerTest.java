@@ -46,8 +46,8 @@ public class TodoCompletionCheckOnTodoHandlerTest {
                 .giveMeBuilder(Todo.class)
                 .set("completionStatus", CompletionStatus.INCOMPLETE)
                 .sample();
-        given(assignQueryService.findAllAssignByTodoId(todoCompletionCheckEvent.getTodoId())).willReturn(mockAssigns);
-        given(todoQueryService.findTodoByTodoId(todoCompletionCheckEvent.getTodoId())).willReturn(mockTodo);
+        given(assignQueryService.findAllAssignByTodoId(todoCompletionCheckEvent.todoId())).willReturn(mockAssigns);
+        given(todoQueryService.findTodoByTodoId(todoCompletionCheckEvent.todoId())).willReturn(mockTodo);
         // when
         todoCompletionCheckOnTodoHandler.changeTodoStatus(todoCompletionCheckEvent);
         // then
@@ -73,8 +73,8 @@ public class TodoCompletionCheckOnTodoHandlerTest {
                 .giveMeBuilder(Todo.class)
                 .set("completionStatus", CompletionStatus.INCOMPLETE)
                 .sample();
-        given(assignQueryService.findAllAssignByTodoId(todoCompletionCheckEvent.getTodoId())).willReturn(mockAssigns);
-        given(todoQueryService.findTodoByTodoId(todoCompletionCheckEvent.getTodoId())).willReturn(mockTodo);
+        given(assignQueryService.findAllAssignByTodoId(todoCompletionCheckEvent.todoId())).willReturn(mockAssigns);
+        given(todoQueryService.findTodoByTodoId(todoCompletionCheckEvent.todoId())).willReturn(mockTodo);
         // when
         todoCompletionCheckOnTodoHandler.changeTodoStatus(todoCompletionCheckEvent);
         // then

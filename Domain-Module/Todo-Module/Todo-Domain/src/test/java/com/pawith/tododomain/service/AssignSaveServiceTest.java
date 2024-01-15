@@ -3,6 +3,7 @@ package com.pawith.tododomain.service;
 import com.pawith.commonmodule.UnitTestConfig;
 import com.pawith.commonmodule.utils.FixtureMonkeyUtils;
 import com.pawith.tododomain.entity.Assign;
+import com.pawith.tododomain.repository.AssignBatchRepository;
 import com.pawith.tododomain.repository.AssignRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,11 +18,13 @@ public class AssignSaveServiceTest {
 
     @Mock
     private AssignRepository assignRepository;
+    @Mock
+    private AssignBatchRepository assignBatchRepository;
 
     private AssignSaveService assignSaveService;
 
     @BeforeEach
-    void init() { assignSaveService = new AssignSaveService(assignRepository); }
+    void init() { assignSaveService = new AssignSaveService(assignRepository, assignBatchRepository); }
 
     @Test
     @DisplayName("Assign 엔티티를 저장한다.")

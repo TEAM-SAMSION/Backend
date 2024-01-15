@@ -2,36 +2,38 @@ package com.pawith.todoapplication.service;
 
 import com.pawith.commonmodule.annotation.ApplicationService;
 import com.pawith.commonmodule.response.ListResponse;
-import com.pawith.todoapplication.dto.response.*;
+import com.pawith.todoapplication.dto.response.AssignUserInfoResponse;
+import com.pawith.todoapplication.dto.response.CategorySubTodoResponse;
+import com.pawith.todoapplication.dto.response.TodoInfoResponse;
+import com.pawith.todoapplication.dto.response.TodoNotificationInfoResponse;
 import com.pawith.todoapplication.mapper.TodoMapper;
 import com.pawith.tododomain.entity.*;
 import com.pawith.tododomain.service.AssignQueryService;
-import com.pawith.tododomain.service.RegisterQueryService;
 import com.pawith.tododomain.service.TodoNotificationQueryService;
-import com.pawith.tododomain.service.TodoQueryService;
+import com.pawith.tododomain.util.AssignUtils;
+import com.pawith.tododomain.util.RegisterUtils;
 import com.pawith.userdomain.entity.User;
 import com.pawith.userdomain.service.UserQueryService;
 import com.pawith.userdomain.utils.UserUtils;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Collectors;
 
+@Slf4j
 @ApplicationService
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class TodoGetUseCase {
 
     private final UserUtils userUtils;
-    private final TodoQueryService todoQueryService;
     private final UserQueryService userQueryService;
-    private final RegisterQueryService registerQueryService;
     private final AssignQueryService assignQueryService;
     private final TodoNotificationQueryService todoNotificationQueryService;
+
 
     public ListResponse<TodoInfoResponse> getTodoListByTodoTeamId(final Long todoTeamId) {
         final User user = userUtils.getAccessUser();
@@ -43,72 +45,51 @@ public class TodoGetUseCase {
                 return new TodoInfoResponse(todo.getId(), category.getId(), category.getName(), todo.getDescription(), assign.getCompletionStatus());
             })
             .sorted(Comparator.comparing(TodoInfoResponse::getCategoryId).reversed())
-            .collect(Collectors.toList());
+            .toList();
         return ListResponse.from(todoInfoResponses);
     }
 
     public ListResponse<CategorySubTodoResponse> getTodoListByCategoryId(Long categoryId, LocalDate moveDate) {
         final User accessUser = userUtils.getAccessUser();
-        final Map<Todo, List<Assign>> todoAssignMap = createTodoAssignListMap(categoryId, moveDate);
-        final Map<Long, TodoNotification> todoNotificationMap = createTodoNotificationMapWithTodoId(new ArrayList<>(todoAssignMap.keySet()), accessUser.getId());
-        final Map<Long, User> userMap = createUserIdMap(todoAssignMap);
-        final ArrayList<CategorySubTodoResponse> todoMainResponses = new ArrayList<>();
-        for (Todo todo : todoAssignMap.keySet()) {
-            final AtomicReference<Boolean> isAssigned = new AtomicReference<>(false);
-            final List<AssignUserInfoResponse> assignUserInfoResponses = todoAssignMap.get(todo).stream()
-                .map(assign -> {
-                    final Register register = assign.getRegister();
-                    final User findUser = userMap.get(register.getUserId());
-                    if (Objects.equals(findUser.getId(), accessUser.getId())) {
-                        isAssigned.set(true);
-                    }
-                    return new AssignUserInfoResponse(findUser.getId(), findUser.getNickname(), assign.getCompletionStatus());
-                })
-                .sorted(Comparator.comparing(assignUserInfoResponse -> !Objects.equals(assignUserInfoResponse.getAssigneeId(), accessUser.getId())))
-                .collect(Collectors.toList());
-            TodoNotificationInfoResponse todoNotificationInfoResponse = getTodoNotificationInfoResponse(todo, todoNotificationMap);
-            todoMainResponses.add(TodoMapper.mapToCategorySubTodoResponse(todo, assignUserInfoResponses, isAssigned.get(),todoNotificationInfoResponse));
-        }
-        return ListResponse.from(todoMainResponses);
+
+        final List<Assign> assignList = assignQueryService.findAllAssignByCategoryIdAndScheduledDate(categoryId, moveDate);
+
+        final Map<Todo, List<Assign>> todoAssignMap = AssignUtils.convertToTodoAssignMap(assignList);
+        final List<Todo> todoList = List.copyOf(todoAssignMap.keySet());
+
+        final Map<Long, TodoNotification> todoNotificationMap =
+            todoNotificationQueryService.findMapTodoIdKeyAndTodoNotificationValueByTodoIdsAndUserId(todoList, accessUser.getId());
+
+        final Map<Long, User> userMap = userQueryService.findMapWithUserIdKeyByIds(extractUserIds(assignList));
+
+        final List<CategorySubTodoResponse> subTodoResponseList = todoList.stream()
+            .map(todo -> {
+                final AtomicReference<Boolean> isAssigned = new AtomicReference<>(false);
+                final List<AssignUserInfoResponse> assignUserInfoResponses =
+                    getAssignUserInfoResponses(todoAssignMap.get(todo), userMap, accessUser.getId(), isAssigned);
+                final TodoNotificationInfoResponse todoNotificationInfoResponse =
+                    TodoNotificationInfoResponse.of(() -> Optional.ofNullable(todoNotificationMap.get(todo.getId())));
+                return TodoMapper.mapToCategorySubTodoResponse(todo, assignUserInfoResponses, isAssigned.get(), todoNotificationInfoResponse);
+            }).toList();
+        return ListResponse.from(subTodoResponseList);
     }
 
-    private static TodoNotificationInfoResponse getTodoNotificationInfoResponse(Todo todo, Map<Long, TodoNotification> todoNotificationMap) {
-        if(todoNotificationMap.containsKey(todo.getId())){
-            final TodoNotification todoNotification = todoNotificationMap.get(todo.getId());
-            final LocalTime notificationTime = todoNotification.getNotificationTime();
-            return new TodoNotificationInfoResponse(true, notificationTime);
-        }
-        return new TodoNotificationInfoResponse(false, null);
-    }
-
-    private Map<Long, User> createUserIdMap(Map<Todo, List<Assign>> groupByTodo) {
-        final List<Long> userIds = groupByTodo.values().stream()
-            .flatMap(Collection::stream)
-            .mapToLong(assign -> {
+    private List<AssignUserInfoResponse> getAssignUserInfoResponses(List<Assign> assigns, Map<Long, User> userMap, Long accessUserId, AtomicReference<Boolean> isAssigned) {
+        return assigns.stream()
+            .map(assign -> {
                 final Register register = assign.getRegister();
-                return register.getUserId();
+                final User findUser = userMap.get(register.getUserId());
+                if (Objects.equals(findUser.getId(), accessUserId)) {
+                    isAssigned.set(true);
+                }
+                return new AssignUserInfoResponse(findUser.getId(), findUser.getNickname(), assign.getCompletionStatus());
             })
-            .boxed()
-            .collect(Collectors.toList());
-        return userQueryService.findUserMapByIds(userIds);
+            .sorted(Comparator.comparing(assignUserInfoResponse -> !Objects.equals(assignUserInfoResponse.getAssigneeId(), accessUserId)))
+            .toList();
     }
 
-    private Map<Long, TodoNotification> createTodoNotificationMapWithTodoId(List<Todo> todoList, Long userId) {
-        final List<Long> todoIds = todoList.stream().map(Todo::getId).collect(Collectors.toList());
-        return todoNotificationQueryService.findAllByTodoIdsWithIncompleteAssign(todoIds, userId)
-            .stream()
-            .collect(Collectors.toMap(todoNotification -> todoNotification.getAssign().getTodo().getId(), todoNotification -> todoNotification));
-    }
-
-    public TodoCompletionResponse getTodoCompletion(Long todoId) {
-        final Todo todo = todoQueryService.findTodoByTodoId(todoId);
-        return new TodoCompletionResponse(todo.getCompletionStatus());
-    }
-
-    private Map<Todo, List<Assign>> createTodoAssignListMap(Long categoryId, LocalDate moveDate) {
-        return assignQueryService.findAllAssignByCategoryIdAndScheduledDate(categoryId, moveDate)
-            .stream()
-            .collect(Collectors.groupingBy(Assign::getTodo, LinkedHashMap::new, Collectors.toList()));
+    private List<Long> extractUserIds(List<Assign> assigns) {
+        return RegisterUtils.extractUserIds(assigns.stream().map(Assign::getRegister).toList());
     }
 
 }

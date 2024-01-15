@@ -1,11 +1,9 @@
 package com.pawith.alarmmodule.repository;
 
 import com.pawith.alarmmodule.entity.Alarm;
+import com.pawith.commonmodule.domain.BatchInsertRepository;
 import org.springframework.data.repository.NoRepositoryBean;
 
-import java.util.Collection;
-
 @NoRepositoryBean
-public interface AlarmBatchRepository{
-    void saveAllBatch(Collection<Alarm> entities);
+public interface AlarmBatchRepository extends BatchInsertRepository<Alarm> {
 }
