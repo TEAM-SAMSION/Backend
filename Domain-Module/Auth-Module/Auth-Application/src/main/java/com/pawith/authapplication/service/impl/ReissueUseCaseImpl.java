@@ -29,6 +29,7 @@ public class ReissueUseCaseImpl implements ReissueUseCase {
     @Override
     public TokenReissueResponse reissue(String refreshTokenHeader) {
         final String refreshToken = TokenExtractUtils.extractToken(refreshTokenHeader);
+        jwtProvider.validateToken(refreshToken, TokenType.REFRESH_TOKEN);
         final String userEmail = jwtProvider.extractEmailFromToken(refreshToken, TokenType.REFRESH_TOKEN);
         return reissueToken(refreshToken, userEmail);
     }
