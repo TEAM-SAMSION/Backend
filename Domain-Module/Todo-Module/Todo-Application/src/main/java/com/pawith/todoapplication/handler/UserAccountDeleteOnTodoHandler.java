@@ -5,7 +5,6 @@ import com.pawith.tododomain.entity.Register;
 import com.pawith.tododomain.service.AssignDeleteService;
 import com.pawith.tododomain.service.RegisterDeleteService;
 import com.pawith.tododomain.service.RegisterQueryService;
-import com.pawith.tododomain.service.RegisterValidateService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
@@ -22,7 +21,6 @@ import java.util.stream.Collectors;
 public class UserAccountDeleteOnTodoHandler {
     private final RegisterQueryService registerQueryService;
     private final RegisterDeleteService registerDeleteService;
-    private final RegisterValidateService registerValidateService;
     private final AssignDeleteService assignDeleteService;
 
     @EventListener
