@@ -34,7 +34,7 @@ public class TodoRemindHandler {
     public void remindTodo(final TodoCompletionCheckEvent todoCompletionCheckEvent){
         final Long todoId = todoCompletionCheckEvent.todoId();
         final String cacheKey = String.format(REMIND_CACHE_KEY, todoId);
-        final long completeAssignNumber = assignQueryService.countAssignByTodoIdAndCompleted(todoId, CompletionStatus.COMPLETE);
+        final long completeAssignNumber = assignQueryService.countAssignByTodoIdAndCompleteStatus(todoId, CompletionStatus.COMPLETE);
         if(isRemindable(todoId, completeAssignNumber)&& !cacheTemplate.opsForSet().contains(cacheKey)){
             cacheTemplate.opsForSet().addWithExpireAfterToday(cacheKey);
             final List<NotificationEvent> todoNotificationList = buildNotificationEvent(todoId, completeAssignNumber);
