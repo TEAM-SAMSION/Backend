@@ -4,10 +4,9 @@ import com.pawith.commonmodule.cache.CacheTemplate;
 import com.pawith.commonmodule.event.MultiNotificationEvent;
 import com.pawith.commonmodule.event.NotificationEvent;
 import com.pawith.todoapplication.handler.event.TodoCompletionCheckEvent;
-import com.pawith.tododomain.entity.Assign;
+import com.pawith.tododomain.entity.CompletionStatus;
+import com.pawith.tododomain.repository.dao.IncompleteAssignInfoDao;
 import com.pawith.tododomain.service.AssignQueryService;
-import com.pawith.tododomain.service.TodoQueryService;
-import com.pawith.tododomain.service.TodoTeamQueryService;
 import com.pawith.userdomain.entity.User;
 import com.pawith.userdomain.service.UserQueryService;
 import lombok.RequiredArgsConstructor;
@@ -28,45 +27,38 @@ public class TodoRemindHandler {
 
     private final AssignQueryService assignQueryService;
     private final UserQueryService userQueryService;
-    private final TodoQueryService todoQueryService;
-    private final TodoTeamQueryService todoTeamQueryService;
     private final CacheTemplate<String, String> cacheTemplate;
     private final ApplicationEventPublisher applicationEventPublisher;
 
     @EventListener
-    public void remindTodo(TodoCompletionCheckEvent todoCompletionCheckEvent){
-        final List<Assign> allAssigns = assignQueryService.findAllAssignWithRegisterByTodoId(todoCompletionCheckEvent.todoId());
-        final Long domainId = todoCompletionCheckEvent.todoId();
-        final String cacheKey = String.format(REMIND_CACHE_KEY, domainId);
-        if(isRemindable(allAssigns)&& !cacheTemplate.opsForSet().contains(cacheKey)){
+    public void remindTodo(final TodoCompletionCheckEvent todoCompletionCheckEvent){
+        final Long todoId = todoCompletionCheckEvent.todoId();
+        final String cacheKey = String.format(REMIND_CACHE_KEY, todoId);
+        final long completeAssignNumber = assignQueryService.countAssignByTodoIdAndCompleteStatus(todoId, CompletionStatus.COMPLETE);
+        if(isRemindable(todoId, completeAssignNumber)&& !cacheTemplate.opsForSet().contains(cacheKey)){
             cacheTemplate.opsForSet().addWithExpireAfterToday(cacheKey);
-            final List<NotificationEvent> todoNotificationList = buildNotificationEvent(allAssigns, domainId);
+            final List<NotificationEvent> todoNotificationList = buildNotificationEvent(todoId, completeAssignNumber);
             applicationEventPublisher.publishEvent(new MultiNotificationEvent(todoNotificationList));
         }
     }
 
-    private List<NotificationEvent> buildNotificationEvent(List<Assign> allAssigns, Long domainId) {
-        final List<Long> incompleteTodoUserIds = allAssigns.stream()
-            .filter(assign -> !assign.isCompleted())
-            .map(assign -> assign.getRegister().getUserId())
+    private List<NotificationEvent> buildNotificationEvent(final Long todoId, final long completeAssignNumber) {
+        final List<IncompleteAssignInfoDao> incompleteAssignInfoDaoList = assignQueryService.findAllIncompleteAssignInfoByTodoId(todoId);
+        final List<Long> incompleteTodoUserIds = incompleteAssignInfoDaoList.stream()
+            .map(IncompleteAssignInfoDao::getUserId)
             .toList();
-        final long completeNumber = allAssigns.size()- incompleteTodoUserIds.size();
         final Map<Long, User> incompleteTodoUserMap = userQueryService.findMapWithUserIdKeyByIds(incompleteTodoUserIds);
-        final String todoDescription = todoQueryService.findTodoByTodoId(domainId).getDescription();
-        final String todoTeamName = todoTeamQueryService.findTodoTeamByTodoId(domainId).getTeamName();
-        return incompleteTodoUserIds.stream()
-            .map(userId -> {
-                final User user = incompleteTodoUserMap.get(userId);
-                final String message = String.format(NOTIFICATION_MESSAGE, todoDescription, completeNumber, user.getNickname());
-                return new NotificationEvent(userId, todoTeamName, message, domainId);
+        return incompleteAssignInfoDaoList.stream()
+            .map(incompleteAssignInfo -> {
+                final User incompleteTodoUser = incompleteTodoUserMap.get(incompleteAssignInfo.getUserId());
+                final String notificationMessage = String.format(NOTIFICATION_MESSAGE, incompleteAssignInfo.getTodoDescription(), completeAssignNumber, incompleteTodoUser.getNickname());
+                return new NotificationEvent(incompleteTodoUser.getId(),incompleteAssignInfo.getTodoTeamName(), notificationMessage, todoId);
             })
             .toList();
     }
 
-    private boolean isRemindable(List<Assign> allAssigns){
-        final long completeNumber = allAssigns.stream()
-            .filter(Assign::isCompleted)
-            .count();
-        return (float)completeNumber >= (float) allAssigns.size() /2;
+    private boolean isRemindable(final Long todoId, final long completeAssignNumber){
+        final long totalAssignNumber = assignQueryService.countAssignByTodoId(todoId);
+        return (float) completeAssignNumber >= (float) totalAssignNumber * 0.5;
     }
 }

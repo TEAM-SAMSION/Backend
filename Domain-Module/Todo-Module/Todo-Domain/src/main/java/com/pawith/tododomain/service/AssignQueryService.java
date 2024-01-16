@@ -2,9 +2,11 @@ package com.pawith.tododomain.service;
 
 import com.pawith.commonmodule.annotation.DomainService;
 import com.pawith.tododomain.entity.Assign;
+import com.pawith.tododomain.entity.CompletionStatus;
 import com.pawith.tododomain.exception.AssignNotFoundException;
 import com.pawith.tododomain.exception.TodoError;
 import com.pawith.tododomain.repository.AssignRepository;
+import com.pawith.tododomain.repository.dao.IncompleteAssignInfoDao;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,6 +41,18 @@ public class AssignQueryService {
 
     public List<Assign> findAllAssignWithRegisterByTodoId(Long todoId) {
         return assignRepository.findAllByTodoIdWithRegisterFetchQuery(todoId);
+    }
+
+    public Long countAssignByTodoIdAndCompleteStatus(Long todoId, CompletionStatus completionStatus) {
+        return assignRepository.countByTodoIdAndCompletedQuery(todoId, completionStatus);
+    }
+
+    public Long countAssignByTodoId(Long todoId) {
+        return assignRepository.countByTodoIdAndCompletedQuery(todoId, null);
+    }
+
+    public List<IncompleteAssignInfoDao> findAllIncompleteAssignInfoByTodoId(Long todoId) {
+        return assignRepository.findAllAssignInfoByTodoIdAndCompleteStatusQuery(todoId, CompletionStatus.INCOMPLETE);
     }
 
 }

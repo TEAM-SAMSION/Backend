@@ -34,11 +34,10 @@ public class TodoGetUseCase {
     private final AssignQueryService assignQueryService;
     private final TodoNotificationQueryService todoNotificationQueryService;
 
-
     public ListResponse<TodoInfoResponse> getTodoListByTodoTeamId(final Long todoTeamId) {
         final User user = userUtils.getAccessUser();
         final List<Assign> allAssigns = assignQueryService.findAllByUserIdAndTodoTeamIdAndScheduledDate(user.getId(), todoTeamId);
-        List<TodoInfoResponse> todoInfoResponses = allAssigns.stream()
+        final List<TodoInfoResponse> todoInfoResponses = allAssigns.stream()
             .map(assign -> {
                 final Todo todo = assign.getTodo();
                 final Category category = todo.getCategory();
@@ -49,7 +48,7 @@ public class TodoGetUseCase {
         return ListResponse.from(todoInfoResponses);
     }
 
-    public ListResponse<CategorySubTodoResponse> getTodoListByCategoryId(Long categoryId, LocalDate moveDate) {
+    public ListResponse<CategorySubTodoResponse> getTodoListByCategoryId(final Long categoryId,final LocalDate moveDate) {
         final User accessUser = userUtils.getAccessUser();
 
         final List<Assign> assignList = assignQueryService.findAllAssignByCategoryIdAndScheduledDate(categoryId, moveDate);
@@ -74,7 +73,7 @@ public class TodoGetUseCase {
         return ListResponse.from(subTodoResponseList);
     }
 
-    private List<AssignUserInfoResponse> getAssignUserInfoResponses(List<Assign> assigns, Map<Long, User> userMap, Long accessUserId, AtomicReference<Boolean> isAssigned) {
+    private List<AssignUserInfoResponse> getAssignUserInfoResponses(final List<Assign> assigns, final Map<Long, User> userMap, final Long accessUserId, final AtomicReference<Boolean> isAssigned) {
         return assigns.stream()
             .map(assign -> {
                 final Register register = assign.getRegister();
