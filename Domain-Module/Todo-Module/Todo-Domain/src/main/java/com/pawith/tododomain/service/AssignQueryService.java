@@ -43,7 +43,7 @@ public class AssignQueryService {
         return assignRepository.findAllByTodoIdWithRegisterFetchQuery(todoId);
     }
 
-    public Long countAssignByTodoIdAndCompleted(Long todoId, CompletionStatus completionStatus) {
+    public Long countAssignByTodoIdAndCompleteStatus(Long todoId, CompletionStatus completionStatus) {
         return assignRepository.countByTodoIdAndCompletedQuery(todoId, completionStatus);
     }
 
