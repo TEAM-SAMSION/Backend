@@ -1,6 +1,9 @@
 package com.pawith.tododomain.repository;
 
 import com.pawith.tododomain.entity.Assign;
+import com.pawith.tododomain.entity.CompletionStatus;
+import com.pawith.tododomain.repository.dao.IncompleteAssignInfoDao;
+import jakarta.annotation.Nullable;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -15,4 +18,8 @@ public interface AssignQueryRepository {
     List<Assign> findAllByTodoIdQuery(Long todoId);
     List<Assign> findAllByTodoIdWithRegisterFetchQuery(Long todoId);
     void deleteAllByCategoryIdQuery(final Long categoryId);
+
+    Long countByTodoIdAndCompletedQuery(Long todoId, @Nullable CompletionStatus completionStatus);
+
+    <T extends IncompleteAssignInfoDao> List<T> findAllAssignInfoByTodoIdAndCompleteStatusQuery(Long todoId, CompletionStatus completionStatus);
 }
