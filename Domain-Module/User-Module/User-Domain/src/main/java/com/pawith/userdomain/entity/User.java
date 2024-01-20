@@ -69,4 +69,8 @@ public class User extends BaseEntity {
         LocalDate joinDate = this.createdAt.toLocalDate();
         return ChronoUnit.DAYS.between(joinDate, nowDate) + 1;
     }
+
+    public Boolean isMatchingUser(Long userId) {
+        return this.id.equals(userId);
+    }
 }

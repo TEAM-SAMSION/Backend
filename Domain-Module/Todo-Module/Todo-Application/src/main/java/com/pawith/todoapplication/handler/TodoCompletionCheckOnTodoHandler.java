@@ -1,6 +1,6 @@
 package com.pawith.todoapplication.handler;
 
-import com.pawith.todoapplication.handler.event.TodoCompletionCheckEvent;
+import com.pawith.todoapplication.handler.event.TodoAssignStatusChangeEvent;
 import com.pawith.tododomain.entity.Assign;
 import com.pawith.tododomain.entity.Todo;
 import com.pawith.tododomain.service.AssignQueryService;
@@ -23,11 +23,11 @@ public class TodoCompletionCheckOnTodoHandler {
     private final TodoQueryService todoQueryService;
 
     @EventListener
-    public void changeTodoStatus(TodoCompletionCheckEvent todoCompletionCheckEvent) throws InterruptedException {
+    public void changeTodoStatus(TodoAssignStatusChangeEvent todoAssignStatusChangeEvent) throws InterruptedException {
         while(true) {
             try {
-                final List<Assign> assigns = assignQueryService.findAllAssignByTodoId(todoCompletionCheckEvent.todoId());
-                final Todo todo = todoQueryService.findTodoByTodoId(todoCompletionCheckEvent.todoId());
+                final List<Assign> assigns = assignQueryService.findAllAssignByTodoId(todoAssignStatusChangeEvent.todoId());
+                final Todo todo = todoQueryService.findTodoByTodoId(todoAssignStatusChangeEvent.todoId());
                 final boolean isAllCompleteTodo = assigns.stream().allMatch(Assign::isCompleted);
                 todo.updateCompletionStatus(isAllCompleteTodo);
                 break;
