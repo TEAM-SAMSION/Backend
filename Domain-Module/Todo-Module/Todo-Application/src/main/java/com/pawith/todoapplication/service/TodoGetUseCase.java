@@ -54,7 +54,7 @@ public class TodoGetUseCase {
         final List<Assign> assignList = assignQueryService.findAllAssignByCategoryIdAndScheduledDate(categoryId, moveDate);
 
         final Map<Todo, List<Assign>> todoAssignMap = AssignUtils.convertToTodoAssignMap(assignList);
-        final List<Todo> todoList = List.copyOf(todoAssignMap.keySet());
+        final Collection<Todo> todoList = todoAssignMap.keySet();
 
         final Map<Long, TodoNotification> todoNotificationMap =
             todoNotificationQueryService.findMapTodoIdKeyAndTodoNotificationValueByTodoIdsAndUserId(todoList, accessUser.getId());
@@ -78,7 +78,7 @@ public class TodoGetUseCase {
             .map(assign -> {
                 final Register register = assign.getRegister();
                 final User findUser = userMap.get(register.getUserId());
-                if (Objects.equals(findUser.getId(), accessUserId)) {
+                if (findUser.isMatchingUser(accessUserId)) {
                     isAssigned.set(true);
                 }
                 return new AssignUserInfoResponse(findUser.getId(), findUser.getNickname(), assign.getCompletionStatus());
