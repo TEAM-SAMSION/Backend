@@ -14,6 +14,6 @@ public enum AlarmError implements Error {
     ;
 
     private final String message;
-    private final Integer errorCode;
+    private final int errorCode;
     private final HttpStatusCode httpStatusCode;
 }
