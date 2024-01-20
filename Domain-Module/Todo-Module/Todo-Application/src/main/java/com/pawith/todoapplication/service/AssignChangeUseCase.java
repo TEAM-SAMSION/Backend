@@ -4,7 +4,7 @@ import static java.util.stream.Collectors.toList;
 
 import com.pawith.commonmodule.annotation.ApplicationService;
 import com.pawith.todoapplication.dto.request.AssignChangeRequest;
-import com.pawith.todoapplication.handler.event.TodoCompletionCheckEvent;
+import com.pawith.todoapplication.handler.event.TodoAssignStatusChangeEvent;
 import com.pawith.tododomain.entity.Assign;
 import com.pawith.tododomain.entity.Register;
 import com.pawith.tododomain.entity.Todo;
@@ -38,7 +38,7 @@ public class AssignChangeUseCase {
         final User user = userUtils.getAccessUser();
         final Assign assign = assignQueryService.findAssignByTodoIdAndUserId(todo.getId(), user.getId());
         assign.updateCompletionStatus();
-        applicationEventPublisher.publishEvent(new TodoCompletionCheckEvent(todo.getId()));
+        applicationEventPublisher.publishEvent(new TodoAssignStatusChangeEvent(todo.getId()));
     }
 
     public void changeAssign(Long todoId, AssignChangeRequest request) {
