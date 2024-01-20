@@ -8,6 +8,7 @@ import com.pawith.tododomain.repository.TodoNotificationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -19,7 +20,7 @@ public class TodoNotificationQueryService {
 
     private final TodoNotificationRepository todoNotificationRepository;
 
-    public Map<Long, TodoNotification> findMapTodoIdKeyAndTodoNotificationValueByTodoIdsAndUserId(List<Todo> todoList, Long userId) {
+    public Map<Long, TodoNotification> findMapTodoIdKeyAndTodoNotificationValueByTodoIdsAndUserId(Collection<Todo> todoList, Long userId) {
         final List<Long> todoIds = todoList.stream().map(Todo::getId).collect(Collectors.toList());
         return todoNotificationRepository.findAllByTodoIdsAndUserIdWithInCompleteAssignQuery(todoIds, userId)
             .stream()
