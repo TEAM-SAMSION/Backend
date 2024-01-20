@@ -3,7 +3,7 @@ package com.pawith.todoapplication.handler;
 import static org.mockito.BDDMockito.given;
 
 import com.pawith.commonmodule.UnitTestConfig;
-import com.pawith.todoapplication.handler.event.TodoCompletionCheckEvent;
+import com.pawith.todoapplication.handler.event.TodoAssignStatusChangeEvent;
 import com.pawith.commonmodule.utils.FixtureMonkeyUtils;
 import com.pawith.tododomain.entity.Assign;
 import com.pawith.tododomain.entity.CompletionStatus;
@@ -36,8 +36,8 @@ public class TodoCompletionCheckOnTodoHandlerTest {
     @DisplayName("Todo 완료 여부 변경 테스트-담당자가 모두 완료하면 Todo 완료")
     void changeTodoStatus() throws InterruptedException {
         // given
-        final TodoCompletionCheckEvent todoCompletionCheckEvent = FixtureMonkeyUtils.getConstructBasedFixtureMonkey()
-                .giveMeOne(TodoCompletionCheckEvent.class);
+        final TodoAssignStatusChangeEvent todoAssignStatusChangeEvent = FixtureMonkeyUtils.getConstructBasedFixtureMonkey()
+                .giveMeOne(TodoAssignStatusChangeEvent.class);
         final List<Assign> mockAssigns = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey()
                 .giveMeBuilder(Assign.class)
                 .set("completionStatus", CompletionStatus.COMPLETE)
@@ -46,10 +46,10 @@ public class TodoCompletionCheckOnTodoHandlerTest {
                 .giveMeBuilder(Todo.class)
                 .set("completionStatus", CompletionStatus.INCOMPLETE)
                 .sample();
-        given(assignQueryService.findAllAssignByTodoId(todoCompletionCheckEvent.todoId())).willReturn(mockAssigns);
-        given(todoQueryService.findTodoByTodoId(todoCompletionCheckEvent.todoId())).willReturn(mockTodo);
+        given(assignQueryService.findAllAssignByTodoId(todoAssignStatusChangeEvent.todoId())).willReturn(mockAssigns);
+        given(todoQueryService.findTodoByTodoId(todoAssignStatusChangeEvent.todoId())).willReturn(mockTodo);
         // when
-        todoCompletionCheckOnTodoHandler.changeTodoStatus(todoCompletionCheckEvent);
+        todoCompletionCheckOnTodoHandler.changeTodoStatus(todoAssignStatusChangeEvent);
         // then
         Assertions.assertEquals(CompletionStatus.COMPLETE, mockTodo.getCompletionStatus());
     }
@@ -58,8 +58,8 @@ public class TodoCompletionCheckOnTodoHandlerTest {
     @DisplayName("Todo 완료 여부 변경 테스트-담당자가 하나라도 미완료면 Todo 미완료")
     void changeTodoStatusWithIncompletedAssignee() throws InterruptedException {
         // given
-        final TodoCompletionCheckEvent todoCompletionCheckEvent = FixtureMonkeyUtils.getConstructBasedFixtureMonkey()
-                .giveMeOne(TodoCompletionCheckEvent.class);
+        final TodoAssignStatusChangeEvent todoAssignStatusChangeEvent = FixtureMonkeyUtils.getConstructBasedFixtureMonkey()
+                .giveMeOne(TodoAssignStatusChangeEvent.class);
         final List<Assign> mockAssigns = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey()
                 .giveMeBuilder(Assign.class)
                 .set("completionStatus", CompletionStatus.COMPLETE)
@@ -73,10 +73,10 @@ public class TodoCompletionCheckOnTodoHandlerTest {
                 .giveMeBuilder(Todo.class)
                 .set("completionStatus", CompletionStatus.INCOMPLETE)
                 .sample();
-        given(assignQueryService.findAllAssignByTodoId(todoCompletionCheckEvent.todoId())).willReturn(mockAssigns);
-        given(todoQueryService.findTodoByTodoId(todoCompletionCheckEvent.todoId())).willReturn(mockTodo);
+        given(assignQueryService.findAllAssignByTodoId(todoAssignStatusChangeEvent.todoId())).willReturn(mockAssigns);
+        given(todoQueryService.findTodoByTodoId(todoAssignStatusChangeEvent.todoId())).willReturn(mockTodo);
         // when
-        todoCompletionCheckOnTodoHandler.changeTodoStatus(todoCompletionCheckEvent);
+        todoCompletionCheckOnTodoHandler.changeTodoStatus(todoAssignStatusChangeEvent);
         // then
         Assertions.assertEquals(CompletionStatus.INCOMPLETE, mockTodo.getCompletionStatus());
     }

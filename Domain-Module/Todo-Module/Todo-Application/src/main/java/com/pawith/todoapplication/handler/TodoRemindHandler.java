@@ -3,7 +3,7 @@ package com.pawith.todoapplication.handler;
 import com.pawith.commonmodule.cache.CacheTemplate;
 import com.pawith.commonmodule.event.MultiNotificationEvent;
 import com.pawith.commonmodule.event.NotificationEvent;
-import com.pawith.todoapplication.handler.event.TodoCompletionCheckEvent;
+import com.pawith.todoapplication.handler.event.TodoAssignStatusChangeEvent;
 import com.pawith.tododomain.entity.CompletionStatus;
 import com.pawith.tododomain.repository.dao.IncompleteAssignInfoDao;
 import com.pawith.tododomain.service.AssignQueryService;
@@ -31,8 +31,8 @@ public class TodoRemindHandler {
     private final ApplicationEventPublisher applicationEventPublisher;
 
     @EventListener
-    public void remindTodo(final TodoCompletionCheckEvent todoCompletionCheckEvent){
-        final Long todoId = todoCompletionCheckEvent.todoId();
+    public void remindTodo(final TodoAssignStatusChangeEvent todoAssignStatusChangeEvent){
+        final Long todoId = todoAssignStatusChangeEvent.todoId();
         final String cacheKey = String.format(REMIND_CACHE_KEY, todoId);
         final long completeAssignNumber = assignQueryService.countAssignByTodoIdAndCompleteStatus(todoId, CompletionStatus.COMPLETE);
         if(isRemindable(todoId, completeAssignNumber)&& !cacheTemplate.opsForSet().contains(cacheKey)){
