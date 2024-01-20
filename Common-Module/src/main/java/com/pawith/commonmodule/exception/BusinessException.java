@@ -1,6 +1,7 @@
 package com.pawith.commonmodule.exception;
 
 import lombok.Getter;
+import org.springframework.http.HttpStatusCode;
 
 @Getter
 public class BusinessException extends RuntimeException{
@@ -16,5 +17,9 @@ public class BusinessException extends RuntimeException{
 
     public int getErrorCode(){
         return error.getErrorCode();
+    }
+
+    public HttpStatusCode getHttpStatusCode(){
+        return error.getHttpStatusCode();
     }
 }
