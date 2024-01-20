@@ -10,15 +10,16 @@ import com.pawith.userdomain.service.UserQueryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
-//@Component
+@Component
 public class IncompleteTodoCountNotificationHandler extends AbstractBatchSchedulingHandler<IncompleteTodoCountInfoDao> {
     private static final Integer BATCH_SIZE = 100;
-    private static final String CRON_EXPRESSION = "0 0 0 0 0 0";
+    private static final String CRON_EXPRESSION = "0 0 20 * * *"; // 매일 20시에 실행
     private static final String NOTIFICATION_MESSAGE = "[%s] 오늘이 지나기 전, %s님에게 남은 %d개의 todo를 완료해주세요!";
 
     private final RegisterRepository registerRepository;
