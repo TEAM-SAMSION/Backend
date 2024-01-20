@@ -43,6 +43,7 @@ public class IncompleteTodoCountNotificationHandler extends AbstractBatchSchedul
     protected void processBatch(List<IncompleteTodoCountInfoDao> executionResult) {
         cachingUserInfo(executionResult);
         final List<NotificationEvent> notificationEventList = executionResult.stream()
+            .filter(incompleteTodoCountInfoDao -> incompleteTodoCountInfoDao.getIncompleteTodoCount() > 0)
             .map(incompleteTodoCountInfoDao -> {
                 final String userNickname = valueOperator.get(incompleteTodoCountInfoDao.getUserId());
                 final String message = String.format(NOTIFICATION_MESSAGE, incompleteTodoCountInfoDao.getTodoTeamName(), userNickname, incompleteTodoCountInfoDao.getIncompleteTodoCount());
