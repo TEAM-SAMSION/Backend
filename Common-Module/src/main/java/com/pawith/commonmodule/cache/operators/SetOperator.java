@@ -8,6 +8,8 @@ public interface SetOperator<K> {
 
     void addWithExpire(K k, long expire, TimeUnit timeUnit);
 
+    void addWithExpireAfterToday(K k);
+
     void remove(K k);
 
     boolean contains(K k);

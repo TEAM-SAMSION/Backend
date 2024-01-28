@@ -2,20 +2,25 @@ package com.pawith.todoinfrastructure.repository;
 
 import com.pawith.tododomain.entity.*;
 import com.pawith.tododomain.repository.AssignQueryRepository;
+import com.pawith.todoinfrastructure.dao.IncompleteAssignInfoDaoImpl;
+import com.pawith.todoinfrastructure.dao.QIncompleteAssignInfoDaoImpl;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
 public class AssignRepositoryImpl implements AssignQueryRepository {
     private final JPAQueryFactory queryFactory;
+
     @Override
     public List<Assign> findAllByCategoryIdAndScheduledDateQuery(Long categoryId, LocalDate scheduledDate) {
         final QAssign qAssign = QAssign.assign;
@@ -111,5 +116,32 @@ public class AssignRepositoryImpl implements AssignQueryRepository {
                 .from(qTodo)
                 .where(qTodo.category.id.eq(categoryId))))
             .execute();
+    }
+
+    @Override
+    public Long countByTodoIdAndCompletedQuery(Long todoId, @Nullable CompletionStatus completionStatus) {
+        final QAssign qAssign = QAssign.assign;
+        return queryFactory.select(qAssign.count())
+            .from(qAssign)
+            .where(qAssign.todo.id.eq(todoId)
+                , Objects.nonNull(completionStatus) ? qAssign.completionStatus.eq(completionStatus) : null)
+            .fetchOne();
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<IncompleteAssignInfoDaoImpl> findAllAssignInfoByTodoIdAndCompleteStatusQuery(Long todoId, CompletionStatus completionStatus) {
+        final QAssign qAssign = QAssign.assign;
+        final QRegister qRegister = qAssign.register;
+        final QTodo qTodo = qAssign.todo;
+        final QTodoTeam qTodoTeam = qRegister.todoTeam;
+
+        return queryFactory.select(new QIncompleteAssignInfoDaoImpl(qRegister.userId, qTodoTeam.teamName, qTodo.description))
+            .from(qAssign)
+            .join(qRegister)
+            .join(qTodo).on(qTodo.id.eq(todoId))
+            .join(qTodoTeam)
+            .where(qAssign.completionStatus.eq(completionStatus))
+            .fetch();
     }
 }
