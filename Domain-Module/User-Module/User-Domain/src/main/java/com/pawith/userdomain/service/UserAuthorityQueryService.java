@@ -17,4 +17,9 @@ public class UserAuthorityQueryService {
             .orElseThrow(() -> new UserAuthorityNotFoundException(UserError.USER_AUTHORITY_NOT_FOUND));
         return userAuthority;
     }
+
+    public UserAuthority findByUserId(final Long userId) {
+        return userAuthorityRepository.findByUserId(userId)
+            .orElseThrow(() -> new UserAuthorityNotFoundException(UserError.USER_AUTHORITY_NOT_FOUND));
+    }
 }

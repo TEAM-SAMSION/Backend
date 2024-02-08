@@ -14,8 +14,8 @@ public class UserAuthorityGetUseCase {
     private final UserAuthorityQueryService userAuthorityQueryService;
 
     public UserAuthorityInfoResponse getUserAuthority() {
-        final String email = UserUtils.getEmailFromAccessUser();
-        final UserAuthority userAuthority = userAuthorityQueryService.findByEmail(email);
+        final Long userId = UserUtils.getIdFromAccessUser();
+        final UserAuthority userAuthority = userAuthorityQueryService.findByUserId(userId);
         return new UserAuthorityInfoResponse(userAuthority.getAuthority());
     }
 }

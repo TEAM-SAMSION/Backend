@@ -2,6 +2,7 @@ package com.pawith.userdomain.service;
 
 import com.pawith.commonmodule.UnitTestConfig;
 import com.pawith.commonmodule.utils.FixtureMonkeyUtils;
+import com.pawith.userdomain.entity.User;
 import com.pawith.userdomain.entity.UserAuthority;
 import com.pawith.userdomain.repository.UserAuthorityRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,9 +35,10 @@ class UserAuthoritySaveServiceTest {
     void saveUserAuthority() {
         //given
         final String email = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(String.class);
+        final User user = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(User.class);
         given(userAuthorityRepository.findByEmail(email)).willReturn(Optional.empty());
         //when
-        userAuthoritySaveService.saveUserAuthority(email);
+        userAuthoritySaveService.saveUserAuthority(user, email);
         //then
         then(userAuthorityRepository).should().save(any());
     }
@@ -46,9 +48,10 @@ class UserAuthoritySaveServiceTest {
     void saveUserAuthorityWhenUserAuthorityExist() {
         //given
         final String email = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(String.class);
-        given(userAuthorityRepository.findByEmail(email)).willReturn(Optional.of(new UserAuthority(email)));
+        final User user = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(User.class);
+        given(userAuthorityRepository.findByEmail(email)).willReturn(Optional.of(UserAuthority.of(user, email)));
         //when
-        userAuthoritySaveService.saveUserAuthority(email);
+        userAuthoritySaveService.saveUserAuthority(user, email);
         //then
         then(userAuthorityRepository).should().findByEmail(email);
         then(userAuthorityRepository).shouldHaveNoMoreInteractions();

@@ -12,7 +12,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 
 @UnitTestConfig
@@ -37,7 +37,7 @@ class UserAuthorityGetUseCaseTest {
         final UserAuthority userAuthority = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey()
             .giveMeBuilder(UserAuthority.class)
             .sample();
-        given(userAuthorityQueryService.findByEmail(anyString())).willReturn(userAuthority);
+        given(userAuthorityQueryService.findByUserId(anyLong())).willReturn(userAuthority);
         //when
         UserAuthorityInfoResponse result = userAuthorityGetUseCase.getUserAuthority();
         //then
