@@ -21,9 +21,18 @@ public class UserAuthority extends BaseEntity {
     private Authority authority;
     private String email;
 
-    public UserAuthority(String email) {
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    private UserAuthority(User user, String email) {
         this.authority = Authority.GUEST;
+        this.user = user;
         this.email = email;
+    }
+
+    public static UserAuthority of(User user, String email) {
+        return new UserAuthority(user,email);
     }
 
     public void changeUserAuthority(){

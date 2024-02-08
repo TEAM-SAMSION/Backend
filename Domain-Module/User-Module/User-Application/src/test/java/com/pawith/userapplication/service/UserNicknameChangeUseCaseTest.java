@@ -47,7 +47,7 @@ class UserNicknameChangeUseCaseTest {
             .set("authority", Authority.GUEST)
             .sample();
         given(userUtils.getAccessUser()).willReturn(mockUser);
-        given(userAuthorityQueryService.findByEmail(mockUser.getEmail())).willReturn(mockUserAuthority);
+        given(userAuthorityQueryService.findByUserId(mockUser.getId())).willReturn(mockUserAuthority);
         //when
         userNicknameChangeUseCase.changeUserName(mockRequest);
         //then

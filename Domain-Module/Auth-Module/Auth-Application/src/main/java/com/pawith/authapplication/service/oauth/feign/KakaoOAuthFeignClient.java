@@ -1,7 +1,7 @@
-package com.pawith.authapplication.service.command.feign;
+package com.pawith.authapplication.service.oauth.feign;
 
-import com.pawith.authapplication.service.command.feign.response.KakaoUserInfo;
-import com.pawith.authapplication.service.command.feign.response.TokenInfo;
+import com.pawith.authapplication.service.oauth.feign.response.KakaoUserInfo;
+import com.pawith.authapplication.service.oauth.feign.response.TokenInfo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;

@@ -1,4 +1,4 @@
-package com.pawith.authapplication.service.command.feign.response;
+package com.pawith.authapplication.service.oauth.feign.response;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import lombok.AccessLevel;

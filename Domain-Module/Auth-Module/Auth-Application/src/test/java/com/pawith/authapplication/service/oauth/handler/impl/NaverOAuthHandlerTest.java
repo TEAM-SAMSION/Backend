@@ -1,9 +1,10 @@
-package com.pawith.authapplication.service.command.handler.impl;
+package com.pawith.authapplication.service.oauth.handler.impl;
 
 import com.pawith.authapplication.dto.OAuthRequest;
 import com.pawith.authapplication.dto.OAuthUserInfo;
-import com.pawith.authapplication.service.command.feign.GoogleOAuthFeignClient;
-import com.pawith.authapplication.service.command.feign.response.GoogleUserInfo;
+import com.pawith.authapplication.service.oauth.feign.NaverOAuthFeignClient;
+import com.pawith.authapplication.service.oauth.feign.response.NaverUserInfo;
+import com.pawith.authapplication.service.oauth.impl.NaverOAuthHandler;
 import com.pawith.commonmodule.UnitTestConfig;
 import com.pawith.commonmodule.enums.Provider;
 import com.pawith.commonmodule.utils.FixtureMonkeyUtils;
@@ -17,17 +18,17 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.BDDMockito.given;
 
 @UnitTestConfig
-@DisplayName("GoogleOAuthHandler 테스트")
-class GoogleOAuthHandlerTest {
+@DisplayName("NaverOAuthHandler 테스트")
+class NaverOAuthHandlerTest {
 
     @Mock
-    private GoogleOAuthFeignClient googleOAuthFeignClient;
+    private NaverOAuthFeignClient naverOAuthFeignClient;
 
-    private GoogleOAuthHandler googleOAuthHandler;
+    private NaverOAuthHandler naverOAuthHandler;
 
     @BeforeEach
     void setUp() {
-        googleOAuthHandler = new GoogleOAuthHandler(googleOAuthFeignClient);
+        naverOAuthHandler = new NaverOAuthHandler(naverOAuthFeignClient);
     }
 
     @Test
@@ -35,10 +36,10 @@ class GoogleOAuthHandlerTest {
     void isAccessible() {
         // given
         OAuthRequest mockRequest = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeBuilder(OAuthRequest.class)
-            .set("provider", Provider.GOOGLE)
+            .set("provider", Provider.NAVER)
             .sample();
         // when
-        final boolean result = googleOAuthHandler.isAccessible(mockRequest);
+        final boolean result = naverOAuthHandler.isAccessible(mockRequest);
         // then
         assertTrue(result);
     }
@@ -48,14 +49,14 @@ class GoogleOAuthHandlerTest {
     void handle() {
         // given
         OAuthRequest mockRequest = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(OAuthRequest.class);
-        GoogleUserInfo mockGoogleUserInfo = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeOne(GoogleUserInfo.class);
-        given(googleOAuthFeignClient.getGoogleUserInfo("Bearer "+mockRequest.getAccessToken())).willReturn(mockGoogleUserInfo);
+        NaverUserInfo mockNaverUserInfo = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey().giveMeOne(NaverUserInfo.class);
+        given(naverOAuthFeignClient.getNaverUserInfo("Bearer "+mockRequest.getAccessToken())).willReturn(mockNaverUserInfo);
         // when
-        final OAuthUserInfo result = googleOAuthHandler.handle(mockRequest);
+        final OAuthUserInfo result = naverOAuthHandler.handle(mockRequest);
         // then
         Assertions.assertThat(result).isNotNull();
-        Assertions.assertThat(result.getEmail()).isEqualTo(mockGoogleUserInfo.getEmail());
-        Assertions.assertThat(result.getUsername()).isEqualTo(mockGoogleUserInfo.getName());
+        Assertions.assertThat(result.getEmail()).isEqualTo(mockNaverUserInfo.getEmail());
+        Assertions.assertThat(result.getUsername()).isEqualTo(mockNaverUserInfo.getNickname());
     }
 
 

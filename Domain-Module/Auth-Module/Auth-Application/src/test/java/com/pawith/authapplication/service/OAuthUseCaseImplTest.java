@@ -2,7 +2,7 @@ package com.pawith.authapplication.service;
 
 import com.navercorp.fixturemonkey.FixtureMonkey;
 import com.pawith.commonmodule.enums.Provider;
-import com.pawith.authapplication.service.command.OAuthInvoker;
+import com.pawith.authapplication.service.oauth.OAuthInvoker;
 import com.pawith.authapplication.service.impl.OAuthUseCaseImpl;
 import com.pawith.commonmodule.UnitTestConfig;
 import org.junit.jupiter.api.BeforeEach;
@@ -30,9 +30,10 @@ public class OAuthUseCaseImplTest {
     void oAuthLogin() {
         //given
         final Provider testProvider = FixtureMonkey.create().giveMeOne(Provider.class);
-        final String token = FixtureMonkey.create().giveMeOne(String.class);
+        final String accessToken = FixtureMonkey.create().giveMeOne(String.class);
+        final String refreshToken = FixtureMonkey.create().giveMeOne(String.class);
         //when
-        oAuthUseCaseImpl.oAuthLogin(testProvider, token);
+        oAuthUseCaseImpl.oAuthLogin(testProvider, accessToken, refreshToken);
         //then
         then(oAuthInvoker).should(times(1)).execute(any());
     }

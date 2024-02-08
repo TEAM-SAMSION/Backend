@@ -47,7 +47,7 @@ public class UserSignUpHandlerTest {
         userSignUpHandler.signUp(mockUserSignUpEvent);
         //then
         then(userSaveService).should(times(1)).saveUser(any());
-        then(userAuthoritySaveService).should(times(1)).saveUserAuthority(any());
+        then(userAuthoritySaveService).should(times(1)).saveUserAuthority(any(),any());
     }
 
     @Test

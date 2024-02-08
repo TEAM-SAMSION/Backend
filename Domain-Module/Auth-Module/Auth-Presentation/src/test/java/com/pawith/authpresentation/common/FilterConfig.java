@@ -1,6 +1,6 @@
 package com.pawith.authpresentation.common;
 
-import com.pawith.authapplication.service.JWTExtractEmailUseCase;
+import com.pawith.authapplication.service.JWTExtractUserDetailsUseCase;
 import com.pawith.authapplication.service.JWTExtractTokenUseCase;
 import com.pawith.authapplication.service.JWTVerifyUseCase;
 import org.springframework.boot.test.context.TestConfiguration;
@@ -17,8 +17,8 @@ public class FilterConfig {
     }
 
     @Bean
-    public JWTExtractEmailUseCase jwtExtractEmailUseCase(){
-        return mock(JWTExtractEmailUseCase.class);
+    public JWTExtractUserDetailsUseCase jwtExtractEmailUseCase(){
+        return mock(JWTExtractUserDetailsUseCase.class);
     }
 
     @Bean

@@ -15,19 +15,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TokenQueryServiceImpl implements TokenQueryService {
     private final TokenRepository tokenRepository;
-    @Override
-    public String findEmailByValue(final String value, final TokenType tokenType) {
-        Token token = findToken(value, tokenType);
-        return token.getEmail();
-    }
 
     @Override
     public Token findTokenByValue(String value, TokenType tokenType) {
         return findToken(value, tokenType);
-    }
-
-    public List<Token> findAllByEmailAndTokenType(String email, TokenType tokenType){
-        return tokenRepository.findAllByEmailAndTokenType(email, tokenType);
     }
 
     private Token findToken(final String value, final TokenType tokenType){

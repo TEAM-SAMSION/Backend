@@ -20,7 +20,7 @@ public class UserNicknameChangeUseCase {
     public void changeUserName(final UserNicknameChangeRequest request){
         final User user = userUtils.getAccessUser();
         user.updateNickname(request.getNickname());
-        final UserAuthority userAuthority = userAuthorityQueryService.findByEmail(user.getEmail());
+        final UserAuthority userAuthority = userAuthorityQueryService.findByUserId(user.getId());
         userAuthority.changeUserAuthority();
     }
 }

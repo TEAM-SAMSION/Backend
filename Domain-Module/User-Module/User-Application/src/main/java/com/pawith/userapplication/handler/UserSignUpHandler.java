@@ -29,9 +29,8 @@ public class UserSignUpHandler {
         if(!userQueryService.checkEmailAlreadyExist(userSignUpEvent.email())) {
             final User user = UserMapper.toUserEntity(userSignUpEvent,DEFAULT_PROFILE_IMAGE_URL);
             userSaveService.saveUser(user);
-            userAuthoritySaveService.saveUserAuthority(userSignUpEvent.email());
-        }
-        else {
+            userAuthoritySaveService.saveUserAuthority(user, userSignUpEvent.email());
+        } else {
             userQueryService.checkAccountAlreadyExist(userSignUpEvent.email(), userSignUpEvent.provider());
         }
     }
