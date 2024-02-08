@@ -15,11 +15,11 @@ public class UserUtils {
     private final UserQueryService userQueryService;
 
     public User getAccessUser(){
-        final String email = SecurityUtils.getAuthenticationPrincipal();
-        return userQueryService.findByEmail(email);
+        final Long userId = SecurityUtils.getAuthenticationPrincipal();
+        return userQueryService.findById(userId);
     }
 
-    public static String getEmailFromAccessUser(){
+    public static Long getIdFromAccessUser(){
         return SecurityUtils.getAuthenticationPrincipal();
     }
 }
