@@ -12,4 +12,7 @@ dependencies {
 
     // webclinet
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
+    // user
+    implementation project(':Domain-Module:User-Module:User-Domain')
 }
