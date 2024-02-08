@@ -24,14 +24,14 @@ public class Token extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private TokenType tokenType;
 
-    private String email;
+    private Long userId;
     private String value;
     private Boolean isDeleted = Boolean.FALSE;
 
     @Builder
-    public Token(TokenType tokenType, String email, String value) {
+    public Token(TokenType tokenType, Long userId, String value) {
         this.tokenType = tokenType;
-        this.email = email;
+        this.userId = userId;
         this.value = value;
     }
 }
