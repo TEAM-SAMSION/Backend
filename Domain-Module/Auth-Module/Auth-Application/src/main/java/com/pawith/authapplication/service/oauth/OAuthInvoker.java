@@ -9,9 +9,6 @@ import com.pawith.authdomain.exception.AuthError;
 import com.pawith.authdomain.jwt.JWTProvider;
 import com.pawith.authdomain.jwt.PrivateClaims;
 import com.pawith.authdomain.jwt.TokenType;
-import com.pawith.authdomain.service.OAuthModifyingService;
-import com.pawith.authdomain.service.OAuthQueryService;
-import com.pawith.authdomain.service.OAuthSaveService;
 import com.pawith.authdomain.service.TokenSaveService;
 import com.pawith.userdomain.service.UserQueryService;
 import lombok.RequiredArgsConstructor;
@@ -28,9 +25,9 @@ public class OAuthInvoker {
     private final JWTProvider jwtProvider;
     private final TokenSaveService tokenSaveService;
     private final ApplicationEventPublisher publisher;
-    private final OAuthModifyingService oAuthModifyingService;
-    private final OAuthQueryService oAuthQueryService;
-    private final OAuthSaveService oAuthSaveService;
+//    private final OAuthModifyingService oAuthModifyingService;
+//    private final OAuthQueryService oAuthQueryService;
+//    private final OAuthSaveService oAuthSaveService;
     private final UserQueryService userQueryService;
     private final TransactionTemplate transactionTemplate;
 
