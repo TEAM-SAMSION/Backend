@@ -1,4 +1,4 @@
-package com.pawith.authapplication.service.command.handler;
+package com.pawith.authapplication.service.oauth;
 
 import com.pawith.authapplication.dto.OAuthRequest;
 import com.pawith.authapplication.dto.OAuthUserInfo;

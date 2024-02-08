@@ -1,9 +1,9 @@
-package com.pawith.authapplication.service.command.handler.impl;
+package com.pawith.authapplication.service.oauth.impl;
 
 import com.pawith.authapplication.dto.OAuthRequest;
 import com.pawith.authapplication.dto.OAuthUserInfo;
-import com.pawith.authapplication.service.command.feign.NaverOAuthFeignClient;
-import com.pawith.authapplication.service.command.feign.response.NaverUserInfo;
+import com.pawith.authapplication.service.oauth.feign.NaverOAuthFeignClient;
+import com.pawith.authapplication.service.oauth.feign.response.NaverUserInfo;
 import com.pawith.authapplication.service.command.handler.AuthHandler;
 import com.pawith.commonmodule.enums.Provider;
 import lombok.RequiredArgsConstructor;

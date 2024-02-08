@@ -1,9 +1,9 @@
-package com.pawith.authapplication.service.command.handler.impl;
+package com.pawith.authapplication.service.oauth.impl;
 
 import com.pawith.authapplication.dto.OAuthRequest;
 import com.pawith.authapplication.dto.OAuthUserInfo;
-import com.pawith.authapplication.service.command.feign.GoogleOAuthFeignClient;
-import com.pawith.authapplication.service.command.feign.response.GoogleUserInfo;
+import com.pawith.authapplication.service.oauth.feign.GoogleOAuthFeignClient;
+import com.pawith.authapplication.service.oauth.feign.response.GoogleUserInfo;
 import com.pawith.authapplication.service.command.handler.AuthHandler;
 import com.pawith.commonmodule.enums.Provider;
 import lombok.RequiredArgsConstructor;

@@ -1,9 +1,9 @@
-package com.pawith.authapplication.service.command.handler.impl;
+package com.pawith.authapplication.service.oauth.impl;
 
 import com.pawith.authapplication.dto.OAuthRequest;
 import com.pawith.authapplication.dto.OAuthUserInfo;
-import com.pawith.authapplication.service.command.feign.AppleFeignClient;
-import com.pawith.authapplication.service.command.feign.response.Keys;
+import com.pawith.authapplication.service.oauth.feign.AppleFeignClient;
+import com.pawith.authapplication.service.oauth.feign.response.Keys;
 import com.pawith.authapplication.service.command.handler.AuthHandler;
 import com.pawith.authdomain.exception.AuthError;
 import com.pawith.authdomain.jwt.exception.InvalidTokenException;

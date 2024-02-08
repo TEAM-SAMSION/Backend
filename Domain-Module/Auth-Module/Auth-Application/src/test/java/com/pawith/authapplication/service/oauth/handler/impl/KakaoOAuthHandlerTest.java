@@ -1,10 +1,11 @@
-package com.pawith.authapplication.service.command.handler.impl;
+package com.pawith.authapplication.service.oauth.handler.impl;
 
 import com.pawith.authapplication.dto.OAuthRequest;
 import com.pawith.authapplication.dto.OAuthUserInfo;
-import com.pawith.authapplication.service.command.feign.KakaoOAuthFeignClient;
-import com.pawith.authapplication.service.command.feign.response.KakaoUserInfo;
-import com.pawith.authapplication.service.command.feign.response.TokenInfo;
+import com.pawith.authapplication.service.oauth.feign.KakaoOAuthFeignClient;
+import com.pawith.authapplication.service.oauth.feign.response.KakaoUserInfo;
+import com.pawith.authapplication.service.oauth.feign.response.TokenInfo;
+import com.pawith.authapplication.service.oauth.impl.KakaoOAuthHandler;
 import com.pawith.authdomain.jwt.exception.InvalidTokenException;
 import com.pawith.commonmodule.UnitTestConfig;
 import com.pawith.commonmodule.enums.Provider;

@@ -1,6 +1,6 @@
-package com.pawith.authapplication.service.command.feign;
+package com.pawith.authapplication.service.oauth.feign;
 
-import com.pawith.authapplication.service.command.feign.response.Keys;
+import com.pawith.authapplication.service.oauth.feign.response.Keys;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 
