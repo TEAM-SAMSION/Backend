@@ -1,9 +1,9 @@
 package com.pawith.authapplication.dto;
 
+import com.pawith.commonmodule.enums.Provider;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import com.pawith.commonmodule.enums.Provider;
 import lombok.NoArgsConstructor;
 
 @Getter
@@ -12,4 +12,5 @@ import lombok.NoArgsConstructor;
 public class OAuthRequest {
     private Provider provider;
     private String accessToken;
+    private String refreshToken; // nullable
 }

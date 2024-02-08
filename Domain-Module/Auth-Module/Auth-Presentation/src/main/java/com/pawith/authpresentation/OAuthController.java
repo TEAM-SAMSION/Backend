@@ -21,8 +21,10 @@ public class OAuthController {
     private final ReissueUseCase reissueUseCase;
 
     @GetMapping("/oauth/{provider}")
-    public OAuthResponse oAuthLogin(@PathVariable Provider provider, @RequestHeader("Authorization") String accessToken){
-        return oAuthUseCase.oAuthLogin(provider, accessToken);
+    public OAuthResponse oAuthLogin(@PathVariable Provider provider,
+                                    @RequestHeader("Authorization") String accessToken,
+                                    @RequestHeader(value = "RefreshToken", required = false) String refreshToken){
+        return oAuthUseCase.oAuthLogin(provider, accessToken, refreshToken);
     }
 
     @PostMapping("/reissue")
