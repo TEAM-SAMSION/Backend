@@ -13,13 +13,12 @@ public class TokenSaveServiceImpl implements TokenSaveService {
     private final TokenRepository tokenRepository;
 
     @Override
-    public void saveToken(final String token, final String email, final TokenType tokenType) {
+    public void saveToken(String token, TokenType tokenType, Long userId) {
         final Token saveToken = Token.builder()
             .tokenType(tokenType)
             .value(token)
-            .email(email)
+            .userId(userId)
             .build();
         tokenRepository.save(saveToken);
     }
-
 }
