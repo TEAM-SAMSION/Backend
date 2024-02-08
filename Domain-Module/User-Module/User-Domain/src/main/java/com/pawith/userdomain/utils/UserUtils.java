@@ -19,7 +19,7 @@ public class UserUtils {
         return userQueryService.findById(userId);
     }
 
-    public static Long getIdFromAccessUser(){
+    public Long getIdFromAccessUser(){
         return SecurityUtils.getAuthenticationPrincipal();
     }
 }

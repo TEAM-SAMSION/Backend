@@ -6,6 +6,7 @@ import com.pawith.commonmodule.utils.FixtureMonkeyUtils;
 import com.pawith.userapplication.dto.response.UserAuthorityInfoResponse;
 import com.pawith.userdomain.entity.UserAuthority;
 import com.pawith.userdomain.service.UserAuthorityQueryService;
+import com.pawith.userdomain.utils.UserUtils;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -20,13 +21,14 @@ import static org.mockito.BDDMockito.given;
 class UserAuthorityGetUseCaseTest {
 
     @Mock
-    UserAuthorityQueryService userAuthorityQueryService;
+    private UserAuthorityQueryService userAuthorityQueryService;
+    @Mock
+    private UserUtils userUtils;
 
     UserAuthorityGetUseCase userAuthorityGetUseCase;
-
     @BeforeEach
     void init() {
-        userAuthorityGetUseCase = new UserAuthorityGetUseCase(userAuthorityQueryService);
+        userAuthorityGetUseCase = new UserAuthorityGetUseCase(userAuthorityQueryService, userUtils);
     }
 
     @Test
@@ -37,6 +39,7 @@ class UserAuthorityGetUseCaseTest {
         final UserAuthority userAuthority = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey()
             .giveMeBuilder(UserAuthority.class)
             .sample();
+        given(userUtils.getIdFromAccessUser()).willReturn(userAuthority.getUser().getId());
         given(userAuthorityQueryService.findByUserId(anyLong())).willReturn(userAuthority);
         //when
         UserAuthorityInfoResponse result = userAuthorityGetUseCase.getUserAuthority();

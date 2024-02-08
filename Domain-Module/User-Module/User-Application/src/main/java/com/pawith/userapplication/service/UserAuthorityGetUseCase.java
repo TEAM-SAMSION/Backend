@@ -12,9 +12,10 @@ import lombok.RequiredArgsConstructor;
 public class UserAuthorityGetUseCase {
 
     private final UserAuthorityQueryService userAuthorityQueryService;
+    private final UserUtils userUtils;
 
     public UserAuthorityInfoResponse getUserAuthority() {
-        final Long userId = UserUtils.getIdFromAccessUser();
+        final Long userId = userUtils.getIdFromAccessUser();
         final UserAuthority userAuthority = userAuthorityQueryService.findByUserId(userId);
         return new UserAuthorityInfoResponse(userAuthority.getAuthority());
     }
