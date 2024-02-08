@@ -2,9 +2,9 @@ package com.pawith.authapplication.service.oauth.impl;
 
 import com.pawith.authapplication.dto.OAuthRequest;
 import com.pawith.authapplication.dto.OAuthUserInfo;
+import com.pawith.authapplication.service.oauth.AuthHandler;
 import com.pawith.authapplication.service.oauth.feign.GoogleOAuthFeignClient;
 import com.pawith.authapplication.service.oauth.feign.response.GoogleUserInfo;
-import com.pawith.authapplication.service.command.handler.AuthHandler;
 import com.pawith.commonmodule.enums.Provider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -21,7 +21,7 @@ public class GoogleOAuthHandler implements AuthHandler {
     public OAuthUserInfo handle(OAuthRequest authenticationInfo) {
         final String accessToken = authenticationInfo.getAccessToken();
         final GoogleUserInfo googleUserInfo = getGoogleUserInfo(accessToken);
-        return new OAuthUserInfo(googleUserInfo.getName(), googleUserInfo.getEmail());
+        return new OAuthUserInfo(googleUserInfo.getName(), googleUserInfo.getEmail(), null);
     }
 
     @Override

@@ -2,10 +2,10 @@ package com.pawith.authapplication.service.oauth.impl;
 
 import com.pawith.authapplication.dto.OAuthRequest;
 import com.pawith.authapplication.dto.OAuthUserInfo;
+import com.pawith.authapplication.service.oauth.AuthHandler;
 import com.pawith.authapplication.service.oauth.feign.KakaoOAuthFeignClient;
 import com.pawith.authapplication.service.oauth.feign.response.KakaoUserInfo;
 import com.pawith.authapplication.service.oauth.feign.response.TokenInfo;
-import com.pawith.authapplication.service.command.handler.AuthHandler;
 import com.pawith.authdomain.exception.AuthError;
 import com.pawith.authdomain.jwt.exception.InvalidTokenException;
 import com.pawith.commonmodule.enums.Provider;
@@ -29,7 +29,7 @@ public class KakaoOAuthHandler implements AuthHandler {
         if (!tokenInfo.getAppId().equals(appId)) throw new InvalidTokenException(AuthError.INVALID_TOKEN);
 
         final KakaoUserInfo kakaoUserInfo = getKaKaoUserInfo(authenticationInfo.getAccessToken());
-        return new OAuthUserInfo(kakaoUserInfo.getNickname(), kakaoUserInfo.getEmail());
+        return new OAuthUserInfo(kakaoUserInfo.getNickname(), kakaoUserInfo.getEmail(), null);
     }
 
     @Override

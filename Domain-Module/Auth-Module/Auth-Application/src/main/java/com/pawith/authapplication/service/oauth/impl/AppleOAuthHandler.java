@@ -2,9 +2,9 @@ package com.pawith.authapplication.service.oauth.impl;
 
 import com.pawith.authapplication.dto.OAuthRequest;
 import com.pawith.authapplication.dto.OAuthUserInfo;
+import com.pawith.authapplication.service.oauth.AuthHandler;
 import com.pawith.authapplication.service.oauth.feign.AppleFeignClient;
 import com.pawith.authapplication.service.oauth.feign.response.Keys;
-import com.pawith.authapplication.service.command.handler.AuthHandler;
 import com.pawith.authdomain.exception.AuthError;
 import com.pawith.authdomain.jwt.exception.InvalidTokenException;
 import com.pawith.commonmodule.enums.Provider;
@@ -43,7 +43,7 @@ public class AppleOAuthHandler implements AuthHandler {
         Jws<Claims> oidcTokenJws = sigVerificationAndGetJws(authenticationInfo.getAccessToken());
         // 토큰 바디 파싱해서 사용자 정보 획득
         String email = (String) oidcTokenJws.getBody().get(APPLE_USER_INFO);
-        return new OAuthUserInfo("포잇", email);
+        return new OAuthUserInfo("포잇", email, null);
     }
 
     @Override
