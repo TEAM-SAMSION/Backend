@@ -7,4 +7,7 @@ public record UserSignUpEvent(
     String email,
     Provider provider
 ) {
+    public static UserSignUpEvent of(String nickname, String email, Provider provider) {
+        return new UserSignUpEvent(nickname, email, provider);
+    }
 }
