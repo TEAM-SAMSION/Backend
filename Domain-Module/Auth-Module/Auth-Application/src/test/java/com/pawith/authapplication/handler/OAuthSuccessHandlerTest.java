@@ -84,10 +84,13 @@ class OAuthSuccessHandlerTest {
         @DisplayName("User의 provider 필드가 존재하고, 요청 Provider와 일치하지 않으면 OAuthException을 발생시킨다.")
         void handleWithNotMatchingProvider() {
             // given
-            final User user = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(User.class);
+            final User user = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey()
+                .giveMeBuilder(User.class)
+                .set("provider", Provider.GOOGLE)
+                .sample();
             final OAuthSuccessEvent oAuthSuccessEvent = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey()
                 .giveMeBuilder(OAuthSuccessEvent.class)
-                .setPostCondition("provider", Provider.class, user::isNotMatchingProvider)
+                .set("provider", Provider.KAKAO)
                 .sample();
             given(oAuthQueryService.existBySub(oAuthSuccessEvent.sub())).willReturn(false);
             given(userQueryService.checkEmailAlreadyExist(oAuthSuccessEvent.email())).willReturn(true);
@@ -106,7 +109,7 @@ class OAuthSuccessHandlerTest {
             final User user = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(User.class);
             final OAuthSuccessEvent oAuthSuccessEvent = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey()
                 .giveMeBuilder(OAuthSuccessEvent.class)
-                .setPostCondition("provider", Provider.class, user::isMatchingProvider)
+                .set("provider", user.getProvider())
                 .sample();
             given(oAuthQueryService.existBySub(oAuthSuccessEvent.sub())).willReturn(false);
             given(userQueryService.checkEmailAlreadyExist(oAuthSuccessEvent.email())).willReturn(true);
