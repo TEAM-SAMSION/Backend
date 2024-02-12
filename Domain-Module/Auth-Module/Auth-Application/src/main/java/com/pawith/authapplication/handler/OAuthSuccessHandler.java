@@ -36,13 +36,13 @@ public class OAuthSuccessHandler {
             final User user = userQueryService.findById(oAuth.getUserId());
             user.updateEmail(oAuthSuccessEvent.email());
         } else {
-            if(userQueryService.checkEmailAlreadyExist(oAuthSuccessEvent.email())) {
+            if (userQueryService.checkEmailAlreadyExist(oAuthSuccessEvent.email())) {
                 final User user = userQueryService.findByEmail(oAuthSuccessEvent.email());
-                if(oAuthQueryService.existByUserId(user.getId())){
+                if (oAuthQueryService.existByUserId(user.getId())|| user.isNotMatchingProvider(oAuthSuccessEvent.provider())) {
                     throw new OAuthException(AuthError.INVALID_OAUTH_REQUEST);
                 }
                 saveOAuth(oAuthSuccessEvent, user);
-            }else {
+            } else {
                 applicationEventPublisher.publishEvent(UserSignUpEvent.of(
                     oAuthSuccessEvent.username(),
                     oAuthSuccessEvent.email()
