@@ -22,9 +22,9 @@ public class OAuthController {
 
     @GetMapping("/oauth/{provider}")
     public OAuthResponse oAuthLogin(@PathVariable Provider provider,
-                                    @RequestHeader("Authorization") String accessToken,
-                                    @RequestHeader(value = "RefreshToken", required = false) String refreshToken){
-        return oAuthUseCase.oAuthLogin(provider, accessToken, refreshToken);
+                                    @RequestHeader("Authorization") String accessToken
+                                    ){
+        return oAuthUseCase.oAuthLogin(provider, accessToken);
     }
 
     @PostMapping("/reissue")
