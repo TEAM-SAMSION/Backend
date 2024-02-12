@@ -34,7 +34,7 @@ public class User extends BaseEntity {
     private String email;
     private String imageUrl;
     @Enumerated(EnumType.STRING)
-    @Deprecated
+    @Deprecated(since = "2.0")
     private Provider provider;
 
     private Boolean isDeleted = Boolean.FALSE;
@@ -61,8 +61,14 @@ public class User extends BaseEntity {
             .validate();
     }
 
+    @Deprecated(since = "2.0")
     public Boolean isNotMatchingProvider(Provider provider) {
         return !this.provider.equals(provider);
+    }
+
+    @Deprecated(since = "2.0")
+    public Boolean isMatchingProvider(Provider provider) {
+        return this.provider.equals(provider);
     }
 
     public Long getJoinTerm() {
