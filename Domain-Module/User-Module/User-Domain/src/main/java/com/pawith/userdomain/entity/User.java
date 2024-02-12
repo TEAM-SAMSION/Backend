@@ -20,7 +20,7 @@ import java.time.temporal.ChronoUnit;
 @SQLDelete(sql = "UPDATE user SET is_deleted = true WHERE user_id = ?")
 @Where(clause = "is_deleted = false")
 @Table(name = "user", indexes = {
-    @Index(name = "idx_user_email", columnList = "email")
+//    @Index(name = "idx_user_email", columnList = "email")
 })
 public class User extends BaseEntity {
 
@@ -34,6 +34,7 @@ public class User extends BaseEntity {
     private String email;
     private String imageUrl;
     @Enumerated(EnumType.STRING)
+    @Deprecated
     private Provider provider;
 
     private Boolean isDeleted = Boolean.FALSE;
@@ -72,5 +73,12 @@ public class User extends BaseEntity {
 
     public Boolean isMatchingUser(Long userId) {
         return this.id.equals(userId);
+    }
+
+    public void updateEmail(String newEmail) {
+        this.email = DomainFieldUtils.DomainValidateBuilder.builder(String.class)
+            .newValue(newEmail)
+            .currentValue(this.email)
+            .validate();
     }
 }
