@@ -1,0 +1,12 @@
+apply from: "$rootDir/gradle/customplugin/gradleutils.gradle"
+
+dependencies {
+    getProjectsEndsWith("Domain-Module", "Domain").forEach { module ->
+        implementation project(module.path)
+    }
+}
+
+
+
+
+

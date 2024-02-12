@@ -20,4 +20,8 @@ public class OAuthQueryService {
         return oAuthRepository.findBySub(sub)
             .orElseThrow(() -> new OAuthNotFoundException(AuthError.OAUTH_NOT_FOUND));
     }
+
+    public boolean existByUserId(final Long userId) {
+        return oAuthRepository.existsByUserId(userId);
+    }
 }

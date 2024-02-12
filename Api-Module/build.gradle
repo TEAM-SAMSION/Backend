@@ -1,3 +1,5 @@
+apply from: "$rootDir/gradle/customplugin/gradleutils.gradle"
+
 dependencies {
     // actuators
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
@@ -5,11 +7,12 @@ dependencies {
 
     implementation project(":Log-Module")
 
-    implementation project(":Domain-Module:Todo-Module:Todo-Presentation")
-    implementation project(":Domain-Module:Auth-Module:Auth-Presentation")
-    implementation project(":Domain-Module:User-Module:User-Presentation")
-
     implementation project(':Alarm-Module')
 
     implementation project(':Event')
+
+    getProjectsEndsWith("Domain-Module", "Presentation").forEach { module ->
+        implementation project(module.path)
+    }
+
 }
