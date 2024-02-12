@@ -16,6 +16,7 @@ public enum AuthError implements Error {
     INVALID_AUTHORIZATION_TYPE("유효하지 않은 Authorization Type 입니다.", 1003, HttpStatus.BAD_REQUEST),
     EMPTY_AUTHORIZATION_HEADER("Authorization Header가 비어있습니다.", 1004, HttpStatus.BAD_REQUEST),
     OAUTH_FAIL("OAuth 인증에 실패하였습니다.", 1005, HttpStatus.BAD_REQUEST),
+    OAUTH_NOT_FOUND("OAuth 정보를 찾을 수 없습니다.", 1006, HttpStatus.NOT_FOUND),
     INVALID_OAUTH_REQUEST("다른 소셜로그인으로 가입된 계정이 존재합니다.", 2002, HttpStatus.BAD_REQUEST), // 오류 코드 변경 요청하기
     ;
 
