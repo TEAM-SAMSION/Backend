@@ -34,9 +34,8 @@ class UserAuthoritySaveServiceTest {
     @DisplayName("유저 권한을 생성한다.")
     void saveUserAuthority() {
         //given
-        final String email = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(String.class);
         final User user = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(User.class);
-        given(userAuthorityRepository.findByEmail(email)).willReturn(Optional.empty());
+        given(userAuthorityRepository.findByUserId(user.getId())).willReturn(Optional.empty());
         //when
         userAuthoritySaveService.saveUserAuthority(user);
         //then
@@ -47,13 +46,12 @@ class UserAuthoritySaveServiceTest {
     @DisplayName("유저 권한 존재하면 생성하지 않는다.")
     void saveUserAuthorityWhenUserAuthorityExist() {
         //given
-        final String email = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(String.class);
         final User user = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(User.class);
-        given(userAuthorityRepository.findByEmail(email)).willReturn(Optional.of(UserAuthority.of(user)));
+        given(userAuthorityRepository.findByUserId(user.getId())).willReturn(Optional.of(UserAuthority.of(user)));
         //when
         userAuthoritySaveService.saveUserAuthority(user);
         //then
-        then(userAuthorityRepository).should().findByEmail(email);
+        then(userAuthorityRepository).should().findByUserId(user.getId());
         then(userAuthorityRepository).shouldHaveNoMoreInteractions();
     }
 
