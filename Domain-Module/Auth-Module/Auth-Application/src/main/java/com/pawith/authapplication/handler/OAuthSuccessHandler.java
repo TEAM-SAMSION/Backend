@@ -27,6 +27,9 @@ public class OAuthSuccessHandler {
 
     @EventListener(OAuthSuccessEvent.class)
     @Transactional
+    /**
+     * TODO: 리팩터링,리팩터링,리팩터링,리팩터링,리팩터링,리팩터링,리팩터링,리팩터링,리팩터링,리팩터링,리팩터링
+     */
     public void handle(OAuthSuccessEvent oAuthSuccessEvent) {
         if (oAuthQueryService.existBySub(oAuthSuccessEvent.sub())) {
             final OAuth oAuth = oAuthQueryService.findBySub(oAuthSuccessEvent.sub());
@@ -34,19 +37,28 @@ public class OAuthSuccessHandler {
             user.updateEmail(oAuthSuccessEvent.email());
         } else {
             if(userQueryService.checkEmailAlreadyExist(oAuthSuccessEvent.email())) {
-                throw new OAuthException(AuthError.INVALID_OAUTH_REQUEST);
+                final User user = userQueryService.findByEmail(oAuthSuccessEvent.email());
+                if(oAuthQueryService.existByUserId(user.getId())){
+                    throw new OAuthException(AuthError.INVALID_OAUTH_REQUEST);
+                }
+                saveOAuth(oAuthSuccessEvent, user);
+            }else {
+                applicationEventPublisher.publishEvent(UserSignUpEvent.of(
+                    oAuthSuccessEvent.username(),
+                    oAuthSuccessEvent.email()
+                ));
+                final User user = userQueryService.findByEmail(oAuthSuccessEvent.email());
+                saveOAuth(oAuthSuccessEvent, user);
             }
-            applicationEventPublisher.publishEvent(UserSignUpEvent.of(
-                oAuthSuccessEvent.username(),
-                oAuthSuccessEvent.email()
-            ));
-            final User user = userQueryService.findByEmail(oAuthSuccessEvent.email());
-            OAuth oAuth = OAuth.of(
-                oAuthSuccessEvent.provider(),
-                oAuthSuccessEvent.sub(),
-                user.getId()
-            );
-            oAuthSaveService.save(oAuth);
         }
+    }
+
+    private void saveOAuth(OAuthSuccessEvent oAuthSuccessEvent, User user) {
+        OAuth oAuth = OAuth.of(
+            oAuthSuccessEvent.provider(),
+            oAuthSuccessEvent.sub(),
+            user.getId()
+        );
+        oAuthSaveService.save(oAuth);
     }
 }
