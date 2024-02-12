@@ -5,7 +5,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 
-@FeignClient(name = "googleOAuth",url = "https://www.googleapis.com/oauth2/v3/userinfo")
+@FeignClient(name = "googleOAuth",url = "https://www.googleapis.com/userinfo/v2/me")
 public interface GoogleOAuthFeignClient {
 
     @GetMapping

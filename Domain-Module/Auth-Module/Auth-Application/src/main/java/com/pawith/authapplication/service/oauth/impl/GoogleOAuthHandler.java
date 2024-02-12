@@ -21,7 +21,7 @@ public class GoogleOAuthHandler implements AuthHandler {
     public OAuthUserInfo handle(OAuthRequest authenticationInfo) {
         final String accessToken = authenticationInfo.getAccessToken();
         final GoogleUserInfo googleUserInfo = getGoogleUserInfo(accessToken);
-        return new OAuthUserInfo(googleUserInfo.getName(), googleUserInfo.getEmail(), null);
+        return new OAuthUserInfo(googleUserInfo.getName(), googleUserInfo.getEmail(), googleUserInfo.getId());
     }
 
     @Override
