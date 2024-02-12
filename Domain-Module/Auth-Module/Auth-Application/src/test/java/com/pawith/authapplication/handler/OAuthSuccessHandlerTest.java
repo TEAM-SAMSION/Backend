@@ -106,7 +106,10 @@ class OAuthSuccessHandlerTest {
         @DisplayName("기존 계정이 존재하는경우 Provider와 일치하는 요청이면 OAuth 정보를 저장한다.")
         void handleWithExistUser() {
             // given
-            final User user = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(User.class);
+            final User user = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey()
+                .giveMeBuilder(User.class)
+                .set("provider", Provider.GOOGLE)
+                .sample();
             final OAuthSuccessEvent oAuthSuccessEvent = FixtureMonkeyUtils.getConstructBasedFixtureMonkey()
                 .giveMeBuilder(OAuthSuccessEvent.class)
                 .set("provider", user.getProvider())
