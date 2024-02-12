@@ -9,4 +9,5 @@ import lombok.NoArgsConstructor;
 public class GoogleUserInfo {
     private String email;
     private String name;
+    private String id;
 }

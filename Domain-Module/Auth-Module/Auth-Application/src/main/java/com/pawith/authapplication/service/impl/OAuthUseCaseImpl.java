@@ -15,7 +15,7 @@ public class OAuthUseCaseImpl implements OAuthUseCase {
     private final OAuthInvoker oAuthInvoker;
 
     @Override
-    public OAuthResponse oAuthLogin(Provider provider, String accessToken, String refreshToken){
-        return oAuthInvoker.execute(new OAuthRequest(provider, accessToken, refreshToken));
+    public OAuthResponse oAuthLogin(Provider provider, String accessToken){
+        return oAuthInvoker.execute(new OAuthRequest(provider, accessToken));
     }
 }
