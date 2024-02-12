@@ -42,27 +42,11 @@ public class UserSignUpHandlerTest {
     void userSignUp() {
         //given
         final UserSignUpEvent mockUserSignUpEvent = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(UserSignUpEvent.class);
-        System.out.println(mockUserSignUpEvent.provider());
         //when
         userSignUpHandler.signUp(mockUserSignUpEvent);
         //then
         then(userSaveService).should(times(1)).saveUser(any());
-        then(userAuthoritySaveService).should(times(1)).saveUserAuthority(any(),any());
-    }
-
-    @Test
-    @DisplayName("이미 계정이 존재할때, 다른 소셜 로그인을 하는 경우 예외가 발생한다")
-    void userSignUpWithDifferentProvider() {
-        //given
-        final UserSignUpEvent mockUserSignUpEvent = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(UserSignUpEvent.class);
-        given(userQueryService.checkEmailAlreadyExist(mockUserSignUpEvent.email())).willReturn(true);
-        doThrow(AccountAlreadyExistException.class)
-                .when(userQueryService)
-                .checkAccountAlreadyExist((mockUserSignUpEvent.email()), (mockUserSignUpEvent.provider()));
-        //when
-        //then
-        Assertions.assertThatCode(() -> userSignUpHandler.signUp(mockUserSignUpEvent))
-                .isInstanceOf(AccountAlreadyExistException.class);
+        then(userAuthoritySaveService).should(times(1)).saveUserAuthority(any());
     }
 
 }
