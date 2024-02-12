@@ -10,4 +10,6 @@ public interface OAuthRepository extends JpaRepository<OAuth, Long> {
     boolean existsBySub(String sub);
 
     Optional<OAuth> findBySub(String sub);
+
+    Optional<OAuth> findByUserId(Long userId);
 }
