@@ -12,5 +12,4 @@ import lombok.NoArgsConstructor;
 public class OAuthRequest {
     private Provider provider;
     private String accessToken;
-    private String refreshToken; // nullable
 }
