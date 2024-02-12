@@ -85,7 +85,7 @@ class OAuthSuccessHandlerTest {
         void handleWithNotMatchingProvider() {
             // given
             final User user = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(User.class);
-            final OAuthSuccessEvent oAuthSuccessEvent = FixtureMonkeyUtils.getConstructBasedFixtureMonkey()
+            final OAuthSuccessEvent oAuthSuccessEvent = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey()
                 .giveMeBuilder(OAuthSuccessEvent.class)
                 .setPostCondition("provider", Provider.class, user::isNotMatchingProvider)
                 .sample();
@@ -104,7 +104,7 @@ class OAuthSuccessHandlerTest {
         void handleWithExistUser() {
             // given
             final User user = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(User.class);
-            final OAuthSuccessEvent oAuthSuccessEvent = FixtureMonkeyUtils.getConstructBasedFixtureMonkey()
+            final OAuthSuccessEvent oAuthSuccessEvent = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey()
                 .giveMeBuilder(OAuthSuccessEvent.class)
                 .setPostCondition("provider", Provider.class, user::isMatchingProvider)
                 .sample();
