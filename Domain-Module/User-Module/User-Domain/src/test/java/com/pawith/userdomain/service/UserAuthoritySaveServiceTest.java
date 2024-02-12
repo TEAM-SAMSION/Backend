@@ -38,7 +38,7 @@ class UserAuthoritySaveServiceTest {
         final User user = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(User.class);
         given(userAuthorityRepository.findByEmail(email)).willReturn(Optional.empty());
         //when
-        userAuthoritySaveService.saveUserAuthority(user, email);
+        userAuthoritySaveService.saveUserAuthority(user);
         //then
         then(userAuthorityRepository).should().save(any());
     }
@@ -49,9 +49,9 @@ class UserAuthoritySaveServiceTest {
         //given
         final String email = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(String.class);
         final User user = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(User.class);
-        given(userAuthorityRepository.findByEmail(email)).willReturn(Optional.of(UserAuthority.of(user, email)));
+        given(userAuthorityRepository.findByEmail(email)).willReturn(Optional.of(UserAuthority.of(user)));
         //when
-        userAuthoritySaveService.saveUserAuthority(user, email);
+        userAuthoritySaveService.saveUserAuthority(user);
         //then
         then(userAuthorityRepository).should().findByEmail(email);
         then(userAuthorityRepository).shouldHaveNoMoreInteractions();

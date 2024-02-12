@@ -11,10 +11,10 @@ import lombok.RequiredArgsConstructor;
 public class UserAuthoritySaveService {
     private final UserAuthorityRepository userAuthorityRepository;
 
-    public void saveUserAuthority(final User user, final String email) {
-        userAuthorityRepository.findByEmail(email)
+    public void saveUserAuthority(final User user) {
+        userAuthorityRepository.findByUserId(user.getId())
             .ifPresentOrElse(
                 UserAuthority::initialUserAuthority,
-                () -> userAuthorityRepository.save(UserAuthority.of(user, email)));
+                () -> userAuthorityRepository.save(UserAuthority.of(user)));
     }
 }
