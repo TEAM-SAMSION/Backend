@@ -88,7 +88,7 @@ class OAuthSuccessHandlerTest {
                 .giveMeBuilder(User.class)
                 .set("provider", Provider.GOOGLE)
                 .sample();
-            final OAuthSuccessEvent oAuthSuccessEvent = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey()
+            final OAuthSuccessEvent oAuthSuccessEvent = FixtureMonkeyUtils.getConstructBasedFixtureMonkey()
                 .giveMeBuilder(OAuthSuccessEvent.class)
                 .set("provider", Provider.KAKAO)
                 .sample();
@@ -107,7 +107,7 @@ class OAuthSuccessHandlerTest {
         void handleWithExistUser() {
             // given
             final User user = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(User.class);
-            final OAuthSuccessEvent oAuthSuccessEvent = FixtureMonkeyUtils.getReflectionbasedFixtureMonkey()
+            final OAuthSuccessEvent oAuthSuccessEvent = FixtureMonkeyUtils.getConstructBasedFixtureMonkey()
                 .giveMeBuilder(OAuthSuccessEvent.class)
                 .set("provider", user.getProvider())
                 .sample();
