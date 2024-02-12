@@ -1,0 +1,17 @@
+Collection<Project> getProjectList(String rootModuleName, String containsModuleName) {
+    return project(":$rootModuleName").allprojects.stream()
+            .filter { project -> project.name.contains(containsModuleName) }
+            .toList();
+}
+
+Collection<Project> getProjectsEndsWith(String rootModuleName, String endsWithModuleName) {
+    return project(":$rootModuleName").allprojects.stream()
+            .filter { project -> project.name.endsWith(endsWithModuleName) }
+            .toList();
+}
+
+
+ext {
+    getProjectList = this.&getProjectList
+    getProjectsEndsWith = this.&getProjectsEndsWith
+}
