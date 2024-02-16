@@ -29,7 +29,8 @@ public class KakaoOAuthHandler implements AuthHandler {
         if (!tokenInfo.getAppId().equals(appId)) throw new InvalidTokenException(AuthError.INVALID_TOKEN);
 
         final KakaoUserInfo kakaoUserInfo = getKaKaoUserInfo(authenticationInfo.getAccessToken());
-        return new OAuthUserInfo(kakaoUserInfo.getNickname(), kakaoUserInfo.getEmail(), null);
+
+        return new OAuthUserInfo(kakaoUserInfo.getNickname(), kakaoUserInfo.getEmail(), tokenInfo.getId());
     }
 
     @Override

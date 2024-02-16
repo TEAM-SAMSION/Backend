@@ -32,7 +32,7 @@ public class TodoTeamQueryService {
     }
 
     public TodoTeam findTodoTeamByTodoId(Long todoId) {
-        return todoTeamRepository.findByTodoId(todoId);
+        return findTodo(todoTeamRepository::findByTodoId, todoId);
     }
 
      private <T> TodoTeam findTodo(Function<T, Optional<TodoTeam>> findMethod, T specificationData){
