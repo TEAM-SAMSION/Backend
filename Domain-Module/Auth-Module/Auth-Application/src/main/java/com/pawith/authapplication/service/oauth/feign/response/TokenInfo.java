@@ -12,4 +12,7 @@ import lombok.NoArgsConstructor;
 public class TokenInfo{
     @JsonAlias("app_id")
     private String appId;
+
+    @JsonAlias("id")
+    private Long id;
 }
