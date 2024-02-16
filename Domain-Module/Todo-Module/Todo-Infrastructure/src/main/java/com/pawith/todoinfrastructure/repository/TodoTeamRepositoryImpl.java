@@ -7,6 +7,7 @@ import com.pawith.tododomain.entity.TodoTeam;
 import com.pawith.tododomain.repository.TodoTeamQueryRepository;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -28,16 +29,18 @@ public class TodoTeamRepositoryImpl implements TodoTeamQueryRepository {
     }
 
     @Override
-    public TodoTeam findByTodoId(Long todoId) {
+    public Optional<TodoTeam> findByTodoId(Long todoId) {
         final QTodoTeam todoTeam = QTodoTeam.todoTeam;
         final QRegister register = QRegister.register;
         final QAssign assign = QAssign.assign;
-        return jpaQueryFactory.select(todoTeam)
-                .from(todoTeam)
-                .join(register).on(register.todoTeam.eq(todoTeam))
-                .join(assign).on(assign.register.eq(register))
-                .where(assign.todo.id.eq(todoId))
-                .fetchOne();
+        return Optional.ofNullable(
+                jpaQueryFactory.select(todoTeam)
+                        .from(todoTeam)
+                        .join(register).on(register.todoTeam.eq(todoTeam))
+                        .join(assign).on(assign.register.eq(register))
+                        .where(assign.todo.id.eq(todoId))
+                        .fetchOne()
+        );
     }
 
 }
