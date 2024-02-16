@@ -43,8 +43,8 @@ public class AppleOAuthHandler implements AuthHandler {
         // 토큰 서명 검증
         Jws<Claims> oidcTokenJws = sigVerificationAndGetJws(authenticationInfo.getAccessToken());
         // 토큰 바디 파싱해서 사용자 정보 획득
-        String email = (String) oidcTokenJws.getBody().get(APPLE_USER_INFO);
-        String sub = oidcTokenJws.getBody().getSubject();
+        String email = (String) oidcTokenJws.getPayload().get(APPLE_USER_INFO);
+        String sub = oidcTokenJws.getPayload().getSubject();
         return new OAuthUserInfo("포잇", email, sub);
     }
 
