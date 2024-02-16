@@ -30,7 +30,7 @@ public class KakaoOAuthHandler implements AuthHandler {
 
         final KakaoUserInfo kakaoUserInfo = getKaKaoUserInfo(authenticationInfo.getAccessToken());
 
-        return new OAuthUserInfo(kakaoUserInfo.getNickname(), kakaoUserInfo.getEmail(), String.valueOf(tokenInfo.getId()));
+        return new OAuthUserInfo(kakaoUserInfo.getNickname(), kakaoUserInfo.getEmail(), tokenInfo.getId());
     }
 
     @Override

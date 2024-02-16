@@ -14,5 +14,5 @@ public class TokenInfo{
     private String appId;
 
     @JsonAlias("id")
-    private Long id;
+    private String id;
 }
