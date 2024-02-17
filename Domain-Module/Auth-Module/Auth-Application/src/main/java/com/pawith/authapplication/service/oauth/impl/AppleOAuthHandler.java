@@ -9,6 +9,7 @@ import com.pawith.authdomain.exception.AuthError;
 import com.pawith.authdomain.jwt.exception.InvalidTokenException;
 import com.pawith.commonmodule.enums.Provider;
 import io.jsonwebtoken.*;
+import java.security.PublicKey;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -42,8 +43,8 @@ public class AppleOAuthHandler implements AuthHandler {
         // 토큰 서명 검증
         Jws<Claims> oidcTokenJws = sigVerificationAndGetJws(authenticationInfo.getAccessToken());
         // 토큰 바디 파싱해서 사용자 정보 획득
-        String email = (String) oidcTokenJws.getBody().get(APPLE_USER_INFO);
-        String sub = oidcTokenJws.getBody().getSubject();
+        String email = (String) oidcTokenJws.getPayload().get(APPLE_USER_INFO);
+        String sub = oidcTokenJws.getPayload().getSubject();
         return new OAuthUserInfo("포잇", email, sub);
     }
 
@@ -67,10 +68,9 @@ public class AppleOAuthHandler implements AuthHandler {
 
     public Jws<Claims> getOIDCTokenJws(String token, String modulus, String exponent) {
         try {
-            return Jwts.parserBuilder()
-                .setSigningKey(getRSAPublicKey(modulus, exponent))
-                .build()
-                .parseClaimsJws(token);
+            return Jwts.parser()
+                    .verifyWith((PublicKey) getRSAPublicKey(modulus, exponent))
+                    .build().parseSignedClaims(token);
         } catch (InvalidKeySpecException | NoSuchAlgorithmException e) {
             throw new InvalidTokenException(AuthError.INVALID_TOKEN);
         }
@@ -94,11 +94,10 @@ public class AppleOAuthHandler implements AuthHandler {
 
     private Jwt<Header, Claims> getUnsignedTokenClaims(String token, String iss, String aud) {
         try {
-            return Jwts.parserBuilder()
-                .requireAudience(aud)
-                .requireIssuer(iss)
-                .build()
-                .parseClaimsJwt(getUnsignedToken(token));
+            return Jwts.parser()
+                    .requireAudience(aud)
+                    .requireIssuer(iss)
+                    .build().parseUnsecuredClaims(getUnsignedToken(token));
         } catch (InvalidTokenException e) {
             throw new InvalidTokenException(AuthError.INVALID_TOKEN);
         }
