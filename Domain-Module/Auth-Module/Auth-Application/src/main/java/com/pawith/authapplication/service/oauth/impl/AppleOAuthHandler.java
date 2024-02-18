@@ -41,10 +41,10 @@ public class AppleOAuthHandler implements AuthHandler {
     public OAuthUserInfo handle(OAuthRequest authenticationInfo) {
         log.info("AppleOAuthObserver attemptLogin");
         // 토큰 서명 검증
-        Jws<Claims> oidcTokenJws = sigVerificationAndGetJws(authenticationInfo.getAccessToken());
+        Jwt<Header, Claims> oidcTokenJwt = sigVerificationAndGetJwt(authenticationInfo.getAccessToken());
         // 토큰 바디 파싱해서 사용자 정보 획득
-        String email = (String) oidcTokenJws.getPayload().get(APPLE_USER_INFO);
-        String sub = oidcTokenJws.getPayload().getSubject();
+        String email = (String) oidcTokenJwt.getPayload().get(APPLE_USER_INFO);
+        String sub = oidcTokenJwt.getPayload().getSubject();
         return new OAuthUserInfo("포잇", email, sub);
     }
 
@@ -54,7 +54,7 @@ public class AppleOAuthHandler implements AuthHandler {
     }
 
 
-    private Jws<Claims> sigVerificationAndGetJws(String unverifiedToken) {
+    private Jwt<Header, Claims> sigVerificationAndGetJwt(String unverifiedToken) {
         String kid = getKidFromUnsignedTokenHeader(unverifiedToken, APPLE_ISS, apple_aud);
 
         Keys keys = appleFeignClient.getKeys();
@@ -63,14 +63,14 @@ public class AppleOAuthHandler implements AuthHandler {
             .findAny()
             .get();
 
-        return getOIDCTokenJws(unverifiedToken, pubKey.getN(), pubKey.getE());
+        return getOIDCTokenJwt(unverifiedToken, pubKey.getN(), pubKey.getE());
     }
 
-    public Jws<Claims> getOIDCTokenJws(String token, String modulus, String exponent) {
+    public Jwt<Header, Claims> getOIDCTokenJwt(String token, String modulus, String exponent) {
         try {
-            return Jwts.parser()
-                    .verifyWith((PublicKey) getRSAPublicKey(modulus, exponent))
-                    .build().parseSignedClaims(token);
+            JwtParser parser = (JwtParser) Jwts.parser()
+                    .verifyWith((PublicKey) getRSAPublicKey(modulus, exponent));
+            return (Jwt<Header, Claims>) parser.parse(token);
         } catch (InvalidKeySpecException | NoSuchAlgorithmException e) {
             throw new InvalidTokenException(AuthError.INVALID_TOKEN);
         }
