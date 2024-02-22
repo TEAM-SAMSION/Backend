@@ -41,7 +41,7 @@ public class AppleOAuthHandler implements AuthHandler {
     public OAuthUserInfo handle(OAuthRequest authenticationInfo) {
         log.info("AppleOAuthObserver attemptLogin");
         // 토큰 서명 검증
-        Jws<Claims> oidcTokenJwt = sigVerificationAndGetJwt(authenticationInfo.getAccessToken());
+        Jws<Claims> oidcTokenJwt = sigVerificationAndGetJws(authenticationInfo.getAccessToken());
         // 토큰 바디 파싱해서 사용자 정보 획득
         String email = (String) oidcTokenJwt.getPayload().get(APPLE_USER_INFO);
         String sub = oidcTokenJwt.getPayload().getSubject();
@@ -54,7 +54,7 @@ public class AppleOAuthHandler implements AuthHandler {
     }
 
 
-    private Jws<Claims> sigVerificationAndGetJwt(String unverifiedToken) {
+    private Jws<Claims> sigVerificationAndGetJws(String unverifiedToken) {
         String kid = getKidFromUnsignedTokenHeader(unverifiedToken);
 
         Keys keys = appleFeignClient.getKeys();
@@ -63,10 +63,10 @@ public class AppleOAuthHandler implements AuthHandler {
             .findAny()
             .get();
 
-        return getOIDCTokenJwt(unverifiedToken, pubKey.getN(), pubKey.getE(), APPLE_ISS, apple_aud);
+        return getOIDCTokenJws(unverifiedToken, pubKey.getN(), pubKey.getE(), APPLE_ISS, apple_aud);
     }
 
-    public Jws<Claims> getOIDCTokenJwt(String token, String modulus, String exponent, String iss, String aud) {
+    public Jws<Claims> getOIDCTokenJws(String token, String modulus, String exponent, String iss, String aud) {
         try {
             return Jwts.parser()
                 .requireIssuer(iss)
