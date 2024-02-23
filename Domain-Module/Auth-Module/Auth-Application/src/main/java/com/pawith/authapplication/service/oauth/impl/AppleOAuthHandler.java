@@ -1,5 +1,7 @@
 package com.pawith.authapplication.service.oauth.impl;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.pawith.authapplication.dto.OAuthRequest;
 import com.pawith.authapplication.dto.OAuthUserInfo;
 import com.pawith.authapplication.service.oauth.AuthHandler;
@@ -23,8 +25,6 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.RSAPublicKeySpec;
 import java.util.Base64;
 
-import static org.springframework.security.oauth2.jwt.JoseHeaderNames.KID;
-
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -41,7 +41,7 @@ public class AppleOAuthHandler implements AuthHandler {
     public OAuthUserInfo handle(OAuthRequest authenticationInfo) {
         log.info("AppleOAuthObserver attemptLogin");
         // 토큰 서명 검증
-        Jwt<Header, Claims> oidcTokenJwt = sigVerificationAndGetJwt(authenticationInfo.getAccessToken());
+        Jws<Claims> oidcTokenJwt = sigVerificationAndGetJws(authenticationInfo.getAccessToken());
         // 토큰 바디 파싱해서 사용자 정보 획득
         String email = (String) oidcTokenJwt.getPayload().get(APPLE_USER_INFO);
         String sub = oidcTokenJwt.getPayload().getSubject();
@@ -54,8 +54,8 @@ public class AppleOAuthHandler implements AuthHandler {
     }
 
 
-    private Jwt<Header, Claims> sigVerificationAndGetJwt(String unverifiedToken) {
-        String kid = getKidFromUnsignedTokenHeader(unverifiedToken, APPLE_ISS, apple_aud);
+    private Jws<Claims> sigVerificationAndGetJws(String unverifiedToken) {
+        String kid = getKidFromUnsignedTokenHeader(unverifiedToken);
 
         Keys keys = appleFeignClient.getKeys();
         Keys.PubKey pubKey = keys.getKeys().stream()
@@ -63,14 +63,16 @@ public class AppleOAuthHandler implements AuthHandler {
             .findAny()
             .get();
 
-        return getOIDCTokenJwt(unverifiedToken, pubKey.getN(), pubKey.getE());
+        return getOIDCTokenJws(unverifiedToken, pubKey.getN(), pubKey.getE(), APPLE_ISS, apple_aud);
     }
 
-    public Jwt<Header, Claims> getOIDCTokenJwt(String token, String modulus, String exponent) {
+    public Jws<Claims> getOIDCTokenJws(String token, String modulus, String exponent, String iss, String aud) {
         try {
-            JwtParser parser = (JwtParser) Jwts.parser()
-                    .verifyWith((PublicKey) getRSAPublicKey(modulus, exponent));
-            return (Jwt<Header, Claims>) parser.parse(token);
+            return Jwts.parser()
+                .requireIssuer(iss)
+                .requireAudience(aud)
+                .verifyWith((PublicKey) getRSAPublicKey(modulus, exponent))
+                .build().parseSignedClaims(token);
         } catch (InvalidKeySpecException | NoSuchAlgorithmException e) {
             throw new InvalidTokenException(AuthError.INVALID_TOKEN);
         }
@@ -88,24 +90,11 @@ public class AppleOAuthHandler implements AuthHandler {
         return keyFactory.generatePublic(keySpec);
     }
 
-    public String getKidFromUnsignedTokenHeader(String token, String iss, String aud) {
-        return (String) getUnsignedTokenClaims(token, iss, aud).getHeader().get(KID);
-    }
-
-    private Jwt<Header, Claims> getUnsignedTokenClaims(String token, String iss, String aud) {
-        try {
-            return Jwts.parser()
-                    .requireAudience(aud)
-                    .requireIssuer(iss)
-                    .build().parseUnsecuredClaims(getUnsignedToken(token));
-        } catch (InvalidTokenException e) {
-            throw new InvalidTokenException(AuthError.INVALID_TOKEN);
-        }
-    }
-
-    private String getUnsignedToken(String token) {
+    private String getKidFromUnsignedTokenHeader(String token) {
         String[] splitToken = token.split("\\.");
         if (splitToken.length != 3) throw new InvalidTokenException(AuthError.INVALID_TOKEN);
-        return splitToken[0] + "." + splitToken[1] + ".";
+        String headerJson = new String(Base64.getUrlDecoder().decode(splitToken[0]));
+        JsonObject headerObject = new Gson().fromJson(headerJson, JsonObject.class);
+        return headerObject.get("kid").getAsString();
     }
 }
