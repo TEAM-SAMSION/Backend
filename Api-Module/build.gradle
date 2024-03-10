@@ -9,6 +9,8 @@ dependencies {
 
     implementation project(':Alarm-Module')
 
+    implementation project(':Batch-Module')
+
     implementation project(':Event')
 
     getProjectsEndsWith("Domain-Module", "Presentation").forEach { module ->
