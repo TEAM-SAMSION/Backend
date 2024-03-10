@@ -13,7 +13,6 @@ import java.util.List;
 
 @DomainService
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class CategoryQueryService {
 
     private final CategoryRepository categoryRepository;

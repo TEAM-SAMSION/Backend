@@ -11,7 +11,6 @@ import java.util.List;
 
 @DomainService
 @RequiredArgsConstructor
-@Transactional
 public class TokenDeleteServiceImpl implements TokenDeleteService {
 
     private final TokenRepository tokenRepository;

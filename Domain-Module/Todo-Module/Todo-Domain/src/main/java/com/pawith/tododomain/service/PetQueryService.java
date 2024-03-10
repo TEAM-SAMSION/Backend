@@ -10,7 +10,6 @@ import java.util.List;
 
 @DomainService
 @RequiredArgsConstructor
-@Transactional
 public class PetQueryService {
     private final PetRepository petRepository;
 

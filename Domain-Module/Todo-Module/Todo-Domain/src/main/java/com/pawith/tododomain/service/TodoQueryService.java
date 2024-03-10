@@ -8,7 +8,6 @@ import com.pawith.tododomain.repository.TodoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -16,7 +15,6 @@ import java.util.List;
 
 @DomainService
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class TodoQueryService {
 
     private final TodoRepository todoRepository;

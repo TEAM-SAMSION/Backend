@@ -10,11 +10,9 @@ import com.pawith.tododomain.exception.TodoError;
 import com.pawith.tododomain.repository.RegisterRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.transaction.annotation.Transactional;
 
 @DomainService
 @RequiredArgsConstructor
-@Transactional
 public class RegisterSaveService {
     private final RegisterRepository registerRepository;
     private final ApplicationEventPublisher applicationEventPublisher;

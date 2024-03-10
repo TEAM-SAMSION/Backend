@@ -1,4 +1,4 @@
-package com.pawith.todoapplication.handler;
+package com.pawith.batchmodule.todo;
 
 import com.pawith.commonmodule.event.MultiNotificationEvent;
 import com.pawith.commonmodule.event.NotificationEvent;
@@ -22,14 +22,14 @@ import java.util.function.Function;
  */
 @Slf4j
 @Component
-public class TodoNotificationHandler extends AbstractBatchSchedulingHandler<NotificationDao> {
+public class TodoNotificationBatchService extends AbstractBatchSchedulingHandler<NotificationDao> {
     private static final Integer BATCH_SIZE = 100;
     private static final String CRON_EXPRESSION = "0 0 * * * *";
 
     private final TodoNotificationRepository todoNotificationRepository;
     private final ApplicationEventPublisher applicationEventPublisher;
 
-    public TodoNotificationHandler(TodoNotificationRepository todoNotificationRepository, ApplicationEventPublisher applicationEventPublisher) {
+    public TodoNotificationBatchService(TodoNotificationRepository todoNotificationRepository, ApplicationEventPublisher applicationEventPublisher) {
         super(BATCH_SIZE, CRON_EXPRESSION);
         this.todoNotificationRepository = todoNotificationRepository;
         this.applicationEventPublisher = applicationEventPublisher;

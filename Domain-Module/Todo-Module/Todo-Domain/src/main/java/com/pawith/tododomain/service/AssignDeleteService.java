@@ -9,7 +9,6 @@ import java.util.List;
 
 @DomainService
 @RequiredArgsConstructor
-@Transactional
 public class AssignDeleteService {
     private final AssignRepository assignRepository;
 

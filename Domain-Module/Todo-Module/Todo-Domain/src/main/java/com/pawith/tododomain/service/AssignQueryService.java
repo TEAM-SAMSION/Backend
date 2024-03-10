@@ -14,7 +14,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 @DomainService
-@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class AssignQueryService {
 

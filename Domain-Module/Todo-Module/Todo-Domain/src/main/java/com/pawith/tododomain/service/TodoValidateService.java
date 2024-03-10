@@ -6,11 +6,9 @@ import com.pawith.tododomain.entity.Todo;
 import com.pawith.tododomain.exception.TodoError;
 import com.pawith.tododomain.exception.TodoModificationNotAllowedException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.transaction.annotation.Transactional;
 
 @DomainService
 @RequiredArgsConstructor
-@Transactional
 public class TodoValidateService {
 
     public boolean validateDeleteAndUpdate(Todo todo, Register register) {
