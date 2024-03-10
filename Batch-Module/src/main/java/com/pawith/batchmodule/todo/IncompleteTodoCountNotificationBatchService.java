@@ -1,4 +1,4 @@
-package com.pawith.todoapplication.handler;
+package com.pawith.batchmodule.todo;
 
 import com.pawith.commonmodule.cache.operators.ValueOperator;
 import com.pawith.commonmodule.event.MultiNotificationEvent;
@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Component
-public class IncompleteTodoCountNotificationHandler extends AbstractBatchSchedulingHandler<IncompleteTodoCountInfoDao> {
+public class IncompleteTodoCountNotificationBatchService extends AbstractBatchSchedulingHandler<IncompleteTodoCountInfoDao> {
     private static final Integer BATCH_SIZE = 100;
     private static final String CRON_EXPRESSION = "0 0 20 * * *"; // 매일 20시에 실행
     private static final String NOTIFICATION_MESSAGE = "[%s] 오늘이 지나기 전, %s님에게 남은 %d개의 todo를 완료해주세요!";
@@ -27,7 +27,7 @@ public class IncompleteTodoCountNotificationHandler extends AbstractBatchSchedul
     private final ApplicationEventPublisher applicationEventPublisher;
     private final ValueOperator<Long, String> valueOperator;
 
-    public IncompleteTodoCountNotificationHandler(RegisterRepository registerRepository, UserQueryService userQueryService, ApplicationEventPublisher applicationEventPublisher, ValueOperator<Long, String> valueOperator) {
+    public IncompleteTodoCountNotificationBatchService(RegisterRepository registerRepository, UserQueryService userQueryService, ApplicationEventPublisher applicationEventPublisher, ValueOperator<Long, String> valueOperator) {
         super(BATCH_SIZE, CRON_EXPRESSION);
         this.registerRepository = registerRepository;
         this.userQueryService = userQueryService;
