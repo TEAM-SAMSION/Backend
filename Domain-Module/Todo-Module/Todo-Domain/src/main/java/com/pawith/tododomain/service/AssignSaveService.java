@@ -11,7 +11,6 @@ import java.util.Collection;
 
 @DomainService
 @RequiredArgsConstructor
-@Transactional
 public class AssignSaveService {
 
     private final AssignRepository assignRepository;

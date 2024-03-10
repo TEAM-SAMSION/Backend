@@ -7,7 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @DomainService
 @RequiredArgsConstructor
-@Transactional
 public class CategoryDeleteService {
 
     private final CategoryRepository categoryRepository;

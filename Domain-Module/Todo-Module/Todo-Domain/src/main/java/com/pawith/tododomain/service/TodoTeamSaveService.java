@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @DomainService
 @RequiredArgsConstructor
-@Transactional
 public class TodoTeamSaveService {
 
     private final TodoTeamRepository todoTeamRepository;

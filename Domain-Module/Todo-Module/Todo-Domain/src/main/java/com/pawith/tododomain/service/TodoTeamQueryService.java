@@ -6,7 +6,6 @@ import com.pawith.tododomain.exception.TodoError;
 import com.pawith.tododomain.exception.TodoTeamNotFoundException;
 import com.pawith.tododomain.repository.TodoTeamRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,7 +13,6 @@ import java.util.function.Function;
 
 @DomainService
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class TodoTeamQueryService {
 
     private final TodoTeamRepository todoTeamRepository;

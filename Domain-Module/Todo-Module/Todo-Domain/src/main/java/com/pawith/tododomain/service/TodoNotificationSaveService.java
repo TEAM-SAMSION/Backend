@@ -12,7 +12,6 @@ import java.time.LocalTime;
 
 @DomainService
 @RequiredArgsConstructor
-@Transactional
 public class TodoNotificationSaveService {
     private final TodoNotificationRepository todoNotificationRepository;
 
