@@ -4,6 +4,7 @@ dependencies {
     getProjectsEndsWith("Domain-Module", "Domain").forEach { module ->
         implementation project(module.path)
     }
+    implementation project(":Common-Module")
 }
 
 
