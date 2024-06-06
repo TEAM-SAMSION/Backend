@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 public class LandingMapper {
 
     public static Landing toLandingEntity(LandingRequest landingRequest) {
-        return new Landing(landingRequest.getEmail(), landingRequest.getName());
+        return new Landing(landingRequest.getEmail());
     }
 
 }

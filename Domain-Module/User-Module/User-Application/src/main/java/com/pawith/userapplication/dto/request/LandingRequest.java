@@ -14,7 +14,6 @@ public class LandingRequest {
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[A-Za-z0-9+_.-]+@(.+)$");
 
     private String email;
-    private String name;
 
     public void setEmail(String email) {
         if (!EMAIL_PATTERN.matcher(email).matches()) {
