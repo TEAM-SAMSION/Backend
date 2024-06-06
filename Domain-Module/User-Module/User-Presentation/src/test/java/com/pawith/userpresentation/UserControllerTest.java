@@ -41,6 +41,8 @@ class UserControllerTest extends BaseRestDocsTest {
     private UserDeleteUseCase userDeleteUseCase;
     @MockBean
     private WithdrawReasonCreateUseCase withdrawReasonCreateUseCase;
+    @MockBean
+    private LandingCreateUseCase landingCreateUseCase;
 
     private static final String USER_REQUEST_URL = "/user";
     private static final String ACCESS_TOKEN = "Bearer accessToken";
@@ -183,22 +185,23 @@ class UserControllerTest extends BaseRestDocsTest {
     @DisplayName("서비스 탈퇴 이유 저장 API 테스트")
     void postWithdrawReason() throws Exception {
         //given
-        final WithdrawReasonCreateRequest withdrawReasonCreateRequest = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(WithdrawReasonCreateRequest.class);
+        final WithdrawReasonCreateRequest withdrawReasonCreateRequest = FixtureMonkeyUtils.getConstructBasedFixtureMonkey()
+                .giveMeOne(WithdrawReasonCreateRequest.class);
         final MockHttpServletRequestBuilder request = post(USER_REQUEST_URL + "/withdraw")
-            .content(objectMapper.writeValueAsString(withdrawReasonCreateRequest))
-            .contentType("application/json")
-            .header(AUTHORIZATION_HEADER, ACCESS_TOKEN);
+                .content(objectMapper.writeValueAsString(withdrawReasonCreateRequest))
+                .contentType("application/json")
+                .header(AUTHORIZATION_HEADER, ACCESS_TOKEN);
         //when
         ResultActions result = mvc.perform(request);
         //then
         result.andExpect(status().isOk())
-            .andDo(resultHandler.document(
-                requestHeaders(
-                    headerWithName(AUTHORIZATION_HEADER).description("access 토큰")
-                ),
-                requestFields(
-                    fieldWithPath("reason").description("탈퇴 이유")
-                )
-            ));
+                .andDo(resultHandler.document(
+                        requestHeaders(
+                                headerWithName(AUTHORIZATION_HEADER).description("access 토큰")
+                        ),
+                        requestFields(
+                                fieldWithPath("reason").description("탈퇴 이유")
+                        )
+                ));
     }
 }
