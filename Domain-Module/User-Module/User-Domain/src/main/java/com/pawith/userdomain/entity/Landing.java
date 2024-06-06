@@ -6,7 +6,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -21,11 +20,8 @@ public class Landing {
 
     private String email;
 
-    private String name;
-
-    public Landing(String email, String name) {
+    public Landing(String email) {
         this.email = email;
-        this.name = name;
     }
 
 }
