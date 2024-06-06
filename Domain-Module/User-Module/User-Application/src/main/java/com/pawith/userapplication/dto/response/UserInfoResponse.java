@@ -1,16 +1,16 @@
 package com.pawith.userapplication.dto.response;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserInfoResponse {
-    private final String nickname;
-    private final String email;
-    private final String profileImageUrl;
+    private String nickname;
+    private String email;
+    private String profileImageUrl;
 
-    public UserInfoResponse(String nickname, String email, String profileImageUrl) {
-        this.nickname = nickname;
-        this.email = email;
-        this.profileImageUrl = profileImageUrl;
-    }
 }
