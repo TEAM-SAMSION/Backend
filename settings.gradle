@@ -30,3 +30,5 @@ include 'Image-Module'
 include 'Alarm-Module'
 
 include 'Event'
+
+include 'Batch-Module'

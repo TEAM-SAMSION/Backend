@@ -4,5 +4,5 @@ import com.pawith.authdomain.jwt.TokenType;
 
 public interface TokenSaveService {
 
-    void saveToken(final String token, final String email, final TokenType tokenType);
+    void saveToken(final String token, final TokenType tokenType, final Long userId);
 }

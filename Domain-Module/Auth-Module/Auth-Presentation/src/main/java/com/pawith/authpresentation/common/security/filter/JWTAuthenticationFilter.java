@@ -2,7 +2,7 @@ package com.pawith.authpresentation.common.security.filter;
 
 import com.pawith.authapplication.consts.AuthConsts;
 import com.pawith.authapplication.consts.IgnoredPathConsts;
-import com.pawith.authapplication.service.JWTExtractEmailUseCase;
+import com.pawith.authapplication.service.JWTExtractUserDetailsUseCase;
 import com.pawith.authapplication.service.JWTExtractTokenUseCase;
 import com.pawith.authapplication.service.JWTVerifyUseCase;
 import com.pawith.authpresentation.common.security.JWTAuthenticationToken;
@@ -26,7 +26,7 @@ import java.util.Set;
 public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
     private final JWTVerifyUseCase jwtVerifyUseCase;
-    private final JWTExtractEmailUseCase jwtExtractEmailUseCase;
+    private final JWTExtractUserDetailsUseCase<Long> jwtExtractUserDetailsUseCase;
     private final JWTExtractTokenUseCase jwtExtractTokenUseCase;
 
     @Override
@@ -35,8 +35,8 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
             final String tokenHeaderValue = getTokenFromHeader(request);
             final String accessToken = jwtExtractTokenUseCase.extractToken(tokenHeaderValue);
             jwtVerifyUseCase.validateToken(accessToken);
-            final String email = jwtExtractEmailUseCase.extractEmail(accessToken);
-            initAuthentication(new JWTAuthenticationToken(email));
+            final Long userId = jwtExtractUserDetailsUseCase.extract(accessToken);
+            initAuthentication(new JWTAuthenticationToken(userId));
         }
         filterChain.doFilter(request, response);
     }

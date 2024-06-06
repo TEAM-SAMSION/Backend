@@ -9,6 +9,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.jackson.io.JacksonDeserializer;
 import io.jsonwebtoken.security.Keys;
 import lombok.SneakyThrows;
 import org.assertj.core.api.Assertions;
@@ -33,29 +34,29 @@ public class JWTProviderTest {
     }
 
     @Test
-    @DisplayName("사용자 email이 입력으로 들어오면 accessToken을 발급하여 반환한다.")
+    @DisplayName("사용자 정보가 입력으로 들어오면 accessToken을 발급하여 반환한다.")
     void generateAccessTokenByEmail(){
         //given
-        final String randomEmail = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(String.class);
-        final String accessToken = jwtProvider.generateAccessToken(randomEmail);
+        final PrivateClaims.UserClaims userClaims = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(PrivateClaims.UserClaims.class);
+        final String accessToken = jwtProvider.generateAccessToken(userClaims);
         //when
         final Claims body = extractClaimsFromToken(accessToken);
         //then
-        Assertions.assertThat(body.get(JWTConsts.EMAIL)).isEqualTo(randomEmail);
-        Assertions.assertThat(body.get(JWTConsts.TOKEN_TYPE)).isEqualTo(TokenType.ACCESS_TOKEN.toString());
+        Assertions.assertThat(body.get(JWTConsts.USER_CLAIMS)).usingRecursiveComparison().isEqualTo(userClaims);
+        Assertions.assertThat(body.get(JWTConsts.TOKEN_TYPE)).isEqualTo(TokenType.ACCESS_TOKEN);
     }
 
     @Test
-    @DisplayName("사용자 email이 입력으로 들어오면 refreshToken을 발급하여 반환한다.")
+    @DisplayName("사용자 정보가 입력으로 들어오면 refreshToken을 발급하여 반환한다.")
     void generateRefreshTokenByEmail(){
         //given
-        final String randomEmail = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(String.class);
-        final String refreshToken = jwtProvider.generateRefreshToken(randomEmail);
+        final PrivateClaims.UserClaims userClaims = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(PrivateClaims.UserClaims.class);
+        final String refreshToken = jwtProvider.generateRefreshToken(userClaims);
         //when
         final Claims body = extractClaimsFromToken(refreshToken);
         //then
-        Assertions.assertThat(body.get(JWTConsts.EMAIL)).isEqualTo(randomEmail);
-        Assertions.assertThat(body.get(JWTConsts.TOKEN_TYPE)).isEqualTo(TokenType.REFRESH_TOKEN.toString());
+        Assertions.assertThat(body.get(JWTConsts.USER_CLAIMS)).usingRecursiveComparison().isEqualTo(userClaims);
+        Assertions.assertThat(body.get(JWTConsts.TOKEN_TYPE)).isEqualTo(TokenType.REFRESH_TOKEN);
     }
 
     @Test
@@ -74,8 +75,8 @@ public class JWTProviderTest {
     @SneakyThrows
     void validateTokenWithExpiredToken(){
         //given
-        final String randomEmail = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(String.class);
-        final String refreshToken = jwtProvider.generateRefreshToken(randomEmail);
+        final PrivateClaims.UserClaims userClaims = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(PrivateClaims.UserClaims.class);
+        final String refreshToken = jwtProvider.generateAccessToken(userClaims);
         Thread.sleep(JWTTestConsts.REFRESH_TOKEN_EXPIRED_TIME+1);
         //when
         //then
@@ -86,13 +87,15 @@ public class JWTProviderTest {
 
     private Claims extractClaimsFromToken(final String token){
         return createJwtParser()
-            .parseClaimsJws(token)
-            .getBody();
+            .parseSignedClaims(token)
+            .getPayload();
+
     }
 
     private JwtParser createJwtParser() {
-        return Jwts.parserBuilder()
-            .setSigningKey(Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtProperties.getSecret())))
+        return Jwts.parser()
+            .json(new JacksonDeserializer<>(PrivateClaims.getClaimsTypeDetailMap()))
+            .verifyWith(Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtProperties.getSecret())))
             .requireIssuer(JWTConsts.TOKEN_ISSUER)
             .build();
     }

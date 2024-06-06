@@ -1,6 +1,7 @@
 package com.pawith.userpresentation;
 
 import com.pawith.userapplication.dto.request.PathHistoryCreateRequest;
+import com.pawith.userapplication.dto.request.LandingRequest;
 import com.pawith.userapplication.dto.request.UserNicknameChangeRequest;
 import com.pawith.userapplication.dto.request.WithdrawReasonCreateRequest;
 import com.pawith.userapplication.dto.response.UserInfoResponse;
@@ -21,6 +22,7 @@ public class UserController {
     private final PathHistoryCreateUseCase pathHistoryCreateUseCase;
     private final UserDeleteUseCase userDeleteUseCase;
     private final WithdrawReasonCreateUseCase withdrawReasonCreateUseCase;
+    private final LandingCreateUseCase landingCreateUseCase;
 
     @PutMapping("/name")
     public void putNicknameOnUser(@RequestBody UserNicknameChangeRequest request){
@@ -56,4 +58,10 @@ public class UserController {
     public void postWithdrawReason(@RequestBody WithdrawReasonCreateRequest withDrawCreateRequest){
         withdrawReasonCreateUseCase.createWithdrawReason(withDrawCreateRequest);
     }
+
+    @PostMapping("/landing")
+    public void postLanding(@RequestBody LandingRequest landingRequest){
+        landingCreateUseCase.createLanding(landingRequest);
+    }
+
 }

@@ -8,7 +8,6 @@ import com.pawith.userdomain.exception.UserError;
 import com.pawith.userdomain.exception.UserNotFoundException;
 import com.pawith.userdomain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -18,7 +17,6 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 @DomainService
-@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class UserQueryService {
     private final UserRepository userRepository;

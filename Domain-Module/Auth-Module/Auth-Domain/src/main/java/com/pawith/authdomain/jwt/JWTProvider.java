@@ -6,15 +6,14 @@ import com.pawith.authdomain.jwt.exception.InvalidTokenException;
 import com.pawith.commonmodule.cache.operators.ValueOperator;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.jackson.io.JacksonDeserializer;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.security.Key;
+import javax.crypto.SecretKey;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -26,87 +25,53 @@ public class JWTProvider {
     private final JWTProperties jwtProperties;
     private final ValueOperator<String, Token> tokenCacheOperator;
 
-    /**
-     * access token 생성
-     *
-     * @param email 토큰에 담길 email
-     * @return 생성된 access token
-     */
-    public String generateAccessToken(final String email) {
-        final Claims claims = createPrivateClaims(email, TokenType.ACCESS_TOKEN);
-        return generateToken(claims, jwtProperties.getAccessTokenExpirationTime());
+    public String generateAccessToken(final PrivateClaims.UserClaims userClaims) {
+        return generateToken(userClaims.createPrivateClaims(TokenType.ACCESS_TOKEN), jwtProperties.getAccessTokenExpirationTime());
     }
 
-    /**
-     * refershToken 생성
-     * refreshToken은 DB에 저장함
-     */
-    public String generateRefreshToken(final String email) {
-        final Claims claims = createPrivateClaims(email, TokenType.REFRESH_TOKEN);
-        return generateToken(claims, jwtProperties.getRefreshTokenExpirationTime());
+    public String generateRefreshToken(final PrivateClaims.UserClaims userClaims) {
+        return generateToken(userClaims.createPrivateClaims(TokenType.REFRESH_TOKEN), jwtProperties.getRefreshTokenExpirationTime());
     }
 
-    public Token generateToken(final String email){
-        final String accessToken = generateAccessToken(email);
-        final String refreshToken = generateRefreshToken(email);
+    public Token generateToken(final PrivateClaims.UserClaims userClaims) {
+        final String accessToken = generateAccessToken(userClaims);
+        final String refreshToken = generateRefreshToken(userClaims);
         return new Token(accessToken, refreshToken);
     }
 
-    public Token reIssueToken(final String refreshToken){
+    public Token reIssueToken(final String refreshToken) {
         validateToken(refreshToken, TokenType.REFRESH_TOKEN);
-        final String email = extractEmailFromToken(refreshToken, TokenType.REFRESH_TOKEN);
-        final String newAccessToken = generateAccessToken(email);
-        final String newRefreshToken = generateRefreshToken(email);
+        final PrivateClaims.UserClaims userClaims = extractUserClaimsFromToken(refreshToken, TokenType.REFRESH_TOKEN);
+        final String newAccessToken = generateAccessToken(userClaims);
+        final String newRefreshToken = generateRefreshToken(userClaims);
 
         tokenCacheOperator.setWithExpire(refreshToken, new Token(newAccessToken, newRefreshToken), 1, TimeUnit.MINUTES);
 
         return new Token(newAccessToken, newRefreshToken);
     }
 
-    public String extractEmailFromToken(String token, TokenType tokenType) {
+    public PrivateClaims.UserClaims extractUserClaimsFromToken(String token, TokenType tokenType) {
         return initializeJwtParser(tokenType)
-            .parseClaimsJws(token)
-            .getBody()
-            .get(JWTConsts.EMAIL)
-            .toString();
+            .parseSignedClaims(token)
+            .getPayload()
+            .get(JWTConsts.USER_CLAIMS, PrivateClaims.UserClaims.class);
     }
 
-    public boolean existsCachedRefreshToken(String refreshToken){
+    public boolean existsCachedRefreshToken(String refreshToken) {
         return tokenCacheOperator.contains(refreshToken);
     }
 
-    public Token getCachedToken(String refreshToken){
+    public Token getCachedToken(String refreshToken) {
         return tokenCacheOperator.get(refreshToken);
     }
 
-    /**
-     * 기본 jwt claims 스팩에서 개발자가 더 추가한 claim을 private claim이라고 함
-     * <br>private claims : email, tokenType + issuer
-     *
-     * @param email     토큰에 담길 email
-     * @param tokenType 토큰 타입(ACCESS_TOKEN, REFRESH_TOKEN)
-     */
-    private Claims createPrivateClaims(final String email, final TokenType tokenType) {
-        final Map<String, Object> claims = new HashMap<>();
-        claims.put(JWTConsts.EMAIL, email);
-        claims.put(JWTConsts.TOKEN_TYPE, tokenType.name());
-        return Jwts.claims(claims)
-            .setIssuer(JWTConsts.TOKEN_ISSUER);
-    }
-
-    /**
-     * 토큰 생성 메소드
-     *
-     * @param claims         토큰에 담길 정보(email, tokenType)
-     * @param expirationTime 토큰 만료 시간(시간 단위 ms)
-     * @return 생성된 토큰
-     */
-    private String generateToken(final Claims claims, final Long expirationTime) {
+    private String generateToken(final PrivateClaims privateClaims, final Long expirationTime) {
         final Date now = new Date();
         return Jwts.builder()
-            .setClaims(claims)
-            .setIssuedAt(now)
-            .setExpiration(new Date(now.getTime() + expirationTime))
+            .issuer(JWTConsts.TOKEN_ISSUER)
+            .claims(privateClaims.createClaimsMap())
+            .issuedAt(now)
+            .expiration(new Date(now.getTime() + expirationTime))
             .signWith(getSigningKey())
             .compact();
     }
@@ -114,7 +79,7 @@ public class JWTProvider {
     /**
      * @return 서명에 사용할 Key 반환
      */
-    private Key getSigningKey() {
+    private SecretKey getSigningKey() {
         return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtProperties.getSecret()));
     }
 
@@ -133,20 +98,17 @@ public class JWTProvider {
         }
     }
 
-    /**
-     * iss, key 설정
-     *
-     * @return 토큰 검증 위한 JwtParser 반환
-     */
+
     private JwtParser initializeJwtParser(final TokenType tokenType) {
-        return Jwts.parserBuilder()
-            .setSigningKey(getSigningKey())
+        return Jwts.parser()
+            .json(new JacksonDeserializer<>(PrivateClaims.getClaimsTypeDetailMap()))
+            .verifyWith(getSigningKey())
             .requireIssuer(JWTConsts.TOKEN_ISSUER)
-            .require(JWTConsts.TOKEN_TYPE, tokenType.name())
+            .require(JWTConsts.TOKEN_TYPE, tokenType)
             .build();
     }
 
-    public record Token(String accessToken, String refreshToken){
+    public record Token(String accessToken, String refreshToken) {
     }
 
 }

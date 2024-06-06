@@ -4,10 +4,10 @@ import org.springframework.security.authentication.AbstractAuthenticationToken;
 
 
 public class JWTAuthenticationToken extends AbstractAuthenticationToken {
-    private String email;
-    public JWTAuthenticationToken(String email) {
+    private Long userId;
+    public JWTAuthenticationToken(Long userId) {
         super(null);
-        this.email=email;
+        this.userId = userId;
         setAuthenticated(true);
     }
 
@@ -18,6 +18,6 @@ public class JWTAuthenticationToken extends AbstractAuthenticationToken {
 
     @Override
     public Object getPrincipal() {
-        return email;
+        return userId;
     }
 }

@@ -11,7 +11,7 @@ public class UserMapper {
         return User.builder()
             .nickname(userSignUpEvent.nickname())
             .email(userSignUpEvent.email())
-            .provider(userSignUpEvent.provider())
+//            .provider(userSignUpEvent.provider())
             .imageUrl(imageUrl)
             .build();
     }

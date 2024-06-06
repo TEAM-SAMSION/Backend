@@ -1,6 +1,7 @@
 package com.pawith.userdomain.service;
 
 import com.pawith.commonmodule.annotation.DomainService;
+import com.pawith.userdomain.entity.User;
 import com.pawith.userdomain.entity.UserAuthority;
 import com.pawith.userdomain.repository.UserAuthorityRepository;
 import lombok.RequiredArgsConstructor;
@@ -10,10 +11,10 @@ import lombok.RequiredArgsConstructor;
 public class UserAuthoritySaveService {
     private final UserAuthorityRepository userAuthorityRepository;
 
-    public void saveUserAuthority(final String email) {
-        userAuthorityRepository.findByEmail(email)
+    public void saveUserAuthority(final User user) {
+        userAuthorityRepository.findByUserId(user.getId())
             .ifPresentOrElse(
                 UserAuthority::initialUserAuthority,
-                () -> userAuthorityRepository.save(new UserAuthority(email)));
+                () -> userAuthorityRepository.save(UserAuthority.of(user)));
     }
 }

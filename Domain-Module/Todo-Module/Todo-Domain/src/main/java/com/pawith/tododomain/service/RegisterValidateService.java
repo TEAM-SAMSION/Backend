@@ -15,7 +15,6 @@ import java.util.List;
 
 @DomainService
 @RequiredArgsConstructor
-@Transactional
 public class RegisterValidateService {
 
     private final RegisterRepository registerRepository;

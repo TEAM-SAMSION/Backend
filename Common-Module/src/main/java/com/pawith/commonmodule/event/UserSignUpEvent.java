@@ -1,10 +1,10 @@
 package com.pawith.commonmodule.event;
 
-import com.pawith.commonmodule.enums.Provider;
-
 public record UserSignUpEvent(
     String nickname,
-    String email,
-    Provider provider
+    String email
 ) {
+    public static UserSignUpEvent of(String nickname, String email) {
+        return new UserSignUpEvent(nickname, email);
+    }
 }

@@ -19,11 +19,21 @@ public class UserAuthority extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private Authority authority;
+
+    @Deprecated
     private String email;
 
-    public UserAuthority(String email) {
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    private UserAuthority(User user) {
         this.authority = Authority.GUEST;
-        this.email = email;
+        this.user = user;
+    }
+
+    public static UserAuthority of(User user) {
+        return new UserAuthority(user);
     }
 
     public void changeUserAuthority(){

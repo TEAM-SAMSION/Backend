@@ -1,10 +1,10 @@
 package com.pawith.authapplication.service;
 
-import com.navercorp.fixturemonkey.FixtureMonkey;
-import com.pawith.commonmodule.enums.Provider;
-import com.pawith.authapplication.service.command.OAuthInvoker;
 import com.pawith.authapplication.service.impl.OAuthUseCaseImpl;
+import com.pawith.authapplication.service.oauth.OAuthInvoker;
 import com.pawith.commonmodule.UnitTestConfig;
+import com.pawith.commonmodule.enums.Provider;
+import com.pawith.commonmodule.utils.FixtureMonkeyUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -29,10 +29,10 @@ public class OAuthUseCaseImplTest {
     @DisplayName("로그인을 수행한다.")
     void oAuthLogin() {
         //given
-        final Provider testProvider = FixtureMonkey.create().giveMeOne(Provider.class);
-        final String token = FixtureMonkey.create().giveMeOne(String.class);
+        final Provider testProvider = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(Provider.class);
+        final String accessToken = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(String.class);
         //when
-        oAuthUseCaseImpl.oAuthLogin(testProvider, token);
+        oAuthUseCaseImpl.oAuthLogin(testProvider, accessToken);
         //then
         then(oAuthInvoker).should(times(1)).execute(any());
     }

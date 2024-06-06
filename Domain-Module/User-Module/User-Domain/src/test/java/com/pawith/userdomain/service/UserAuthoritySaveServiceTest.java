@@ -2,6 +2,7 @@ package com.pawith.userdomain.service;
 
 import com.pawith.commonmodule.UnitTestConfig;
 import com.pawith.commonmodule.utils.FixtureMonkeyUtils;
+import com.pawith.userdomain.entity.User;
 import com.pawith.userdomain.entity.UserAuthority;
 import com.pawith.userdomain.repository.UserAuthorityRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,10 +34,10 @@ class UserAuthoritySaveServiceTest {
     @DisplayName("유저 권한을 생성한다.")
     void saveUserAuthority() {
         //given
-        final String email = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(String.class);
-        given(userAuthorityRepository.findByEmail(email)).willReturn(Optional.empty());
+        final User user = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(User.class);
+        given(userAuthorityRepository.findByUserId(user.getId())).willReturn(Optional.empty());
         //when
-        userAuthoritySaveService.saveUserAuthority(email);
+        userAuthoritySaveService.saveUserAuthority(user);
         //then
         then(userAuthorityRepository).should().save(any());
     }
@@ -45,12 +46,12 @@ class UserAuthoritySaveServiceTest {
     @DisplayName("유저 권한 존재하면 생성하지 않는다.")
     void saveUserAuthorityWhenUserAuthorityExist() {
         //given
-        final String email = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(String.class);
-        given(userAuthorityRepository.findByEmail(email)).willReturn(Optional.of(new UserAuthority(email)));
+        final User user = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(User.class);
+        given(userAuthorityRepository.findByUserId(user.getId())).willReturn(Optional.of(UserAuthority.of(user)));
         //when
-        userAuthoritySaveService.saveUserAuthority(email);
+        userAuthoritySaveService.saveUserAuthority(user);
         //then
-        then(userAuthorityRepository).should().findByEmail(email);
+        then(userAuthorityRepository).should().findByUserId(user.getId());
         then(userAuthorityRepository).shouldHaveNoMoreInteractions();
     }
 

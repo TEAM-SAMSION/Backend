@@ -7,7 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @DomainService
 @RequiredArgsConstructor
-@Transactional
 public class PetDeleteService {
 
     private final PetRepository petRepository;

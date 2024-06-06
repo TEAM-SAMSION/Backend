@@ -4,13 +4,11 @@ import com.pawith.commonmodule.annotation.DomainService;
 import com.pawith.tododomain.entity.Register;
 import com.pawith.tododomain.repository.RegisterRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @DomainService
 @RequiredArgsConstructor
-@Transactional
 public class RegisterDeleteService {
 
     private final RegisterRepository registerRepository;

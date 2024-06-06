@@ -51,11 +51,12 @@ class OAuthControllerTest extends BaseRestDocsTest {
     void oAuthLogin() throws Exception {
         //given
         final Provider testProvider = FixtureMonkey.create().giveMeOne(Provider.class);
-        final String OAUTH_ACCESS_TOKEN = FixtureMonkey.create().giveMeOne(String.class);
+        final String accessToken = FixtureMonkey.create().giveMeOne(String.class);
+        final String refreshToken = FixtureMonkey.create().giveMeOne(String.class);
         final OAuthResponse testOAuthResponse = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(OAuthResponse.class);
         MockHttpServletRequestBuilder request = get(OAUTH_URL, testProvider)
-            .header(OAUTH_REQUEST_ACCESS_TOKEN_PARAM_NAME, OAUTH_ACCESS_TOKEN);
-        given(oAuthUseCase.oAuthLogin(testProvider, OAUTH_ACCESS_TOKEN)).willReturn(testOAuthResponse);
+            .header(OAUTH_REQUEST_ACCESS_TOKEN_PARAM_NAME, accessToken);
+        given(oAuthUseCase.oAuthLogin(testProvider, accessToken)).willReturn(testOAuthResponse);
         //when
         ResultActions result = mvc.perform(request);
         //then

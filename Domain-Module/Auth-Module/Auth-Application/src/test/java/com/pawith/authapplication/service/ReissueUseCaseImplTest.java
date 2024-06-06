@@ -4,6 +4,7 @@ import com.pawith.authapplication.consts.AuthConsts;
 import com.pawith.authapplication.dto.TokenReissueResponse;
 import com.pawith.authapplication.service.impl.ReissueUseCaseImpl;
 import com.pawith.authdomain.jwt.JWTProvider;
+import com.pawith.authdomain.jwt.PrivateClaims;
 import com.pawith.authdomain.jwt.TokenType;
 import com.pawith.authdomain.service.TokenDeleteService;
 import com.pawith.authdomain.service.TokenLockService;
@@ -50,11 +51,11 @@ class ReissueUseCaseImplTest {
     void reissue() {
         // given
         final String refreshToken = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(String.class);
-        final String email = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(String.class);
+        final PrivateClaims.UserClaims userClaims = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(PrivateClaims.UserClaims.class);
         final JWTProvider.Token token = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(JWTProvider.Token.class);
         given(jwtProvider.existsCachedRefreshToken(refreshToken)).willReturn(false);
         given(jwtProvider.reIssueToken(refreshToken)).willReturn(token);
-        given(jwtProvider.extractEmailFromToken(refreshToken, TokenType.REFRESH_TOKEN)).willReturn(email);
+        given(jwtProvider.extractUserClaimsFromToken(refreshToken, TokenType.REFRESH_TOKEN)).willReturn(userClaims);
         // when
         TokenReissueResponse reissue = reissueUseCase.reissue(AuthConsts.AUTHENTICATION_TYPE_PREFIX + refreshToken);
         // then
@@ -62,9 +63,9 @@ class ReissueUseCaseImplTest {
         Assertions.assertThat(reissue.getRefreshToken()).isEqualTo(AuthConsts.AUTHENTICATION_TYPE_PREFIX + token.refreshToken());
         then(tokenValidateService).should().validateIsExistToken(refreshToken, TokenType.REFRESH_TOKEN);
         then(tokenDeleteService).should().deleteTokenByValue(refreshToken);
-        then(tokenSaveService).should().saveToken(token.refreshToken(), email, TokenType.REFRESH_TOKEN);
-        then(tokenLockService).should().lockToken(email);
-        then(tokenLockService).should().releaseLockToken(email);
+        then(tokenSaveService).should().saveToken(token.refreshToken(), TokenType.REFRESH_TOKEN, userClaims.getUserId());
+        then(tokenLockService).should().lockToken(userClaims.toString());
+        then(tokenLockService).should().releaseLockToken(userClaims.toString());
     }
 
     @Test
@@ -72,11 +73,11 @@ class ReissueUseCaseImplTest {
     void reissue2() {
         // given
         final String refreshToken = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(String.class);
-        final String email = FixtureMonkeyUtils.getJavaTypeBasedFixtureMonkey().giveMeOne(String.class);
+        final PrivateClaims.UserClaims userClaims = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(PrivateClaims.UserClaims.class);
         final JWTProvider.Token token = FixtureMonkeyUtils.getConstructBasedFixtureMonkey().giveMeOne(JWTProvider.Token.class);
         given(jwtProvider.existsCachedRefreshToken(refreshToken)).willReturn(true);
         given(jwtProvider.getCachedToken(refreshToken)).willReturn(token);
-        given(jwtProvider.extractEmailFromToken(refreshToken, TokenType.REFRESH_TOKEN)).willReturn(email);
+        given(jwtProvider.extractUserClaimsFromToken(refreshToken, TokenType.REFRESH_TOKEN)).willReturn(userClaims);
         // when
         TokenReissueResponse reissue = reissueUseCase.reissue(AuthConsts.AUTHENTICATION_TYPE_PREFIX + refreshToken);
         // then
@@ -85,8 +86,8 @@ class ReissueUseCaseImplTest {
         then(tokenValidateService).shouldHaveNoInteractions();
         then(tokenDeleteService).shouldHaveNoInteractions();
         then(tokenSaveService).shouldHaveNoInteractions();
-        then(tokenLockService).should().lockToken(email);
-        then(tokenLockService).should().releaseLockToken(email);
+        then(tokenLockService).should().lockToken(userClaims.toString());
+        then(tokenLockService).should().releaseLockToken(userClaims.toString());
     }
 
 }

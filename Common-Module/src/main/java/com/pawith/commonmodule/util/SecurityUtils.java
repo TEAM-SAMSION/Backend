@@ -7,8 +7,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class SecurityUtils {
 
-    public static String getAuthenticationPrincipal() {
-        final String email = (String)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return email;
+    public static Long getAuthenticationPrincipal() {
+        return (Long)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 }

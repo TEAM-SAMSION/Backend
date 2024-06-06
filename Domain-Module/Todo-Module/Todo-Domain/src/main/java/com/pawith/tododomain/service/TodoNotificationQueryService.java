@@ -15,7 +15,6 @@ import java.util.stream.Collectors;
 
 @DomainService
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class TodoNotificationQueryService {
 
     private final TodoNotificationRepository todoNotificationRepository;
