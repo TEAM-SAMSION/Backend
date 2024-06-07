@@ -1,5 +1,7 @@
 package com.pawith.authpresentation.common.security;
 
+import static org.springframework.security.config.Customizer.withDefaults;
+
 import com.pawith.authpresentation.common.security.filter.JWTAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,7 +25,7 @@ public class SecurityConfig {
         http.authorizeHttpRequests(request ->{
             request.anyRequest().permitAll();
         });
-
+        http.cors(withDefaults());
         http.formLogin(AbstractHttpConfigurer::disable);
         http.httpBasic(AbstractHttpConfigurer::disable);
         http.logout(AbstractHttpConfigurer::disable);
