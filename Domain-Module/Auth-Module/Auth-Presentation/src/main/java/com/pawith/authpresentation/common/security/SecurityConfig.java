@@ -15,7 +15,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
     @Bean
     public SecurityFilterChain chain(HttpSecurity http) throws Exception {
-        http.cors(AbstractHttpConfigurer::disable);
         http.addFilterBefore(SecurityHandler.getJWTAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(SecurityHandler.getJWTEntryPoint(), JWTAuthenticationFilter.class);
 
